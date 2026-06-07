@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Override>
+  <Afflictions>
+    <!-- O Negative -->
+    <Affliction
+      name="O-"
+      identifier="ominus"
+      description=""
+      healableinmedicalclinic="false"
+      targets="human"
+      type="resistance"
+      isbuff="true"
+      limbspecific="false"
+      showinhealthscannerthreshold="3"
+      showiconthreshold="3"
+      maxstrength="1">
+
+      <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="256,896,128,128" color="10,193,114,255" origin="0,0"/>
+    </Affliction>
+
+    <!-- O Positive -->
+    <Affliction
+      name="O+"
+      identifier="oplus"
+      description=""
+      healableinmedicalclinic="false"
+      targets="human"
+      type="resistance"
+      isbuff="true"
+      limbspecific="false"
+      showinhealthscannerthreshold="3"
+      showiconthreshold="3"
+      maxstrength="1">
+      
+      <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="256,896,128,128" color="10,193,114,255" origin="0,0"/>
+    </Affliction>
+
+    <!-- A Negative -->
+    <Affliction
+      name="A-"
+      identifier="aminus"
+      description=""
+      healableinmedicalclinic="false"
+      targets="human"
+      type="resistance"
+      isbuff="true"
+      limbspecific="false"
+      showinhealthscannerthreshold="3"
+      showiconthreshold="3"
+      maxstrength="1">
+
+      <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="256,896,128,128" color="10,193,114,255" origin="0,0"/>
+    </Affliction>
+
+    <!-- A Positive -->
+    <Affliction
+      name="A+"
+      identifier="aplus"
+      description=""
+      healableinmedicalclinic="false"
+      targets="human"
+      type="resistance"
+      isbuff="true"
+      limbspecific="false"
+      showinhealthscannerthreshold="3"
+      showiconthreshold="3"
+      maxstrength="1">
+
+      <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="256,896,128,128" color="10,193,114,255" origin="0,0"/>
+    </Affliction>
+
+    <!-- B Negative -->
+    <Affliction
+      name="B-"
+      identifier="bminus"
+      description=""
+      healableinmedicalclinic="false"
+      targets="human"
+      type="resistance"
+      isbuff="true"
+      limbspecific="false"
+      showinhealthscannerthreshold="3"
+      showiconthreshold="3"
+      maxstrength="1">
+
+      <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="256,896,128,128" color="10,193,114,255" origin="0,0"/>
+    </Affliction>
+
+    <!-- B Positive -->
+    <Affliction
+      name="B+"
+      identifier="bplus"
+      description=""
+      healableinmedicalclinic="false"
+      targets="human"
+      type="resistance"
+      isbuff="true"
+      limbspecific="false"
+      showinhealthscannerthreshold="3"
+      showiconthreshold="3"
+      maxstrength="1">
+      <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="256,896,128,128" color="10,193,114,255" origin="0,0"/>
+    </Affliction>
+
+    <!-- AB Negative -->
+    <Affliction
+      name="AB-"
+      identifier="abminus"
+      description=""
+      healableinmedicalclinic="false"
+      targets="human"
+      type="resistance"
+      isbuff="true"
+      limbspecific="false"
+      showinhealthscannerthreshold="3"
+      showiconthreshold="3"
+      maxstrength="1">
+
+      <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="256,896,128,128" color="10,193,114,255" origin="0,0"/>
+    </Affliction>
+
+    <!-- AB Positive -->
+    <Affliction
+      name="AB+"
+      identifier="abplus"
+      description=""
+      healableinmedicalclinic="false"
+      targets="human"
+      type="resistance"
+      isbuff="true"
+      limbspecific="false"
+      showinhealthscannerthreshold="3"
+      showiconthreshold="3"
+      maxstrength="1">
+
+      <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="256,896,128,128" color="10,193,114,255" origin="0,0"/>
+    </Affliction>
+  </Afflictions>
+</Override>

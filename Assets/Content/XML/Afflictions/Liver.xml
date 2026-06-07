@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Override>
+  <Afflictions>
+    <!-- Liver Damage. Visible on Health Scanner. Causes: Liver Failure if severe enough -->
+    <Affliction
+      name=""
+      identifier="liverdamage"
+      description=""
+      healableinmedicalclinic="false"
+      type="gaze"
+      isbuff="false"
+      targets="human"
+      causeofdeathdescription=""
+      selfcauseofdeathdescription=""
+      limbspecific="false"
+      indicatorlimb="Torso"
+      maxstrength="100"
+      showiconthreshold="500"
+      showinhealthscannerthreshold="20"
+      damageoverlayalpha="0">
+
+      <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="128,384,128,128" color="195,136,60,255" origin="0,0"/>
+    </Affliction>
+
+    <!-- Liver Removed. Visible in Health UI and Scanner. Causes: Liver Failure -->
+    <Affliction
+      name=""
+      identifier="liverremoved"
+      description=""
+      healableinmedicalclinic="false"
+      targets="human"
+      type="gaze"
+      isbuff="false"
+      limbspecific="false"
+      indicatorlimb="Torso"
+      showiconthreshold="50"
+      showinhealthscannerthreshold="1"
+      iconcolors="84,211,211,255;84,211,211,255"
+      maxstrength="100">
+
+      <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="0,5" sheetelementsize="128,128" origin="0,0"/>
+    </Affliction>
+
+    <!-- Liver Swap. Visible in Health UI and Scanner. Used for Organ Transplant Surgery. -->
+    <Affliction
+      name=""
+      identifier="liverswap"
+      description="The liver has been surgically prepared for replacement"
+      healableinmedicalclinic="false"
+      targets="human"
+      type="gaze"
+      isbuff="false"
+      limbspecific="false"
+      indicatorlimb="Torso"
+      showiconthreshold="50"
+      showinhealthscannerthreshold="1"
+      iconcolors="84,211,211,255;84,211,211,255"
+      maxstrength="100">
+
+      <icon texture="%ModDir%/Images/AfflictionIcons2.png" sheetindex="0,5" sheetelementsize="128,128" origin="0,0"/>
+    </Affliction>
+  </Afflictions>
+</Override>

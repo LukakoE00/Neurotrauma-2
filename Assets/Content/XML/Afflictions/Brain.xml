@@ -1,6 +1,189 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Override>
   <Afflictions>
-    <!-- Placeholder -->
+    <!-- Spinal Cord Injury. Visible in Health UI and Scanner. Causes: Analgesia, Paralysis. -->
+    <Affliction
+      name=""
+      identifier="t_paralysis"
+      description=""
+      healableinmedicalclinic="false"
+      targets="human"
+      type="gaze"
+      isbuff="false"
+      causeofdeathdescription="Couldn't stand the hardships of life"
+      selfcauseofdeathdescription="You couldn't withstand the hardships of life"
+      limbspecific="false"
+      indicatorlimb="Head"
+      showiconthreshold="0"
+      maxstrength="100">
+
+      <Effect minstrength="0" maxstrength="100">
+
+        <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true" comparison="and">
+          <Conditional analgesia="lte 4.5" />
+          <Conditional ishuman="true" />
+          <Affliction identifier="analgesia" amount="1" />
+        </StatusEffect>
+
+      </Effect>
+
+      <icon texture="%ModDir%/Images/AfflictionIcons2.png" sheetindex="6,0" sheetelementsize="128,128" origin="0,0"/>
+    </Affliction>
+
+    <!-- Stroke. Visible on Health Scanner. Causes: Coma, Cerebral Hypoxia (Neurotrauma), Numbness, Seizures. -->
+    <Affliction
+      name=""
+      identifier="stroke"
+      description=""
+      targets="human"
+      healableinmedicalclinic="false"
+      type="gaze"
+      isbuff="false"
+      limbspecific="false"
+      indicatorlimb="Head"
+      showiconthreshold="100"
+      showinhealthscannerthreshold="0.1"
+      maxstrength="50">
+
+      <icon texture="%ModDir%/Images/AfflictionIcons.png" sourcerect="0,128,128,128" color="0,255,0,255" origin="0,0"/>
+    </Affliction>
+
+    <!-- Neurotrauma / Low oxygen presence in the brain. Visible on Health Scanner. Lethal. -->
+    <Affliction
+      name=""
+      identifier="cerebralhypoxia"
+      description=""
+      healableinmedicalclinic="false"
+      type="gaze"
+      isbuff="false"
+      targets="human"
+      limbspecific="false"
+      indicatorlimb="Head"
+      activationthreshold="0"
+      causeofdeathdescription="Brain dead"
+      selfcauseofdeathdescription="Your brain got deprived of oxygen for too long."
+      showinhealthscannerthreshold="10"
+      showiconthreshold="300"
+      maxstrength="200">
+
+      <Effect minstrength="0" maxstrength="180"
+        minscreendistort="0"
+        maxscreendistort="1"
+        minscreenblur="0"
+        maxscreenblur="1"
+        minradialdistort="0"
+        maxradialdistort="1"
+        MultiplyByMaxVitality="true"
+        minvitalitydecrease="0"
+        maxvitalitydecrease="0.9">
+      </Effect>
+
+      <Effect minstrength="180" maxstrength="200"
+        minscreendistort="1"
+        maxscreendistort="1"
+        minscreenblur="1"
+        maxscreenblur="1"
+        minradialdistort="1"
+        maxradialdistort="1"
+        MultiplyByMaxVitality="true"
+        minvitalitydecrease="0.9"
+        maxvitalitydecrease="2">
+      </Effect>
+
+      <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="128,640,128,128" color="195,177,60,255" origin="0,0"/>
+    </Affliction>
+
+    <!-- Seizure. Visible in Health UI and Scanner. -->
+    <Affliction
+      name=""
+      identifier="seizure"
+      description=""
+      healableinmedicalclinic="false"
+      type="gaze"
+      isbuff="false"
+      targets="human"
+      limbspecific="false"
+      indicatorlimb="Head"
+      showiconthreshold="0"
+      showinhealthscannerthreshold="0"
+      maxstrength="50">
+
+      <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="1,0" sheetelementsize="128,128" origin="0,0"/>
+    </Affliction>
+
+    <!-- Coma. Visible on Scanner. -->
+    <Affliction
+      name=""
+      identifier="coma"
+      description="The patient is in a coma"
+      targets="human"
+      limbspecific="false"
+      indicatorlimb="Head"
+      healableinmedicalclinic="false"
+      type="gaze"
+      isbuff="false"
+      showinhealthscannerthreshold="10"
+      showiconthreshold="300"
+      maxstrength="100">
+
+      <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="128,640,128,128" color="195,177,60,255" origin="0,0"/>
+    </Affliction>
+
+    <!-- Brain removed. Visible in Health UI and Scanner. Causes: Rapid Cerebral Hypoxia / Neurotrauma and death. -->
+    <Affliction
+      name=""
+      identifier="brainremoved"
+      description="The brain has been surgically removed"
+      targets="human"
+      healableinmedicalclinic="false"
+      limbspecific="false"
+      indicatorlimb="Head"
+      showiconthreshold="50"
+      showinhealthscannerthreshold="1"
+      type="gaze"
+      isbuff="false"
+      causeofdeathdescription="Died of missing a brain"
+      selfcauseofdeathdescription="Your brain got removed."
+      iconcolors="84,211,211,255;84,211,211,255"
+      maxstrength="100">
+
+      <Effect minstrength="0" maxstrength="2">
+
+        <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true">
+          <conditional ishuman="true"/>
+          <Affliction identifier="cerebralhypoxia" amount="1.2" />
+        </StatusEffect>
+
+        <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true" comparison="and">
+          <conditional ishuman="true" afmannitol="lte 0.5"/>
+          <Affliction identifier="cerebralhypoxia" amount="0.8" />
+        </StatusEffect>
+
+      </Effect>
+
+      <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="4,5" sheetelementsize="128,128" origin="0,0"/>
+    </Affliction>
+
+    <!-- Brain Replacement. Visible in Health UI and Scanner. Used for Organ Transplant Surgery. -->
+    <Affliction
+      name=""
+      identifier="brainswap"
+      description="The brain has been surgically removed"
+      targets="human"
+      healableinmedicalclinic="false"
+      limbspecific="false"
+      indicatorlimb="Head"
+      showiconthreshold="50"
+      showinhealthscannerthreshold="1"
+      type="gaze"
+      isbuff="false"
+      causeofdeathdescription="Died of missing a brain"
+      selfcauseofdeathdescription="Your brain was in a process of replacement."
+      iconcolors="84,211,211,255;84,211,211,255"
+      maxstrength="100">
+
+      <icon texture="%ModDir%/Images/AfflictionIcons2.png" sheetindex="4,5" sheetelementsize="128,128" origin="0,0"/>
+    </Affliction>
+
   </Afflictions>
 </Override>

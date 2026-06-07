@@ -1,6 +1,256 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Override>
   <Afflictions>
-    <!-- Placeholder -->
+    <!-- Bone Damage. Visible on Health Scanner. Causes: Bone Death if severe enough. -->
+    <Affliction
+      name=""
+      identifier="bonedamage"
+      description=""
+      healableinmedicalclinic="false"
+      type="gaze"
+      isbuff="false"
+      targets="human"
+      causeofdeathdescription=""
+      selfcauseofdeathdescription=""
+      limbspecific="false"
+      indicatorlimb="Torso"
+      maxstrength="100"
+      showiconthreshold="500"
+      showinhealthscannerthreshold="20"
+      damageoverlayalpha="0">
+
+      <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="128,384,128,128" color="195,136,60,255" origin="0,0"/>
+    </Affliction>
+
+    <!-- Stimulated Bone Growth. Visible in Health UI. Cures: Bone Death and Bone Damage. -->
+    <Affliction
+      name=""
+      identifier="bonegrowth"
+      description=""
+      healableinmedicalclinic="false"
+      targets="human"
+      type="resistance"
+      isbuff="true"
+      limbspecific="true"
+      showiconthreshold="1"
+      showinhealthscannerthreshold="500"
+      maxstrength="100">
+
+      <Effect minstrength="0" maxstrength="100" strengthchange="-0.5"/>
+
+      <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="2,4" sheetelementsize="128,128" origin="0,0"/>
+    </Affliction>
+
+    <!-- Arm / Leg Fracture. Visible in Health UI and Scanner. -->
+    <Affliction
+      name=""
+      identifier="simple_fracture"
+      description=""
+      targets="human"
+      limbspecific="true"
+      type="fractures"
+      showinhealthscannerthreshold="5"
+      showiconthreshold="90"
+      healableinmedicalclinic="true"
+      basehealcost="130"
+      maxstrength="100">
+
+      <!-- XML now handles strength changes for extremity fractures -->
+      <Effect minstrength="0" maxstrength="6" comparison="And">
+        <!-- Not Casted -->
+        <StatusEffect target="Limb">
+          <Conditional gypsumcast="eq 0"/>
+          <sound file="%ModDir%/Sound/bonebreak4.ogg"  selectionmode="random"/>
+          <sound file="%ModDir%/Sound/bonebreak3.ogg"/>
+          <sound file="%ModDir%/Sound/bonebreak2.ogg"/>
+          <sound file="%ModDir%/Sound/bonebreak1.ogg"/>
+          <Affliction identifier="simple_fracture" amount="10" />
+        </StatusEffect>
+
+        <!-- If Casted -->
+        <StatusEffect target="Limb" comparison="And">
+          <Conditional gypsumcast="neq 0" />
+          <Affliction identifier="simple_fracture" amount="-1" />
+        </StatusEffect>
+
+      </Effect>
+
+      <Effect minstrength="6" maxstrength="100">
+        <!-- Not Casted -->
+        <StatusEffect target="Limb" comparison="And">
+          <Conditional gypsumcast="eq 0"/>
+          <Affliction identifier="simple_fracture" amount="1.5" />
+        </StatusEffect>
+
+        <!-- If Casted -->
+        <StatusEffect target="Limb" comparison="And">
+          <Conditional gypsumcast="neq 0"/>
+          <Affliction identifier="simple_fracture" amount="-1" />
+        </StatusEffect>
+
+      </Effect>
+
+      <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="6,2" sheetelementsize="128,128" origin="0,0"/>
+    </Affliction>
+
+    <!-- Rib simple_fracture -->
+    <Affliction
+      name=""
+      identifier="t_fracture"
+      description=""
+      healableinmedicalclinic="false"
+      targets="human"
+      limbspecific="false"
+      indicatorlimb="Torso"
+      type="fractures"
+      showinhealthscannerthreshold="5"
+      showiconthreshold="90"
+      maxstrength="100">
+
+      <Effect minstrength="0" maxstrength="6">
+
+        <StatusEffect target="Character">
+          <sound file="%ModDir%/Sound/bonebreak4.ogg"  selectionmode="random"/>
+          <sound file="%ModDir%/Sound/bonebreak3.ogg"/>
+          <sound file="%ModDir%/Sound/bonebreak2.ogg"/>
+          <sound file="%ModDir%/Sound/bonebreak1.ogg"/>
+        </StatusEffect>
+
+      </Effect>
+
+      <Effect minstrength="6" maxstrength="100"/>
+
+      <PeriodicEffect mininterval="60" maxinterval="120">
+
+        <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true" comparison="And">
+          <Conditional bandaged="eq 0" dirtybandage="eq 0" />
+          <Conditional pneumothorax="eq 0"/>
+          <Affliction identifier="pneumothorax" amount="5" probability="0.3" />
+        </StatusEffect>
+
+      </PeriodicEffect>
+
+      <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="6,2" sheetelementsize="128,128" origin="0,0"/>
+    </Affliction>
+
+    <!-- Neck Fracture -->
+    <Affliction
+      name=""
+      identifier="n_fracture"
+      description=""
+      healableinmedicalclinic="false"
+      targets="human"
+      limbspecific="false"
+      indicatorlimb="Head"
+      type="fractures"
+      showinhealthscannerthreshold="5"
+      showiconthreshold="90"
+      maxstrength="100">
+
+      <Effect minstrength="0" maxstrength="6">
+
+        <StatusEffect target="Character">
+          <sound file="%ModDir%/Sound/bonebreak4.ogg"  selectionmode="random"/>
+          <sound file="%ModDir%/Sound/bonebreak3.ogg"/>
+          <sound file="%ModDir%/Sound/bonebreak2.ogg"/>
+          <sound file="%ModDir%/Sound/bonebreak1.ogg"/>
+        </StatusEffect>
+
+      </Effect>
+
+      <Effect minstrength="6" maxstrength="100"/>
+
+      <PeriodicEffect mininterval="1" maxinterval="1">
+
+        <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true" targetlimb="Head" disabledeltatime="true">
+          <Conditional bandaged="eq 0" dirtybandage="eq 0" />
+          <Affliction identifier="internaldamage" indicatorlimb="Limb" amount="0.1"/>
+        </StatusEffect>
+
+      </PeriodicEffect>
+
+      <PeriodicEffect mininterval="20" maxinterval="50">
+
+        <StatusEffect target="Character" targetlimbs="Head" multiplyafflictionsbymaxvitality="true" comparison="And">
+          <Conditional bandaged="eq 0" dirtybandage="eq 0" />
+          <Conditional n_fracture="gte 100"/>
+          <Affliction identifier="t_paralysis" amount="5" />
+        </StatusEffect>
+
+      </PeriodicEffect>
+
+      <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="1,3" sheetelementsize="128,128" origin="0,0"/>
+    </Affliction>
+
+    <!-- Skull Fracture -->
+    <Affliction
+      name=""
+      identifier="h_fracture"
+      description=""
+      healableinmedicalclinic="false"
+      targets="human"
+      limbspecific="false"
+      indicatorlimb="Head"
+      type="fractures"
+      showinhealthscannerthreshold="5"
+      showiconthreshold="90"
+      maxstrength="100">
+
+      <Effect minstrength="0" maxstrength="6">
+
+        <StatusEffect target="Character">
+          <sound file="%ModDir%/Sound/bonebreak4.ogg"  selectionmode="random"/>
+          <sound file="%ModDir%/Sound/bonebreak3.ogg"/>
+          <sound file="%ModDir%/Sound/bonebreak2.ogg"/>
+          <sound file="%ModDir%/Sound/bonebreak1.ogg"/>
+        </StatusEffect>
+
+      </Effect>
+
+      <Effect minstrength="6" maxstrength="100"/>
+
+      <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="2,3" sheetelementsize="128,128" origin="0,0"/>
+    </Affliction>
+
+    <!-- Dislocation -->
+    <Affliction
+      name=""
+      identifier="dislocation"
+      description=""
+      healableinmedicalclinic="true"
+      basehealcost="80"
+      targets="human"
+      limbspecific="true"
+      type="fractures"
+      showinhealthscannerthreshold="5"
+      showiconthreshold="30"
+      maxstrength="100">
+
+      <Effect minstrength="0" maxstrength="6" strengthchange="10">
+
+        <StatusEffect target="Limb" multiplyafflictionsbymaxvitality="true">
+          <sound file="%ModDir%/Sound/bonebreak4.ogg"  selectionmode="random"/>
+          <sound file="%ModDir%/Sound/bonebreak3.ogg"/>
+          <sound file="%ModDir%/Sound/bonebreak2.ogg"/>
+          <sound file="%ModDir%/Sound/bonebreak1.ogg"/>
+          <Affliction identifier="severepain" amount="1" />
+        </StatusEffect>
+
+      </Effect>
+
+      <Effect minstrength="6" maxstrength="100" strengthchange="1.5"/>
+
+      <!-- Not quite sure why this is here since it only affects humans - Lukako -->
+      <PeriodicEffect mininterval="1" maxinterval="1">
+
+        <StatusEffect target="Character" disabledeltatime="true" stackable="false" delay="1" checkconditionalalways="false">
+          <Conditional ishuman="false" />
+          <ReduceAffliction identifier="dislocation" amount="1000"/>
+        </StatusEffect>
+
+      </PeriodicEffect>
+
+      <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="0,3" sheetelementsize="128,128" origin="0,0"/>
+    </Affliction>
   </Afflictions>
 </Override>

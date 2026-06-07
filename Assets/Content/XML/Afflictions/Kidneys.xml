@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Override>
+  <Afflictions>
+        <!-- Kidney Damage. Visible on Scanner. Causes: Kidney Failure (both kidneys dead) if severe enough. -->
+    <Affliction
+      name=""
+      identifier="kidneydamage"
+      description=""
+      healableinmedicalclinic="false"
+      type="gaze"
+      isbuff="false"
+      targets="human"
+      causeofdeathdescription=""
+      selfcauseofdeathdescription=""
+      limbspecific="false"
+      indicatorlimb="Torso"
+      maxstrength="100"
+      showiconthreshold="500"
+      showinhealthscannerthreshold="10"
+      damageoverlayalpha="0">
+
+      <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="128,384,128,128" color="195,136,60,255" origin="0,0"/>
+    </Affliction>
+
+    <!-- Kidneys removed. Visible in Health UI and Scanner. Causes: Kidney Failure (both kidneys dead). -->
+    <Affliction
+      name=""
+      identifier="kidneyremoved"
+      description=""
+      healableinmedicalclinic="false"
+      targets="human"
+      type="gaze"
+      isbuff="false"
+      limbspecific="false"
+      indicatorlimb="Torso"
+      showiconthreshold="50"
+      showinhealthscannerthreshold="1"
+      iconcolors="84,211,211,255;84,211,211,255"
+      maxstrength="100">
+
+      <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="2,5" sheetelementsize="128,128" origin="0,0"/>
+    </Affliction>
+
+    <!-- Kidney Swap. Visible in Health UI and Scanner. Used for Organ Transplant Surgery. -->
+    <Affliction
+      name=""
+      identifier="kidneyswap"
+      description="The kidneys have been surgically prepared for replacement"
+      healableinmedicalclinic="false"
+      targets="human"
+      type="gaze"
+      isbuff="false"
+      limbspecific="false"
+      indicatorlimb="Torso"
+      showiconthreshold="50"
+      showinhealthscannerthreshold="1"
+      iconcolors="84,211,211,255;84,211,211,255"
+      maxstrength="100">
+
+      <icon texture="%ModDir%/Images/AfflictionIcons2.png" sheetindex="2,5" sheetelementsize="128,128" origin="0,0"/>
+    </Affliction>
+  </Afflictions>
+</Override>

@@ -9,6 +9,8 @@ C# Documentation (for Barotrauma) can be found [here](https://evilfactory.github
   
 - PascalCase is recommended. Following C# conventions.
 
+- Download the required refs from [here](https://github.com/evilfactory/LuaCsForBarotrauma/releases/download/latest/luacsforbarotrauma_refs.zip)
+
 - If you're going to be running this locally, change the LocalMods folder directory in **Build.props**. IDK if there is a better way to do this without GitHub constantly changing it.
 
 - Linux / OSX projects have been disabled, as this is complex enough as-is right now.

@@ -1,6 +1,157 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Override>
   <Afflictions>
-    <!-- Placeholder -->
+    <!-- Cardiac Tamponade. Visible on Health Scanner. Causes: Decreased Blood Pressure. -->
+    <Affliction
+      name=""
+      identifier="tamponade"
+      description=""
+      healableinmedicalclinic="false"
+      targets="human"
+      type="gaze"
+      isbuff="false"
+      causeofdeathdescription=""
+      selfcauseofdeathdescription=""
+      limbspecific="False"
+      indicatorlimb="Torso"
+      showinhealthscannerthreshold="10"
+      showiconthreshold="300"
+      maxstrength="100">
+
+      <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="896,896,128,128" color="195,136,60,255" origin="0,0"/>
+    </Affliction>
+
+    <!-- Ventricular Tachycardia / Irregular Heartbeat. Visible in Health UI. -->
+    <Affliction
+      name=""
+      identifier="tachycardia"
+      description=""
+      limbspecific="false"
+      indicatorlimb="Torso"
+      showiconthreshold="1"
+      showinhealthscannerthreshold="1000"
+      maxstrength="100"
+      targets="human"
+      type="gaze"
+      isbuff="false"
+      healableinmedicalclinic="false"
+      iconcolors="255,90,0,255;255,90,0,255">
+
+      <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="1,1" sheetelementsize="128,128" origin="0,0"/>
+    </Affliction>
+
+    <!-- Ventricular Fibrillation / Fibrillation ('The heart going funky mode'). Visible in Health UI. -->
+    <Affliction
+      name=""
+      identifier="fibrillation"
+      description=""
+      healableinmedicalclinic="false"
+      type="gaze"
+      isbuff="false"
+      limbspecific="false"
+      indicatorlimb="Torso"
+      showiconthreshold="1"
+      showinhealthscannerthreshold="1000"
+      maxstrength="100"
+      iconcolors="255,45,0,255;255,45,0,255">
+
+      <icon texture="%ModDir%/Images/AfflictionIcons2.png" sheetindex="2,0" sheetelementsize="128,128" origin="0,0"/>
+    </Affliction>
+
+    <!-- Cardiac Arrest. Visible in Health UI. -->
+    <Affliction
+      name=""
+      identifier="cardiacarrest"
+      description=""
+      healableinmedicalclinic="false"
+      limbspecific="false"
+      indicatorlimb="Torso"
+      showiconthreshold="1"
+      showinhealthscannerthreshold="1"
+      targets="human"
+      type="gaze"
+      isbuff="false"
+      maxstrength="10">
+
+      <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="0,1" sheetelementsize="128,128" origin="0,0"/>
+    </Affliction>
+
+    <!-- Heart Attack. Visible on Health Scanner. Causes: Shortness of Breath, Chest Pain, Nausea, Sweating, Heart Damage and possibly Cardiac Arrest. -->
+    <Affliction
+      name=""
+      identifier="heartattack"
+      description=""
+      healableinmedicalclinic="false"
+      limbspecific="false"
+      indicatorlimb="Torso"
+      maxstrength="100"
+      targets="human"
+      showiconthreshold="500"
+      showinhealthscannerthreshold="1"
+      type="gaze"
+      isbuff="false"
+      damageoverlayalpha="0">
+
+      <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="128,384,128,128" color="195,136,60,255" origin="0,0"/>
+    </Affliction>
+
+    <!-- Heart Damage. Visible on Health Scanner. Causes: Shortness of Breath, Chest Pain, Cough, Hypoxemia, possibly Respiratory Arrest if severe enough. -->
+    <Affliction
+      name=""
+      identifier="heartdamage"
+      description=""
+      healableinmedicalclinic="false"
+      type=""
+      isbuff="false"
+      targets="human"
+      limbspecific="false"
+      indicatorlimb="Torso"
+      maxstrength="100"
+      showiconthreshold="500"
+      showinhealthscannerthreshold="20"
+      damageoverlayalpha="0">
+
+      <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="128,384,128,128" color="195,136,60,255" origin="0,0"/>
+    </Affliction>
+
+    <!-- Heart removed. Visible in Health UI and Scanner. Causes: Cardiac Arrest. -->
+    <Affliction
+      name=""
+      identifier="heartremoved"
+      description="The heart has been surgically removed"
+      targets="human"
+      healableinmedicalclinic="false"
+      limbspecific="false"
+      indicatorlimb="Torso"
+      showiconthreshold="50"
+      showinhealthscannerthreshold="1"
+      type="gaze"
+      isbuff="false"
+      causeofdeathdescription="Died of missing a heart"
+      selfcauseofdeathdescription="Your heart got removed."
+      iconcolors="84,211,211,255;84,211,211,255"
+      maxstrength="100">
+
+      <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="3,5" sheetelementsize="128,128" origin="0,0"/>
+    </Affliction>
+
+    <!-- Heart Replacement. Visible in Health UI and Scanner. Used for Organ Transplant Surgery. -->
+    <Affliction
+      name=""
+      identifier="heartswap"
+      description="The heart has been surgically prepared for replacement"
+      targets="human"
+      healableinmedicalclinic="false"
+      limbspecific="false"
+      indicatorlimb="Torso"
+      showiconthreshold="50"
+      showinhealthscannerthreshold="1"
+      type="gaze"
+      isbuff="false"
+      iconcolors="84,211,211,255;84,211,211,255"
+      maxstrength="100">
+
+      <icon texture="%ModDir%/Images/AfflictionIcons2.png" sheetindex="3,5" sheetelementsize="128,128" origin="0,0"/>
+    </Affliction>
   </Afflictions>
 </Override>

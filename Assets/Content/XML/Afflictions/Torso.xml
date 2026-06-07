@@ -1,6 +1,56 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Override>
   <Afflictions>
-    <!-- Placeholder -->
+    <!-- Aortic Rupture -->
+    <Affliction
+      name=""
+      identifier="t_arterialcut"
+      description=""
+      healableinmedicalclinic="false"
+      targets="human"
+      type="arterialcut"
+      limbspecific="false"
+      indicatorlimb="Torso"
+      showiconthreshold="200"
+      showinhealthscannerthreshold="1"
+      maxstrength="100">
+
+      <Effect minstrength="0" maxstrength="100" strengthchange="1" />
+
+      <PeriodicEffect mininterval="1" maxinterval="3">
+
+        <StatusEffect target="Character" disabledeltatime="true" stackable="false" delay="1" checkconditionalalways="false">
+          <Conditional ishuman="false" />
+          <ReduceAffliction identifier="t_arterialcut" amount="1000"/>
+        </StatusEffect>
+
+        <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true" disabledeltatime="true" stackable="false" delay="1" checkconditionalalways="false">
+          <Conditional balloonedaorta="lte 1"/>
+          <Affliction identifier="internalbleeding" strength="8" />
+          <Affliction identifier="bloodloss" strength="4" />
+        </StatusEffect>
+
+      </PeriodicEffect>
+
+      <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="3,3" sheetelementsize="128,128" origin="0,0"/>
+    </Affliction>
+
+    <!-- Internal Bleeding. Visible on Health Scanner. Causes: Blood Loss. -->
+    <Affliction
+      name=""
+      identifier="internalbleeding"
+      healableinmedicalclinic="false"
+      targets="human"
+      description=""
+      causeofdeathdescription=""
+      selfcauseofdeathdescription=""
+      limbspecific="False"
+      indicatorlimb="Torso"
+      showinhealthscannerthreshold="1"
+      showiconthreshold="300"
+      maxstrength="100">
+
+      <icon texture="Content/UI/CommandUIAtlas.png" sourcerect="896,896,128,128" origin="0,0"/>
+    </Affliction>
   </Afflictions>
 </Override>
