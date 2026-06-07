@@ -1,4 +1,4 @@
-This is all just the skeleton from the C# documentation, changed for Neurotrauma
+This is all just the skeleton from the C# documentation, changed for Neurotrauma.
 It should be noted that I don't know what I am doing yet!
 
 - Namespace: _Neurotrauma_
