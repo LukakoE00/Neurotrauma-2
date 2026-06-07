@@ -10,6 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)SharedSource\AssemblySettings.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\Shared.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SharedSource\NeurotraumaInit.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)sharedsource\NTInfo.cs" />
   </ItemGroup>
 </Project>
