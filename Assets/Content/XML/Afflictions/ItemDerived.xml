@@ -4,30 +4,18 @@
      <!-- Adrenaline / Epinephrine. Visible on Hematology Analyzer. Counters Pain and increases Blood Pressure. -->
     <Affliction
       name=""
-      identifier="afadrenaline"
       description=""
+      identifier="afadrenaline"
+      
       healableinmedicalclinic="false"
       targets="human"
       type="resistance"
       isbuff="true"
       limbspecific="false"
-      showinhealthscannerthreshold="200"
-      showiconthreshold="700"
+      
+      showinhealthscannerthreshold="999"
+      showiconthreshold="999"
       maxstrength="100">
-
-      <Effect minstrength="0" maxstrength="100" strengthchange="-1">
-
-        <StatusEffect target="Character">
-          <StatValue stattype="MeleeAttackMultiplier" minvalue="0.2" maxvalue="0.2" />
-        </StatusEffect>
-
-        <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true" comparison="and">
-          <Conditional analgesia="lte 4.5" />
-          <Conditional ishuman="true" />
-          <Affliction identifier="analgesia" amount="1" />
-        </StatusEffect>
-
-      </Effect>
 
       <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="256,896,128,128" color="10,193,114,255" origin="0,0"/>
     </Affliction>
@@ -35,15 +23,19 @@
     <!-- Needle in the Torso. Visible in Health UI. First-Aid for Pneumothorax. -->
     <Affliction
       name=""
-      identifier="needlec"
       description=""
+      identifier="needlec"
+      
       healableinmedicalclinic="false"
       targets="human"
       limbspecific="false"
       indicatorlimb="Torso"
-      maxstrength="100"
       type="resistance"
-      isbuff="true">
+      isbuff="true"
+      
+      showinhealthscannerthreshold="0"
+      showiconthreshold="0"
+      maxstrength="100">
 
       <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="896,896,128,128" color="195,136,60,255" origin="0,0"/>
     </Affliction>
@@ -51,25 +43,18 @@
     <!-- Saline. Visible on the Health Scanner. Causes: Increased Blood Pressure, Acidosis. -->
     <Affliction
       name=""
-      identifier="afsaline"
       description=""
+      identifier="afsaline"
+      
       healableinmedicalclinic="false"
       targets="human"
       type="resistance"
       isbuff="true"
       limbspecific="false"
-      showiconthreshold="200"
-      showinhealthscannerthreshold="1"
+
+      showinhealthscannerthreshold="0"
+      showiconthreshold="999"
       maxstrength="100">
-
-      <Effect minstrength="0" maxstrength="100" strengthchange="-0.25">
-
-        <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true">
-          <Conditional ishuman="true" />
-          <Affliction identifier="acidosis" amount="0.1"/>
-        </StatusEffect>
-
-      </Effect>
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="3,3" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -77,49 +62,37 @@
     <!-- Ringer's Solution. Visible on Health Scanner. Causes: Increased Blood Pressure. -->
     <Affliction
       name=""
-      identifier="afringerssolution"
       description=""
+      identifier="afringerssolution"
+      
       healableinmedicalclinic="false"
       targets="human"
       type="resistance"
       isbuff="true"
       limbspecific="false"
-      showiconthreshold="200"
-      showinhealthscannerthreshold="1"
+
+      showinhealthscannerthreshold="0"
+      showiconthreshold="999"
       maxstrength="100">
-      <Effect minstrength="0" maxstrength="100" strengthchange="-0.25">
-        <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true">
-          <Conditional ishuman="true" />
-          <Affliction identifier="alkalosis" amount="0.1"/>
-        </StatusEffect>
-      </Effect>
+
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="3,3" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
 
     <!-- Mannitol. Cures: Neurotrauma, if Blood Pressure and Hypoxemia are within stable values. -->
     <Affliction
       name=""
-      identifier="afmannitol"
       description=""
+      identifier="afmannitol"
+      
       healableinmedicalclinic="false"
       targets="human"
       type="resistance"
       isbuff="true"
       limbspecific="false"
-      showiconthreshold="200"
-      showinhealthscannerthreshold="1"
+
+      showinhealthscannerthreshold="0"
+      showiconthreshold="999"
       maxstrength="100">
-
-      <Effect minstrength="0" maxstrength="100" strengthchange="-0.5">
-
-        <StatusEffect target="Character" comparison="and">
-          <Conditional ishuman="true" />
-          <Conditional bloodpressure="gte 70"/>
-          <Conditional hypoxemia="lte 30"/>
-          <ReduceAffliction identifier="cerebralhypoxia" amount="1"/>
-        </StatusEffect>
-
-      </Effect>
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="3,3" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -127,25 +100,17 @@
     <!-- Immunosuppressant. Visible on Hematology Analyzer. Causes: Decreased Immunity, potentially Infections. -->
     <Affliction
       name=""
-      identifier="afimmunosuppressant"
       description=""
+      identifier="afimmunosuppressant"
+      
       healableinmedicalclinic="false"
       targets="human"
       type="resistance"
-      isbuff="false"
       limbspecific="false"
-      showiconthreshold="200"
-      showinhealthscannerthreshold="200"
+
+      showinhealthscannerthreshold="999"
+      showiconthreshold="999"
       maxstrength="100">
-
-      <Effect minstrength="0" maxstrength="100" strengthchange="-0.25">
-
-        <StatusEffect target="Character" comparison="and">
-          <Conditional ishuman="true" immunity="gte 2.5"/>
-          <ReduceAffliction identifier="immunity" amount="4"/>
-        </StatusEffect>
-
-      </Effect>
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="3,3" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -153,15 +118,16 @@
     <!-- Pressuredrugs. Visible on Hematology Analyzer. Causes: Decreased Blood Pressure. -->
     <Affliction
       name=""
-      identifier="afpressuredrug"
       description=""
+      identifier="afpressuredrug"
+      
       healableinmedicalclinic="false"
       targets="human"
       type="resistance"
-      isbuff="false"
       limbspecific="false"
-      showiconthreshold="200"
-      showinhealthscannerthreshold="200"
+
+      showinhealthscannerthreshold="999"
+      showiconthreshold="999"
       maxstrength="100">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="3,3" sheetelementsize="128,128" origin="0,0"/>
@@ -170,18 +136,18 @@
     <!-- Thiamine. Visible on Hematology Analyzer. Causes: Better Organ regeneration. -->
     <Affliction
       name=""
-      identifier="afthiamine"
       description=""
+      identifier="afthiamine"
+      
       healableinmedicalclinic="false"
       targets="human"
       type="resistance"
       isbuff="true"
       limbspecific="false"
-      showiconthreshold="200"
-      showinhealthscannerthreshold="200"
-      maxstrength="100">
 
-      <Effect minstrength="0" maxstrength="100" strengthchange="-0.25"/>
+      showinhealthscannerthreshold="999"
+      showiconthreshold="999"
+      maxstrength="100">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="3,3" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -189,18 +155,17 @@
     <!-- Streptokinase. Visible on Hematology Analyzer. Cures: Heart Attack, Hemotransfusion Shock. -->
     <Affliction
       name=""
-      identifier="afstreptokinase"
       description=""
+      identifier="afstreptokinase"
+      
       healableinmedicalclinic="false"
       targets="human"
       type="resistance"
-      isbuff="false"
       limbspecific="false"
-      showiconthreshold="200"
-      showinhealthscannerthreshold="200"
-      maxstrength="100">
 
-      <Effect minstrength="0" maxstrength="100" strengthchange="-0.25"/>
+      showinhealthscannerthreshold="999"
+      showiconthreshold="999"
+      maxstrength="100">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="3,3" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -208,36 +173,20 @@
     <!-- Broad-Spectrum Antibiotics. Visible on Hematology Analyzer. Cures: Sepsis, Husk Infection. Causes: Husk Immunity. -->
     <Affliction
       name=""
-      identifier="afantibiotics"
       description=""
+      identifier="afantibiotics"
+      
       healableinmedicalclinic="false"
       targets="human"
       type="resistance"
       isbuff="true"
       limbspecific="false"
-      showiconthreshold="200"
-      showinhealthscannerthreshold="200"
+
+      showinhealthscannerthreshold="999"
+      showiconthreshold="999"
       maxstrength="100">
-
-      <Effect minstrength="0" maxstrength="100" strengthchange="-0.5">
-
-        <StatusEffect target="Character" comparison="and">
-          <Conditional huskinfection="lt 75.0"/>
-          <ReduceAffliction identifier="huskinfection" amount="0.5"/>
-        </StatusEffect>
-
-        <StatusEffect target="Character">
-          <Affliction identifier="organdamage" amount="0.2"/>
-          <Affliction identifier="kidneydamage" amount="0.175"/>
-          <Affliction identifier="liverdamage" amount="0.175"/>
-          <Affliction identifier="heartdamage" amount="0.1"/>
-          <Affliction identifier="lungdamage" amount="0.1"/>
-        </StatusEffect>
-
-      </Effect>
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="3,3" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
-
   </Afflictions>
 </Override>

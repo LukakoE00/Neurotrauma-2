@@ -4,17 +4,17 @@
     <!-- Blood Pressure. Visible on Health Scanner and Hematology Analyzer. -->
     <Affliction
       name=""
-      identifier="bloodpressure"
       description=""
+      identifier="bloodpressure"
+
+      healableinmedicalclinic="false"
       targets="human"
       limbspecific="false"
       indicatorlimb="Torso"
-      activationthreshold="0"
-      healableinmedicalclinic="false"
-      type=""
       isbuff="true"
+
       showinhealthscannerthreshold="0"
-      showiconthreshold="300"
+      showiconthreshold="999"
       maxstrength="200">
 
       <Effect minstrength="0" maxstrength="5" strengthchange="10" />
@@ -26,17 +26,16 @@
     <!-- Hypoxemia / Low oxygen presence in blood. Visible on Health Scanner. -->
     <Affliction
       name=""
-      identifier="hypoxemia"
       description=""
+      identifier="hypoxemia"
+
+      healableinmedicalclinic="false"
       targets="human"
       limbspecific="false"
       indicatorlimb="Torso"
-      activationthreshold="0"
-      healableinmedicalclinic="false"
-      type="gaze"
-      isbuff="false"
+
       showinhealthscannerthreshold="5"
-      showiconthreshold="300"
+      showiconthreshold="999"
       maxstrength="100">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sourcerect="128,128,128,128" color="68,157,198,255" origin="0,0"/>
@@ -45,16 +44,16 @@
     <!-- Alkalosis. Visible on Hematology Analyzer. -->
     <Affliction
       name=""
-      identifier="alkalosis"
       description=""
+      identifier="alkalosis"
+
       healableinmedicalclinic="false"
-      type="gaze"
-      isbuff="false"
       targets="human"
       limbspecific="false"
       indicatorlimb="Torso"
-      showiconthreshold="500"
-      showinhealthscannerthreshold="500"
+
+      showinhealthscannerthreshold="999"
+      showiconthreshold="999"
       maxstrength="100">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sourcerect="0,128,128,128" color="0,255,0,255" origin="0,0"/>
@@ -63,16 +62,16 @@
     <!-- Acidosis. Visible on Hematology Analyzer. -->
     <Affliction
       name=""
-      identifier="acidosis"
       description=""
+      identifier="acidosis"
+
       healableinmedicalclinic="false"
-      type="gaze"
-      isbuff="false"
       targets="human"
       limbspecific="false"
       indicatorlimb="Torso"
-      showiconthreshold="500"
-      showinhealthscannerthreshold="500"
+
+      showinhealthscannerthreshold="999"
+      showiconthreshold="999"
       maxstrength="100">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sourcerect="0,128,128,128" color="0,255,0,255" origin="0,0"/>
@@ -81,42 +80,17 @@
     <!-- Hemotransfusion Shock a.k.a. wrong blood type, idiot! -->
     <Affliction
       name=""
-      identifier="hemotransfusionshock"
       description=""
+      identifier="hemotransfusionshock"
+
       healableinmedicalclinic="false"
       targets="human"
-      type="gaze"
-      isbuff="false"
       limbspecific="false"
+      indicatorlimb="Torso"
+      
       showinhealthscannerthreshold="10"
-      showiconthreshold="300"
+      showiconthreshold="999"
       maxstrength="100">
-      <Effect minstrength="0" maxstrength="100" strengthchange="-0.5"/>
-
-      <PeriodicEffect mininterval="1" maxinterval="3">
-
-        <StatusEffect target="character" multiplyafflictionsbymaxvitality="true" disabledeltatime="true" comparison="and" checkconditionalalways="false">
-          <Conditional hemotransfusionshock="lt 70"/>
-          <Conditional hemotransfusionshock="gte 15"/>
-          <Affliction identifier="bloodloss" amount="1"/>
-          <Affliction identifier="organdamage" amount="0.25"/>
-          <Affliction identifier="liverdamage" amount="0.25"/>
-          <Affliction identifier="kidneydamage" amount="0.25"/>
-          <Affliction identifier="heartdamage" amount="0.25"/>
-          <Affliction identifier="lungdamage" amount="0.25"/>
-        </StatusEffect>
-
-        <StatusEffect target="character" multiplyafflictionsbymaxvitality="true" disabledeltatime="true" comparison="and" checkconditionalalways="false">
-          <Conditional hemotransfusionshock="lt 15"/>
-          <Affliction identifier="bloodloss" amount="1"/>
-          <Affliction identifier="organdamage" amount="0.5"/>
-          <Affliction identifier="liverdamage" amount="0.5"/>
-          <Affliction identifier="kidneydamage" amount="0.5"/>
-          <Affliction identifier="heartdamage" amount="0.5"/>
-          <Affliction identifier="lungdamage" amount="0.5"/>
-        </StatusEffect>
-        
-      </PeriodicEffect>
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sourcerect="256,0,128,128" color="68,157,198,255" origin="0,0"/>
     </Affliction>
@@ -124,16 +98,16 @@
     <!-- Sepsis / Bacteria in the blood. Visible on Hematology Analyzer. Causes: systemic infection, life-threatening complications, Gangrene. -->
     <Affliction
       name=""
-      identifier="sepsis"
       description=""
+      identifier="sepsis"
+
       healableinmedicalclinic="false"
-      type="gaze"
-      isbuff="false"
       targets="human"
       limbspecific="false"
       indicatorlimb="Torso"
-      showinhealthscannerthreshold="700"
-      showiconthreshold="700"
+
+      showinhealthscannerthreshold="999"
+      showiconthreshold="999"
       maxstrength="100">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sourcerect="768,0,128,128" color="139,60,42,255" origin="0,0"/>
@@ -142,16 +116,18 @@
     <!-- Immunity. Visible on the Hematology Analyzer. Heals you passively if high enough -->
     <Affliction
       name=""
-      identifier="immunity"
       description=""
+      identifier="immunity"
+      
       healableinmedicalclinic="false"
       targets="human"
-      type="gaze"
       isbuff="true"
       limbspecific="false"
-      maxstrength="100"
-      showinhealthscannerthreshold="700"
-      showiconthreshold="700">
+      indicatorlimb="Torso"
+
+      showinhealthscannerthreshold="999"
+      showiconthreshold="999"
+      maxstrength="100">
 
       <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="256,896,128,128" color="10,193,114,255" origin="0,0"/>
     </Affliction>

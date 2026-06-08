@@ -4,15 +4,17 @@
     <!-- O Negative -->
     <Affliction
       name="O-"
-      identifier="ominus"
       description=""
+      identifier="o_negative"
+      
       healableinmedicalclinic="false"
       targets="human"
-      type="resistance"
+      type="bloodtype"
       isbuff="true"
       limbspecific="false"
-      showinhealthscannerthreshold="3"
-      showiconthreshold="3"
+
+      showinhealthscannerthreshold="999"
+      showiconthreshold="999"
       maxstrength="1">
 
       <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="256,896,128,128" color="10,193,114,255" origin="0,0"/>
@@ -21,15 +23,17 @@
     <!-- O Positive -->
     <Affliction
       name="O+"
-      identifier="oplus"
       description=""
+      identifier="o_positive"
+
       healableinmedicalclinic="false"
       targets="human"
-      type="resistance"
+      type="bloodtype"
       isbuff="true"
       limbspecific="false"
-      showinhealthscannerthreshold="3"
-      showiconthreshold="3"
+
+      showinhealthscannerthreshold="999"
+      showiconthreshold="999"
       maxstrength="1">
       
       <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="256,896,128,128" color="10,193,114,255" origin="0,0"/>
@@ -38,15 +42,17 @@
     <!-- A Negative -->
     <Affliction
       name="A-"
-      identifier="aminus"
       description=""
+      identifier="a_negative"
+
       healableinmedicalclinic="false"
       targets="human"
-      type="resistance"
+      type="bloodtype"
       isbuff="true"
       limbspecific="false"
-      showinhealthscannerthreshold="3"
-      showiconthreshold="3"
+
+      showinhealthscannerthreshold="999"
+      showiconthreshold="999"
       maxstrength="1">
 
       <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="256,896,128,128" color="10,193,114,255" origin="0,0"/>
@@ -55,15 +61,17 @@
     <!-- A Positive -->
     <Affliction
       name="A+"
-      identifier="aplus"
       description=""
+      identifier="a_positive"
+
       healableinmedicalclinic="false"
       targets="human"
-      type="resistance"
+      type="bloodtype"
       isbuff="true"
       limbspecific="false"
-      showinhealthscannerthreshold="3"
-      showiconthreshold="3"
+
+      showinhealthscannerthreshold="999"
+      showiconthreshold="999"
       maxstrength="1">
 
       <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="256,896,128,128" color="10,193,114,255" origin="0,0"/>
@@ -72,15 +80,17 @@
     <!-- B Negative -->
     <Affliction
       name="B-"
-      identifier="bminus"
       description=""
+      identifier="b_negative"
+ 
       healableinmedicalclinic="false"
       targets="human"
-      type="resistance"
+      type="bloodtype"
       isbuff="true"
       limbspecific="false"
-      showinhealthscannerthreshold="3"
-      showiconthreshold="3"
+
+      showinhealthscannerthreshold="999"
+      showiconthreshold="999"
       maxstrength="1">
 
       <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="256,896,128,128" color="10,193,114,255" origin="0,0"/>
@@ -89,31 +99,36 @@
     <!-- B Positive -->
     <Affliction
       name="B+"
-      identifier="bplus"
       description=""
+      identifier="b_positive"
+
       healableinmedicalclinic="false"
       targets="human"
-      type="resistance"
+      type="bloodtype"
       isbuff="true"
       limbspecific="false"
-      showinhealthscannerthreshold="3"
-      showiconthreshold="3"
+
+      showinhealthscannerthreshold="999"
+      showiconthreshold="999"
       maxstrength="1">
+
       <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="256,896,128,128" color="10,193,114,255" origin="0,0"/>
     </Affliction>
 
     <!-- AB Negative -->
     <Affliction
       name="AB-"
-      identifier="abminus"
       description=""
+      identifier="ab_negative"
+
       healableinmedicalclinic="false"
       targets="human"
-      type="resistance"
+      type="bloodtype"
       isbuff="true"
       limbspecific="false"
-      showinhealthscannerthreshold="3"
-      showiconthreshold="3"
+
+      showinhealthscannerthreshold="999"
+      showiconthreshold="999"
       maxstrength="1">
 
       <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="256,896,128,128" color="10,193,114,255" origin="0,0"/>
@@ -122,15 +137,17 @@
     <!-- AB Positive -->
     <Affliction
       name="AB+"
-      identifier="abplus"
       description=""
+      identifier="ab_positive"
+
       healableinmedicalclinic="false"
       targets="human"
-      type="resistance"
+      type="bloodtype"
       isbuff="true"
       limbspecific="false"
-      showinhealthscannerthreshold="3"
-      showiconthreshold="3"
+
+      showinhealthscannerthreshold="999"
+      showiconthreshold="999"
       maxstrength="1">
 
       <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="256,896,128,128" color="10,193,114,255" origin="0,0"/>

@@ -4,18 +4,18 @@
     <!-- Respiratory Arrest / Apnea. Visible in Health UI. Causes: Oxygen Low. -->
     <Affliction
       name=""
-      identifier="respiratoryarrest"
       description=""
+      identifier="respiratoryarrest"
+
       healableinmedicalclinic="false"
-      type="gaze"
-      isbuff="false"
       targets="human"
       limbspecific="false"
       indicatorlimb="Torso"
-      showiconthreshold="1"
-      showinhealthscannerthreshold="100"
-      maxstrength="2"
-      causespeechimpediment="true">
+      causespeechimpediment="true"
+
+      showinhealthscannerthreshold="999"
+      showiconthreshold="0"
+      maxstrength="2">
 
       <Effect minstrength="0" maxstrength="2">
               <StatusEffect target="Character" speechimpediment="100"/>
@@ -27,18 +27,18 @@
     <!-- Hyperventilation. Symptom. Visible in Health UI. Causes: Alkalosis. -->
     <Affliction
       name=""
-      identifier="hyperventilation"
       description=""
+      identifier="hyperventilation"
+
       healableinmedicalclinic="false"
-      type="gaze"
-      isbuff="false"
       targets="human"
       limbspecific="false"
       indicatorlimb="Torso"
-      showiconthreshold="1"
-      showinhealthscannerthreshold="200"
-      maxstrength="2"
-      iconcolors="255,90,0,255;255,90,0,255">
+      iconcolors="255,90,0,255;255,90,0,255"
+      
+      showinhealthscannerthreshold="999"
+      showiconthreshold="0"
+      maxstrength="2">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="4,0" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -46,18 +46,18 @@
     <!-- Hypoventilation. Symptom. Visible in Health UI. Causes: Acidosis. -->
     <Affliction
       name=""
-      identifier="hypoventilation"
       description=""
+      identifier="hypoventilation"
+
       healableinmedicalclinic="false"
-      type="gaze"
-      isbuff="false"
       targets="human"
       limbspecific="false"
       indicatorlimb="Torso"
-      showiconthreshold="1"
-      showinhealthscannerthreshold="200"
-      maxstrength="2"
-      iconcolors="255,90,0,255;255,90,0,255">
+      iconcolors="255,90,0,255;255,90,0,255"
+      
+      showinhealthscannerthreshold="999"
+      showiconthreshold="0"
+      maxstrength="2">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="5,0" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -65,18 +65,18 @@
     <!-- Dyspnea / Shortness of Breath. Symptom. Visible in Health UI. -->
     <Affliction
       name=""
-      identifier="dyspnea"
       description=""
+      identifier="shortnessofbreath"
+
       healableinmedicalclinic="false"
-      type="gaze"
-      isbuff="false"
       targets="human"
       limbspecific="false"
       indicatorlimb="Torso"
-      showinhealthscannerthreshold="100"
-      showiconthreshold="1"
-      maxstrength="2"
-      iconcolors="255,90,0,255;255,90,0,255">
+      iconcolors="255,90,0,255;255,90,0,255"
+      
+      showinhealthscannerthreshold="999"
+      showiconthreshold="0"
+      maxstrength="2">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="6,0" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -84,18 +84,16 @@
     <!-- Pneumothorax / Collapsed Lung. Visible on Health Scanner. Causes: Shortness of Breath, Tachycardia / Increased Heartrate, Hyperventilation, Hypotension and Chest Pain. -->
     <Affliction
       name=""
-      identifier="pneumothorax"
       description=""
+      identifier="pneumothorax"
+
       healableinmedicalclinic="false"
       targets="human"
-      type="gaze"
-      isbuff="false"
-      causeofdeathdescription=""
-      selfcauseofdeathdescription=""
       limbspecific="False"
       indicatorlimb="Torso"
-      showiconthreshold="700"
-      showinhealthscannerthreshold="1"
+
+      showinhealthscannerthreshold="0"
+      showiconthreshold="999"
       maxstrength="100">
 
       <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="896,896,128,128" color="195,136,60,255" origin="0,0"/>
@@ -104,20 +102,17 @@
     <!-- Lung Damage. Visible on Health Scanner. Causes: Shortness of Breath, Chest Pain, Cough, Hypoxemia and leads to Respiratory Arrest if severe enough. -->
     <Affliction
       name=""
-      identifier="lungdamage"
       description=""
+      identifier="lungdamage"
+
       healableinmedicalclinic="false"
-      type="gaze"
-      isbuff="false"
       targets="human"
-      causeofdeathdescription=""
-      selfcauseofdeathdescription=""
       limbspecific="false"
       indicatorlimb="Torso"
-      maxstrength="100"
-      showiconthreshold="500"
+
       showinhealthscannerthreshold="20"
-      damageoverlayalpha="0">
+      showiconthreshold="999"
+      maxstrength="100">
 
       <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="128,384,128,128" color="195,136,60,255" origin="0,0"/>
     </Affliction>
@@ -125,19 +120,17 @@
     <!-- Lungs removed. Visible in Health UI and Scanner. Causes: Respiratory Arrest. -->
     <Affliction
       name=""
-      identifier="lungremoved"
       description=""
+      identifier="lungremoved"
+
       healableinmedicalclinic="false"
       targets="human"
-      type="gaze"
-      isbuff="false"
       limbspecific="false"
       indicatorlimb="Torso"
-      showiconthreshold="50"
-      showinhealthscannerthreshold="1"
-      causeofdeathdescription="Died of missing lungs"
-      selfcauseofdeathdescription="Your lungs got removed."
       iconcolors="84,211,211,255;84,211,211,255"
+      
+      showinhealthscannerthreshold="0"
+      showiconthreshold="50"
       maxstrength="100">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="1,5" sheetelementsize="128,128" origin="0,0"/>
@@ -146,17 +139,17 @@
     <!-- Lung Replacement. Visible in Health UI and Scanner. Used for Organ Transplant Surgery. -->
     <Affliction
       name=""
+      description=""
       identifier="lungswap"
-      description="The lungs have been surgically prepared for replacement"
+
       healableinmedicalclinic="false"
       targets="human"
-      type="gaze"
-      isbuff="false"
       limbspecific="false"
       indicatorlimb="Torso"
-      showiconthreshold="50"
-      showinhealthscannerthreshold="1"
       iconcolors="84,211,211,255;84,211,211,255"
+
+      showinhealthscannerthreshold="0"
+      showiconthreshold="50"
       maxstrength="100">
 
       <icon texture="%ModDir%/Images/AfflictionIcons2.png" sheetindex="1,5" sheetelementsize="128,128" origin="0,0"/>

@@ -4,38 +4,18 @@
     <!-- Surgery Incision. -->
     <Affliction
       name=""
-      identifier="surgeryincision"
       description=""
+      identifier="surgeryincision"
+      
       healableinmedicalclinic="false"
       targets="human"
       limbspecific="True"
-      type="surgeryincision"
       isbuff="true"
-      maxstrength="100"
-      showinhealthscannerthreshold="700"
-      showiconthreshold="1"
-      iconcolors="84,211,211,255;84,211,211,255">
+      iconcolors="84,211,211,255;84,211,211,255"
 
-      <Effect minstrength="0" maxstrength="100" strengthchange="30">
-
-        <StatusEffect target="Limb,Character">
-          <Conditional clampedbleeders="lte 0.5"/>
-          <Affliction identifier="bloodloss" strength="0.7" />
-        </StatusEffect>
-
-        <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true" comparison="and">
-          <Conditional analgesia="lte 0.5" anesthesia="lte 0.5" sym_unconsciousness="lte 0.1"/>
-          <Affliction identifier="traumaticshock" amount="2"/>
-        </StatusEffect>
-
-        <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true" interval="0.5" disabledeltatime="true" comparison="and">
-          <Conditional isonplayerteam="true"/>
-          <Conditional isbot="true"/>
-          <Conditional stun="lt 0.5"/>
-          <Affliction identifier="stun" amount="1"/>
-        </StatusEffect>
-
-      </Effect>
+      showinhealthscannerthreshold="999"
+      showiconthreshold="0"
+      maxstrength="100">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="0,7" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -43,19 +23,18 @@
     <!-- Clamped Bleeding (Not the same as the Tourniquet). -->
     <Affliction
       name=""
-      identifier="clampedbleeders"
       description=""
+      identifier="clampedbleeding"
+
       healableinmedicalclinic="false"
       targets="human"
       limbspecific="true"
-      type="clampedbleeders"
       isbuff="true"
-      maxstrength="100"
-      showinhealthscannerthreshold="700"
-      showiconthreshold="1"
-      iconcolors="84,211,211,255;84,211,211,255">
-
-      <Effect minstrength="0" maxstrength="100" strengthchange="20"/>
+      iconcolors="84,211,211,255;84,211,211,255"
+      
+      showinhealthscannerthreshold="999"
+      showiconthreshold="0"
+      maxstrength="100">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="1,7" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -63,24 +42,17 @@
     <!-- Drilled Bones -->
     <Affliction
       name=""
-      identifier="drilledbones"
       description=""
+      identifier="drilledbones"
+
       healableinmedicalclinic="false"
       isbuff="true"
       limbspecific="true"
-      maxstrength="100"
-      showinhealthscannerthreshold="700"
-      showiconthreshold="1"
-      iconcolors="84,211,211,255;84,211,211,255">
-
-      <Effect minstrength="0" maxstrength="100" strengthchange="15">
-
-        <StatusEffect target="Character"  multiplyafflictionsbymaxvitality="true" comparison="and">
-          <Conditional table="eq 0" sym_unconsciousness="lte 0.1"/>
-          <Affliction identifier="traumaticshock" amount="1.5"/>
-        </StatusEffect>
-
-      </Effect>
+      iconcolors="84,211,211,255;84,211,211,255"
+      
+      showinhealthscannerthreshold="999"
+      showiconthreshold="0"
+      maxstrength="100">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="4,7" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -88,25 +60,17 @@
     <!-- Retracted Skin -->
     <Affliction
       name=""
-      identifier="retractedskin"
       description=""
+      identifier="retractedskin"
+
       healableinmedicalclinic="false"
       limbspecific="true"
-      type="retractedskin"
       isbuff="true"
-      maxstrength="100"
-      showinhealthscannerthreshold="700"
-      showiconthreshold="1"
-      iconcolors="84,211,211,255;84,211,211,255">
-
-      <Effect minstrength="0" maxstrength="100" strengthchange="10">
-
-        <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true" comparison="and">
-          <Conditional table="eq 0" sym_unconsciousness="lte 0.1"/>
-          <Affliction identifier="traumaticshock" amount="2"/>
-        </StatusEffect>
-
-      </Effect>
+      iconcolors="84,211,211,255;84,211,211,255"
+      
+      showinhealthscannerthreshold="999"
+      showiconthreshold="0"
+      maxstrength="100">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="2,7" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -114,17 +78,17 @@
     <!-- Stitched Incision -->
     <Affliction
       name=""
-      identifier="suturedi"
       description=""
+      identifier="suturedi"
+
       healableinmedicalclinic="false"
       isbuff="true"
       limbspecific="true"
-      maxstrength="100"
-      showinhealthscannerthreshold="700"
       iconcolors="84,211,211,255;84,211,211,255"
-      showiconthreshold="1">
 
-      <Effect minstrength="0" maxstrength="100" strengthchange="-1" />
+      showinhealthscannerthreshold="999"
+      showiconthreshold="0"
+      maxstrength="100">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="3,7" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -132,18 +96,17 @@
     <!-- Sutured Wound -->
     <Affliction
       name=""
-      identifier="suturedw"
       description=""
+      identifier="suturedw"
+
       healableinmedicalclinic="false"
       limbspecific="true"
-      maxstrength="100"
-      showinhealthscannerthreshold="700"
-      showiconthreshold="0.1"
       type="damage"
-      isbuff="false"
-      iconcolors="127,127,127,255;127,127,127,255">
-
-      <Effect minstrength="0" maxstrength="100" strengthchange="-0.2" multiplybymaxvitality="true" minvitalitydecrease="0" maxvitalitydecrease="0.8"/>
+      iconcolors="127,127,127,255;127,127,127,255"
+      
+      showinhealthscannerthreshold="999"
+      showiconthreshold="0"
+      maxstrength="100">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="5,3" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -151,25 +114,17 @@
     <!-- Sawed Bones -->
     <Affliction
       name=""
-      identifier="bonecut"
       description=""
+      identifier="sawedbones"
+
       healableinmedicalclinic="true"
-      type="gaze"
       isbuff="true"
       limbspecific="true"
-      maxstrength="100"
-      showinhealthscannerthreshold="700"
-      showiconthreshold="1"
-      iconcolors="84,211,211,255;84,211,211,255">
-
-      <Effect minstrength="0" maxstrength="100" strengthchange="10">
-
-        <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true" comparison="and">
-          <Conditional table="eq 0" sym_unconsciousness="lte 0.1"/>
-          <Affliction identifier="traumaticshock" amount="1.5"/>
-        </StatusEffect>
-
-      </Effect>
+      iconcolors="84,211,211,255;84,211,211,255"
+      
+      showinhealthscannerthreshold="999"
+      showiconthreshold="0"
+      maxstrength="100">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="5,7" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -177,28 +132,18 @@
     <!-- Traumatic Shock. Visible in Health UI. Causes: Surgery Steps without Anesthesia or a Surgery Table. -->
     <Affliction
       name=""
-      identifier="traumaticshock"
       description=""
+      identifier="traumaticshock"
+
       healableinmedicalclinic="false"
       targets="human"
-      type="gaze"
-      isbuff="false"
       limbspecific="false"
       indicatorlimb="Head"
-      activationthreshold="0"
+      iconcolors="200,0,0,255;200,0,0,255"
+      
       showinhealthscannerthreshold="5"
       showiconthreshold="5"
-      maxstrength="100"
-      iconcolors="200,0,0,255;200,0,0,255">
-
-      <Effect minstrength="0" maxstrength="5">
-
-        <StatusEffect target="Character">
-          <Conditional ishuman="false"/>
-          <ReduceAffliction identifier="traumaticshock" amount="999"/>
-        </StatusEffect>
-
-      </Effect>
+      maxstrength="100">
       
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="6,7" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -206,65 +151,20 @@
     <!-- Ballooned Aorta. Visible in Health UI. Applied by the Endovascular Balloon. Causes: Gangrene (if left in too long). -->
     <Affliction
       name=""
-      identifier="balloonedaorta"
       description=""
+      identifier="balloonedaorta"
+      
       healableinmedicalclinic="false"
       targets="human"
-      type="gaze"
-      isbuff="false"
       limbspecific="false"
       indicatorlimb="Torso"
-      maxstrength="100"
-      iconcolors="127,127,127,255;127,127,127,255">
-
-      <Effect minstrength="0" maxstrength="100">
-
-        <StatusEffect target="Character" targetlimb="LeftArm">
-          <ReduceAffliction type="bleeding" strength="2"/>
-        </StatusEffect>
-
-        <StatusEffect target="Character" targetlimb="RightArm">
-          <ReduceAffliction type="bleeding" strength="2"/>
-        </StatusEffect>
-
-        <StatusEffect target="Character" targetlimb="LeftLeg">
-          <ReduceAffliction type="bleeding" strength="2"/>
-        </StatusEffect>
-
-        <StatusEffect target="Character" targetlimb="RightLeg">
-          <ReduceAffliction type="bleeding" strength="2"/>
-        </StatusEffect>
-
-        <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true">
-          <Affliction identifier="organdamage" strength="0.5"/>
-          <Affliction identifier="liverdamage" strength="0.5"/>
-          <Affliction identifier="kidneydamage" strength="0.5"/>
-        </StatusEffect>
-
-      </Effect>
-
-      <PeriodicEffect mininterval="1" maxinterval="3">
-
-        <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true" targetlimb="LeftArm" disabledeltatime="true">
-          <Affliction identifier="gangrene" strength="2" probability="0.5" />
-        </StatusEffect>
-
-        <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true" targetlimb="RightArm" disabledeltatime="true">
-          <Affliction identifier="gangrene" strength="2" probability="0.5"/>
-        </StatusEffect>
-
-        <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true" targetlimb="LeftLeg" disabledeltatime="true">
-          <Affliction identifier="gangrene" strength="2" probability="0.5"/>
-        </StatusEffect>
-
-        <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true" targetlimb="RightLeg" disabledeltatime="true">
-          <Affliction identifier="gangrene" strength="2" probability="0.5"/>
-        </StatusEffect>
-
-      </PeriodicEffect>
+      iconcolors="127,127,127,255;127,127,127,255"
+      
+      showinhealthscannerthreshold="0"
+      showiconthreshold="0"
+      maxstrength="100">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="1,4" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
-
   </Afflictions>
 </Override>
