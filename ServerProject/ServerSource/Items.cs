@@ -28,12 +28,8 @@ public class NTItemMethods
         }
     }
 
-    private static Dictionary<string, Action<ItemUpdateFunctionInfos>> NTItemRegistry = new Dictionary<string, Action<ItemUpdateFunctionInfos>> { };
+    public static Dictionary<string, Action<ItemUpdateFunctionInfos>> NTItemRegistry { get; } = new Dictionary<string, Action<ItemUpdateFunctionInfos>> { };
 
-    public static Dictionary<string, Action<ItemUpdateFunctionInfos>> GetNTItemRegistry ()
-    {
-        return NTItemRegistry;
-    }
 
     /**<summary>
      * Register a new identifier => function to the NTItemRegistry.
