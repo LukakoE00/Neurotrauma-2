@@ -28,9 +28,9 @@ public class NTItemMethods
         }
     }
 
-    private static Dictionary<string, Func<ItemUpdateFunctionInfos, int>> NTItemRegistry = new Dictionary<string, Func<ItemUpdateFunctionInfos, int>> { };
+    private static Dictionary<string, Action<ItemUpdateFunctionInfos>> NTItemRegistry = new Dictionary<string, Action<ItemUpdateFunctionInfos>> { };
 
-    public static Dictionary<string, Func<ItemUpdateFunctionInfos, int>> GetNTItemRegistry ()
+    public static Dictionary<string, Action<ItemUpdateFunctionInfos>> GetNTItemRegistry ()
     {
         return NTItemRegistry;
     }
@@ -43,7 +43,7 @@ public class NTItemMethods
      * <param name="function">The item update function.</param>
      * <returns>Returns true if the item was defined correctly (if it was not already defined). Returns false otherwise.</returns>
      */
-    public static bool RegisterItemUpdateFunction(string itemID, Func<ItemUpdateFunctionInfos, int> function)
+    public static bool RegisterItemUpdateFunction(string itemID, Action<ItemUpdateFunctionInfos> function)
     {
         if (!NTItemRegistry.ContainsKey(itemID))
         {
@@ -62,7 +62,7 @@ public class NTItemMethods
      * <param name="function">The item update function.</param>
      * <returns>Returns true if the override was succesful, false otherwise.</returns>
      */
-    public static bool OverrideItemUpdateFunction(string itemID, Func<ItemUpdateFunctionInfos, int> function)
+    public static bool OverrideItemUpdateFunction(string itemID, Action<ItemUpdateFunctionInfos> function)
     {
         if (NTItemRegistry.ContainsKey(itemID))
         {
