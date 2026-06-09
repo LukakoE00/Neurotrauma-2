@@ -196,7 +196,7 @@ namespace Neurotrauma
             "intheflow",
             "collegeathletics"];
         
-        public static void ApplyEndocrineBoost(Character Character, List<string> TalentList = null)
+        public static void ApplyEndocrineBoost(Character Character, List<string> TalentList = null) // I actually think we can just use the C# version.
         {
             // WIP
             TalentList = TalentList ?? EndocrineTalents;
@@ -586,12 +586,30 @@ namespace Neurotrauma
             string LimbItem = Value2;
             if (!Attacker.IsHuman && !Attacker.Inventory.IsFull())
             {
-
+                GiveItem(Attacker, LimbToAffliction[GivenLimbType]);
+                AddAfflictionLimb(Character, LimbToAffliction[GivenLimbType] + "_2", GivenLimbType, 10, Attacker);
             }
             else
             {
-
+                AddAfflictionLimb(Character, LimbToAffliction[GivenLimbType] + "_2", GivenLimbType, 10, Character);
             }
+        }
+
+        public static void TraumamputateLimbMinusItem(Character Character, LimbType GivenLimbType, Character Attacker)
+        {
+            GivenLimbType = NormalizeLimbType(GivenLimbType);
+            if (!LimbsToCheck.Contains(GivenLimbType)) { return; }
+            Dictionary<LimbType, string> LimbToAffliction = new Dictionary<LimbType, string>() { {LimbType.RightLeg,"gate_ta_rl" }, { LimbType.LeftLeg, "gate_ta_ll" },
+                                                                                                { LimbType.RightArm, "gate_ta_ra" },{ LimbType.LeftArm, "gate_ta_la" },
+                                                                                                { LimbType.Head, "gate_ta_h" } };
+            Dictionary<LimbType, string> LimbToItem = new Dictionary<LimbType, string>() { {LimbType.RightLeg,"rleg" }, { LimbType.LeftLeg, "lleg" },
+                                                                                                { LimbType.RightArm, "rarm" },{ LimbType.LeftArm, "larm" },
+                                                                                                { LimbType.Head, "headta" } };
+            LimbToAffliction.TryGetValue(GivenLimbType, out string Value);
+            LimbToItem.TryGetValue(GivenLimbType, out string Value2);
+            string Aff = Value;
+            string LimbItem = Value2;
+            AddAfflictionLimb(Character, LimbToAffliction[GivenLimbType] + "_2", GivenLimbType, 10, Character);
         }
 
         public static void SurgicallyAmputateLimbAndGenerateItem(Character UsingCharacter, Character TargetCharacter, LimbType GivenLimbType) // Holy mouth full
