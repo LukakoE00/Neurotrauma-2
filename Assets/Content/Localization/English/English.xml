@@ -525,4 +525,433 @@
 <!-- Aortic Rupture -->
 <afflictionname.aorticrupture>Aortic rupture</afflictionname.aorticrupture>
 
+<!-- ================================================= ITEMS ================================================= -->
+
+<!-- ================================================= Blood Stuff ================================================= -->
+
+<!-- Hematology Analyzer -->
+<entityname.bloodanalyzer>Hematology analyzer</entityname.bloodanalyzer>
+<entitydescription.bloodanalyzer>Blood analyzer. Fully automated. Can print bloodtypes on blank donor cards.</entitydescription.bloodanalyzer>
+
+<!-- Blank Donor Card -->
+<entityname.bloodcollector>Blank donor card</entityname.bloodcollector>
+<entitydescription.bloodcollector>Empty donor card. Used by the hematology analyzer.</entitydescription.bloodcollector>
+
+<!-- Empty Blood Pack -->
+<entityname.emptybloodpack>Empty Blood Pack</entityname.emptybloodpack>
+<entitydescription.emptybloodpack>An empty blood pack for the drawing of blood.</entitydescription.emptybloodpack>
+  
+<!-- Blood Pack O+ -->
+<entityname.bloodpackoplus>Blood Pack O+</entityname.bloodpackoplus>
+<entitydescription.bloodpackoplus>Administerable to: O+, A+, B+, AB+</entitydescription.bloodpackoplus>
+  
+<!-- Blood Pack O- -->
+<entityname.antibloodloss2>Blood Pack O-</entityname.antibloodloss2>
+<entitydescription.antibloodloss2>A blood pack that can be used on any patient.</entitydescription.antibloodloss2>
+  
+<!-- Blood Pack O- -->
+<entityname.bloodpackominus>Blood Pack O-</entityname.bloodpackominus>
+<entitydescription.bloodpackominus>A blood pack that can be used on any patient.</entitydescription.bloodpackominus>
+  
+<!-- Blood Pack A+ -->
+<entityname.bloodpackaplus>Blood Pack A+</entityname.bloodpackaplus>
+<entitydescription.bloodpackaplus>Administerable to: A+, AB+</entitydescription.bloodpackaplus>
+  
+<!-- Blood Pack A- -->
+<entityname.bloodpackaminus>Blood Pack A-</entityname.bloodpackaminus>
+<entitydescription.bloodpackaminus>Administerable to: A-, A+, AB-, AB+</entitydescription.bloodpackaminus>
+  
+<!-- Blood Pack B+ -->
+<entityname.bloodpackbplus>Blood Pack B+</entityname.bloodpackbplus>
+<entitydescription.bloodpackbplus>Administerable to: B+, AB+</entitydescription.bloodpackbplus>
+  
+<!-- Blood Pack B- -->
+<entityname.bloodpackbminus>Blood Pack B-</entityname.bloodpackbminus>
+<entitydescription.bloodpackbminus>Administerable to: B-, B+, AB-, AB+</entitydescription.bloodpackbminus>
+  
+<!-- Blood Pack AB+ -->
+<entityname.bloodpackabplus>Blood Pack AB+</entityname.bloodpackabplus>
+<entitydescription.bloodpackabplus>Administerable to: AB+</entitydescription.bloodpackabplus>
+  
+<!-- Blood Pack AB- -->
+<entityname.bloodpackabminus>Blood Pack AB-</entityname.bloodpackabminus>
+<entitydescription.bloodpackabminus>Administerable to: AB-, AB+</entitydescription.bloodpackabminus>
+  
+<!-- Donor card O- -->
+<entityname.ominuscard>Donor card O-</entityname.ominuscard>
+<entitydescription.ominuscard>Can take blood from: O-
+Can give blood to: all of them</entitydescription.ominuscard>
+  
+<!-- Donor card O+ -->
+<entityname.opluscard>Donor card O+</entityname.opluscard>
+<entitydescription.opluscard>Can take blood from: O-, O+
+Can give blood to: O+, A+, B+, AB+</entitydescription.opluscard>
+  
+<!-- Donor card A- -->
+<entityname.aminuscard>Donor card A-</entityname.aminuscard>
+<entitydescription.aminuscard>Can take blood from: O-, A-
+Can give blood to: A-, A+, AB-, AB+</entitydescription.aminuscard>
+  
+<!-- Donor card A+ -->
+<entityname.apluscard>Donor card A+</entityname.apluscard>
+<entitydescription.apluscard>Can take blood from: O-, O+, A-, A+
+Can give blood to: A+, AB+</entitydescription.apluscard>
+  
+<!-- Donor card B- -->
+<entityname.bminuscard>Donor card B-</entityname.bminuscard>
+<entitydescription.bminuscard>Can take blood from: O-, B-
+Can give blood to: B-, B+, AB-, AB+</entitydescription.bminuscard>
+  
+<!-- Donor card B+ -->
+<entityname.bpluscard>Donor card B+</entityname.bpluscard>
+<entitydescription.bpluscard>Can take blood from: O-, O+, B-, B+
+Can give blood to: B+, AB+</entitydescription.bpluscard>
+  
+<!-- Donor card AB- -->
+<entityname.abminuscard>Donor card AB-</entityname.abminuscard>
+<entitydescription.abminuscard>Can take blood from: O-, A-, B-, AB-
+Can give blood to: AB-, AB+</entitydescription.abminuscard>
+  
+<!-- Donor card AB+ -->
+<entityname.abpluscard>Donor card AB+</entityname.abpluscard>
+<entitydescription.abpluscard>Can take blood from: all of them
+Can give blood to: AB+</entitydescription.abpluscard>
+
+<!-- ================================================= Bodyparts ================================================= -->
+  
+<!-- Right Arm -->
+<entityname.rarm>Right arm</entityname.rarm>
+<entitydescription.rarm>A severed right arm. Can be surgically reattached.</entitydescription.rarm>
+  
+<!-- Left Arm -->
+<entityname.larm>Left arm</entityname.larm>
+<entitydescription.larm>A severed left arm. Can be surgically reattached.</entitydescription.larm>
+  
+<!-- Right Leg -->
+<entityname.rleg>Right leg</entityname.rleg>
+<entitydescription.rleg>A severed right leg. Can be surgically reattached.</entitydescription.rleg>
+  
+<!-- Left Leg -->
+<entityname.lleg>Left leg</entityname.lleg>
+<entitydescription.lleg>A severed left leg. Can be surgically reattached.</entitydescription.lleg>
+  
+<!-- Severed Head -->
+<entityname.headta>Head remains</entityname.headta>
+<entitydescription.headta>A severed head, or what's left of it.</entitydescription.headta>
+  
+<!-- Amputated Head -->
+<entityname.headsa>Amputated head</entityname.headsa>
+<entitydescription.headsa>A severed head for recycling.</entitydescription.headsa>
+  
+<!-- Right Arm Prosthesis -->
+<entityname.rarmp>Right arm bionic prosthesis</entityname.rarmp>
+<entitydescription.rarmp>A bionic right arm. Can be used to treat amputation.</entitydescription.rarmp>
+  
+<!-- Left Arm Prosthesis -->
+<entityname.larmp>Left arm bionic prosthesis</entityname.larmp>
+<entitydescription.larmp>A bionic left arm. Can be used to treat amputation.</entitydescription.larmp>
+  
+<!-- Right Leg Prosthesis -->
+<entityname.rlegp>Right leg bionic prosthesis</entityname.rlegp>
+<entitydescription.rlegp>A bionic right leg. Can be used to treat amputation.</entitydescription.rlegp>
+  
+<!-- Left Leg Prosthesis -->
+<entityname.llegp>Left leg bionic prosthesis</entityname.llegp>
+<entitydescription.llegp>A bionic left leg. Can be used to treat amputation.</entitydescription.llegp>
+  
+<!-- Liver Transplant Item -->
+<entityname.livertransplant>Liver transplant</entityname.livertransplant>
+<entityname.livertransplant_q1>Liver transplant</entityname.livertransplant_q1>
+<entityname.livertransplant_q2>Liver transplant</entityname.livertransplant_q2>
+<entityname.livertransplant_q3>Liver transplant</entityname.livertransplant_q3>
+<entityname.livertransplant_q4>Liver transplant</entityname.livertransplant_q4>
+<entityname.livertransplant_q5>Liver transplant</entityname.livertransplant_q5>
+  
+<!-- Lungs Transplant Item -->
+<entityname.lungtransplant>Lung transplant</entityname.lungtransplant>
+<entityname.lungtransplant_q1>Lung transplant</entityname.lungtransplant_q1>
+<entityname.lungtransplant_q2>Lung transplant</entityname.lungtransplant_q2>
+<entityname.lungtransplant_q3>Lung transplant</entityname.lungtransplant_q3>
+<entityname.lungtransplant_q4>Lung transplant</entityname.lungtransplant_q4>
+<entityname.lungtransplant_q5>Lung transplant</entityname.lungtransplant_q5>
+  
+<!-- Kidney Transplant Item -->
+<entityname.kidneytransplant>Kidney transplant</entityname.kidneytransplant>
+<entityname.kidneytransplant_q1>Kidney transplant</entityname.kidneytransplant_q1>
+<entityname.kidneytransplant_q2>Kidney transplant</entityname.kidneytransplant_q2>
+<entityname.kidneytransplant_q3>Kidney transplant</entityname.kidneytransplant_q3>
+<entityname.kidneytransplant_q4>Kidney transplant</entityname.kidneytransplant_q4>
+<entityname.kidneytransplant_q5>Kidney transplant</entityname.kidneytransplant_q5>
+  
+<!-- Heart Transplant Item -->
+<entityname.hearttransplant>Heart transplant</entityname.hearttransplant>
+<entityname.hearttransplant_q1>Heart transplant</entityname.hearttransplant_q1>
+<entityname.hearttransplant_q2>Heart transplant</entityname.hearttransplant_q2>
+<entityname.hearttransplant_q3>Heart transplant</entityname.hearttransplant_q3>
+<entityname.hearttransplant_q4>Heart transplant</entityname.hearttransplant_q4>
+<entityname.hearttransplant_q5>Heart transplant</entityname.hearttransplant_q5>
+  
+<!-- Brain Transplant Item -->
+<entityname.braintransplant>Brain transplant</entityname.braintransplant>
+
+<!-- Arm Locks -->
+<entityname.armlock1>Non-working right hand</entityname.armlock1>
+<entityname.armlock2>Non-working left hand</entityname.armlock2>
+
+<!-- ================================================= Consumables ================================================= -->
+  
+<!-- Mannitol -->
+<entityname.mannitol>Mannitol</entityname.mannitol>
+<entitydescription.mannitol>A type of sugar alcohol. It is used to aid recovery from neurotrauma. May cause organ damage.</entitydescription.mannitol>
+  
+<!-- Streptokinase -->
+<entityname.streptokinase>Streptokinase</entityname.streptokinase>
+<entitydescription.streptokinase>A thrombolytic enzyme that breaks down blood clots. It is used to cure heart attacks. Decreases blood clotting.</entitydescription.streptokinase>
+  
+<!-- Azathioprine -->
+<entityname.immunosuppressant>Azathioprine</entityname.immunosuppressant>
+<entitydescription.immunosuppressant>An immunosuppressive agent for the prevention of organ rejection.</entitydescription.immunosuppressant>
+  
+<!-- Thiamine -->
+<entityname.thiamine>Thiamine</entityname.thiamine>
+<entitydescription.thiamine>Otherwise known as vitamin B1, these pills will aid in organ healing.</entitydescription.thiamine>
+  
+<!-- Antibiotic ointment -->
+<entityname.ointment>Antibiotic ointment</entityname.ointment>
+<entitydescription.ointment>A potent antibiotic gel that promotes the recovery from minor infections and makes the applied area sterile.</entitydescription.ointment>
+
+<!-- Tourniquet -->
+<entityname.tourniquet>Tourniquet</entityname.tourniquet>
+<entitydescription.tourniquet>A device that applies pressure to a limb and thus reduces bloodflow. It is usually used in case of major bleeders on extremities. Shouldn't be used on the head.</entitydescription.tourniquet>
+  
+<!-- Drainage -->
+<entityname.drainage>Drainage</entityname.drainage>
+<entitydescription.drainage>Drains air from the pleural cavity during corrective surgery for pneumothorax and cardiac tamponade.</entitydescription.drainage>
+  
+<!-- Needle -->
+<entityname.needle>Needle</entityname.needle>
+<entitydescription.needle>A needle with a decompression valve to make the air or liquid drain out of the pleural cavity or pericardium</entitydescription.needle>
+  
+<!-- Ringer's solution -->
+<entityname.ringerssolution>Ringer's solution</entityname.ringerssolution>
+<entitydescription.ringerssolution>A solution of several salts dissolved in water for the purpose of treating low blood pressure or fluid loss. Isotonic to blood.</entitydescription.ringerssolution>
+  
+<!-- Propofol -->
+<entityname.propofol>Propofol</entityname.propofol>
+<entitydescription.propofol>A short-acting medication that results in a decreased level of consciousness and a lack of memory for events. Its uses include the starting and maintenance of general anesthesia.</entitydescription.propofol>
+  
+<!-- Gypsum -->
+<entityname.gypsum>Gypsum</entityname.gypsum>
+<entitydescription.gypsum>A fine mineral powder that is used to encase fractures in extremeties in a cast. Apply a bandage first.</entitydescription.gypsum>
+  
+<!-- Gel coolant pack -->
+<entityname.gelipack>Gel coolant pack</entityname.gelipack>
+<entitydescription.gelipack>A reusable cooling pack filled with organic gel that never expires. Loses its effectiveness without refrigeration.</entitydescription.gelipack>
+
+<!-- ================================================= Other Equipment ================================================= -->
+
+<!-- Manual defibrillator -->
+<entityname.defibrillator>Manual defibrillator</entityname.defibrillator>
+<entitydescription.defibrillator>A medical device delivering an electric shock to the heart to stabilize cardiac arythmias. Requires extensive medical training. Use on a patient with cardiac arrest.</entitydescription.defibrillator>
+
+<!-- Automated external defibrillator / AED -->
+<entityname.aed>Automated external defibrillator</entityname.aed>
+<entitydescription.aed>A medical device delivering an electric shock to the heart to stabilize cardiac arythmias. Requires little to no medical training. Use on a patient with cardiac arrest.</entitydescription.aed>
+
+<!-- Ambu bag -->
+<entityname.bvm>Ambu bag</entityname.bvm>
+<entitydescription.bvm>A bag valve mask (BVM), is a hand-held device commonly used to provide positive pressure ventilation to patients who are not breathing or not breathing adequately.</entitydescription.bvm>
+
+<!-- AutoPulse -->
+<entityname.autocpr>AutoPulse</entityname.autocpr>
+<entitydescription.autocpr>An automated, portable, battery-powered cardiopulmonary resuscitation device.</entitydescription.autocpr>
+
+<!-- Trauma shears -->
+<entityname.traumashears>Trauma shears</entityname.traumashears>
+<entitydescription.traumashears>A tool used to remove bandages and casts.</entitydescription.traumashears>
+
+<!-- Wheelchair -->
+<entityname.wheelchair>Wheelchair</entityname.wheelchair>
+<entitydescription.wheelchair>Makes you depend on your arms instead of your legs for movement.</entitydescription.wheelchair>
+
+<!-- Blue Shark -->
+<entityname.blahaj>Blue Shark</entityname.blahaj>
+<!-- <entitydescription.blahaj>No Description</entitydescription.blahaj> -->
+
+<!-- Analgesic Tank -->
+<entityname.analgesictank>Analgesic Tank</entityname.analgesictank>
+<entitydescription.analgesictank>A tank of gaseous analgesics that can be installed on a surgery table or used in an ambubag.</entitydescription.analgesictank>
+  
+<!-- Anesthetic Tank -->
+<entityname.anesthetictank>Anesthetic Tank</entityname.anesthetictank>
+<entitydescription.anesthetictank>A tank of gaseous anesthetics that can be installed on a surgery table or used in an ambubag.</entitydescription.anesthetictank>
+
+<!-- Dialysis Filter -->
+<entityname.dialyzer>Dialysis Filter</entityname.dialyzer>
+<entitydescription.dialyzer>An advanced filter which can be installed on a surgery table to counter alkalosis and acidosis.</entitydescription.dialyzer>
+
+<!-- Toxin Filter -->
+<entityname.toxfilter>Toxin Filter</entityname.toxfilter>
+<entitydescription.toxfilter>An advanced filter which can be installed on a surgery table to help remove poisons from the bloodstream.</entitydescription.toxfilter>
+
+<!-- Health scanner -->
+<entityname.healthscanner>Health scanner</entityname.healthscanner>
+<entitydescription.healthscanner>Used to diagnose underlying causes of symptoms.</entitydescription.healthscanner>
+
+<!-- Medical container -->
+<entityname.medtoolbox>Medical container</entityname.medtoolbox>
+<entitydescription.medtoolbox>Can store medicine and medical instruments</entitydescription.medtoolbox>
+  
+<!-- Surgery toolbox -->
+<entityname.surgerytoolbox>Surgery toolbox</entityname.surgerytoolbox>
+<entitydescription.surgerytoolbox>Can store many small items that are used during surgery</entitydescription.surgerytoolbox>
+  
+<!-- Surgery toolbox (Kit) -->
+<entityname.surgerytoolboxset>Surgery toolbox</entityname.surgerytoolboxset>
+<entitydescription.surgerytoolboxset>Can store many small items that are used during surgery</entitydescription.surgerytoolboxset>
+<displayname.surgeryset>[itemname] (kit)</displayname.surgeryset>
+<displayname.surgerysetscalpel>[itemname] (kit, organ scalpels)</displayname.surgerysetscalpel>
+  
+<!-- Refrigerated crate -->
+<entityname.organcrate>Refrigerated crate</entityname.organcrate>
+<entitydescription.organcrate>A place to store your precious transplant-ready organs</entitydescription.organcrate>
+  
+<!-- Medical starter crate -->
+<entityname.medstartercrate>Medical starter crate</entityname.medstartercrate>
+<entitydescription.medstartercrate>A crate that contains all the essentials, conveniently packaged into a single crafting recipe</entitydescription.medstartercrate>
+  
+<!-- Refrigerated container -->
+<entityname.organtoolbox>Refrigerated container</entityname.organtoolbox>
+<entitydescription.organtoolbox>A place to store your precious transplant-ready organs</entitydescription.organtoolbox>
+  
+<!-- Body bag -->
+<entityname.bodybag>Body bag</entityname.bodybag>
+<entitydescription.bodybag>Lets you drag people faster.</entitydescription.bodybag>
+  
+<!-- Stasis bag -->
+<entityname.stasisbag>Stasis bag</entityname.stasisbag>
+<entitydescription.stasisbag>Stops most biological processes from taking place.</entitydescription.stasisbag>
+
+<!-- ================================================= Surgical Equipment ================================================= -->
+   
+<!-- Scalpel -->
+<entityname.advscalpel>Scalpel</entityname.advscalpel>
+<entitydescription.advscalpel>A tool used to make incisions during surgery.</entitydescription.advscalpel>
+  
+<!-- Hemostat -->
+<entityname.advhemostat>Hemostat</entityname.advhemostat>
+<entitydescription.advhemostat>A tool used to clamp blood vessels during surgery.</entitydescription.advhemostat>
+  
+<!-- Skin retractors -->
+<entityname.advretractors>Skin retractors</entityname.advretractors>
+<entitydescription.advretractors>A tool used to retract skin during surgery.</entitydescription.advretractors>
+  
+<!-- Tweezers -->
+<entityname.tweezers>Tweezers</entityname.tweezers>
+<entitydescription.tweezers>A small tool that allows the removal of bullets as well as damaged and necrotic tissue.</entitydescription.tweezers>
+  
+<!-- Surgical saw -->
+<entityname.surgerysaw>Surgical saw</entityname.surgerysaw>
+<entitydescription.surgerysaw>A tool used to saw through bones.</entitydescription.surgerysaw>
+  
+<!-- Suture -->
+<entityname.suture>Suture</entityname.suture>
+<entitydescription.suture>Biodegradeable sutures for stitching up wounds and surgical incisions alike.</entitydescription.suture>
+  
+<!-- Surgical drill -->
+<entityname.surgicaldrill>Surgical drill</entityname.surgicaldrill>
+<entitydescription.surgicaldrill>A tool used to drill bones.</entitydescription.surgicaldrill>
+  
+<!-- Osteosynthesis implants -->
+<entityname.osteosynthesisimplants>Osteosynthesis implants</entityname.osteosynthesisimplants>
+<entitydescription.osteosynthesisimplants>Titanium implants used in an osteosynthetic surgery to repair fractures.</entitydescription.osteosynthesisimplants>
+  
+<!-- Spinal cord implants -->
+<entityname.spinalimplant>Spinal cord implants</entityname.spinalimplant>
+<entitydescription.spinalimplant>Titanium implants used to heal paralysis caused by neck fractures.</entitydescription.spinalimplant>
+  
+<!-- Surgery table -->
+<entityname.operatingtable>Surgery table</entityname.operatingtable>
+<entitydescription.operatingtable>A surgery table which has basic artificial ventilation built in.</entitydescription.operatingtable>
+  
+<!-- Multipurpose scalpel -->
+<entityname.multiscalpel>Multipurpose scalpel</entityname.multiscalpel>
+<entitydescription.multiscalpel>Novelty scalpel. Disabled and needs activation. In the practitioner's hands, a button pad can be utilised to activate the scalpel and switch between between operations: making incisions, extracting organs, removing bandages, or doing malpractice.</entitydescription.multiscalpel>
+<multiscalpel.incision>Mode active: Surgery incision</multiscalpel.incision>
+<multiscalpel.kidneys>Mode active: Extract kidneys</multiscalpel.kidneys>
+<multiscalpel.liver>Mode active: Extract liver</multiscalpel.liver>
+<multiscalpel.lungs>Mode active: Extract lungs</multiscalpel.lungs>
+<multiscalpel.heart>Mode active: Extract heart</multiscalpel.heart>
+<multiscalpel.brain>Mode active: Extract brain</multiscalpel.brain>
+<multiscalpel.bandage>Mode active: Remove bandages and casts / malpractice</multiscalpel.bandage>
+<multiscalpel.speedflex>Mode active: Adaptive organ extraction. Use on head for brain, left arm for kidneys, torso for liver, right arm for heart, left leg for lungs.</multiscalpel.speedflex>
+
+<multiscalpel.btn.incision>Incision</multiscalpel.btn.incision>
+<multiscalpel.btn.kidneys>Kidneys</multiscalpel.btn.kidneys>
+<multiscalpel.btn.liver>Liver</multiscalpel.btn.liver>
+<multiscalpel.btn.lungs>Lungs</multiscalpel.btn.lungs>
+<multiscalpel.btn.heart>Heart</multiscalpel.btn.heart>
+<multiscalpel.btn.brain>Brain</multiscalpel.btn.brain>
+<multiscalpel.btn.bandage>Bandages, casts, malpractice</multiscalpel.btn.bandage>
+<multiscalpel.btn.speedflex>Adaptive organ extraction</multiscalpel.btn.speedflex>
+
+<!-- ================================================= Toggleable ================================================= -->
+
+<!-- Sodium nitroprusside -->
+<entityname.pressuremeds>Sodium nitroprusside</entityname.pressuremeds>
+<entitydescription.pressuremeds>A medication used to lower blood pressure.</entitydescription.pressuremeds>
+
+<!-- Endovascular balloon -->
+<entityname.endovascballoon>Endovascular balloon</entityname.endovascballoon>
+<entitydescription.endovascballoon>A balloon inserted into major arteries following their rupture. It will cut off bloodflow, but it will stop the bleeding.</entitydescription.endovascballoon>
+  
+<!-- Medical stent -->
+<entityname.medstent>Medical stent</entityname.medstent>
+<entitydescription.medstent>A plastic tube inserted into the aorta after an endovascular ballon following aortic rupture.</entitydescription.medstent>
+
+<!-- Antiseptic -->
+<entityname.antiseptic>Antiseptic</entityname.antiseptic>
+<entitydescription.antiseptic>Can be used to disinfect wounds using an antiseptic sprayer.</entitydescription.antiseptic>
+  
+<!-- Antiseptic sprayer -->
+<entityname.antisepticspray>Antiseptic sprayer</entityname.antisepticspray>
+<entitydescription.antisepticspray>Used to apply antiseptic to infected wounds.</entitydescription.antisepticspray>
+
+<!-- Organ procurement scalpel: Liver -->
+<entityname.organscalpel_liver>Organ procurement scalpel: Liver</entityname.organscalpel_liver>
+<entitydescription.organscalpel_liver>A specialized scalpel for the removal of livers.</entitydescription.organscalpel_liver>
+  
+<!-- Organ procurement scalpel: Kidneys -->
+<entityname.organscalpel_kidneys>Organ procurement scalpel: Kidneys</entityname.organscalpel_kidneys>
+<entitydescription.organscalpel_kidneys>A specialized scalpel for the removal of kidneys.</entitydescription.organscalpel_kidneys>
+  
+<!-- Organ procurement scalpel: Lungs -->
+<entityname.organscalpel_lungs>Organ procurement scalpel: Lungs</entityname.organscalpel_lungs>
+<entitydescription.organscalpel_lungs>A specialized scalpel for the removal of the lungs.</entitydescription.organscalpel_lungs>
+  
+<!-- Organ procurement scalpel: Heart -->
+<entityname.organscalpel_heart>Organ procurement scalpel: Heart</entityname.organscalpel_heart>
+<entitydescription.organscalpel_heart>A specialized scalpel for the removal of the heart.</entitydescription.organscalpel_heart>
+  
+<!-- Organ procurement scalpel: Brain -->
+<entityname.organscalpel_brain>Organ procurement scalpel: Brain</entityname.organscalpel_brain>
+<entitydescription.organscalpel_brain>A specialized scalpel for the removal of the brain.</entitydescription.organscalpel_brain>
+  
+
+<!-- ================================================= Unused ================================================= -->
+
+<!-- Emergency Suit -->
+<!--<entityname.emergencysuit>Emergency suit</entityname.emergencysuit>
+<entitydescription.emergencysuit>Makes it relatively safe for using a defibrillator and performing all kinds of surgeries. Stops movement, but has a battery slot to power artificial ventilation.</entitydescription.emergencysuit>-->
+
+<!-- Regenerative ointment -->
+<entityname.skinaid>Regenerative ointment</entityname.skinaid>
+<entitydescription.skinaid>A potent regenerative gel that promotes natural healing of most trauma on the surface.</entitydescription.skinaid>
+  
+<!-- ================================================= Miscellaneous Translations ================================================= -->
+
+<!-- Stasis bag Equip Warning -->
+<stasisbagequipconfirmation>Equipping this will cause you to go unconscious. Are you sure?</stasisbagequipconfirmation>
+<!--<emergencysuitequipconfirmation>Equipping this will cause you to go immobile. Are you sure?</emergencysuitequipconfirmation>-->
+
 </infotexts>

@@ -436,7 +436,7 @@
         <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true" targetlimb="LeftLeg" disabledeltatime="True" stackable="false" delay="0.2">
           <Affliction identifier="severepain" amount="100"/>
           <Affliction identifier="tll_amputation" amount="9999"/>
-          <Affliction identifier="simple_fracture" amount="99999"/>
+          <Affliction identifier="fracturedextremity" amount="99999"/>
           <Affliction identifier="arterialcut" amount="99999"/>
           <SpawnItem identifier="lleg" impulse="11" aimspread="180"/>
         </StatusEffect>
@@ -461,7 +461,7 @@
         <StatusEffect  target="Character" multiplyafflictionsbymaxvitality="true" targetlimb="RightLeg" disabledeltatime="True" stackable="false" delay="0.2">
           <Affliction identifier="severepain" amount="100"/>
           <Affliction identifier="trl_amputation" amount="9999"/>
-          <Affliction identifier="simple_fracture" amount="99999"/>
+          <Affliction identifier="fracturedextremity" amount="99999"/>
           <Affliction identifier="arterialcut" amount="99999"/>
           <SpawnItem identifier="rleg" impulse="11" aimspread="180"/>
         </StatusEffect>
@@ -486,7 +486,7 @@
         <StatusEffect  target="Character" multiplyafflictionsbymaxvitality="true" targetlimb="LeftArm" disabledeltatime="True" stackable="false" delay="0.2">
           <Affliction identifier="severepain" amount="100"/>
           <Affliction identifier="tla_amputation" amount="99999"/>
-          <Affliction identifier="simple_fracture" amount="99999"/>
+          <Affliction identifier="fracturedextremity" amount="99999"/>
           <Affliction identifier="arterialcut" amount="99999"/>
           <SpawnItem identifier="larm" impulse="10" aimspread="180"/>
         </StatusEffect>
@@ -511,7 +511,7 @@
         <StatusEffect  target="Character" multiplyafflictionsbymaxvitality="true" targetlimb="RightArm" disabledeltatime="True" stackable="false" delay="0.2">
           <Affliction identifier="severepain" amount="100"/>
           <Affliction identifier="tra_amputation" amount="99999"/>
-          <Affliction identifier="simple_fracture" amount="99999"/>
+          <Affliction identifier="fracturedextremity" amount="99999"/>
           <Affliction identifier="arterialcut" amount="99999"/>
           <SpawnItem identifier="rarm" impulse="10" aimspread="180"/>
         </StatusEffect>
@@ -559,7 +559,7 @@
         <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true" targetlimb="LeftLeg" disabledeltatime="True" stackable="false" delay="0.2">
           <Affliction identifier="severepain" amount="100"/>
           <Affliction identifier="tll_amputation" amount="9999"/>
-          <Affliction identifier="simple_fracture" amount="99999"/>
+          <Affliction identifier="fracturedextremity" amount="99999"/>
           <Affliction identifier="arterialcut" amount="99999"/>
         </StatusEffect>
       </Effect>
@@ -583,7 +583,7 @@
         <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true" targetlimb="RightLeg" disabledeltatime="True" stackable="false" delay="0.2">
           <Affliction identifier="severepain" amount="100"/>
           <Affliction identifier="trl_amputation" amount="9999"/>
-          <Affliction identifier="simple_fracture" amount="99999"/>
+          <Affliction identifier="fracturedextremity" amount="99999"/>
           <Affliction identifier="arterialcut" amount="99999"/>
         </StatusEffect>
       </Effect>
@@ -607,7 +607,7 @@
         <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true" targetlimb="LeftArm" disabledeltatime="True" stackable="false" delay="0.2">
           <Affliction identifier="severepain" amount="100"/>
           <Affliction identifier="tla_amputation" amount="99999"/>
-          <Affliction identifier="simple_fracture" amount="99999"/>
+          <Affliction identifier="fracturedextremity" amount="99999"/>
           <Affliction identifier="arterialcut" amount="99999"/>
         </StatusEffect>
       </Effect>
@@ -631,7 +631,7 @@
         <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true" targetlimb="RightArm" disabledeltatime="True" stackable="false" delay="0.2">
           <Affliction identifier="severepain" amount="100"/>
           <Affliction identifier="tra_amputation" amount="99999"/>
-          <Affliction identifier="simple_fracture" amount="99999"/>
+          <Affliction identifier="fracturedextremity" amount="99999"/>
           <Affliction identifier="arterialcut" amount="99999"/>
         </StatusEffect>
       </Effect>
@@ -718,7 +718,7 @@
     <Affliction
       name=""
       description=""
-      identifier="alv"
+      identifier="artificialventilation"
       
       healableinmedicalclinic="false"
       targets="human"
