@@ -4,92 +4,108 @@
     <!-- Bandaged. Visible in Health UI. Helps with Bleeding, Infections and Fractures / Dislocations. -->
     <Affliction
       name=""
-      identifier="bandaged"
       description=""
+      identifier="bandaged"
+
       healableinmedicalclinic="false"
       targets="human"
       limbspecific="true"
-      maxstrength="100"
       type="bandage"
-      showiconthreshold="0.1"
-      showinhealthscannerthreshold="200"
-      treatmentthreshold="0.1"
-      isbuff="true">
+      isbuff="true"
 
-      <Effect minstrength="0" maxstrength="100"/>
+      showinhealthscannerthreshold="999"
+      showiconthreshold="0"
+      maxstrength="100">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="0,4" sheetelementsize="128,128" origin="0,0"/>
+    </Affliction>
+
+    <!-- Dirty Bandage. Visible in Health UI. Infects Wounds if severe enough. -->
+    <Affliction
+      name=""
+      description=""
+      identifier="bandageddirty"
+
+      healableinmedicalclinic="false"
+      targets="human"
+      limbspecific="true"
+      type="bandage"
+
+      showinhealthscannerthreshold="999"
+      showiconthreshold="0"
+      maxstrength="100">
+
+      <icon texture="%ModDir%/Images/AfflictionIcons2.png" sheetindex="3,0" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
 
     <!-- Iced. Visible in Health UI. Boosts regeneration for Blunt Force Trauma. Worsens wound infections. -->
     <Affliction
       name=""
-      identifier="iced"
       description=""
+      identifier="iced"
+
       healableinmedicalclinic="false"
       targets="human"
       limbspecific="true"
-      maxstrength="100"
       type="resistance"
-      showiconthreshold="0.1"
-      showinhealthscannerthreshold="200"
-      isbuff="true">
+      isbuff="true"
+
+      showinhealthscannerthreshold="999"
+      showiconthreshold="0"
+      maxstrength="100">
 
       <icon texture="%ModDir%/Images/AfflictionIcons2.png" sheetindex="0,2" sheetelementsize="128,128" origin="0,0"/>
-    </Affliction>
-
-    <!-- Dirty bandage. Visible in Health UI. Infects Wounds if severe enough. -->
-    <Affliction
-      name=""
-      identifier="dirtybandage"
-      description=""
-      healableinmedicalclinic="false"
-      targets="human"
-      limbspecific="true"
-      maxstrength="100"
-      type="bandage"
-      showiconthreshold="0.1"
-      showinhealthscannerthreshold="200"
-      treatmentthreshold="0.1"
-      isbuff="false">
-
-      <icon texture="%ModDir%/Images/AfflictionIcons2.png" sheetindex="3,0" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
 
     <!-- Ointmented. Visible in Health UI. Stops moderately infected wounds from deteriorating and heals burns. -->
     <Affliction
       name=""
-      identifier="ointmented"
       description=""
+      identifier="ointmented"
+
       healableinmedicalclinic="false"
       targets="human"
       limbspecific="true"
-      maxstrength="100"
       type="resistance"
-      showiconthreshold="1"
-      showinhealthscannerthreshold="2000"
-      isbuff="true">
-      <Effect minstrength="0" maxstrength="100" strengthchange="-0.3">
-      <StatusEffect target="Limb">
-        <Conditional infectedwound="lte 60"/>
-        <ReduceAffliction identifier="infectedwound" amount="1.5"/>
-      </StatusEffect>
-      </Effect>
+      isbuff="true"
+
+      showinhealthscannerthreshold="999"
+      showiconthreshold="0"
+      maxstrength="100">
+      
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="3,4" sheetelementsize="128,128" origin="0,0"/>
+    </Affliction>
+
+    <!-- Infected Wound. Visible on Health Scanner. Causes: Sepsis, Decreased Immunity. Fought with high Immunity and Broad-Spectrum Antibiotics. -->
+    <Affliction
+      name=""
+      description=""
+      identifier="infectedwound"
+
+      healableinmedicalclinic="true"
+      basehealcost="80"
+      targets="human"
+      limbspecific="true"
+
+      showinhealthscannerthreshold="20"
+      showiconthreshold="999"
+      maxstrength="100">
+
+      <icon texture="%ModDir%/Images/AfflictionIcons.png" sourcerect="640,0,128,128" color="139,60,42,255" origin="0,0"/>
     </Affliction>
 
     <!-- Foreign Body. Visible on the Health Scanner. Result of taking damage. -->
     <Affliction
       name=""
-      identifier="foreignbody"
-      healableinmedicalclinic="false"
       description=""
+      identifier="foreignbody"
+
+      healableinmedicalclinic="false"
       targets="human"
-      causeofdeathdescription=""
-      selfcauseofdeathdescription=""
-      limbspecific="True"
-      showinhealthscannerthreshold="10"
-      showiconthreshold="300"
+      limbspecific="true"
+
+      showinhealthscannerthreshold="0"
+      showiconthreshold="999"
       maxstrength="100">
 
       <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="256,768,128,128" color="195,60,60,255" origin="0,0"/>
@@ -99,44 +115,52 @@
     <!-- First-degree burn -->
     <Affliction
       name=""
-      identifier="burn_deg1"
       description=""
+      identifier="firstdegreeburn"
+
       healableinmedicalclinic="false"
-      type=""
       limbspecific="true"
-      maxstrength="100"
-      showinhealthscannerthreshold="700"
-      showiconthreshold="0">
+      type="ntburn"
+
+      showinhealthscannerthreshold="999"
+      showiconthreshold="0"
+      maxstrength="100">
+
       <icon texture="%ModDir%/Images/AfflictionIcons2.png" sheetindex="0,1" sheetelementsize="128,128" color="166,91,55,255" origin="0,0"/>
     </Affliction>
 
     <!-- Second-degree burn -->
     <Affliction
       name=""
-      identifier="burn_deg2"
       description=""
+      identifier="seconddegreeburn"
+      
       healableinmedicalclinic="false"
-      type=""
       limbspecific="true"
-      maxstrength="100"
-      showinhealthscannerthreshold="700"
-      showiconthreshold="0">
+      type="ntburn"
+
+      showinhealthscannerthreshold="999"
+      showiconthreshold="0"
+      maxstrength="100">
+
       <icon texture="%ModDir%/Images/AfflictionIcons2.png" sheetindex="1,1" sheetelementsize="128,128" color="195,104,60,255" origin="0,0"/>
     </Affliction>
 
     <!-- Third-degree burn -->
     <Affliction
       name=""
-      identifier="burn_deg3"
       description=""
+      identifier="thirddegreeburn"
+      
       healableinmedicalclinic="false"
-      type=""
       limbspecific="true"
-      maxstrength="100"
-      showinhealthscannerthreshold="700"
-      showiconthreshold="0">
+      type="ntburn"
+
+      showinhealthscannerthreshold="999"
+      showiconthreshold="0"
+      maxstrength="100">
+
       <icon texture="%ModDir%/Images/AfflictionIcons2.png" sheetindex="2,1" sheetelementsize="128,128" color="235,86,14,255" origin="0,0"/>
     </Affliction>
-
   </Afflictions>
 </Override>

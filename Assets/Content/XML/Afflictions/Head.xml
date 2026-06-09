@@ -1,6 +1,41 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Override>
   <Afflictions>
-    <!-- Placeholder -->
+    <!-- Spinal Cord Injury. Visible in Health UI and Scanner. Causes: Analgesia, Paralysis. -->
+    <Affliction
+      name=""
+      description=""
+      identifier="spinalcordinjury"
+      
+      healableinmedicalclinic="false"
+      targets="human"
+      limbspecific="false"
+      indicatorlimb="Head"
+
+      showinhealthscannerthreshold="0"
+      showiconthreshold="0"
+      maxstrength="100">
+
+      <icon texture="%ModDir%/Images/AfflictionIcons2.png" sheetindex="6,0" sheetelementsize="128,128" origin="0,0"/>
+    </Affliction>
+
+    <!-- Carotid Artery Bleeding-->
+    <Affliction
+      name=""
+      description=""
+      identifier="carotidarterialcut"
+
+      healableinmedicalclinic="false"
+      targets="human"
+      type="arterialcut"
+      limbspecific="false"
+      indicatorlimb="Head"
+
+      showinhealthscannerthreshold="0"
+      showiconthreshold="0"
+      maxstrength="100">
+
+      <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="3,3" sheetelementsize="128,128" origin="0,0"/>
+    </Affliction>
   </Afflictions>
 </Override>

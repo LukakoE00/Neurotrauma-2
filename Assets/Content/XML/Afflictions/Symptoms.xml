@@ -2,47 +2,20 @@
 <Override>
   <Afflictions>
     <!-- As a rule of thumb, Symptoms visible in the Health UI aren't visible on the Scanner to reduce clutter. -->
-
     <!-- Cough. Visible in Health UI. -->
     <Affliction
       name=""
-      identifier="sym_cough"
       description=""
+      identifier="cough"
+      
       healableinmedicalclinic="false"
-      type="gaze"
-      isbuff="false"
       limbspecific="false"
       indicatorlimb="Head"
-      showiconthreshold="1"
-      showinhealthscannerthreshold="100"
-      maxstrength="2"
-      iconcolors="255,90,0,255;255,90,0,255">
-
-      <PeriodicEffect mininterval="12" maxinterval="26">
-
-        <StatusEffect target="Character" comparison="and">
-          <Conditional ishuman="true" />
-          <Conditional ismale="true"/>
-          <Conditional sym_cough="gte 1"/>
-          <Sound file="%ModDir%/Sound/Voice/male_cough1.ogg" selectionmode="Random" />
-          <Sound file="%ModDir%/Sound/Voice/male_cough2.ogg" />
-          <Sound file="%ModDir%/Sound/Voice/male_cough3.ogg" />
-          <Sound file="%ModDir%/Sound/Voice/male_cough4.ogg" />
-        </StatusEffect>
-
-        <StatusEffect target="Character" comparison="and">
-          <Conditional ishuman="true" />
-          <Conditional isfemale="true"/>
-          <Conditional sym_cough="gte 1"/>
-          <Sound file="%ModDir%/Sound/Voice/female_cough1.ogg" selectionmode="Random" />
-          <Sound file="%ModDir%/Sound/Voice/female_cough2.ogg" />
-          <Sound file="%ModDir%/Sound/Voice/female_cough3.ogg" />
-          <Sound file="%ModDir%/Sound/Voice/female_cough4.ogg" />
-          <Sound file="%ModDir%/Sound/Voice/female_cough5.ogg" />
-          <Sound file="%ModDir%/Sound/Voice/female_cough6.ogg" />
-        </StatusEffect>
-
-      </PeriodicEffect>
+      iconcolors="255,90,0,255;255,90,0,255"
+      
+      showinhealthscannerthreshold="999"
+      showiconthreshold="0"
+      maxstrength="2">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="7,0" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -50,19 +23,17 @@
     <!-- Pale skin. Visible in Health UI. -->
     <Affliction
       name=""
-      identifier="sym_paleskin"
       description=""
+      identifier="paleskin"
+      
       healableinmedicalclinic="false"
-      type="gaze"
-      isbuff="false"
       limbspecific="false"
       indicatorlimb="Torso"
-      showiconthreshold="1"
-      showinhealthscannerthreshold="100"
-      maxstrength="2"
-      iconcolors="200,195,195,255;200,195,195,255">
-
-      <Effect minstrength="0" maxstrength="2" maxvitalitydecrease="0" minbodytint="255,255,255,0" maxbodytint="255,255,255,200"/>
+      iconcolors="200,195,195,255;200,195,195,255"
+      
+      showinhealthscannerthreshold="999"
+      showiconthreshold="0"
+      maxstrength="2">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="0,0" sheetelementsize="128,128" color="255,255,255,255" origin="0,0"/>
     </Affliction>
@@ -70,20 +41,18 @@
     <!-- Lightheadedness. Visible in Health UI. -->
     <Affliction
       name=""
-      identifier="sym_lightheadedness"
       description=""
+      identifier="lightheadedness"
+      
       healableinmedicalclinic="false"
-      type="gaze"
-      isbuff="false"
       limbspecific="false"
       indicatorlimb="Head"
-      showiconthreshold="1"
-      showinhealthscannerthreshold="100"
-      maxstrength="2"
       grainburst="3"
-      iconcolors="255,90,0,255;255,90,0,255">
-
-      <Effect minstrength="0" maxstrength="2" mingrainstrength="0.5" maxgrainstrength="0.25"/>
+      iconcolors="255,90,0,255;255,90,0,255"
+      
+      showinhealthscannerthreshold="999"
+      showiconthreshold="0"
+      maxstrength="2">
 
       <icon texture="%ModDir%/Images/AfflictionIcons2.png" sheetindex="0,0" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -91,19 +60,17 @@
     <!-- Blurred vision. Visible in Health UI. -->
     <Affliction
       name=""
-      identifier="sym_blurredvision"
       description=""
+      identifier="blurredvision"
+      
       healableinmedicalclinic="false"
-      type="gaze"
-      isbuff="false"
       limbspecific="false"
       indicatorlimb="Head"
-      showiconthreshold="1"
-      showinhealthscannerthreshold="100"
-      maxstrength="2"
-      iconcolors="255,90,0,255;255,90,0,255">
-
-      <Effect minstrength="0" maxstrength="2" minscreenblur="0.0" maxscreenblur="1.0"/>
+      iconcolors="255,90,0,255;255,90,0,255"
+      
+      showinhealthscannerthreshold="999"
+      showiconthreshold="0"
+      maxstrength="2">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="3,1" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -111,19 +78,17 @@
     <!-- Confusion. Visible in Health UI. -->
     <Affliction
       name=""
-      identifier="sym_confusion"
       description=""
+      identifier="confusion"
+      
       healableinmedicalclinic="false"
-      type="gaze"
-      isbuff="false"
       limbspecific="false"
       indicatorlimb="Head"
-      showiconthreshold="1"
-      showinhealthscannerthreshold="100"
-      maxstrength="2"
-      iconcolors="255,90,0,255;255,90,0,255">
-
-      <Effect minstrength="0" maxstrength="2" minscreendistort="0.0" maxscreendistort="0.5" minradialdistort="0.0" maxradialdistort="0.5"/>
+      iconcolors="255,90,0,255;255,90,0,255"
+      
+      showinhealthscannerthreshold="999"
+      showiconthreshold="0"
+      maxstrength="2">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="2,1" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -131,20 +96,19 @@
     <!-- Headache. Visible in Health UI. -->
     <Affliction
       name=""
-      identifier="sym_headache"
-      type="pain"
-      isbuff="false"
-      healableinmedicalclinic="false"
       description=""
+      identifier="headache"
+
+      healableinmedicalclinic="false"
+      type="pain"
       limbspecific="false"
       indicatorlimb="Head"
-      showiconthreshold="1"
-      showinhealthscannerthreshold="100"
-      maxstrength="2"
       grainburst="3"
-      iconcolors="255,90,0,255;255,90,0,255">
-
-      <Effect minstrength="0" maxstrength="2" minscreendistort="0.0" maxscreendistort="0.5" minradialdistort="0.0" maxradialdistort="0.5" mingrainstrength="0.0" maxgrainstrength="0.5"/>
+      iconcolors="255,90,0,255;255,90,0,255"
+      
+      showinhealthscannerthreshold="999"
+      showiconthreshold="0"
+      maxstrength="2">
 
       <icon texture="%ModDir%/Images/AfflictionIcons2.png" sheetindex="1,0" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -152,19 +116,17 @@
     <!-- Leg Swelling. Visible in Health UI. -->
     <Affliction
       name=""
-      identifier="sym_legswelling"
       description=""
+      identifier="legswelling"
+      
       healableinmedicalclinic="false"
-      type="gaze"
-      isbuff="false"
       limbspecific="false"
       indicatorlimb="RightLeg"
-      showiconthreshold="1"
-      showinhealthscannerthreshold="100"
-      maxstrength="2"
-      iconcolors="255,90,0,255;255,90,0,255">
-
-      <Effect minstrength="0" maxstrength="2"/>
+      iconcolors="255,90,0,255;255,90,0,255"
+      
+      showinhealthscannerthreshold="999"
+      showiconthreshold="0"
+      maxstrength="2">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="4,1" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -172,21 +134,17 @@
     <!-- Weakness. Visible in Health UI. -->
     <Affliction
       name=""
-      identifier="sym_weakness"
       description=""
+      identifier="weakness"
+      
       healableinmedicalclinic="false"
-      type="gaze"
-      isbuff="false"
       limbspecific="false"
       indicatorlimb="RightArm"
-      showiconthreshold="1"
-      showinhealthscannerthreshold="100"
-      maxstrength="2"
-      iconcolors="255,90,0,255;255,90,0,255">
-
-      <Effect minstrength="0" maxstrength="2">
-        <StatValue stattype="MeleeAttackMultiplier" minvalue="-0.8" maxvalue="-0.8" />
-      </Effect>
+      iconcolors="255,90,0,255;255,90,0,255"
+      
+      showinhealthscannerthreshold="999"
+      showiconthreshold="0"
+      maxstrength="2">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="5,1" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -195,19 +153,17 @@
     <!--TODO: add wheezing sound-->
     <Affliction
       name=""
-      identifier="sym_wheezing"
       description=""
+      identifier="wheezing"
+      
       healableinmedicalclinic="false"
-      type="gaze"
-      isbuff="false"
       limbspecific="false"
       indicatorlimb="Torso"
-      showiconthreshold="1"
-      showinhealthscannerthreshold="100"
-      maxstrength="2"
-      iconcolors="255,90,0,255;255,90,0,255">
-
-      <Effect minstrength="0" maxstrength="2"/>
+      iconcolors="255,90,0,255;255,90,0,255"
+      
+      showinhealthscannerthreshold="999"
+      showiconthreshold="0"
+      maxstrength="2">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="6,1" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -215,65 +171,18 @@
     <!-- Vomiting.  Visible in Health UI. -->
     <Affliction
       name=""
-      identifier="sym_vomiting"
       description=""
+      identifier="vomiting"
+      
       healableinmedicalclinic="false"
-      isbuff="false"
-      causeofdeathdescription="Choked on vomit."
-      selfcauseofdeathdescription="You have choked on your own vomit."
       limbspecific="false"
-      maxstrength="2"
       treatmentthreshold="1000"
       karmachangeonapplied="-0.1"
-      damageoverlayalpha="0"
-      healcostmultiplier="2.25"
-      showiconthreshold="1"
-      showinhealthscannerthreshold="100"
-      iconcolors="255,90,0,255;255,90,0,255">
-
-      <Effect minstrength="0" maxstrength="1"/>
-
-      <Effect minstrength="1" maxstrength="2"
-        minfacetint="255,255,255,0"
-        maxfacetint="255,255,255,100">
-      </Effect>
-
-      <PeriodicEffect mininterval="12" maxinterval="16">
-
-        <StatusEffect target="Character" SpeedMultiplier="0.0" setvalue="true" duration="1.7" />
-
-        <StatusEffect target="Character" comparison="and">
-          <Conditional ishuman="true" />
-          <Conditional ismale="true"/>
-          <Sound file="Content/Sounds/HUMAN_chokeMale1.ogg" selectionmode="Random" />
-          <Sound file="Content/Sounds/HUMAN_chokeMale2.ogg" />
-          <Sound file="Content/Sounds/HUMAN_chokeMale3.ogg" />
-        </StatusEffect>
-
-        <StatusEffect target="Character" comparison="and">
-          <Conditional ishuman="true" />
-          <Conditional isfemale="true"/>
-          <Sound file="Content/Sounds/HUMAN_chokeFemale1.ogg" selectionmode="Random" />
-          <Sound file="Content/Sounds/HUMAN_chokeFemale2.ogg" />
-          <Sound file="Content/Sounds/HUMAN_chokeFemale3.ogg" />
-        </StatusEffect>
-
-        <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true">
-          <Affliction identifier="stun" strength="0.1"/>
-          <LuaHook name="NT.vomit" />
-        </StatusEffect>
-
-        <StatusEffect target="Character" duration="2">
-          <TriggerAnimation Type="Walk" filename="Vomit" priority="10" ExpectedSpecies="Human" />
-        </StatusEffect>
-
-        <StatusEffect target="Character" targetlimbs="Head" duration="1">
-          <ParticleEmitter particle="vomitsplash" copyentityangle="true" anglemin="-10" anglemax="10" particlespersecond="50" velocitymin="50" velocitymax="200" scalemin="0.1" scalemax="0.2" />
-          <Explosion range="0.0" structuredamage="0" itemdamage="0" force="0.0" severlimbsprobability="0.0" decal="vomitsplatter" decalsize="1.25" shockwave="false" underwaterbubble="false" />
-          <Conditional HideFace="eq False" />
-        </StatusEffect>
-
-      </PeriodicEffect>
+      iconcolors="255,90,0,255;255,90,0,255"
+      
+      showinhealthscannerthreshold="999"
+      showiconthreshold="0"
+      maxstrength="2">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="7,1" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -281,57 +190,18 @@
     <!-- Vomiting Blood. Visible in Health UI. -->
     <Affliction
       name=""
-      identifier="sym_hematemesis"
       description=""
+      identifier="vomitingblood"
+      
       healableinmedicalclinic="false"
-      type="gaze"
-      isbuff="false"
       limbspecific="false"
-      maxstrength="2"
       treatmentthreshold="1000"
       karmachangeonapplied="-0.1"
       damageoverlayalpha="0"
-      healcostmultiplier="2.25"
-      showiconthreshold="1"
-      showinhealthscannerthreshold="100">
 
-      <Effect minstrength="0" maxstrength="2"/>
-
-      <PeriodicEffect mininterval="8" maxinterval="16">
-
-        <StatusEffect target="Character" SpeedMultiplier="0.0" setvalue="true" duration="1.7" />
-
-        <StatusEffect target="Character" comparison="and">
-          <Conditional ishuman="true" />
-          <Conditional ismale="true"/>
-          <Sound file="Content/Sounds/HUMAN_chokeMale1.ogg" selectionmode="Random" />
-          <Sound file="Content/Sounds/HUMAN_chokeMale2.ogg" />
-          <Sound file="Content/Sounds/HUMAN_chokeMale3.ogg" />
-        </StatusEffect>
-
-        <StatusEffect target="Character" comparison="and">
-          <Conditional ishuman="true" />
-          <Conditional isfemale="true"/>
-          <Sound file="Content/Sounds/HUMAN_chokeFemale1.ogg" selectionmode="Random" />
-          <Sound file="Content/Sounds/HUMAN_chokeFemale2.ogg" />
-          <Sound file="Content/Sounds/HUMAN_chokeFemale3.ogg" />
-        </StatusEffect>
-
-        <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true">
-          <Affliction identifier="stun" strength="0.1"/>
-          <LuaHook name="NT.vomitblood" />
-        </StatusEffect>
-        <StatusEffect target="Character" duration="2">
-          <TriggerAnimation Type="Walk" filename="Vomit" priority="10" ExpectedSpecies="Human" />
-        </StatusEffect>
-
-        <StatusEffect target="Character" targetlimbs="Head" duration="1">
-          <ParticleEmitter particle="bloodsplash" copyentityangle="true" anglemin="-20" anglemax="5" particlespersecond="100" velocitymin="60" velocitymax="250" scalemin="0.2" scalemax="0.4" />
-          <Explosion range="0.0" structuredamage="0" itemdamage="0" force="0.0" severlimbsprobability="0.0" decal="blood" decalsize="1.25" shockwave="false" underwaterbubble="false" />
-          <Conditional HideFace="eq False" />
-        </StatusEffect>
-
-      </PeriodicEffect>
+      showinhealthscannerthreshold="999"
+      showiconthreshold="0"
+      maxstrength="2">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="7,1" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -339,17 +209,17 @@
     <!-- Fever. Visible in Health UI. -->
     <Affliction
       name=""
-      identifier="fever"
       description=""
+      identifier="fever"
+      
       healableinmedicalclinic="false"
-      type="gaze"
-      isbuff="false"
       limbspecific="false"
       indicatorlimb="Torso"
-      showiconthreshold="1"
-      showinhealthscannerthreshold="100"
-      maxstrength="2"
-      iconcolors="255,90,0,255;255,90,0,255">
+      iconcolors="255,90,0,255;255,90,0,255"
+      
+      showinhealthscannerthreshold="999"
+      showiconthreshold="0"
+      maxstrength="2">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="0,2" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -357,17 +227,17 @@
     <!-- Abdominal Discomfort. Visible in Health UI. -->
     <Affliction
       name=""
-      identifier="sym_abdomdiscomfort"
       description=""
+      identifier="abdominaldiscomfort"
+      
       healableinmedicalclinic="false"
-      type="gaze"
-      isbuff="false"
       limbspecific="false"
       indicatorlimb="Torso"
-      showiconthreshold="1"
-      showinhealthscannerthreshold="100"
-      maxstrength="2"
-      iconcolors="255,90,0,255;255,90,0,255">
+      iconcolors="255,90,0,255;255,90,0,255"
+      
+      showinhealthscannerthreshold="999"
+      showiconthreshold="0"
+      maxstrength="2">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="1,2" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -375,17 +245,17 @@
     <!-- Bloating. Visible in Health UI. -->
     <Affliction
       name=""
-      identifier="sym_bloating"
       description=""
+      identifier="bloating"
+      
       healableinmedicalclinic="false"
-      type="gaze"
-      isbuff="false"
       limbspecific="false"
       indicatorlimb="Torso"
-      showiconthreshold="1"
-      showinhealthscannerthreshold="100"
-      maxstrength="2"
-      iconcolors="255,90,0,255;255,90,0,255">
+      iconcolors="255,90,0,255;255,90,0,255"
+      
+      showinhealthscannerthreshold="999"
+      showiconthreshold="0"
+      maxstrength="2">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="1,2" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -393,22 +263,18 @@
     <!-- Jaundice. Visible in Health UI. -->
     <Affliction
       name=""
-      identifier="sym_jaundice"
       description=""
+      identifier="jaundice"
+      
       healableinmedicalclinic="false"
-      type="gaze"
-      isbuff="false"
       limbspecific="false"
       indicatorlimb="Torso"
-      showiconthreshold="1"
-      showinhealthscannerthreshold="100"
-      maxstrength="2"
-      iconcolors="195,195,60,255;195,195,60,255">
+      iconcolors="195,195,60,255;195,195,60,255"
+      
+      showinhealthscannerthreshold="999"
+      showiconthreshold="0"
+      maxstrength="2">
 
-      <Effect minstrength="0" maxstrength="2"
-        maxvitalitydecrease="0"
-        minbodytint="255,255,0,0"
-        maxbodytint="255,255,0,120"/>
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="0,0" sheetelementsize="128,128" color="255,255,0,255" origin="0,0"/>
     </Affliction>
 
@@ -416,19 +282,17 @@
     <!--TODO: add particles-->
     <Affliction
       name=""
-      identifier="sym_sweating"
       description=""
+      identifier="sweating"
+      
       healableinmedicalclinic="false"
-      type="gaze"
-      isbuff="false"
       limbspecific="false"
       indicatorlimb="Torso"
-      showiconthreshold="1"
-      showinhealthscannerthreshold="100"
-      maxstrength="2"
-      iconcolors="255,90,0,255;255,90,0,255">
+      iconcolors="255,90,0,255;255,90,0,255"
 
-      <Effect minstrength="0" maxstrength="2"/>
+      showinhealthscannerthreshold="999"
+      showiconthreshold="0"
+      maxstrength="2">
         
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="2,2" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -438,19 +302,17 @@
     <!-- TODO: add client sided sound player -->
     <Affliction
       name=""
-      identifier="sym_palpitations"
       description=""
+      identifier="palpitations"
+      
       healableinmedicalclinic="false"
-      type="gaze"
-      isbuff="false"
       limbspecific="false"
       indicatorlimb="Torso"
-      showiconthreshold="1"
-      showinhealthscannerthreshold="100"
-      maxstrength="2"
-      iconcolors="255,90,0,255;255,90,0,255">
-
-      <Effect minstrength="0" maxstrength="2"/>
+      iconcolors="255,90,0,255;255,90,0,255"
+      
+      showinhealthscannerthreshold="999"
+      showiconthreshold="0"
+      maxstrength="2">
         
       <icon texture="%ModDir%/Images/AfflictionIcons2.png" sheetindex="2,0" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -458,15 +320,15 @@
     <!-- Unconsciousness. Visible in Health UI. Hides Mental Symptoms. -->
     <Affliction
       name=""
-      identifier="sym_unconsciousness"
       description=""
+      identifier="unconsciousness"
+      
       healableinmedicalclinic="false"
-      type="gaze"
-      isbuff="false"
       limbspecific="false"
       indicatorlimb="Head"
-      showiconthreshold="1"
-      showinhealthscannerthreshold="100"
+
+      showinhealthscannerthreshold="999"
+      showiconthreshold="0"
       maxstrength="2">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="3,2" sheetelementsize="128,128" origin="0,0"/>
@@ -475,16 +337,16 @@
     <!-- Inflammation. Visible in Health UI. -->
     <Affliction
       name=""
-      identifier="inflammation"
       description=""
+      identifier="inflammation"
+      
       healableinmedicalclinic="false"
-      type=""
-      isbuff="false"
       limbspecific="true"
-      showiconthreshold="1"
-      showinhealthscannerthreshold="100"
-      maxstrength="2"
-      iconcolors="255,90,0,255;255,90,0,255">
+      iconcolors="255,90,0,255;255,90,0,255"
+      
+      showinhealthscannerthreshold="999"
+      showiconthreshold="0"
+      maxstrength="2">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="4,3" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -492,26 +354,16 @@
     <!-- Spasm. Visible in Health UI. -->
     <Affliction
       name=""
-      identifier="spasm"
       description=""
+      identifier="spasm"
+      
       healableinmedicalclinic="false"
-      type="gaze"
-      isbuff="false"
       targets="human"
       limbspecific="true"
-      showiconthreshold="0.25"
-      showinhealthscannerthreshold="100"
+
+      showinhealthscannerthreshold="999"
+      showiconthreshold="0"
       maxstrength="2">
-
-      <PeriodicEffect mininterval="0.5" maxinterval="1.5">
-
-        <StatusEffect target="limb" disabledeltatime="true" stackable="false" delay="1" checkconditionalalways="false">
-          <Explosion range="5.0" structuredamage="0" itemdamage="0" force="12.0" severlimbsprobability="0.0"
-            ballastfloradamage="0" smoke="false" flash="false" flames="false" shockwave="false" sparks="false" underwaterbubble="false" />
-          <ReduceAffliction identifier="spasm" amount="10"/>
-        </StatusEffect>
-
-      </PeriodicEffect>
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="7,2" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -519,42 +371,37 @@
     <!-- Craving. Visible in Health UI. -->
     <Affliction
       name=""
-      identifier="sym_craving"
       description=""
+      identifier="craving"
+      
       healableinmedicalclinic="false"
       targets="human"
-      type="gaze"
-      isbuff="false"
       limbspecific="false"
       indicatorlimb="Head"
-      showiconthreshold="1"
-      showinhealthscannerthreshold="100"
-      maxstrength="2"
-      iconcolors="255,90,0,255;255,90,0,255">
+      iconcolors="255,90,0,255;255,90,0,255"
+      
+      showinhealthscannerthreshold="999"
+      showiconthreshold="0"
+      maxstrength="2">
 
       <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="384,768,128,128" color="195,180,60,255" origin="0,0"/>
     </Affliction>
 
-  <!-- Nausea. Visible in Health UI. Does not cause Vomiting, as opposed to the basegame. -->
+    <!-- Nausea. Visible in Health UI. Does not cause Vomiting, as opposed to the basegame. -->
     <Affliction
         name=""
-        identifier="sym_nausea"
         description=""
+        identifier="nausea"
+        
         healableinmedicalclinic="false"
-        type="gaze"
         limbspecific="false"
-        maxstrength="2"
         treatmentthreshold="1000"
         karmachangeonapplied="-0.1"
-        damageoverlayalpha="0"
-        healcostmultiplier="2.25"
-        showiconthreshold="1"
-        showinhealthscannerthreshold="100"
-        iconcolors="255,90,0,255;255,90,0,255">
-
-        <Effect minstrength="0" maxstrength="1"/>
-
-        <Effect minstrength="1" maxstrength="2" minfacetint="255,255,255,0" maxfacetint="255,255,255,25"/>
+        iconcolors="255,90,0,255;255,90,0,255"
+        
+        showinhealthscannerthreshold="999"
+        showiconthreshold="0"
+        maxstrength="2">
 
         <icon texture="Content/UI/CommandUIAtlas.png" sourcerect="896,896,128,128" origin="0,0"/>
       </Affliction>
@@ -562,28 +409,18 @@
     <!-- Chest Pain. Visible in Health UI. Mental Symptom. -->
     <Affliction
       name=""
-      identifier="pain_chest"
-      type="pain"
+      description=""
+      identifier="chestpain"
+
       healableinmedicalclinic="false"
-      isbuff="false"
+      type="pain"
       targets="human"
       limbspecific="false"
-      maxstrength="10"
-      showinhealthscannerthreshold="1000"
-      showiconthreshold="0.5"
-      iconcolors="255,90,0,255;255,90,0,255">
-
-      <Effect minstrength="0" maxstrength="1"/>
-
-      <Effect minstrength="1" maxstrength="10"/>
-
-      <PeriodicEffect mininterval="4" maxinterval="4">
-
-        <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true" disabledeltatime="true" stackable="false" delay="1" checkconditionalalways="false">
-          <Affliction identifier="pain" amount="4"/>
-        </StatusEffect>
-
-      </PeriodicEffect>
+      iconcolors="255,90,0,255;255,90,0,255"
+      
+      showinhealthscannerthreshold="999"
+      showiconthreshold="0"
+      maxstrength="10">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="1,2" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -591,28 +428,18 @@
     <!-- Abdominal Pain. Visible in Health UI. Mental Symptom. -->
     <Affliction
       name=""
-      identifier="pain_abdominal"
-      type="pain"
+      description=""
+      identifier="abdominalpain"
+
       healableinmedicalclinic="false"
-      isbuff="false"
+      type="pain"
       targets="human"
       limbspecific="false"
-      maxstrength="10"
-      showinhealthscannerthreshold="1000"
-      showiconthreshold="0.5"
-      iconcolors="255,90,0,255;255,90,0,255">
-
-      <Effect minstrength="0" maxstrength="1"/>
-
-      <Effect minstrength="1" maxstrength="10"/>
-
-      <PeriodicEffect mininterval="4" maxinterval="4">
-
-        <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true" disabledeltatime="true" stackable="false" delay="1" checkconditionalalways="false">
-          <Affliction identifier="pain" amount="4"/>
-        </StatusEffect>
-
-      </PeriodicEffect>
+      iconcolors="255,90,0,255;255,90,0,255"
+      
+      showinhealthscannerthreshold="999"
+      showiconthreshold="0"
+      maxstrength="10">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="1,2" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -620,27 +447,19 @@
     <!-- Intense Pain. Visible in Health UI. Causes: Dislocations and Fractures. -->
     <Affliction
       name="Intense Pain"
-      identifier="pain_extremity"
-      type="pain"
+      identifier="intensepain"
+
       healableinmedicalclinic="false"
-      isbuff="false"
+      type="pain"
       targets="human"
       limbspecific="true"
-      maxstrength="10"
-      showinhealthscannerthreshold="100"
-      showiconthreshold="1"
-      iconcolors="255,90,0,255;255,90,0,255">
-
-      <PeriodicEffect mininterval="4" maxinterval="4">
-
-        <StatusEffect target="Character"  multiplyafflictionsbymaxvitality="true" disabledeltatime="true" stackable="false" delay="1" checkconditionalalways="false">
-          <Affliction identifier="pain" amount="4"/>
-        </StatusEffect>
-
-      </PeriodicEffect>
+      iconcolors="255,90,0,255;255,90,0,255"
+      
+      showinhealthscannerthreshold="999"
+      showiconthreshold="0"
+      maxstrength="10">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="7,2" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
-
   </Afflictions>
 </Override>
