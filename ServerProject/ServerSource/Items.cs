@@ -8,7 +8,53 @@ public class NTItemMethods
 
     /**
      * <summary>
-     * Contains all the data necessary for an item update function.
+     * Contains all the data necessary to add an Affliction to DrainageAfflictions.
+     * 
+     * </summary>
+     * 
+     */
+    public class DrainageAfflictionInfos { 
+    
+        ///<summary>The ID defined in the XML. The affliction MUST be non limb-specific.</summary>
+        public string AfflictionID { get; }
+
+        ///<summary>The amount of XP given to the surgery or medical skill when the item is applied successfully.</summary>
+        public int XPGain { get; }
+
+        /**<summary>This function will be run to know if the affliction can be cured by the drainage.</summary>
+           <example>
+           <code>
+           bool conditionFunction(ItemUpdateFunctionInfos infos)
+           {
+               return HF.HasAfflictionLimb(infos.target, "retractedskin", LimbType.Torso, 95);
+           }
+           </code>
+           </example>
+        */
+        public Func<ItemUpdateFunctionInfos, bool> Conditions { get; }
+
+        public DrainageAfflictionInfos(string affID, int xpGain, Func<ItemUpdateFunctionInfos, bool> conditions) 
+        { 
+            //TODO check if affID is limb specific and throw error if so
+
+            this.AfflictionID = affID;
+            this.XPGain = xpGain;
+            this.Conditions = conditions;
+        }
+    
+    }
+
+    /**
+     * <summary>
+     * Contains the list of every afflictions cured by drainage. Addons can add to this list.
+     * 
+     * </summary>
+     */
+    public static List<DrainageAfflictionInfos> DrainageAfflictions { get; } = [];
+
+    /**
+     * <summary>
+     * Contains all the data necessary for an item use function.
      * 
      * </summary>
      */
@@ -28,7 +74,7 @@ public class NTItemMethods
         }
     }
 
-    public static Dictionary<string, Action<ItemUpdateFunctionInfos>> NTItemRegistry { get; } = new Dictionary<string, Action<ItemUpdateFunctionInfos>> { };
+    public static Dictionary<string, Action<ItemUpdateFunctionInfos>> NTItemsRegistry { get; } = new Dictionary<string, Action<ItemUpdateFunctionInfos>> { };
 
 
     /**<summary>
@@ -41,9 +87,9 @@ public class NTItemMethods
      */
     public static bool RegisterItemUseFunction(string itemID, Action<ItemUpdateFunctionInfos> function)
     {
-        if (!NTItemRegistry.ContainsKey(itemID))
+        if (!NTItemsRegistry.ContainsKey(itemID))
         {
-            NTItemRegistry.Add(itemID, function);
+            NTItemsRegistry.Add(itemID, function);
             return true;
         }
 
@@ -60,9 +106,9 @@ public class NTItemMethods
      */
     public static bool UpdateItemUseFunction(string itemID, Action<ItemUpdateFunctionInfos> function)
     {
-        if (NTItemRegistry.ContainsKey(itemID))
+        if (NTItemsRegistry.ContainsKey(itemID))
         {
-            NTItemRegistry.Add(itemID, function);
+            NTItemsRegistry.Add(itemID, function);
             return true;
         }
 
@@ -79,9 +125,9 @@ public class NTItemMethods
     {
 
         string itemID = __instance.Prefab.Identifier.ToString();
-        if (NTItemRegistry.ContainsKey(itemID))
+        if (NTItemsRegistry.ContainsKey(itemID))
         {
-            NTItemRegistry[itemID].Invoke(new ItemUpdateFunctionInfos(__instance, user, character, targetLimb));
+            NTItemsRegistry[itemID].Invoke(new ItemUpdateFunctionInfos(__instance, user, character, targetLimb));
         }
     }
 

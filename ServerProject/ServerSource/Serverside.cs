@@ -64,6 +64,34 @@
 
                 HF.GiveItem(infos.target, "ntsfx_slash");
             });
+
+            NTItemMethods.DrainageAfflictions.Add(new NTItemMethods.DrainageAfflictionInfos("pneumothorax", 3, infos =>
+            {
+                return HF.HasAfflictionLimb(infos.target, "retractedskin", LimbType.Torso, 95);
+            }));
+
+            NTItemMethods.DrainageAfflictions.Add(new NTItemMethods.DrainageAfflictionInfos("tamponade", 3, infos =>
+            {
+                bool retractedSkin = HF.HasAfflictionLimb(infos.target, "retractedskin", LimbType.Torso, 95);
+
+                // TODO check for Config thingy
+
+                return retractedSkin;
+            }));
+
+            // From 48 lines to 12 my point stands, why tf was the lua function so girthy?
+            NTItemMethods.RegisterItemUseFunction("drainage", infos =>
+            {
+                if (HF.HasAffliction(infos.target, "stasis", (float)0.1)) { return; }
+                
+                foreach (var affInfos in NTItemMethods.DrainageAfflictions)
+                {
+                    if (!affInfos.Conditions(infos)) continue;
+
+                    HF.SetAffliction(infos.target, affInfos.AfflictionID, 0, infos.user, 0);
+                    HF.GiveSurgerySkill(infos.user, affInfos.XPGain);
+                }
+            });
         }
 
         public void InitializeServer()
