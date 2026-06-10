@@ -606,6 +606,18 @@ namespace Neurotrauma
             return Character.AnimController.MainLimb.body.LinearVelocity;
         }
 
+        public static bool HasTalent(Character Character, string Talent)
+        {
+            return Character.HasTalent(Talent);
+        }
+
+        public static float CharacterDistance(Character Character1, Character Character2)
+        {
+            Vector2 Pos1 = Character1.WorldPosition;
+            Vector2 Pos2 = Character2.WorldPosition;
+            return Vector2.Distance(Pos1, Pos2);
+        }
+
         // ---------------------------------------- Affliction Related Helper Functions -------------------------------------------------- \\
         public static bool HasAffliction(Character Character, string Identifier = "", float MinAmount = 0)
         {
