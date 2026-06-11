@@ -1,3 +1,5 @@
+using MoonSharp.Interpreter;
+
 namespace Neurotrauma
 {
 
@@ -151,6 +153,32 @@ namespace Neurotrauma
     {
         public List<LimbType> AllowedLimbs { get; set; } = HF.LimbsToCheck;
     }
+
+    public class  NTAfflictionsToAdd
+    {
+
+        // Human Updates update functons have 
+        // Param 1: NTHuman (The character we updating) [C]
+        // Param 2: String (The affliction Identifier) [I]
+        // Param 3: LimbType (The limb the aff is on) [L]
+        // Param 4: Type???? Idk I forgot what this one is.
+        Dictionary<string, Action<HumanUpdate.NTHuman, string, LimbType>> AfflictionsToAdd =
+                                new Dictionary<string, Action<HumanUpdate.NTHuman, string, LimbType>>();
+
+        public void Initialize() // Initalize the afflictions.
+        {
+            AddAfflictions();
+        }
+
+        private void AddAfflictions() // Create your afflictions in here.
+        {
+            AfflictionsToAdd["example_aff"] = (C, I, L) => {
+                double Strength = C.LocalAfflictions.RegisterGetAffliction(I); // Add the affliction to the character. (And get a ref of it).
+                Strength += 5;
+            };
+        }
+    }
 }
+
 
 // wtf am i doing with my life

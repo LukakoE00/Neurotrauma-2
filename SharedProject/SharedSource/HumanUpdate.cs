@@ -16,30 +16,32 @@ class HumanUpdate
 
     // ---------------------------------------- NT Human Update Classes -------------------------------------------------- \\
 
-    class NTHuman(Character Human)
+    public class NTHuman(Character Human)
     {
-        public Character Human = Human; // Our Human Ref
-        private static CharacterStats LocalStats = new CharacterStats();
-        private static CharacterAfflictions LocalAfflictions = new CharacterAfflictions();
 
-        public static CharacterStats? GetStats()
+        public Character Human = Human; // Our Human Ref
+        public CharacterStats LocalStats = new CharacterStats();
+        public CharacterAfflictions LocalAfflictions = new CharacterAfflictions();
+
+        public CharacterStats? GetStats()
         {
             return LocalStats;
         }
 
-        public class CharacterAfflictions
+        public class CharacterAfflictions()
         {
-            private static List<string> UpdatingAfflictions = new List<string>(); // Stores the ID's of our updating afflictions.
+            private static Dictionary<string,double> UpdatingAfflictions = new Dictionary<string, double>(); // Stores the ID's of our updating afflictions.
 
-            public static void RegisterAffliction(string ID)
+            public double RegisterGetAffliction(string ID) // Call this at the start of each affliction.
             {
                 if (NTAfflictions.HasAffliction(ID))
                 {
-                    UpdatingAfflictions.Add(ID);
+                    UpdatingAfflictions[ID] = 100;
                 }
+                return UpdatingAfflictions[ID];
             }
 
-            public static void RemoveAffliction(string ID)
+            public void RemoveAffliction(string ID)
             {
                 if (NTAfflictions.HasAffliction(ID))
                 {
@@ -47,9 +49,14 @@ class HumanUpdate
                 }
             }
 
-            public static List<string> GetUpdatingAfflictons()
+            public List<string> GetUpdatingAfflictons()
             {
-                return UpdatingAfflictions;
+                return UpdatingAfflictions.Keys.ToList();
+            }
+
+            public void RetreiveAffliction()
+            {
+
             }
         }
 
