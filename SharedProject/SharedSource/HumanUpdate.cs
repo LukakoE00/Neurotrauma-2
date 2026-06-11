@@ -5,7 +5,7 @@ using static Barotrauma.Networking.MessageFragment;
 
 namespace Neurotrauma;
 
-class HumanUpdate
+public class HumanUpdate
 {
     private static int UpdateCooldown = 0;
     private static readonly int UpdateIntervalHigh = (int)AfflictionPriority.HIGH; // 120 = 2s
@@ -36,44 +36,65 @@ class HumanUpdate
         public class CharacterAfflictions(Character Human)
         {
             public Character Human = Human; // Our Human Ref
-            private static Dictionary<string,NTNonLimbAffliction> UpdatingAfflictions = new Dictionary<string, NTNonLimbAffliction>(); // Stores the ID's of our updating afflictions.
-            private static Dictionary<string, NTLimbAffliction> UpdatingLimbAfflictions = new Dictionary<string, NTLimbAffliction>(); // Stores the ID's of our updating (Limb) afflictions.
+            public Dictionary<string,NTNonLimbAffliction> UpdatingAfflictions = new(); // Stores the ID's of our updating afflictions.
+            public Dictionary<string, double> UpdatingAffStrength = new(); // Stores the ID's of our updating afflictions strength.
 
-            public NTAffliction RegisterGetAffliction(string ID,double MinStrength, double MaxStrength,
-                                                List<string> DependentAfflictions, AfflictionPriority Priority = AfflictionPriority.HIGH, bool LimbSpecific = false) // Call this at the start of each affliction.
-            {
+            public Dictionary<string, NTLimbAffliction> UpdatingLimbAfflictions = new(); // Stores the ID's of our updating (Limb) afflictions.
+            public Dictionary<string, Dictionary<LimbType, double>> UpdatingLimbAffStrength = new(); // Stores the ID's of our updating afflictions strength.
 
-                if (NTAfflictions.HasAffliction(ID) && (UpdatingAfflictions.ContainsKey(ID) || UpdatingLimbAfflictions.ContainsKey(ID)))
-                {
-                    if (!LimbSpecific)
-                    { 
-                        NTNonLimbAffliction NewAffliction = (NTNonLimbAffliction) CreateAffliction(ID,MinStrength, MaxStrength, DependentAfflictions, Priority);
-                        UpdatingAfflictions[ID] = NewAffliction;
-                        NewAffliction.Name = ID;
-                    }
-                    else
-                    {
-                        NTLimbAffliction NewAffliction = (NTLimbAffliction) CreateAffliction(ID,MinStrength, MaxStrength, DependentAfflictions, Priority, true);
-                        UpdatingLimbAfflictions[ID] = NewAffliction;
-                        NewAffliction.Name = ID;
-                    }
-                }
+            public Dictionary<string, NTBloodAffliction> UpdatingBloodAfflictions = new(); // Stores the ID's of our updating (blood) afflictions.
+            public Dictionary<string, double> UpdatingBloodAffStrength = new(); // Stores the ID's of our updating (blood) afflictions strength.
 
-                if (!LimbSpecific)
-                {
-                    return UpdatingAfflictions[ID];
-                }
-                else
-                {
-                    return UpdatingLimbAfflictions[ID];
-                }
-            }
-
-            public void RemoveAffliction(string ID)
+            public void AddNonLimbAffliction(string ID, NTNonLimbAffliction NTNonLimbAff, double Strength)
             {
                 if (NTAfflictions.HasAffliction(ID))
                 {
-                    UpdatingAfflictions.Remove(ID);
+                    UpdatingAfflictions[ID] = NTNonLimbAff;
+                    UpdatingAffStrength[ID] = Strength;
+                }
+            }
+
+            public void AddLimbAffliction(string ID, NTLimbAffliction NTLimbAff, double Strength, LimbType Limb)
+            {
+                if (NTAfflictions.HasAffliction(ID))
+                {
+                    UpdatingLimbAfflictions[ID] = NTLimbAff;
+                    UpdatingLimbAffStrength[ID][Limb] = Strength;
+                }
+            }
+
+            public void AddBloodAffliction(string ID, NTBloodAffliction NTBloodAff, double Strength)
+            {
+                if (NTAfflictions.HasAffliction(ID))
+                {
+                    UpdatingBloodAfflictions[ID] = NTBloodAff;
+                    UpdatingBloodAffStrength[ID] = Strength;
+                }
+            }
+
+            public void RemoveAffliction(string ID, NTAffliction Aff, LimbType Limb = LimbType.Torso)
+            {
+                if (NTAfflictions.HasAffliction(ID))
+                {
+                    if (Aff is NTNonLimbAffliction)
+                    {
+                        UpdatingAfflictions.Remove(ID);
+                        UpdatingAffStrength.Remove(ID);
+                        return;
+                    }
+                    if (Aff is NTLimbAffliction)
+                    {
+                        UpdatingLimbAfflictions.Remove(ID);
+                        UpdatingLimbAffStrength[ID].Remove(Limb);
+                        return;
+                    }
+                    if (Aff is NTBloodAffliction)
+                    {
+                        UpdatingBloodAfflictions.Remove(ID);
+                        UpdatingBloodAffStrength.Remove(ID);
+                        return;
+                    }
+
                 }
             }
 
@@ -91,17 +112,6 @@ class HumanUpdate
                 return UpdatingLimbAfflictions[ID];
             }
 
-            public NTAffliction CreateAffliction(string ID, double MinStrength, double MaxStrength,
-                                                List<string> DependentAfflictions, AfflictionPriority Priority, bool LimbSpecific = false)
-            {
-                if (LimbSpecific)
-                {
-                    NTNonLimbAffliction NewNonLimbAffliction = new(MinStrength,MaxStrength,ID,DependentAfflictions,Priority);
-                    return NewNonLimbAffliction;
-                }
-                NTLimbAffliction NewLimbAffliction = new(MinStrength, MaxStrength, ID, DependentAfflictions, Priority);
-                return NewLimbAffliction;
-            }
         }
 
         public class CharacterStats

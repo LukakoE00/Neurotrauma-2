@@ -12,34 +12,6 @@ namespace Neurotrauma
         HIGH = 2 * 60 // Every 2s
     }
 
-    public class NTUpdateFunctionInfos
-    {
-        // We can edit NTUpdateFunctionInfos to change what affliction update functions have access to
-        public float DeltaTime { get; }
-
-        public Character Character { get; }
-
-
-        public NTUpdateFunctionInfos(Character character)
-        {
-            this.Character = character;
-        }
-    }
-
-    public class NTAfflictionInfos
-    {
-        public AfflictionPriority Priority { get; }
-        // They return an int because i can't return void. so do whatever you want with it 
-        public Action<NTUpdateFunctionInfos> UpdateFunction { get; } 
-
-        public NTAfflictionInfos(Action<NTUpdateFunctionInfos> updateFunction, AfflictionPriority priority = AfflictionPriority.HIGH)
-        {
-            this.Priority = priority;
-            this.UpdateFunction = updateFunction;
-        }
-
-    }
-
     // Contains the list of every affliction defined by Neurotrauma. Addons should add their afflictions there.
     // We should provide functions to Lua to add Afflictions here. 
 
@@ -47,13 +19,13 @@ namespace Neurotrauma
     public static class NTAfflictions
     {
 
-        public static Dictionary<string, NTAfflictionInfos> Afflictions { get; } = new Dictionary<string, NTAfflictionInfos>();
+        public static Dictionary<string, NTAffliction> Afflictions { get; } = new Dictionary<string, NTAffliction>();
 
         private static List<string> AfflictionsLOW = [];
         private static List<string> AfflictionsMEDIUM = [];
         private static List<string> AfflictionsHIGH = [];
 
-        public static void RegisterAffliciton(string id, NTAfflictionInfos affliction)
+        public static void RegisterAffliciton(string id, NTAffliction affliction)
         {
             if (!Afflictions.ContainsKey(id))
             {
@@ -79,7 +51,7 @@ namespace Neurotrauma
         }
 
         // If an addon needs to change how an affliction works. Could create some incompatibility if multiple addons override the same shit but that's on them, not my problem
-        public static void OverrideAffliction(string id, NTAfflictionInfos affliction)
+        public static void OverrideAffliction(string id, NTAffliction affliction)
         {
             if (Afflictions.ContainsKey(id))
             {
@@ -93,9 +65,9 @@ namespace Neurotrauma
 
 
         // I recommend running this function only once OnLoadCompleted as it could be perf inducing.
-        public static Dictionary<string, NTAfflictionInfos> GetAfflictionsByPriority(AfflictionPriority priority)
+        public static Dictionary<string, NTAffliction> GetAfflictionsByPriority(AfflictionPriority priority)
         {
-            Dictionary<string, NTAfflictionInfos> output = [];
+            Dictionary<string, NTAffliction> output = [];
 
             switch (priority)
             {
@@ -134,16 +106,20 @@ namespace Neurotrauma
         public double Strength { get; set; } = 0;
         public double MinStrength { get; set; }
         public double MaxStrength { get; set; }
-        public string Identifier { get; set; }
-        public List<string> DependentAfflictions { get; set; }
+        public string Identifier { get; set; } = "";
+        public List<string> DependentAfflictions { get; set; } = [];
         public AfflictionPriority Priority { get; set; }
         public string Name = "";
+        public Action<HumanUpdate.NTHuman,string,LimbType> UpdateAction = 
+            (HumanUpdate.NTHuman C, string ID, LimbType Limb) => 
+            { 
+                // Insert your Affliction Update in here.
+            };
         public NTAffliction(double NewMinStrength, double NewMaxStrength,
-                                        string NewIdentifier, List<string> NewDependentAfflictions, AfflictionPriority NewPriority = AfflictionPriority.HIGH)
+                                        List<string> NewDependentAfflictions, AfflictionPriority NewPriority = AfflictionPriority.HIGH)
         {
             MinStrength = NewMinStrength;
             MaxStrength = NewMaxStrength;
-            Identifier = NewIdentifier;
             DependentAfflictions = NewDependentAfflictions;
             Priority = NewPriority;
         }
@@ -151,13 +127,11 @@ namespace Neurotrauma
 
     public class NTNonLimbAffliction : NTAffliction
     {
-        public NTNonLimbAffliction(double NewMinStrength, double NewMaxStrength,
-                                        string NewIdentifier, List<string> NewDependentAfflictions, AfflictionPriority NewPriority = AfflictionPriority.HIGH) : 
-                                        base(NewMinStrength, NewMaxStrength, NewIdentifier, NewDependentAfflictions, NewPriority)
+        public NTNonLimbAffliction(double NewMinStrength, double NewMaxStrength, List<string> NewDependentAfflictions, AfflictionPriority NewPriority = AfflictionPriority.HIGH) : 
+                                        base(NewMinStrength, NewMaxStrength, NewDependentAfflictions, NewPriority)
         {
             MinStrength = NewMinStrength;
             MaxStrength = NewMaxStrength;
-            Identifier = NewIdentifier;
             DependentAfflictions = NewDependentAfflictions ;
             Priority = NewPriority;
         }
@@ -166,17 +140,29 @@ namespace Neurotrauma
     public class NTLimbAffliction : NTAffliction
     {
         public NTLimbAffliction(double NewMinStrength, double NewMaxStrength,
-                                        string NewIdentifier, List<string> NewDependentAfflictions, AfflictionPriority NewPriority = AfflictionPriority.HIGH) :
-                                        base(NewMinStrength, NewMaxStrength, NewIdentifier, NewDependentAfflictions, NewPriority)
+                                         List<string> NewDependentAfflictions, AfflictionPriority NewPriority = AfflictionPriority.HIGH) :
+                                        base(NewMinStrength, NewMaxStrength, NewDependentAfflictions, NewPriority)
         {
             MinStrength = NewMinStrength;
             MaxStrength = NewMaxStrength;
-            Identifier = NewIdentifier;
             DependentAfflictions = NewDependentAfflictions;
             Priority = NewPriority;
         }
 
         public List<LimbType> AllowedLimbs { get; set; } = HF.LimbsToCheck; // I'll add this one later.
+    }
+
+    public class NTBloodAffliction : NTAffliction
+    {
+        public NTBloodAffliction(double NewMinStrength, double NewMaxStrength,
+                                        List<string> NewDependentAfflictions, AfflictionPriority NewPriority = AfflictionPriority.HIGH) :
+                                        base(NewMinStrength, NewMaxStrength, NewDependentAfflictions, NewPriority)
+        {
+            MinStrength = NewMinStrength;
+            MaxStrength = NewMaxStrength;
+            DependentAfflictions = NewDependentAfflictions;
+            Priority = NewPriority;
+        }
     }
 
 
@@ -215,12 +201,12 @@ namespace Neurotrauma
         // Param 3: LimbType (The limb the aff is on) [L]
         // Param 4: Type???? Idk I forgot what this one is.
 
-        Dictionary<string, Action<HumanUpdate.NTHuman, string, LimbType>> AfflictionsToAdd =
-                                new Dictionary<string, Action<HumanUpdate.NTHuman, string, LimbType>>();
-        Dictionary<string, Action<HumanUpdate.NTHuman, string, LimbType>> LimbAfflictionsToAdd =
-                                new Dictionary<string, Action<HumanUpdate.NTHuman, string, LimbType>>();
-        Dictionary<string, Action<HumanUpdate.NTHuman, string, LimbType>> BloodAfflictionsToAdd =
-                                new Dictionary<string, Action<HumanUpdate.NTHuman, string, LimbType>>();
+        Dictionary<string, NTNonLimbAffliction> AfflictionsToAdd =
+                                new Dictionary<string, NTNonLimbAffliction>();
+        Dictionary<string, NTLimbAffliction> LimbAfflictionsToAdd =
+                                new Dictionary<string, NTLimbAffliction>();
+        Dictionary<string, NTBloodAffliction> BloodAfflictionsToAdd =
+                                new Dictionary<string, NTBloodAffliction>();
 
         public void Initialize() // Initalize the afflictions.
         {
@@ -231,34 +217,33 @@ namespace Neurotrauma
 
         private void AddAfflictions() // Create your afflictions in here.
         {
-            AfflictionsToAdd["example_aff"] = (C, ID, Limb) => 
+            AfflictionsToAdd["Example1"] = new(0, 100, []);
+            AfflictionsToAdd["Example1"].UpdateAction = 
+                (HumanUpdate.NTHuman C, string ID, LimbType Limb) =>
             {
-
-                NTAffliction Self = C.LocalAfflictions.RegisterGetAffliction(ID,0,100, null); // Add the affliction to the character with it's params. Essentially a condensed version of what you would normally do.
-                C.GetStats(); // Now we can get the players stats!!!!!1
-                Self.Strength += 5; // Or increase the strength!!
 
             };
 
-            AfflictionsToAdd["example_aff2"] = (C, ID, Limb) =>
-            {
-
-                NTAffliction Self = C.LocalAfflictions.RegisterGetAffliction(ID, 0, 10, ["example_aff"]); // We now tell the Update that we must register "example_aff" too!
-                NTAffliction ExampleAff = C.LocalAfflictions.RegisterGetAffliction("example_aff", 0, 10, null); // Lets get our ExampleAff!!
-                C.GetStats(); // Now we can get the players stats!!!!!1
-                Self.Strength += C.LocalAfflictions.GetAff("example_aff").Strength + 10;
-                ExampleAff.Strength += Self.Strength;
-            };
         }
 
         private void AddLimbAfflictions()
         {
+            AfflictionsToAdd["Example1Limb"] = new(0, 100, []);
+            AfflictionsToAdd["Example1Limb"].UpdateAction =
+                (HumanUpdate.NTHuman C, string ID, LimbType Limb) =>
+            {
 
+            };
         }
 
         private void AddBloodAfflictions()
         {
+            AfflictionsToAdd["Example1Blood"] = new(0, 100, []);
+            AfflictionsToAdd["Example1Blood"].UpdateAction =
+                (HumanUpdate.NTHuman C, string ID, LimbType Limb) =>
+            {
 
+            };
         }
     }
 }
