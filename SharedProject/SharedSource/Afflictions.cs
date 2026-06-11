@@ -127,7 +127,6 @@ namespace Neurotrauma
             return Afflictions.ContainsKey(id);
         }
 
-
     }
 
     public abstract class NTAffliction // Added to NTHuman updatingAfflictions
@@ -135,11 +134,10 @@ namespace Neurotrauma
         public double Strength { get; set; } = 0;
         public double MinStrength { get; set; }
         public double MaxStrength { get; set; }
-
         public string Identifier { get; set; }
         public List<string> DependentAfflictions { get; set; }
         public AfflictionPriority Priority { get; set; }
-
+        public string Name = "";
         public NTAffliction(double NewMinStrength, double NewMaxStrength,
                                         string NewIdentifier, List<string> NewDependentAfflictions, AfflictionPriority NewPriority = AfflictionPriority.HIGH)
         {
@@ -171,12 +169,44 @@ namespace Neurotrauma
                                         string NewIdentifier, List<string> NewDependentAfflictions, AfflictionPriority NewPriority = AfflictionPriority.HIGH) :
                                         base(NewMinStrength, NewMaxStrength, NewIdentifier, NewDependentAfflictions, NewPriority)
         {
+            MinStrength = NewMinStrength;
+            MaxStrength = NewMaxStrength;
+            Identifier = NewIdentifier;
+            DependentAfflictions = NewDependentAfflictions;
+            Priority = NewPriority;
         }
 
         public List<LimbType> AllowedLimbs { get; set; } = HF.LimbsToCheck; // I'll add this one later.
     }
 
-    public class  NTAfflictionsToAdd
+
+    public abstract class AfflictionsPackage 
+    {
+        Dictionary<string, Action<HumanUpdate.NTHuman, string, LimbType>> AfflictionsToAdd =
+                        new Dictionary<string, Action<HumanUpdate.NTHuman, string, LimbType>>();
+        Dictionary<string, Action<HumanUpdate.NTHuman, string, LimbType>> LimbAfflictionsToAdd =
+                                new Dictionary<string, Action<HumanUpdate.NTHuman, string, LimbType>>();
+        Dictionary<string, Action<HumanUpdate.NTHuman, string, LimbType>> BloodAfflictionsToAdd =
+                                new Dictionary<string, Action<HumanUpdate.NTHuman, string, LimbType>>();
+
+        private void AddAfflictions() // Create your afflictions in here.
+        {
+            throw new NotImplementedException();
+        }
+
+        private void AddLimbAfflictions() // Create your afflictions in here.
+        {
+            throw new NotImplementedException();
+        }
+
+        private void AddBloodAfflictions() // Create your afflictions in here.
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+
+    public class  NTAfflictionsToAdd : AfflictionsPackage
     {
 
         // Human Updates update functons have 
@@ -184,12 +214,19 @@ namespace Neurotrauma
         // Param 2: String (The affliction Identifier) [I]
         // Param 3: LimbType (The limb the aff is on) [L]
         // Param 4: Type???? Idk I forgot what this one is.
+
         Dictionary<string, Action<HumanUpdate.NTHuman, string, LimbType>> AfflictionsToAdd =
+                                new Dictionary<string, Action<HumanUpdate.NTHuman, string, LimbType>>();
+        Dictionary<string, Action<HumanUpdate.NTHuman, string, LimbType>> LimbAfflictionsToAdd =
+                                new Dictionary<string, Action<HumanUpdate.NTHuman, string, LimbType>>();
+        Dictionary<string, Action<HumanUpdate.NTHuman, string, LimbType>> BloodAfflictionsToAdd =
                                 new Dictionary<string, Action<HumanUpdate.NTHuman, string, LimbType>>();
 
         public void Initialize() // Initalize the afflictions.
         {
             AddAfflictions();
+            AddLimbAfflictions();
+            AddBloodAfflictions();
         }
 
         private void AddAfflictions() // Create your afflictions in here.
@@ -212,6 +249,16 @@ namespace Neurotrauma
                 Self.Strength += C.LocalAfflictions.GetAff("example_aff").Strength + 10;
                 ExampleAff.Strength += Self.Strength;
             };
+        }
+
+        private void AddLimbAfflictions()
+        {
+
+        }
+
+        private void AddBloodAfflictions()
+        {
+
         }
     }
 }

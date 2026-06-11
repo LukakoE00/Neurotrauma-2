@@ -28,6 +28,11 @@ class HumanUpdate
             return LocalStats;
         }
 
+        public void Update(List<AfflictionPriority> Priorities)
+        {
+            LuaCsLogger.Log(Human.Prefab.Identifier.ToString());
+        }
+
         public class CharacterAfflictions(Character Human)
         {
             public Character Human = Human; // Our Human Ref
@@ -44,11 +49,13 @@ class HumanUpdate
                     { 
                         NTNonLimbAffliction NewAffliction = (NTNonLimbAffliction) CreateAffliction(ID,MinStrength, MaxStrength, DependentAfflictions, Priority);
                         UpdatingAfflictions[ID] = NewAffliction;
+                        NewAffliction.Name = ID;
                     }
                     else
                     {
                         NTLimbAffliction NewAffliction = (NTLimbAffliction) CreateAffliction(ID,MinStrength, MaxStrength, DependentAfflictions, Priority, true);
                         UpdatingLimbAfflictions[ID] = NewAffliction;
+                        NewAffliction.Name = ID;
                     }
                 }
 
@@ -223,14 +230,9 @@ class HumanUpdate
         foreach (NTHuman Human in UpdatingHumans)
         {
 
-            UpdateHuman(Human, priorities);
+            Human.Update(priorities);
 
         }
-    }
-
-    private static void UpdateHuman(NTHuman Character, List<AfflictionPriority> priorities)
-    {
-        LuaCsLogger.Log(Character.Human.Prefab.Identifier.ToString());
     }
 
     private void UpdateMonsters(List<AfflictionPriority> priorities)

@@ -23,11 +23,6 @@ namespace Neurotrauma
         //Called right after the constructor
         public void PreInitPatching()
         {
-            
-            
-
-            
-
         }
 
         // When your plugin is loading, use this instead of the constructor for code relying on
@@ -76,8 +71,6 @@ namespace Neurotrauma
             #endif
 
             // harmony.UnpatchSelf();
-
-            
         }
 
         // This does what Init.lua used to do, using NTInfo.cs to hold relevant information.
