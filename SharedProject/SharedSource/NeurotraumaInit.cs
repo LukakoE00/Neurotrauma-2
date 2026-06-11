@@ -105,12 +105,14 @@ namespace Neurotrauma
         HF.Print("Adding Lua Hooks");
             // This function stores our hooks we will be using for NT 2.
 #pragma warning disable CS0618 // Type or member is obsolete
-            LuaCsSetup.Instance.Hook.Add("think", "NTCS.ThinkUpdate", (params object[] _) => // The Hook details
+
+            LuaCsSetup.Instance.Hook.Add("think", "NTCS.ThinkUpdate", (params object[] _) => // The Hook details (TODO, make this in C#)
             { // Start of our Function
                 double DeltaTime = 1;
                 HU.ThinkUpdate(DeltaTime);
                 return null;
             }); // End of our Function
+
 #pragma warning restore CS0618 // Type or member is obsolete
         }
         

@@ -116,6 +116,13 @@
             harmony.Patch(originalDamageLimb, prefix: new HarmonyMethod(typeof(OnDamaged), nameof(OnDamaged.Override_DamageLimb)));
             harmony.Patch(originalUse, prefix: new HarmonyMethod(typeof(NTItemMethods), nameof(NTItemMethods.Override_Use)));
             harmony.Patch(originalApplyTreatment, prefix: new HarmonyMethod(typeof(NTItemMethods), nameof(NTItemMethods.Override_ApplyTreatment)));
+
+            // Character Patches
+            var characterCreation = AccessTools.Method(typeof(EntitySpawner.IEntitySpawnInfo), "OnSpawned", [typeof(Entity)]);
+            harmony.Patch(characterCreation, prefix: new HarmonyMethod(typeof(HumanUpdate), nameof(HumanUpdate.AddEntityToUpdate))); // The Character Created hook.
+
+            var characterDied = AccessTools.Method(typeof(EntitySpawner.IEntitySpawnInfo), "AddEntityToRemoveQueue", [typeof(Entity)]);
+            harmony.Patch(characterCreation, prefix: new HarmonyMethod(typeof(HumanUpdate), nameof(HumanUpdate.RemoveEntityFromUpdate))); // The Character Died hook.
         }
 
         public void DisposeServer()

@@ -144,6 +144,93 @@ class HumanUpdate
 
     // ---------------------------------------- The Human Update -------------------------------------------------- \\
 
+    public void AddEntityToUpdate(Entity AddingEntity)
+    {
+        if (AddingEntity is Character)
+        {
+            Character NewCharacter = (Character)AddingEntity;
+            if (NewCharacter.IsHuman)
+            {
+                AddHumanToUpdate(NewCharacter);
+            }
+            else
+            {
+                AddMonsterToUpdate(NewCharacter);
+            }
+        }
+    }
+
+    public void RemoveEntityFromUpdate(Entity RemovingEntity)
+    {
+        if (RemovingEntity is Character)
+        {
+            Character NewCharacter = (Character)RemovingEntity;
+            if (NewCharacter.IsHuman)
+            {
+                RemoveHumanFromUpdate(NewCharacter);
+            }
+            else
+            {
+                RemoveMonsterFromUpdate(NewCharacter);
+            }
+        }
+    }
+
+    public void AddHumanToUpdate(Character AddedCharacter)
+    {
+        NTHuman NewNTHuman = new NTHuman(AddedCharacter); // Hopefully this wont create a memory leak.
+        if (!UpdatingHumans.Contains(NewNTHuman))
+        {
+            UpdatingHumans.Add(NewNTHuman);
+        }
+    }
+
+    public void RemoveHumanFromUpdate(Character RemovingCharacter) // Probably a better way to do this.
+    {
+        NTHuman HumanToRemove = null; // We store the index of what to remove so we don't remove while iterating.
+        foreach (NTHuman Human in UpdatingHumans)
+        {
+            if (Human.Human == RemovingCharacter)
+            {
+                HumanToRemove = Human;
+                break;
+            }
+        }
+        if (HumanToRemove != null)
+        {
+            UpdatingHumans.Remove(HumanToRemove);
+        }
+    }
+
+    public void AddMonsterToUpdate(Character AddedMonster)
+    {
+        if (!AddedMonster.IsHuman)
+        {
+            NTMonster NewNTMonster = new NTMonster(AddedMonster);
+            if (!UpdatingMonsters.Contains(NewNTMonster))
+            {
+                UpdatingMonsters.Add(NewNTMonster);
+            }
+        }
+    }
+
+    public void RemoveMonsterFromUpdate(Character RemovingMonster) // Probably a better way to do this.
+    {
+        NTMonster MonsterToRemove = null; // We store the index of what to remove so we don't remove while iterating.
+        foreach (NTMonster Monster in UpdatingMonsters)
+        {
+            if (Monster.Monster == RemovingMonster)
+            {
+                MonsterToRemove = Monster;
+                break;
+            }
+        }
+        if (MonsterToRemove != null)
+        {
+            UpdatingMonsters.Remove(MonsterToRemove);
+        }
+    }
+
     // Returns a list 
     private static List<AfflictionPriority> GetLowestPriority(int cd)
     {
@@ -195,30 +282,19 @@ class HumanUpdate
     {
         List<Character> CHList = Character.CharacterList;
 
-        foreach (Character c in CHList)
-        {
-            if (c.isDead) continue; // Skip to next iteration
+        //foreach (Character c in CHList) // This is the old fetching Character for Update system. We're now using a hook method instead. Leaving this here so we can go back incase it breaks.
+        //{
+            //if (c.isDead) continue; // Skip to next iteration
 
-            if (c.IsHuman && c.Enabled)
-            {
-                NTHuman NewNTHuman = new NTHuman(c); // Hopefully this wont create a memory leak.
-                if (!UpdatingHumans.Contains(NewNTHuman))
-                {
-                    UpdatingHumans.Add(NewNTHuman);
-                }
-            }
-            else
-            {
-                if (!c.IsHuman)
-                {
-                    NTMonster NewNTMonster = new NTMonster(c);
-                    if (!UpdatingMonsters.Contains(NewNTMonster))
-                    {
-                        UpdatingMonsters.Add(NewNTMonster);
-                    }
-                }
-            }
-        }
+            //if (c.IsHuman && c.Enabled)
+            //{
+                //AddHumanToUpdate(c);
+            //}
+            //else
+            //{
+                //AddMonsterToUpdate(c);
+            //}
+        //}
 
         UpdateHumans(priorities);
 
