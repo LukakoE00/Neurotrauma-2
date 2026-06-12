@@ -1,18 +1,19 @@
 ﻿using Barotrauma.LuaCs.Compatibility;
 using Barotrauma.LuaCs.Events;
+using LightInject;
 using MonoMod.RuntimeDetour;
 using static Barotrauma.Networking.MessageFragment;
 
 namespace Neurotrauma;
 
-class HumanUpdate
+public class HumanUpdate
 {
     private static int UpdateCooldown = 0;
     private static readonly int UpdateIntervalHigh = (int)AfflictionPriority.HIGH; // 120 = 2s
     private static readonly int UpdateIntervalMedium = (int)AfflictionPriority.MEDIUM; // 240 = 4s
     private static readonly int UpdateIntervalLow = (int)AfflictionPriority.LOW; // 480 = 8s
-    private List<NTHuman> UpdatingHumans = new List<NTHuman>();
-    private List<NTMonster> UpdatingMonsters = new List<NTMonster>();
+    static private List<NTHuman> UpdatingHumans = new List<NTHuman>();
+    static private List<NTMonster> UpdatingMonsters = new List<NTMonster>();
 
     // ---------------------------------------- NT Human Update Classes -------------------------------------------------- \\
 
@@ -30,50 +31,112 @@ class HumanUpdate
 
         public void Update(List<AfflictionPriority> Priorities)
         {
-            LuaCsLogger.Log(Human.Prefab.Identifier.ToString());
+            foreach (KeyValuePair<string,NTNonLimbAffliction> Pair in LocalAfflictions.UpdatingAfflictions)
+            {
+                if (Pair.Key != null)
+                {
+                    // Fetch the data of the affliction
+                    Dictionary<string, double> AffStrengths = LocalAfflictions.UpdatingAffStrength;
+                    string ID = Pair.Key;
+                    NTNonLimbAffliction Aff = Pair.Value;
+                    double CurrentAffStrength = AffStrengths[ID];
+
+                    // Add our affliction Depedencies
+                    foreach (NTAffliction Dependency in Aff.DependentAfflictions)
+                    {
+                        if (!LocalAfflictions.UpdatingAfflictions.ContainsValue((NTNonLimbAffliction)Dependency))
+                        {
+
+                        }
+                    }
+
+                    Aff.UpdateAction(this, ID, LimbType.Torso, LocalAfflictions.UpdatingAffStrength);
+                }
+            }
+
+            foreach (KeyValuePair<string, NTLimbAffliction> Pair in LocalAfflictions.UpdatingLimbAfflictions)
+            {
+                if (Pair.Key != null)
+                {
+                }
+            }
+
+            foreach (KeyValuePair<string, NTBloodAffliction> Pair in LocalAfflictions.UpdatingBloodAfflictions)
+            {
+                if (Pair.Key != null)
+                {
+                }
+            }
+
         }
 
         public class CharacterAfflictions(Character Human)
         {
             public Character Human = Human; // Our Human Ref
-            private static Dictionary<string,NTNonLimbAffliction> UpdatingAfflictions = new Dictionary<string, NTNonLimbAffliction>(); // Stores the ID's of our updating afflictions.
-            private static Dictionary<string, NTLimbAffliction> UpdatingLimbAfflictions = new Dictionary<string, NTLimbAffliction>(); // Stores the ID's of our updating (Limb) afflictions.
 
-            public NTAffliction RegisterGetAffliction(string ID,double MinStrength, double MaxStrength,
-                                                List<string> DependentAfflictions, AfflictionPriority Priority = AfflictionPriority.HIGH, bool LimbSpecific = false) // Call this at the start of each affliction.
-            {
+            // Let me break down how we're gonna be running afflictions around here.
+            // Basically, we have two dictionaries for one Affliction Category. I.E, Two dictionaries for Blood Afflictions, Two Dictionaries for Limb Afflictions and so on so forth.
+            // Dictionary 1: The afflictions we are currently using (NTAffliction) and the layout of it. This class doesn't store any of our relative affliction info. It just sets up how we use our affliction.
+            // Dictionary 2: The strength of our relative affliction, as really, this is the only thing we need to store.
+            public Dictionary<string,NTNonLimbAffliction> UpdatingAfflictions = new(); // Stores the ID's of our updating afflictions.
+            public Dictionary<string, double> UpdatingAffStrength = new(); // Stores the ID's of our updating afflictions strength.
 
-                if (NTAfflictions.HasAffliction(ID) && (UpdatingAfflictions.ContainsKey(ID) || UpdatingLimbAfflictions.ContainsKey(ID)))
-                {
-                    if (!LimbSpecific)
-                    { 
-                        NTNonLimbAffliction NewAffliction = (NTNonLimbAffliction) CreateAffliction(ID,MinStrength, MaxStrength, DependentAfflictions, Priority);
-                        UpdatingAfflictions[ID] = NewAffliction;
-                        NewAffliction.Name = ID;
-                    }
-                    else
-                    {
-                        NTLimbAffliction NewAffliction = (NTLimbAffliction) CreateAffliction(ID,MinStrength, MaxStrength, DependentAfflictions, Priority, true);
-                        UpdatingLimbAfflictions[ID] = NewAffliction;
-                        NewAffliction.Name = ID;
-                    }
-                }
+            public Dictionary<string, NTLimbAffliction> UpdatingLimbAfflictions = new(); // Stores the ID's of our updating (Limb) afflictions.
+            public Dictionary<string, Dictionary<LimbType, double>> UpdatingLimbAffStrength = new(); // Stores the ID's of our updating afflictions strength.
 
-                if (!LimbSpecific)
-                {
-                    return UpdatingAfflictions[ID];
-                }
-                else
-                {
-                    return UpdatingLimbAfflictions[ID];
-                }
-            }
+            public Dictionary<string, NTBloodAffliction> UpdatingBloodAfflictions = new(); // Stores the ID's of our updating (blood) afflictions.
+            public Dictionary<string, double> UpdatingBloodAffStrength = new(); // Stores the ID's of our updating (blood) afflictions strength.
 
-            public void RemoveAffliction(string ID)
+            public void AddNonLimbAffliction(string ID, NTNonLimbAffliction NTNonLimbAff, double Strength)
             {
                 if (NTAfflictions.HasAffliction(ID))
                 {
-                    UpdatingAfflictions.Remove(ID);
+                    UpdatingAfflictions[ID] = NTNonLimbAff;
+                    UpdatingAffStrength[ID] = Strength;
+                }
+            }
+
+            public void AddLimbAffliction(string ID, NTLimbAffliction NTLimbAff, double Strength, LimbType Limb)
+            {
+                if (NTAfflictions.HasAffliction(ID))
+                {
+                    UpdatingLimbAfflictions[ID] = NTLimbAff;
+                    UpdatingLimbAffStrength[ID][Limb] = Strength;
+                }
+            }
+
+            public void AddBloodAffliction(string ID, NTBloodAffliction NTBloodAff, double Strength)
+            {
+                if (NTAfflictions.HasAffliction(ID))
+                {
+                    UpdatingBloodAfflictions[ID] = NTBloodAff;
+                    UpdatingBloodAffStrength[ID] = Strength;
+                }
+            }
+
+            public void RemoveAffliction(string ID, NTAffliction Aff, LimbType Limb = LimbType.Torso)
+            {
+                if (NTAfflictions.HasAffliction(ID))
+                {
+                    if (Aff is NTNonLimbAffliction)
+                    {
+                        UpdatingAfflictions.Remove(ID);
+                        UpdatingAffStrength.Remove(ID);
+                        return;
+                    }
+                    if (Aff is NTLimbAffliction)
+                    {
+                        UpdatingLimbAfflictions.Remove(ID);
+                        UpdatingLimbAffStrength[ID].Remove(Limb);
+                        return;
+                    }
+                    if (Aff is NTBloodAffliction)
+                    {
+                        UpdatingBloodAfflictions.Remove(ID);
+                        UpdatingBloodAffStrength.Remove(ID);
+                        return;
+                    }
+
                 }
             }
 
@@ -91,17 +154,6 @@ class HumanUpdate
                 return UpdatingLimbAfflictions[ID];
             }
 
-            public NTAffliction CreateAffliction(string ID, double MinStrength, double MaxStrength,
-                                                List<string> DependentAfflictions, AfflictionPriority Priority, bool LimbSpecific = false)
-            {
-                if (LimbSpecific)
-                {
-                    NTNonLimbAffliction NewNonLimbAffliction = new(MinStrength,MaxStrength,ID,DependentAfflictions,Priority);
-                    return NewNonLimbAffliction;
-                }
-                NTLimbAffliction NewLimbAffliction = new(MinStrength, MaxStrength, ID, DependentAfflictions, Priority);
-                return NewLimbAffliction;
-            }
         }
 
         public class CharacterStats
@@ -114,7 +166,7 @@ class HumanUpdate
             }
 
             // If you want to recalculate a single stat
-            public void RecalculateSingle(string id, NTUpdateFunctionInfos character)
+            public void RecalculateSingle(string id, HumanUpdate.NTHuman character)
             {
 
                 if (NTStats.Stats[id] != null)
@@ -124,7 +176,7 @@ class HumanUpdate
             }
 
             // If we need to recalculate every stats for a character we can call this
-            public void RecalculateAll(NTUpdateFunctionInfos character)
+            public void RecalculateAll(HumanUpdate.NTHuman character)
             {
                 foreach (var stat in NTStats.Stats)
                 {
@@ -143,6 +195,94 @@ class HumanUpdate
 
 
     // ---------------------------------------- The Human Update -------------------------------------------------- \\
+
+    public static void AddCharacterToUpdate(CharacterPrefab prefab, Vector2 position, string seed, CharacterInfo characterInfo, ushort id, bool isRemotePlayer, bool hasAi, bool createNetworkEvent, RagdollParams ragdoll, bool spawnInitialItems)
+    {
+        if (characterInfo == null) { return; }
+        Character NewCharacter = characterInfo.Character;
+        if (NewCharacter == null) { return; }
+        if (NewCharacter.IsHuman)
+        {
+            HF.Print($"Adding the following Character {NewCharacter.Name} !");
+            AddHumanToUpdate(NewCharacter);
+        }
+        else
+        {
+            //AddMonsterToUpdate(NewCharacter); I gotta test this more.
+        }
+    }
+
+    public static void RemoveCharacterFromUpdate(Character target)
+    {
+        if (target is Character)
+        {
+            Character NewCharacter = (Character)target;
+            if (NewCharacter.IsHuman)
+            {
+                HF.Print($"Removed the following Character {NewCharacter.Name} !");
+                RemoveHumanFromUpdate(NewCharacter);
+            }
+            else
+            {
+                //RemoveMonsterFromUpdate(NewCharacter);
+            }
+        }
+    }
+
+    public static void AddHumanToUpdate(Character AddedCharacter)
+    {
+        NTHuman NewNTHuman = new NTHuman(AddedCharacter); // Hopefully this wont create a memory leak.
+        if (!UpdatingHumans.Contains(NewNTHuman))
+        {
+            UpdatingHumans.Add(NewNTHuman);
+        }
+    }
+
+    public static void RemoveHumanFromUpdate(Character RemovingCharacter) // Probably a better way to do this.
+    {
+        NTHuman HumanToRemove = null; // We store the index of what to remove so we don't remove while iterating.
+        foreach (NTHuman Human in UpdatingHumans)
+        {
+            if (Human.Human == RemovingCharacter)
+            {
+                HumanToRemove = Human;
+                break;
+            }
+        }
+        if (HumanToRemove != null)
+        {
+            UpdatingHumans.Remove(HumanToRemove);
+        }
+    }
+
+    public static void AddMonsterToUpdate(Character AddedMonster)
+    {
+        if (!AddedMonster.IsHuman)
+        {
+            NTMonster NewNTMonster = new NTMonster(AddedMonster);
+            if (!UpdatingMonsters.Contains(NewNTMonster))
+            {
+                UpdatingMonsters.Add(NewNTMonster);
+            }
+        }
+    }
+
+    public static void RemoveMonsterFromUpdate(Character RemovingMonster) // Probably a better way to do this.
+    {
+        NTMonster MonsterToRemove = null; // We store the index of what to remove so we don't remove while iterating.
+        foreach (NTMonster Monster in UpdatingMonsters)
+        {
+            if (Monster.Monster == RemovingMonster)
+            {
+                MonsterToRemove = Monster;
+                break;
+            }
+        }
+        if (MonsterToRemove != null)
+        {
+            UpdatingMonsters.Remove(MonsterToRemove);
+        }
+    }
 
     // Returns a list 
     private static List<AfflictionPriority> GetLowestPriority(int cd)
@@ -176,7 +316,7 @@ class HumanUpdate
     public void ThinkUpdate(double fixedDeltaTime)
     {
         // If game paused we just skip
-        if (HF.GameIsPaused()) return;
+        if (HF.GameIsPaused() || !HF.InGame()) return;
 
         Tick--; // Decrement our tick.
         if (!(Tick < 0)) { return; }
@@ -195,30 +335,19 @@ class HumanUpdate
     {
         List<Character> CHList = Character.CharacterList;
 
-        foreach (Character c in CHList)
-        {
-            if (c.isDead) continue; // Skip to next iteration
+        //foreach (Character c in CHList) // This is the old fetching Character for Update system. We're now using a hook method instead. Leaving this here so we can go back incase it breaks.
+        //{
+            //if (c.isDead) continue; // Skip to next iteration
 
-            if (c.IsHuman && c.Enabled)
-            {
-                NTHuman NewNTHuman = new NTHuman(c); // Hopefully this wont create a memory leak.
-                if (!UpdatingHumans.Contains(NewNTHuman))
-                {
-                    UpdatingHumans.Add(NewNTHuman);
-                }
-            }
-            else
-            {
-                if (!c.IsHuman)
-                {
-                    NTMonster NewNTMonster = new NTMonster(c);
-                    if (!UpdatingMonsters.Contains(NewNTMonster))
-                    {
-                        UpdatingMonsters.Add(NewNTMonster);
-                    }
-                }
-            }
-        }
+            //if (c.IsHuman && c.Enabled)
+            //{
+                //AddHumanToUpdate(c);
+            //}
+            //else
+            //{
+                //AddMonsterToUpdate(c);
+            //}
+        //}
 
         UpdateHumans(priorities);
 

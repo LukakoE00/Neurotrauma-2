@@ -34,6 +34,15 @@
             harmony.Patch(originalDamageLimb, prefix: new HarmonyMethod(typeof(OnDamaged), nameof(OnDamaged.Override_DamageLimb)));
             harmony.Patch(originalUse, prefix: new HarmonyMethod(typeof(NTItemMethods), nameof(NTItemMethods.Override_Use)));
             harmony.Patch(originalApplyTreatment, prefix: new HarmonyMethod(typeof(NTItemMethods), nameof(NTItemMethods.Override_ApplyTreatment)));
+
+            // Character Patches
+            var characterCreation = AccessTools.Method(typeof(Character), "Create", 
+                [typeof(CharacterPrefab),typeof(Vector2),typeof(string),typeof(CharacterInfo),typeof(ushort),typeof(bool),typeof(bool),typeof(bool),typeof(RagdollParams),typeof(bool)]);
+            harmony.Patch(characterCreation, prefix: new HarmonyMethod(typeof(HumanUpdate), nameof(HumanUpdate.AddCharacterToUpdate))); // The Character Created hook.
+
+            var characterDeath = AccessTools.Method(typeof(Character), "RecordKill",
+                [typeof(Character)]);
+            harmony.Patch(characterDeath, prefix: new HarmonyMethod(typeof(HumanUpdate), nameof(HumanUpdate.RemoveCharacterFromUpdate))); // The Character died hook.
         }
 
         public void DisposeServer()
