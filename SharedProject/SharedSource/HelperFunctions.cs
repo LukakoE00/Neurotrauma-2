@@ -258,10 +258,24 @@ namespace Neurotrauma
         #if SERVER
             return false;
         #elif SHARED
+#if !CLIENT
             return LuaGame.Paused;
-        #else
+#endif
+#else
             return false;
-        #endif
+#endif
+        }
+
+        public static bool InGame()
+        {
+#if SERVER
+            return GameMain.Server.GameStarted;
+            //return GameMain.GameSession.IsRunning;
+#elif SHARED
+            return LuaGame.RoundStarted;
+#else
+            return false;
+#endif
         }
 
         public static void GiveItem(Character Character, string ItemIdentifier, float Condition = 100) // This took me an hour to translate btw lol
@@ -410,7 +424,7 @@ namespace Neurotrauma
             {
                 return;
             }
-#endif  
+#endif
             if (Item == null || Item.Removed) {return;}    
 
             if (Entity.Spawner == null)
@@ -436,7 +450,7 @@ namespace Neurotrauma
             {
                 return;
             }
-#endif  
+#endif
 
             if (Entity.Spawner == null)
             {

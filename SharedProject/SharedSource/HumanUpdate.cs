@@ -198,8 +198,7 @@ public class HumanUpdate
 
     public static void AddCharacterToUpdate(CharacterPrefab prefab, Vector2 position, string seed, CharacterInfo characterInfo, ushort id, bool isRemotePlayer, bool hasAi, bool createNetworkEvent, RagdollParams ragdoll, bool spawnInitialItems)
     {
-        HF.Print("Add Character");
-        if (characterInfo == null) { HF.PrintWarning("Character was null, skipping.");  return; }
+        if (characterInfo == null) { return; }
         Character NewCharacter = characterInfo.Character;
         if (NewCharacter == null) { return; }
         if (NewCharacter.IsHuman)
@@ -215,17 +214,17 @@ public class HumanUpdate
 
     public static void RemoveCharacterFromUpdate(Character target)
     {
-        HF.Print("Removing Character");
         if (target is Character)
         {
             Character NewCharacter = (Character)target;
             if (NewCharacter.IsHuman)
             {
+                HF.Print($"Removed the following Character {NewCharacter.Name} !");
                 RemoveHumanFromUpdate(NewCharacter);
             }
             else
             {
-                RemoveMonsterFromUpdate(NewCharacter);
+                //RemoveMonsterFromUpdate(NewCharacter);
             }
         }
     }
@@ -317,7 +316,7 @@ public class HumanUpdate
     public void ThinkUpdate(double fixedDeltaTime)
     {
         // If game paused we just skip
-        if (HF.GameIsPaused()) return;
+        if (HF.GameIsPaused() || !HF.InGame()) return;
 
         Tick--; // Decrement our tick.
         if (!(Tick < 0)) { return; }
