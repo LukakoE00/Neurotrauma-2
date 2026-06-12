@@ -14,12 +14,10 @@ namespace Neurotrauma
 
     // Contains the list of every affliction defined by Neurotrauma. Addons should add their afflictions there.
     // We should provide functions to Lua to add Afflictions here. 
-
-    //TODO ADD A WAY TO IMPLEMENT LIMB SPECIFIC AFFLICTIONS, do we really need a special way ?
     public static class NTAfflictions
     {
 
-        public static Dictionary<string, NTAffliction> Afflictions { get; } = new Dictionary<string, NTAffliction>();
+        public static Dictionary<string, NTAffliction> Afflictions { get; } = new Dictionary<string, NTAffliction>(); // Stores all of our registered afflictions (regardless of categeory)
 
         private static List<string> AfflictionsLOW = [];
         private static List<string> AfflictionsMEDIUM = [];
@@ -251,6 +249,10 @@ namespace Neurotrauma
                     // To quickly Access our affliction strength do 'AffStrength[ID]' and boom. You now have the strength of this affliction.
                 };
 
+            foreach (KeyValuePair<string,NTNonLimbAffliction> Pair in AfflictionsToAdd)
+            {
+                NTAfflictions.RegisterAffliciton(Pair.Key, Pair.Value);
+            }
         }
 
         private void AddLimbAfflictions()
@@ -261,6 +263,11 @@ namespace Neurotrauma
             {
                 // To quickly Access our affliction strength do 'AffStrength[ID][Limb]' and boom. You now have the strength of this affliction.
             };
+
+            foreach (KeyValuePair<string, NTLimbAffliction> Pair in LimbAfflictionsToAdd)
+            {
+                NTAfflictions.RegisterAffliciton(Pair.Key, Pair.Value);
+            }
         }
 
         private void AddBloodAfflictions()
@@ -271,6 +278,11 @@ namespace Neurotrauma
             {
                 // To quickly Access our affliction strength do 'AffStrength[ID]' and boom. You now have the strength of this affliction.
             };
+
+            foreach (KeyValuePair<string, NTBloodAffliction> Pair in BloodAfflictionsToAdd)
+            {
+                NTAfflictions.RegisterAffliciton(Pair.Key, Pair.Value);
+            }
         }
     }
 }

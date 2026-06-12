@@ -1,6 +1,6 @@
 namespace Neurotrauma
 {
-    public static class NTStats
+    public static class NTStats // Cookie this all you bro :peace:
     {
         public static Dictionary<string, NTStat> Stats = new Dictionary<string, NTStat>();
 

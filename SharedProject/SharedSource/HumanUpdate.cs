@@ -73,6 +73,11 @@ public class HumanUpdate
         public class CharacterAfflictions(Character Human)
         {
             public Character Human = Human; // Our Human Ref
+
+            // Let me break down how we're gonna be running afflictions around here.
+            // Basically, we have two dictionaries for one Affliction Category. I.E, Two dictionaries for Blood Afflictions, Two Dictionaries for Limb Afflictions and so on so forth.
+            // Dictionary 1: The afflictions we are currently using (NTAffliction) and the layout of it. This class doesn't store any of our relative affliction info. It just sets up how we use our affliction.
+            // Dictionary 2: The strength of our relative affliction, as really, this is the only thing we need to store.
             public Dictionary<string,NTNonLimbAffliction> UpdatingAfflictions = new(); // Stores the ID's of our updating afflictions.
             public Dictionary<string, double> UpdatingAffStrength = new(); // Stores the ID's of our updating afflictions strength.
 
@@ -194,7 +199,7 @@ public class HumanUpdate
     public static void AddCharacterToUpdate(CharacterPrefab prefab, Vector2 position, string seed, CharacterInfo characterInfo, ushort id, bool isRemotePlayer, bool hasAi, bool createNetworkEvent, RagdollParams ragdoll, bool spawnInitialItems)
     {
         HF.Print("Add Character");
-        if (prefab == null || characterInfo == null) { return; }
+        if (characterInfo == null) { HF.PrintWarning("Character was null, skipping.");  return; }
         Character NewCharacter = characterInfo.Character;
         if (NewCharacter == null) { return; }
         if (NewCharacter.IsHuman)
@@ -204,7 +209,7 @@ public class HumanUpdate
         }
         else
         {
-            AddMonsterToUpdate(NewCharacter);
+            //AddMonsterToUpdate(NewCharacter); I gotta test this more.
         }
     }
 
