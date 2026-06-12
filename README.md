@@ -2,9 +2,8 @@
 <img width="512" height="512" alt="RepoC#" src="https://github.com/user-attachments/assets/4988a403-40ae-492e-9d05-b088af56806b" />
 </p>
 
-This is all just the skeleton from the C# documentation, changed for Neurotrauma.
-It should be noted that I don't know what I am doing yet!
-
+A complete re-write of Neurotrauma in C# (with a dash of Lua). This overhaul aims to remain faithful to the original mod while adding QOL features and much needed performance! New content is few and far between.
+<hr>
 Google Doc with codebase can be found [here](https://docs.google.com/document/d/1AJDsnBTOf8GZjzLwk0Dm6FDzZSp3U4sCgUFjvv2a_uo/edit?tab=t.0#heading=h.w01ukn2d7564)
 
 C# Documentation (for Barotrauma) can be found [here](https://evilfactory.github.io/LuaCsForBarotrauma/cs-docs/baro-server/html/index.html)
