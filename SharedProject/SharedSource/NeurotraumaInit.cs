@@ -54,14 +54,18 @@ namespace Neurotrauma
                         OnLoadCompletedServer();
                         InitLuaHooks();
                         PrintNTInitInfo();
-            #else
+                        NTConfigData.Register();
+                        NTConfig.LoadConfig();
+#else
                         if (GameMain.IsSingleplayer)
                         {
                             HF.Print("Running Client");
                             InitLuaHooks();
                             PrintNTInitInfo();
+                            NTConfigData.Register();
+                            NTConfig.LoadConfig();
                         }
-            #endif
+#endif
         }
 
         // Cleanup your plugin!

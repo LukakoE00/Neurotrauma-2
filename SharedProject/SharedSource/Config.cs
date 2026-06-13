@@ -98,36 +98,44 @@ namespace Neurotrauma
             {
                 string jsonContent = File.ReadAllText(ConfigFilePath);
                 var readConfig = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(jsonContent);
-
                 if (readConfig == null) return;
 
                 foreach (KeyValuePair<string, JsonElement> kvp in readConfig)
                 {
-                    if (Entries.ContainsKey(kvp.Key))
+                    if (Entries.TryGetValue(kvp.Key, out var value))
                     {
                         ConfigEntry entry = Entries[kvp.Key];
-                        if (entry.Type == ConfigEntryType.Bool) entry.Value = kvp.Value.GetBoolean();
-                        else if (entry.Type == ConfigEntryType.Float) entry.Value = (float)kvp.Value.GetDouble();
-                        else if (entry.Type == ConfigEntryType.String)
+                        switch (entry.Type)
                         {
-                            if (entry.Default is List<string> || kvp.Value.ValueKind == JsonValueKind.Array)
-                            {
-                                entry.Value = kvp.Value.EnumerateArray()
-                                    .Select(e => e.GetString())
-                                    .ToList();
-                            }
-                            else
-                            {
-                                entry.Value = kvp.Value.GetString();
-                            }
+                            case ConfigEntryType.Bool:
+                                entry.Value = kvp.Value.GetBoolean();
+                                break;
+
+                            case ConfigEntryType.Float:
+                                entry.Value = (float)kvp.Value.GetDouble();
+                                break;
+
+                            case ConfigEntryType.String:
+                                if (entry.Default is List<string> || kvp.Value.ValueKind == JsonValueKind.Array)
+                                {
+                                    entry.Value = kvp.Value.EnumerateArray()
+                                        .Select(e => e.GetString())
+                                        .ToList();
+                                }
+                                else
+                                {
+                                    entry.Value = kvp.Value.GetString();
+                                }
+                                break;
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                LuaCsLogger.LogError("[Neurotrauma] Error loading config: " + ex.Message);
+                LuaCsLogger.LogError("[NT] Error loading config: " + ex.Message);
             }
+            HF.Print("Config has been loaded!");
         }
 
         public static void ResetConfig()

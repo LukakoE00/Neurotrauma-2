@@ -38,7 +38,7 @@
             // Character Patches
             var characterCreation = AccessTools.Method(typeof(Character), "Create", 
                 [typeof(CharacterPrefab),typeof(Vector2),typeof(string),typeof(CharacterInfo),typeof(ushort),typeof(bool),typeof(bool),typeof(bool),typeof(RagdollParams),typeof(bool)]);
-            harmony.Patch(characterCreation, prefix: new HarmonyMethod(typeof(HumanUpdate), nameof(HumanUpdate.AddCharacterToUpdate))); // The Character Created hook.
+            harmony.Patch(characterCreation, postfix: new HarmonyMethod(typeof(HumanUpdate), nameof(HumanUpdate.AddCharacterToUpdate))); // The Character Created hook.
 
             var characterDeath = AccessTools.Method(typeof(Character), "RecordKill",
                 [typeof(Character)]);

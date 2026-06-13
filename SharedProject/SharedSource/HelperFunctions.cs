@@ -278,6 +278,16 @@ namespace Neurotrauma
 #endif
         }
 
+        public static bool GameIsMultiplayer()
+        {
+            return GameMain.IsMultiplayer;
+        }
+
+        public static bool GameIsSingleplayer()
+        {
+            return GameMain.IsSingleplayer;
+        }
+
         public static void GiveItem(Character Character, string ItemIdentifier, float Condition = 100) // This took me an hour to translate btw lol
         {
             // HostSide Only
@@ -552,17 +562,17 @@ namespace Neurotrauma
 
         public static void Print(string Message) // Yes I'm lazy
         {
-            LuaCsLogger.Log(Message);
+            LuaCsLogger.Log("[NT] " + Message);
         }
 
         public static void PrintError(string Message)
         {
-            LuaCsLogger.Log(Message,Color.Red);
+            LuaCsLogger.Log("[NT] " + Message, Color.Red);
         }
 
         public static void PrintWarning(string Message)
         {
-            LuaCsLogger.Log(Message,Color.Orange);
+            LuaCsLogger.Log("[NT] " + Message, Color.Orange);
         }
 
         // ---------------------------------------- Character Related Helper Functions -------------------------------------------------- \\

@@ -260,10 +260,13 @@ namespace Neurotrauma
 
             Client client = GameMain.Client?.MyClient;
 
-            if (client == null || !(client.IsOwner || client.HasPermission(ClientPermissions.ManageSettings)))
+            if (client == null || !(client.IsOwner || client.HasPermission(ClientPermissions.ManageSettings))) // Need to add a (!IsMultiplayer) check
             {
-                foreach (GUIComponent c in list.GetAllChildren())
-                    c.Enabled = false;
+                if (HF.GameIsMultiplayer())
+                {
+                    foreach (GUIComponent c in list.GetAllChildren())
+                        c.Enabled = false;
+                }
             }
         }
 
@@ -621,16 +624,20 @@ namespace Neurotrauma
             var save = new GUIButton(new RectTransform(new Vector2(0.32f, 1f), parent.RectTransform), TextManager.Get("ntgui_configmenubutton_saveexit"));
             save.OnClicked = (_, _) =>
             {
+                HF.Print("Click");
                 if (GameMain.NetworkMember != null && GameMain.NetworkMember.IsClient)
                 {
+                    HF.Print("Attempt Send Config");
                     Client client = GameMain.Client?.MyClient;
                     if (client != null && client.HasPermission(ClientPermissions.ManageSettings))
                     {
                         NTConfig.SendConfig();
+                        HF.Print("Send Config");
                     }
                 }
                 else
                 {
+                    HF.Print("Save Config");
                     NTConfig.SaveConfig();
                 }
 
