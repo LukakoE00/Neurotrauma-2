@@ -1,6 +1,6 @@
-﻿namespace Neurotrauma
+namespace Neurotrauma
 {
-
+    // Server-side AND Singleplayer code ONLY!
     public partial class NeurotraumaInit
     {
         // Server-specific code
@@ -10,18 +10,21 @@
 
         }
 
-        
-
         public void InitializeServer()
         {
-            LuaCsLogger.Log("Running InitializeServer");
             DefineAllAfflictions();
             NTItemMethods.DefineAllItems();
         }
 
-        public void OnLoadCompletedServer()
+        public void OnLoadCompletedServerside()
         {
-            LuaCsLogger.Log("Running OnLoadCompletedServers");
+            HF.Print("Running OnLoadCompletedServerside");
+            NTInfo.PrintNTInitInfo(); // Prints the current Neurotrauma information in the console.
+            NTBloodTypes.InitializeBloodHooks(); // Initializes LuaHooks needed for Blood.cs
+            InitLuaHooks(); // Initializes the Lua hooks at the bottom of this file
+
+
+            // What a mess. - Lukako
             harmony = new Harmony("neurotrauma.server");
 
             var originalApplyDamage = AccessTools.Method(typeof(CharacterHealth), "ApplyDamage", [typeof(Limb), typeof(AttackResult), typeof(bool), typeof(bool)]);
@@ -36,9 +39,9 @@
             harmony.Patch(originalApplyTreatment, prefix: new HarmonyMethod(typeof(NTItemMethods), nameof(NTItemMethods.Override_ApplyTreatment)));
 
             // Character Patches
-            var characterCreation = AccessTools.Method(typeof(Character), "Create", 
-                [typeof(CharacterPrefab),typeof(Vector2),typeof(string),typeof(CharacterInfo),typeof(ushort),typeof(bool),typeof(bool),typeof(bool),typeof(RagdollParams),typeof(bool)]);
-            harmony.Patch(characterCreation, prefix: new HarmonyMethod(typeof(HumanUpdate), nameof(HumanUpdate.AddCharacterToUpdate))); // The Character Created hook.
+            var characterCreation = AccessTools.Method(typeof(Character), "Create",
+                [typeof(CharacterPrefab), typeof(Vector2), typeof(string), typeof(CharacterInfo), typeof(ushort), typeof(bool), typeof(bool), typeof(bool), typeof(RagdollParams), typeof(bool)]);
+            harmony.Patch(characterCreation, postfix: new HarmonyMethod(typeof(HumanUpdate), nameof(HumanUpdate.AddCharacterToUpdate))); // The Character Created hook.
 
             var characterDeath = AccessTools.Method(typeof(Character), "RecordKill",
                 [typeof(Character)]);
@@ -48,6 +51,22 @@
         public void DisposeServer()
         {
             harmony.UnpatchSelf();
+        }
+
+        public static void InitLuaHooks() // Based off the Traumatic Presence mod by Lenny!
+        {
+            HF.Print("Adding Lua Hooks");
+            // This function stores our hooks we will be using for NT 2.
+#pragma warning disable CS0618 // Type or member is obsolete
+
+            LuaCsSetup.Instance.Hook.Add("think", "NTCS.ThinkUpdate", (params object[] _) => // The Hook details (TODO, make this in C#)
+            { // Start of our Function
+                double DeltaTime = 1;
+                HU.ThinkUpdate(DeltaTime);
+                return null;
+            }); // End of our Function
+
+#pragma warning restore CS0618 // Type or member is obsolete
         }
     }
 }
