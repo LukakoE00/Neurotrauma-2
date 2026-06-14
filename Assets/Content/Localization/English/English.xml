@@ -597,44 +597,44 @@
 <entitydescription.bloodpackabminus>Administerable to: AB-, AB+</entitydescription.bloodpackabminus>
   
 <!-- Donor card O- -->
-<entityname.ominuscard>Donor card O-</entityname.ominuscard>
-<entitydescription.ominuscard>Can take blood from: O-
-Can give blood to: all of them</entitydescription.ominuscard>
+<entityname.o_negativecard>Donor card O-</entityname.o_negativecard>
+<entitydescription.o_negativecard>Can take blood from: O-
+Can give blood to: all of them</entitydescription.o_negativecard>
   
 <!-- Donor card O+ -->
-<entityname.opluscard>Donor card O+</entityname.opluscard>
-<entitydescription.opluscard>Can take blood from: O-, O+
-Can give blood to: O+, A+, B+, AB+</entitydescription.opluscard>
+<entityname.o_positivecard>Donor card O+</entityname.o_positivecard>
+<entitydescription.o_positivecard>Can take blood from: O-, O+
+Can give blood to: O+, A+, B+, AB+</entitydescription.o_positivecard>
   
 <!-- Donor card A- -->
-<entityname.aminuscard>Donor card A-</entityname.aminuscard>
-<entitydescription.aminuscard>Can take blood from: O-, A-
-Can give blood to: A-, A+, AB-, AB+</entitydescription.aminuscard>
+<entityname.a_negativecard>Donor card A-</entityname.a_negativecard>
+<entitydescription.a_negativecard>Can take blood from: O-, A-
+Can give blood to: A-, A+, AB-, AB+</entitydescription.a_negativecard>
   
 <!-- Donor card A+ -->
-<entityname.apluscard>Donor card A+</entityname.apluscard>
-<entitydescription.apluscard>Can take blood from: O-, O+, A-, A+
-Can give blood to: A+, AB+</entitydescription.apluscard>
+<entityname.a_positivecard>Donor card A+</entityname.a_positivecard>
+<entitydescription.a_positivecard>Can take blood from: O-, O+, A-, A+
+Can give blood to: A+, AB+</entitydescription.a_positivecard>
   
 <!-- Donor card B- -->
-<entityname.bminuscard>Donor card B-</entityname.bminuscard>
-<entitydescription.bminuscard>Can take blood from: O-, B-
-Can give blood to: B-, B+, AB-, AB+</entitydescription.bminuscard>
+<entityname.b_negativecard>Donor card B-</entityname.b_negativecard>
+<entitydescription.b_negativecard>Can take blood from: O-, B-
+Can give blood to: B-, B+, AB-, AB+</entitydescription.b_negativecard>
   
 <!-- Donor card B+ -->
-<entityname.bpluscard>Donor card B+</entityname.bpluscard>
-<entitydescription.bpluscard>Can take blood from: O-, O+, B-, B+
-Can give blood to: B+, AB+</entitydescription.bpluscard>
+<entityname.b_positivecard>Donor card B+</entityname.b_positivecard>
+<entitydescription.b_positivecard>Can take blood from: O-, O+, B-, B+
+Can give blood to: B+, AB+</entitydescription.b_positivecard>
   
 <!-- Donor card AB- -->
-<entityname.abminuscard>Donor card AB-</entityname.abminuscard>
-<entitydescription.abminuscard>Can take blood from: O-, A-, B-, AB-
-Can give blood to: AB-, AB+</entitydescription.abminuscard>
+<entityname.ab_negativecard>Donor card AB-</entityname.ab_negativecard>
+<entitydescription.ab_negativecard>Can take blood from: O-, A-, B-, AB-
+Can give blood to: AB-, AB+</entitydescription.ab_negativecard>
   
 <!-- Donor card AB+ -->
-<entityname.abpluscard>Donor card AB+</entityname.abpluscard>
-<entitydescription.abpluscard>Can take blood from: all of them
-Can give blood to: AB+</entitydescription.abpluscard>
+<entityname.ab_positivecard>Donor card AB+</entityname.ab_positivecard>
+<entitydescription.ab_positivecard>Can take blood from: all of them
+Can give blood to: AB+</entitydescription.ab_positivecard>
 
 <!-- ================================================= Bodyparts ================================================= -->
   
