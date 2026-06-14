@@ -1,5 +1,5 @@
 <p align="center">
-<img width="512" height="512" alt="RepoC#" src="https://github.com/user-attachments/assets/4988a403-40ae-492e-9d05-b088af56806b" />
+<img width="512" height="512" alt="NTCS" src="https://github.com/user-attachments/assets/2a5ad40e-df70-42fd-9f27-e17ef4b86fc2" />
 </p>
 
 A complete re-write of Neurotrauma in C# (with a dash of Lua). This overhaul aims to remain faithful to the original mod while adding QOL features and much needed performance! New content is few and far between.
