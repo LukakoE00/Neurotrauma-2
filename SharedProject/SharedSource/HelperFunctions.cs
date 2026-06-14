@@ -30,7 +30,7 @@ namespace Neurotrauma
         public static readonly List<LimbType> LegsToCheck = [LimbType.LeftLeg, LimbType.RightLeg];
         public static readonly List<LimbType> ArmsToCheck = [LimbType.LeftArm, LimbType.RightArm];
         public static readonly List<LimbType> LimbsToCheck = [LimbType.LeftArm, LimbType.RightArm, LimbType.LeftLeg, LimbType.RightLeg, LimbType.Torso, LimbType.Head];
-        public static readonly Dictionary<LimbType, string> StringLimbsToCheck = new Dictionary<LimbType, string>() { 
+        public static readonly Dictionary<LimbType, string> StringLimbsToCheck = new Dictionary<LimbType, string>() {
                                                                                                                         { LimbType.LeftArm, "LeftArm" },{ LimbType.RightArm, "RightArm" },
                                                                                                                         { LimbType.LeftArm, "LeftLeg" },{ LimbType.RightArm, "RightLeg" },
                                                                                                                         { LimbType.Torso, "Torso" },{ LimbType.Head, "Head" }};
@@ -86,7 +86,7 @@ namespace Neurotrauma
         public static string CreateLimbAfflictionID(LimbType GivenLimbType, string Identifier, string FailSafe)
         {
             LimbType NormalizedLimb = NormalizeLimbType(GivenLimbType);
-            ShortHandLimbsToCheck.TryGetValue (NormalizedLimb, out string Value);
+            ShortHandLimbsToCheck.TryGetValue(NormalizedLimb, out string Value);
             return (Value + "_" + Identifier) ?? FailSafe;
         }
 
@@ -150,14 +150,14 @@ namespace Neurotrauma
             {
                 if (ItemElement.Name == "Wearable")
                 {
-                    foreach (XElement Element in ItemElement.Elements()) 
+                    foreach (XElement Element in ItemElement.Elements())
                     {
                         if (Element.Name == "damagemodifier")
                         {
-                            string Afflictions = Element.GetAttributeString("afflictiontypes","").ToLower();
+                            string Afflictions = Element.GetAttributeString("afflictiontypes", "").ToLower();
                             if (Afflictions.Contains(ResistanceID))
                             {
-                                return (float) Convert.ToDouble(Element.GetAttributeString("damagemultiplier", "1"));
+                                return (float)Convert.ToDouble(Element.GetAttributeString("damagemultiplier", "1"));
                             }
                         }
                     }
@@ -223,22 +223,39 @@ namespace Neurotrauma
             return GetCharacterInventorySlotIdentifer(Character, 2);
         }
 
-        public static void PrintChat(string Message)
+        // You have no fucking clue how long it took me to figure this one out. - Lukako
+        public static void DMClient(Client client, string message, Color? color)
         {
-        #if SERVER
-            LuaGame.SendMessage(Message, ChatMessageType.Server, null);
-        #endif
-        
+            var chatMessage = ChatMessage.Create("", message, ChatMessageType.Server, null);
+            if (color.HasValue) chatMessage.Color = color.Value;
+
+#if SERVER
+            if (client == null) return;
+            LuaGame.SendMessage(chatMessage.Text, ChatMessageType.Server, null);
+#else
+            if (GameMain.GameSession?.CrewManager != null)
+            GameMain.GameSession.CrewManager.AddSinglePlayerChatMessage("", chatMessage.Text, ChatMessageType.Server, Character.Controlled);
+#endif
         }
 
-        public static void DMClient(Client Client, string Message, Color Color)
+        // Pulls a ConfigData entry that holds an RGB value, and turns it into a color.
+        // It's in here since the Hematology Analyzer and Health Scanner in Items ánd in Blood.cs use it.
+        // It's like the table.concat but not; there has to be a better way for this. - Lukako
+        public static Color GetColor(string key)
         {
-        #if SERVER
-            ChatMessage ChatMsg = ChatMessage.Create("",Message,ChatMessageType.Server,null);
-            ChatMsg.Color = Color;
-            LuaGame.SendMessage(Message, ChatMessageType.Server, null);
-        #endif
+            var rgbList = NTConfig.Get<List<string>>(key, null);
+            if (rgbList == null || rgbList.Count == 0) return new Color(127, 255, 255);
 
+            var rgbString = rgbList[0];
+            var rgb = rgbString.Split(',');
+
+            if (rgb.Length < 3) return new Color(127, 255, 255);
+
+            return new Color(
+                byte.Parse(rgb[0]),
+                byte.Parse(rgb[1]),
+                byte.Parse(rgb[2])
+            );
         }
 
         public static bool Chance(float Chance)
@@ -249,15 +266,15 @@ namespace Neurotrauma
 
         public static float BoolToNum(bool Value, float Out = 1)
         {
-            if (Value) { return  Out; }
+            if (Value) { return Out; }
             return 0;
         }
 
         public static bool GameIsPaused()
         {
-        #if SERVER
+#if SERVER
             return false;
-        #elif SHARED
+#elif SHARED
 #if !CLIENT
             return LuaGame.Paused;
 #endif
@@ -321,7 +338,7 @@ namespace Neurotrauma
             GiveItem(Character, ItemIdentifier, Condition);
         }
 
-        public static void SpawnItemPlusFunction(string ItemIdentifier, CharacterInventory Inventory, InvSlotType Slot, Vector2 Position,LuaCsAction Function, params object[] Param)
+        public static void SpawnItemPlusFunction(string ItemIdentifier, CharacterInventory Inventory, InvSlotType Slot, Vector2 Position, LuaCsAction Function, params object[] Param)
         {
             // HostSide Only
 #if SHARED
@@ -529,7 +546,7 @@ namespace Neurotrauma
 
         public static void Explode(Entity GivenEntity, float Range = 0, float Force = 0, float Damage = 0, float StructureDamage = 0, float ItemDamage = 0, float EmpStrength = 0, float BallastFloraStrength = 0)
         {
-            LuaGame.Explode(GivenEntity.WorldPosition,Range,Force,Damage,StructureDamage,ItemDamage,EmpStrength,BallastFloraStrength);
+            LuaGame.Explode(GivenEntity.WorldPosition, Range, Force, Damage, StructureDamage, ItemDamage, EmpStrength, BallastFloraStrength);
         }
 
         public static string GetText(Identifier Identifier)
@@ -562,17 +579,17 @@ namespace Neurotrauma
 
         public static void Print(string Message) // Yes I'm lazy
         {
-            LuaCsLogger.Log("[NT] " + Message);
+            LuaCsLogger.Log("[Neurotrauma 2] " + Message);
         }
 
         public static void PrintError(string Message)
         {
-            LuaCsLogger.Log("[NT] " + Message, Color.Red);
+            LuaCsLogger.Log("[Neurotrauma 2] " + Message, Color.Red);
         }
 
         public static void PrintWarning(string Message)
         {
-            LuaCsLogger.Log("[NT] " + Message, Color.Orange);
+            LuaCsLogger.Log("[Neurotrauma 2] " + Message, Color.Orange);
         }
 
         // ---------------------------------------- Character Related Helper Functions -------------------------------------------------- \\
@@ -595,7 +612,7 @@ namespace Neurotrauma
         {
             float SkillLevel = GetSkillLevel(Character, SkillType);
             // Need to implement our NTConfig part here.
-            return Chance(Math.Clamp(SkillLevel/RequiredAmount,0,1));
+            return Chance(Math.Clamp(SkillLevel / RequiredAmount, 0, 1));
         }
         public static bool GetSurgerySkillRequirmentMet(Character Character, float RequiredAmount)
         {
@@ -616,7 +633,7 @@ namespace Neurotrauma
 
         public static void GiveSkillScaled(Character Character, Identifier SkillType, float Amount)
         {
-            GiveSkill(Character, SkillType, (float) (Amount * 0.001 / Math.Max(GetSkillLevel(Character,SkillType),1)));
+            GiveSkill(Character, SkillType, (float)(Amount * 0.001 / Math.Max(GetSkillLevel(Character, SkillType), 1)));
         }
 
         public static bool HasAbilityFlag(Character Character, AbilityFlags FlagType)
@@ -626,7 +643,7 @@ namespace Neurotrauma
 
         public static Vector2 GetVelocity(Character Character)
         {
-            if (Character == null || Character.AnimController == null || Character.AnimController.MainLimb == null || Character.AnimController.MainLimb.body == null) { return new Vector2(0,0); }
+            if (Character == null || Character.AnimController == null || Character.AnimController.MainLimb == null || Character.AnimController.MainLimb.body == null) { return new Vector2(0, 0); }
             return Character.AnimController.MainLimb.body.LinearVelocity;
         }
 
@@ -646,7 +663,7 @@ namespace Neurotrauma
         public static bool HasAffliction(Character Character, string Identifier = "", float MinAmount = 0)
         {
             if (Identifier == "" || Character.CharacterHealth == null) { return false; }
-            Affliction Aff = GetAffliction(Character,Identifier);
+            Affliction Aff = GetAffliction(Character, Identifier);
             if (Aff == null) { return false; } // Is the affliction null?
             float AffStrength = Aff.Strength;
             if (AffStrength > MinAmount)
@@ -659,7 +676,7 @@ namespace Neurotrauma
         public static bool HasAfflictionLimb(Character Character, string Identifier = "", LimbType GivenLimbType = LimbType.Torso, float MinAmount = 0)
         {
             if (Identifier == "" || Character.CharacterHealth == null) { return false; }
-            Affliction Aff = GetAfflictionLimb(Character,Identifier,GivenLimbType);
+            Affliction Aff = GetAfflictionLimb(Character, Identifier, GivenLimbType);
             if (Aff == null) { return false; } // Is the affliction null?
             float AffStrength = Aff.Strength;
             if (AffStrength > MinAmount)
@@ -724,7 +741,7 @@ namespace Neurotrauma
         {
             if (Identifier != "")  // Verify we have the info needed.
             {
-                if (!HasAfflictionLimb(Character,Identifier,GivenLimbType)) { return DefaultValue; }
+                if (!HasAfflictionLimb(Character, Identifier, GivenLimbType)) { return DefaultValue; }
                 float Strength = Character.CharacterHealth.GetAfflictionStrength(Identifier, GetCharacterLimb(Character, GivenLimbType), false);
                 return Strength;
             }
@@ -733,16 +750,16 @@ namespace Neurotrauma
 
         public static void SetAffliction(Character Character, string Identifier, float Strength, Character Aggressor, float PreviousStrength)
         {
-            SetAfflictionLimb(Character, Identifier, LimbType.Torso ,Strength, Aggressor, PreviousStrength);
+            SetAfflictionLimb(Character, Identifier, LimbType.Torso, Strength, Aggressor, PreviousStrength);
         }
 
         public static void SetAfflictionLimb(Character Character, string Identifier, LimbType GivenLimbType, float Strength, Character Aggressor, float PreviousStrength)
         {
             dynamic Check = AfflictionPrefab.Prefabs.TryGet(Identifier, out AfflictionPrefab Result); // Most likely a better way to acheive this but basically I don't know what this will return.
-            if (Result == null) {return;}
+            if (Result == null) { return; }
             AfflictionPrefab Prefab = Result;
             float Resistance = Character.CharacterHealth.GetResistance(Prefab, GivenLimbType);
-            if (Resistance > 1) {return;}
+            if (Resistance > 1) { return; }
             Strength = Strength * Character.CharacterHealth.MaxVitality / 100 / (1 - Resistance);
             Affliction Affliction = Prefab.Instantiate(Strength, Aggressor);
             bool RecalculateVitality = NTC.AfflictionsAffectingVitality.Contains(Identifier);
@@ -790,7 +807,7 @@ namespace Neurotrauma
             PrevStrength = Math.Clamp(PrevStrength, MinStrength, MaxStrength);
             if (PrevStrength != Strength)
             {
-                SetAffliction(Character,Identifier, Strength, Character, Strength);
+                SetAffliction(Character, Identifier, Strength, Character, Strength);
             }
         }
 
@@ -876,7 +893,7 @@ namespace Neurotrauma
         public static bool LimbIsTraumaticallyAmputated(Character Character, LimbType GivenLimbType)
         {
             GivenLimbType = NormalizeLimbType(GivenLimbType);
-            return HasAfflictionLimb(Character, CreateLimbAfflictionID(GivenLimbType,"amputation","ll_amputation") + "t", GivenLimbType);
+            return HasAfflictionLimb(Character, CreateLimbAfflictionID(GivenLimbType, "amputation", "ll_amputation") + "t", GivenLimbType);
         }
 
         public static bool LimbIsSurgicallyAmputated(Character Character, LimbType GivenLimbType)
@@ -895,7 +912,7 @@ namespace Neurotrauma
         {
             GivenLimbType = NormalizeLimbType(GivenLimbType);
             if (!LimbsToCheck.Contains(GivenLimbType)) { return; }
-            Dictionary<LimbType, string> LimbToAffliction = new Dictionary<LimbType, string>() { {LimbType.RightLeg,"gate_ta_rl" }, { LimbType.LeftLeg, "gate_ta_ll" }, 
+            Dictionary<LimbType, string> LimbToAffliction = new Dictionary<LimbType, string>() { {LimbType.RightLeg,"gate_ta_rl" }, { LimbType.LeftLeg, "gate_ta_ll" },
                                                                                                 { LimbType.RightArm, "gate_ta_ra" },{ LimbType.LeftArm, "gate_ta_la" },
                                                                                                 { LimbType.Head, "gate_ta_h" } };
             Dictionary<LimbType, string> LimbToItem = new Dictionary<LimbType, string>() { {LimbType.RightLeg,"rleg" }, { LimbType.LeftLeg, "lleg" },
@@ -936,8 +953,8 @@ namespace Neurotrauma
         public static void SurgicallyAmputateLimbAndGenerateItem(Character UsingCharacter, Character TargetCharacter, LimbType GivenLimbType) // Holy mouth full
         {
             Item PrevItem = GetItemInHeadWear(TargetCharacter);
-            if (PrevItem != null && GivenLimbType == LimbType.Head) { PrevItem.Drop(UsingCharacter,true); }
-            bool DropLimb = !LimbIsAmputated(TargetCharacter,GivenLimbType) || !HasAfflictionLimb(TargetCharacter,"gangrene",GivenLimbType,15);
+            if (PrevItem != null && GivenLimbType == LimbType.Head) { PrevItem.Drop(UsingCharacter, true); }
+            bool DropLimb = !LimbIsAmputated(TargetCharacter, GivenLimbType) || !HasAfflictionLimb(TargetCharacter, "gangrene", GivenLimbType, 15);
             if (DropLimb)
             {
                 Dictionary<LimbType, string> LimbToItem = new Dictionary<LimbType, string>() { {LimbType.RightLeg,"rleg" }, { LimbType.LeftLeg, "lleg" },
@@ -960,7 +977,7 @@ namespace Neurotrauma
 
         public static bool CanPerformSurgeryOn(Character Character)
         {
-            return HasAffliction(Character, "analgesia", 1) || HasAffliction(Character, "sym_unconsciousness", (float) .1);
+            return HasAffliction(Character, "analgesia", 1) || HasAffliction(Character, "sym_unconsciousness", (float).1);
         }
 
         public static void Fibrillate(Character Character, float Amount)
@@ -996,11 +1013,11 @@ namespace Neurotrauma
                     Tachycardia = 0;
                     Fibrillation = NewAmount - 20;
                 }
-                else 
+                else
                 {
                     Tachycardia = 0;
                     Fibrillation = 0;
-                    SetAffliction(Character, "cardiacarrest", 10,Character, CardiacArrest);
+                    SetAffliction(Character, "cardiacarrest", 10, Character, CardiacArrest);
                 }
             }
 
@@ -1023,7 +1040,7 @@ namespace Neurotrauma
         }
 #endif
 #endif
-        return null;
+            return null;
         }
 
         public static Client ClientFromName(string Name)
@@ -1039,7 +1056,7 @@ namespace Neurotrauma
         }
 #endif
 #endif
-        return null;
+            return null;
         }
     }
 }

@@ -1,11 +1,5 @@
 ﻿using Barotrauma.LuaCs.Compatibility;
 using Barotrauma.Networking;
-using Neurotrauma;
-using System.Drawing;
-using static Barotrauma.Items.Components.Fabricator;
-using static Barotrauma.Networking.MessageFragment;
-using static Barotrauma.PetBehavior.ItemProduction;
-using Color = Microsoft.Xna.Framework.Color;
 
 namespace Neurotrauma
 {

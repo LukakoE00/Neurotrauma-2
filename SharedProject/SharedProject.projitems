@@ -9,15 +9,33 @@
     <Import_RootNamespace>SharedProject</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)sharedsource\Config.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)sharedsource\ConfigData.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)sharedsource\Stats.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)sharedsource\Afflictions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)sharedsource\Config\Config.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)sharedsource\Config\ConfigData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)sharedsource\MP+SP Serverside\Blood.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)sharedsource\MP+SP Serverside\CharacterPatches.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)sharedsource\MP+SP Serverside\ConvertBloodPacks.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)sharedsource\MP+SP Serverside\Cpr.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)sharedsource\MP+SP Serverside\DynamicItems.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)sharedsource\MP+SP Serverside\FallDamage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)sharedsource\MP+SP Serverside\Items.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)sharedsource\MP+SP Serverside\LootCrates.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)sharedsource\MP+SP Serverside\LoveBots.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)sharedsource\MP+SP Serverside\ModConflict.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)sharedsource\MP+SP Serverside\MultiScalpel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)sharedsource\MP+SP Serverside\NTCompat.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)sharedsource\MP+SP Serverside\OnDamaged.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)sharedsource\MP+SP Serverside\OnFire.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)sharedsource\MP+SP Serverside\Screams.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)sharedsource\SharedInit.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)sharedsource\MP+SP Serverside\Stats.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)sharedsource\MP+SP Serverside\Afflictions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharedSource\AssemblySettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)sharedsource\HelperFunctions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)sharedsource\HumanUpdate.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)sharedsource\MP+SP Serverside\HumanUpdate.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharedSource\NeurotraumaInit.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)sharedsource\NTCompat.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)sharedsource\NTInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)sharedsource\MP+SP Serverside\NTInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)sharedsource\Config\" />
   </ItemGroup>
 </Project>
