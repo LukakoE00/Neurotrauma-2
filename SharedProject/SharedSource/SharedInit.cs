@@ -22,8 +22,9 @@ namespace Neurotrauma
             NTInfo.PrintNTInitInfo(); // Prints the current Neurotrauma information in the console.
             NTBloodTypes.InitializeBloodHooks(); // Initializes LuaHooks needed for Blood.cs
             InitLuaHooks(); // Initializes the Lua hooks at the bottom of this file
-            CharacterPatches.InitCharacterPatches();
-
+            CharacterPatches.InitCharacterPatches(); // Add the HarmonyPatches to change aiming
+            CauseScreams.InitScreamsHook(); // Initializes LuaHooks needed to toggle Screams
+            LoveBots.InitBotPatches(); // Add the HarmonyPatches to disable bot treatment
 
             // What a mess. - Lukako
             harmony = new Harmony("neurotrauma.server");
