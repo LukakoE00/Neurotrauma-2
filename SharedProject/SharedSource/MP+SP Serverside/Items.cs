@@ -1,4 +1,6 @@
-﻿namespace Neurotrauma;
+﻿using static Barotrauma.Networking.MessageFragment;
+
+namespace Neurotrauma;
 
 public class NTItemMethods
 {
@@ -97,7 +99,7 @@ public class NTItemMethods
         // Azathioprine
         RegisterItemUseFunction("immunosuppressant", infos =>
         {
-            bool success = HF.GetSkillRequirmentMet(infos.user, "Medical", 10);
+            bool success = HF.GetSkillRequirementMet(infos.user, "Medical", 10);
             HF.AddAffliction(infos.target, "afimmunosuppressant", success ? 5 : 3, infos.user);
         });
 
@@ -105,7 +107,7 @@ public class NTItemMethods
         RegisterItemUseFunction("ointment", (infos) =>
         {
 
-            bool success = HF.GetSkillRequirmentMet(infos.user, "medical", 10);
+            bool success = HF.GetSkillRequirementMet(infos.user, "medical", 10);
 
             HF.AddAfflictionLimb(infos.target, "ointmented", infos.targetLimb.type, success ? 120 : 60, infos.user);
             HF.AddAfflictionLimb(infos.target, "infectedwound", infos.targetLimb.type, success ? -72 : -24, infos.user);
@@ -128,7 +130,7 @@ public class NTItemMethods
 
             if (!HF.CanPerformSurgeryOn(infos.target) || HF.HasAfflictionLimb(infos.target, "surgeryincision", infos.targetLimb.type, 1)) { return; }
 
-            bool success = HF.GetSurgerySkillRequirmentMet(infos.user, 30);
+            bool success = HF.GetSurgerySkillRequirementMet(infos.user, 30);
 
             if (success)
             {
@@ -215,7 +217,7 @@ public class NTItemMethods
             List<string> cuttables = CuttableAfflictions;
             cuttables = [.. cuttables, .. TraumaShearsAfflictions];
 
-            if (HF.GetSkillRequirmentMet(infos.user, "medical", 10))
+            if (HF.GetSkillRequirementMet(infos.user, "medical", 10))
             {
                 foreach (var affID in cuttables)
                 {
@@ -237,7 +239,7 @@ public class NTItemMethods
 
             List<string> cuttables = CuttableAfflictions;
 
-            if (HF.GetSkillRequirmentMet(infos.user, "medical", 30))
+            if (HF.GetSkillRequirementMet(infos.user, "medical", 30))
             {
                 foreach (var affID in cuttables)
                 {
@@ -263,7 +265,7 @@ public class NTItemMethods
             HF.HasAfflictionLimb(infos.target, "surgeryincision", infos.targetLimb.type, (float)0.1) ||
             !HF.LimbIsExtremity(infos.targetLimb.type)) { return; }
 
-            if (HF.GetSkillRequirmentMet(infos.user, "medical", (float)40))
+            if (HF.GetSkillRequirementMet(infos.user, "medical", (float)40))
             {
                 HF.SetAfflictionLimb(infos.target, "bandaged", infos.targetLimb.type, 0, infos.user, 0);
                 HF.SetAfflictionLimb(infos.target, "gypsumcast", infos.targetLimb.type, 100, infos.user, 0);
@@ -477,7 +479,7 @@ public class NTItemMethods
             // Only work if not on cooldown
             if (infos.item.Condition < 50) return;
 
-            bool success = HF.GetSkillRequirmentMet(infos.user, "medical", 30);
+            bool success = HF.GetSkillRequirementMet(infos.user, "medical", 30);
 
             float BloodLossInduced = 3f;
 
@@ -745,7 +747,7 @@ public class NTItemMethods
 
             // Base NT has no stasis check ?
 
-            if (!HF.GetSkillRequirmentMet(infos.user, "medical", 30))
+            if (!HF.GetSkillRequirementMet(infos.user, "medical", 30))
             {
                 HF.AddAfflictionLimb(infos.target, "internaldamage", infos.targetLimb.type, 6, infos.user);
                 return;
@@ -816,7 +818,7 @@ public class NTItemMethods
             if (HF.HasAfflictionLimb(infos.target, "arteriesclamp", infos.targetLimb.type, 1)) return;
 
             // Failure
-            if (!HF.GetSkillRequirmentMet(infos.user, "medcial", 30))
+            if (!HF.GetSkillRequirementMet(infos.user, "medcial", 30))
             {
                 HF.AddAfflictionLimb(infos.target, "blunttrauma", infos.targetLimb.type, 6, infos.user);
                 return;
@@ -841,9 +843,11 @@ public class NTItemMethods
             if (infos.item.condition <= 0) return;
 
             // changing from 31 to somthing like 15 can stop easy station kill by using two blood pack in a row
-            if (!(HF.GetAfflictionStrength(infos.target, "bloodloos", 0) <= 31)) return;
+            // Minor Spelling Mistake :skull: - Lukako
+            float BloodLossStrength = HF.GetAfflictionStrength(infos.target, "bloodloss", 0);
+            if (BloodLossStrength >= 31f) return;
 
-            bool success = HF.GetSkillRequirmentMet(infos.user, "medical", 30);
+            bool success = HF.GetSkillRequirementMet(infos.user, "medical", 30);
             int bloodlossinduced = success ? 40 : 30;
 
             string bloodtype = NTBloodTypes.GetBloodType(infos.target);
@@ -854,11 +858,11 @@ public class NTItemMethods
             double sepsis = HF.GetAfflictionStrength(infos.target, "sepsis", 0);
 
             HF.SetAffliction(infos.target, "acidosis", (float) HF.GetAfflictionStrength(infos.target, "acidosis", 0) * (float) 0.9, infos.user, 0);
-            HF.SetAffliction(infos.target, "alkalosis", (float)HF.GetAfflictionStrength(infos.target, "alkalosis", 0) * (float)0.9, infos.user, 0);
+            HF.SetAffliction(infos.target, "alkalosis", (float) HF.GetAfflictionStrength(infos.target, "alkalosis", 0) * (float)0.9, infos.user, 0);
 
             HF.AddAffliction(infos.target, "bloodloss", bloodlossinduced, infos.user);
 
-            string btID = bloodtype == "o_minus" ? "antibloodloss2" : "bloodpack" + bloodtype ;
+            string btID = bloodtype == "o_negative" ? "antibloodloss2" : "bloodpack" + bloodtype ;
 
             // Inshallah ca marche -Cookie
             HF.GiveItemPlusFunction(btID, infos.user, (args) => {
@@ -883,7 +887,7 @@ public class NTItemMethods
             }, acidosis, alkalosis, sepsis);
 
 
-            infos.item.condition = 0;
+            infos.item.Condition = 0f;
             HF.GiveItem(infos.target, "ntsfx_syringe");
 
            

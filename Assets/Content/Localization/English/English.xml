@@ -561,40 +561,36 @@
 <entitydescription.emptybloodpack>An empty blood pack for the drawing of blood.</entitydescription.emptybloodpack>
   
 <!-- Blood Pack O+ -->
-<entityname.bloodpackoplus>Blood Pack O+</entityname.bloodpackoplus>
-<entitydescription.bloodpackoplus>Administerable to: O+, A+, B+, AB+</entitydescription.bloodpackoplus>
+<entityname.bloodpacko_positive>Blood Pack O+</entityname.bloodpacko_positive>
+<entitydescription.bloodpacko_positive>Administerable to: O+, A+, B+, AB+</entitydescription.bloodpacko_positive>
   
 <!-- Blood Pack O- -->
 <entityname.antibloodloss2>Blood Pack O-</entityname.antibloodloss2>
 <entitydescription.antibloodloss2>A blood pack that can be used on any patient.</entitydescription.antibloodloss2>
   
-<!-- Blood Pack O- -->
-<entityname.bloodpackominus>Blood Pack O-</entityname.bloodpackominus>
-<entitydescription.bloodpackominus>A blood pack that can be used on any patient.</entitydescription.bloodpackominus>
-  
 <!-- Blood Pack A+ -->
-<entityname.bloodpackaplus>Blood Pack A+</entityname.bloodpackaplus>
-<entitydescription.bloodpackaplus>Administerable to: A+, AB+</entitydescription.bloodpackaplus>
+<entityname.bloodpacka_positive>Blood Pack A+</entityname.bloodpacka_positive>
+<entitydescription.bloodpacka_positive>Administerable to: A+, AB+</entitydescription.bloodpacka_positive>
   
 <!-- Blood Pack A- -->
-<entityname.bloodpackaminus>Blood Pack A-</entityname.bloodpackaminus>
-<entitydescription.bloodpackaminus>Administerable to: A-, A+, AB-, AB+</entitydescription.bloodpackaminus>
+<entityname.bloodpacka_negative>Blood Pack A-</entityname.bloodpacka_negative>
+<entitydescription.bloodpacka_negative>Administerable to: A-, A+, AB-, AB+</entitydescription.bloodpacka_negative>
   
 <!-- Blood Pack B+ -->
-<entityname.bloodpackbplus>Blood Pack B+</entityname.bloodpackbplus>
-<entitydescription.bloodpackbplus>Administerable to: B+, AB+</entitydescription.bloodpackbplus>
+<entityname.bloodpackb_positive>Blood Pack B+</entityname.bloodpackb_positive>
+<entitydescription.bloodpackb_positive>Administerable to: B+, AB+</entitydescription.bloodpackb_positive>
   
 <!-- Blood Pack B- -->
-<entityname.bloodpackbminus>Blood Pack B-</entityname.bloodpackbminus>
-<entitydescription.bloodpackbminus>Administerable to: B-, B+, AB-, AB+</entitydescription.bloodpackbminus>
+<entityname.bloodpackb_negative>Blood Pack B-</entityname.bloodpackb_negative>
+<entitydescription.bloodpackb_negative>Administerable to: B-, B+, AB-, AB+</entitydescription.bloodpackb_negative>
   
 <!-- Blood Pack AB+ -->
-<entityname.bloodpackabplus>Blood Pack AB+</entityname.bloodpackabplus>
-<entitydescription.bloodpackabplus>Administerable to: AB+</entitydescription.bloodpackabplus>
+<entityname.bloodpackab_positive>Blood Pack AB+</entityname.bloodpackab_positive>
+<entitydescription.bloodpackab_positive>Administerable to: AB+</entitydescription.bloodpackab_positive>
   
 <!-- Blood Pack AB- -->
-<entityname.bloodpackabminus>Blood Pack AB-</entityname.bloodpackabminus>
-<entitydescription.bloodpackabminus>Administerable to: AB-, AB+</entitydescription.bloodpackabminus>
+<entityname.bloodpackab_negative>Blood Pack AB-</entityname.bloodpackab_negative>
+<entitydescription.bloodpackab_negative>Administerable to: AB-, AB+</entitydescription.bloodpackab_negative>
   
 <!-- Donor card O- -->
 <entityname.o_negativecard>Donor card O-</entityname.o_negativecard>

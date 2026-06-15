@@ -612,13 +612,13 @@ namespace Neurotrauma
         {
             return Character.Info.Job.GetSkillLevel(SkillType);
         }
-        public static bool GetSkillRequirmentMet(Character Character, Identifier SkillType, float RequiredAmount)
+        public static bool GetSkillRequirementMet(Character Character, Identifier SkillType, float RequiredAmount)
         {
             float SkillLevel = GetSkillLevel(Character, SkillType);
             // Need to implement our NTConfig part here.
             return Chance(Math.Clamp(SkillLevel / RequiredAmount, 0, 1));
         }
-        public static bool GetSurgerySkillRequirmentMet(Character Character, float RequiredAmount)
+        public static bool GetSurgerySkillRequirementMet(Character Character, float RequiredAmount)
         {
             float SkillLevel = GetSkillLevel(Character, "surgery");
             // Need to implement our NTConfig part here.
@@ -730,15 +730,17 @@ namespace Neurotrauma
             return Character.CharacterHealth.GetAffliction(Identifier, GetCharacterLimb(Character, GivenLimbType)); // No error handling on this one, gonna need someone smarter to do that.
         }
 
-        public static float GetAfflictionStrength(Character Character, String Identifier = "", float DefaultValue = 0)
+        // Previous iteration was broken - Lukako
+        public static float GetAfflictionStrength(Character Character, string Identifier = "", float DefaultValue = 0)
         {
-            if (Identifier != "")  // Verify we have the info needed.
+            Affliction aff = GetAffliction(Character, Identifier);
+
+            if (aff == null)
             {
-                if (!HasAffliction(Character, Identifier)) { return DefaultValue; }
-                float Strength = Character.CharacterHealth.GetAfflictionStrength(Identifier, GetCharacterLimb(Character, LimbType.Torso), false);
-                return Strength;
+                return DefaultValue;
             }
-            return DefaultValue;
+
+            return aff.Strength;
         }
 
         public static float GetAfflictionStrengthLimb(Character Character, LimbType GivenLimbType = LimbType.Torso, String Identifier = "", float DefaultValue = 0)
