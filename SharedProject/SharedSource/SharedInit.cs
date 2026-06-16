@@ -25,6 +25,7 @@ namespace Neurotrauma
             CharacterPatches.InitCharacterPatches(); // Add the HarmonyPatches to change aiming
             CauseScreams.InitScreamsHook(); // Initializes LuaHooks needed to toggle Screams
             LoveBots.InitBotPatches(); // Add the HarmonyPatches to disable bot treatment
+            CPRHooks.InitCPRHooks(); // Add the CPR Success/Failure hooks
 
             // What a mess. - Lukako
             harmony = new Harmony("neurotrauma.server");
