@@ -23,7 +23,7 @@ namespace Neurotrauma
         private static List<string> AfflictionsMEDIUM = [];
         private static List<string> AfflictionsHIGH = [];
 
-        public static void RegisterAffliciton(string id, NTAffliction affliction)
+        public static void RegisterAffliction(string id, NTAffliction affliction)
         {
             if (!Afflictions.ContainsKey(id))
             {
@@ -97,6 +97,15 @@ namespace Neurotrauma
             return Afflictions.ContainsKey(id);
         }
 
+        public static NTAffliction IDToNTAff(string id)
+        {
+            if (Afflictions.ContainsKey(id))
+            {
+                return Afflictions[id];
+            }
+            return null;
+        }
+
     }
 
     /// <summary>
@@ -107,7 +116,7 @@ namespace Neurotrauma
     {
         public double MinStrength { get; set; }
         public double MaxStrength { get; set; }
-        public List<NTAffliction> DependentAfflictions { get; set; } = [];
+        public List<string> DependentAfflictions { get; set; } = [];
         public AfflictionPriority Priority { get; set; }
         public string ID = "";
         public Action<HumanUpdate.NTHuman,string,LimbType> UpdateAction = 
@@ -116,7 +125,7 @@ namespace Neurotrauma
                 // Insert your Affliction Update in here.
             };
         public NTAffliction(double NewMinStrength, double NewMaxStrength,
-                                        List<NTAffliction> NewDependentAfflictions, AfflictionPriority NewPriority = AfflictionPriority.HIGH)
+                                        List<string> NewDependentAfflictions, AfflictionPriority NewPriority = AfflictionPriority.HIGH)
         {
             MinStrength = NewMinStrength;
             MaxStrength = NewMaxStrength;
@@ -127,13 +136,13 @@ namespace Neurotrauma
 
     public class NTNonLimbAffliction : NTAffliction
     {
-        public Action<HumanUpdate.NTHuman, string, LimbType, Dictionary<string, double>> UpdateAction =
-            (HumanUpdate.NTHuman C, string ID, LimbType Limb, Dictionary<string, double> AffStrength) =>
+        public Action<HumanUpdate.NTHuman, string, LimbType, HumanUpdate.NTHuman.CharacterAfflictions.NTHumanNonLimbAffData> UpdateAction =
+            (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHuman.CharacterAfflictions.NTHumanNonLimbAffData AffData) =>
             {
                 // Insert your Affliction Update in here.
             };
         
-        public NTNonLimbAffliction(double NewMinStrength, double NewMaxStrength, List<NTAffliction> NewDependentAfflictions, AfflictionPriority NewPriority = AfflictionPriority.HIGH) : 
+        public NTNonLimbAffliction(double NewMinStrength, double NewMaxStrength, List<string> NewDependentAfflictions, AfflictionPriority NewPriority = AfflictionPriority.HIGH) : 
                                         base(NewMinStrength, NewMaxStrength, NewDependentAfflictions, NewPriority)
         {
             MinStrength = NewMinStrength;
@@ -145,14 +154,14 @@ namespace Neurotrauma
 
     public class NTLimbAffliction : NTAffliction
     {
-        public Action<HumanUpdate.NTHuman, string, LimbType, Dictionary<string, Dictionary<LimbType, double>>> UpdateAction =
-            (HumanUpdate.NTHuman C, string ID, LimbType Limb, Dictionary<string, Dictionary<LimbType, double>> AffStrength) =>
+        public Action<HumanUpdate.NTHuman, string, LimbType, HumanUpdate.NTHuman.CharacterAfflictions.NTHumanLimbAffData> UpdateAction =
+            (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHuman.CharacterAfflictions.NTHumanLimbAffData AffData) =>
             {
                 // Insert your Affliction Update in here.
             };
 
         public NTLimbAffliction(double NewMinStrength, double NewMaxStrength,
-                                         List<NTAffliction> NewDependentAfflictions, AfflictionPriority NewPriority = AfflictionPriority.HIGH) :
+                                         List<string> NewDependentAfflictions, AfflictionPriority NewPriority = AfflictionPriority.HIGH) :
                                         base(NewMinStrength, NewMaxStrength, NewDependentAfflictions, NewPriority)
         {
             MinStrength = NewMinStrength;
@@ -166,14 +175,14 @@ namespace Neurotrauma
 
     public class NTBloodAffliction : NTAffliction
     {
-        public Action<HumanUpdate.NTHuman, string, LimbType, Dictionary<string, double>> UpdateAction =
-            (HumanUpdate.NTHuman C, string ID, LimbType Limb, Dictionary<string, double> AffStrength) =>
+        public Action<HumanUpdate.NTHuman, string, LimbType, HumanUpdate.NTHuman.CharacterAfflictions.NTHumanBloodAffData> UpdateAction =
+            (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHuman.CharacterAfflictions.NTHumanBloodAffData AffData) =>
             {
                 // Insert your Affliction Update in here.
             };
 
         public NTBloodAffliction(double NewMinStrength, double NewMaxStrength,
-                                        List<NTAffliction> NewDependentAfflictions, AfflictionPriority NewPriority = AfflictionPriority.HIGH) :
+                                        List<string> NewDependentAfflictions, AfflictionPriority NewPriority = AfflictionPriority.HIGH) :
                                         base(NewMinStrength, NewMaxStrength, NewDependentAfflictions, NewPriority)
         {
             MinStrength = NewMinStrength;
@@ -238,21 +247,21 @@ namespace Neurotrauma
             AfflictionsToAdd["Example1"] = new(0, 100, []); // Create the new affliction.
             AfflictionsToAdd["Example1"].ID = "Example1"; // Set the ID.
             AfflictionsToAdd["Example1"].UpdateAction = // Set the update function.
-                (HumanUpdate.NTHuman C, string ID, LimbType Limb, Dictionary<string, double> AffStrength) =>
+                (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHuman.CharacterAfflictions.NTHumanNonLimbAffData AffData) =>
             {
                 // To quickly Access our affliction strength do 'AffStrength[ID]' and boom. You now have the strength of this affliction.
             };
 
-            AfflictionsToAdd["Example2"] = new(0, 100, [AfflictionsToAdd["Example1"]]); // This affliction now has "Example1" affliction as a dependency.
+            AfflictionsToAdd["Example2"] = new(0, 100, ["Example1"]); // This affliction now has "Example1" affliction as a dependency.
             AfflictionsToAdd["Example2"].UpdateAction =
-                (HumanUpdate.NTHuman C, string ID, LimbType Limb, Dictionary<string, double> AffStrength) =>
+                (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHuman.CharacterAfflictions.NTHumanNonLimbAffData AffData) =>
                 {
                     // To quickly Access our affliction strength do 'AffStrength[ID]' and boom. You now have the strength of this affliction.
                 };
 
             foreach (KeyValuePair<string,NTNonLimbAffliction> Pair in AfflictionsToAdd)
             {
-                NTAfflictions.RegisterAffliciton(Pair.Key, Pair.Value);
+                NTAfflictions.RegisterAffliction(Pair.Key, Pair.Value);
             }
         }
 
@@ -260,14 +269,14 @@ namespace Neurotrauma
         {
             LimbAfflictionsToAdd["Example1Limb"] = new(0, 100, []);
             LimbAfflictionsToAdd["Example1Limb"].UpdateAction =
-                (HumanUpdate.NTHuman C, string ID, LimbType Limb, Dictionary<string, Dictionary<LimbType, double>> AffStrength) =>
+                (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHuman.CharacterAfflictions.NTHumanLimbAffData AffData) =>
             {
                 // To quickly Access our affliction strength do 'AffStrength[ID][Limb]' and boom. You now have the strength of this affliction.
             };
 
             foreach (KeyValuePair<string, NTLimbAffliction> Pair in LimbAfflictionsToAdd)
             {
-                NTAfflictions.RegisterAffliciton(Pair.Key, Pair.Value);
+                NTAfflictions.RegisterAffliction(Pair.Key, Pair.Value);
             }
         }
 
@@ -275,14 +284,14 @@ namespace Neurotrauma
         {
             BloodAfflictionsToAdd["Example1Blood"] = new(0, 100, []);
             BloodAfflictionsToAdd["Example1Blood"].UpdateAction =
-                (HumanUpdate.NTHuman C, string ID, LimbType Limb, Dictionary<string, double> AffStrength) =>
+                (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHuman.CharacterAfflictions.NTHumanBloodAffData AffData) =>
             {
                 // To quickly Access our affliction strength do 'AffStrength[ID]' and boom. You now have the strength of this affliction.
             };
 
             foreach (KeyValuePair<string, NTBloodAffliction> Pair in BloodAfflictionsToAdd)
             {
-                NTAfflictions.RegisterAffliciton(Pair.Key, Pair.Value);
+                NTAfflictions.RegisterAffliction(Pair.Key, Pair.Value);
             }
         }
     }
