@@ -115,7 +115,7 @@ public class NTItemMethods
         // REWRITTEN FROM XML
         RegisterItemUseFunction("alienblood", infos =>
         {
-            if (HF.GetSkillRequirmentMet(infos.user, "medical", 55f))
+            if (HF.GetSkillRequirementMet(infos.user, "medical", 55f))
             {
                 HF.AddAffliction(infos.target, "bloodloss", 20f, infos.user);
                 HF.AddAffliction(infos.target, "hemotransfusionshock", 100f, infos.user);
@@ -137,7 +137,7 @@ public class NTItemMethods
         // REWRITTEN FROM XML
         RegisterItemUseFunction("antiparalysis", infos =>
         {
-            if (HF.GetSkillRequirmentMet(infos.user, "medical", 64f))
+            if (HF.GetSkillRequirementMet(infos.user, "medical", 64f))
             {
                 HF.AddAffliction(infos.target, "paralysisresistance", 800f, infos.user);
                 HF.AddAffliction(infos.target, "psychosis", 5f, infos.user);
