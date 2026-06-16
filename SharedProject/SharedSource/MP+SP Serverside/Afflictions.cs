@@ -249,15 +249,17 @@ namespace Neurotrauma
             AfflictionsToAdd["Example1"].UpdateAction = // Set the update function.
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHuman.CharacterAfflictions.NTHumanNonLimbAffData AffData) =>
             {
-                // To quickly Access our affliction strength do 'AffStrength[ID]' and boom. You now have the strength of this affliction.
+                AffData.Strength = 100; // Access the affliction strength like so.
+                C.GetAffData()["Example2"].Strength = 0; // Access other afflictions like this.
             };
 
             AfflictionsToAdd["Example2"] = new(0, 100, ["Example1"]); // This affliction now has "Example1" affliction as a dependency.
+            AfflictionsToAdd["Example2"].ID = "Example2";
             AfflictionsToAdd["Example2"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHuman.CharacterAfflictions.NTHumanNonLimbAffData AffData) =>
-                {
-                    // To quickly Access our affliction strength do 'AffStrength[ID]' and boom. You now have the strength of this affliction.
-                };
+            {
+                // Same idea here.
+            };
 
             foreach (KeyValuePair<string,NTNonLimbAffliction> Pair in AfflictionsToAdd)
             {
@@ -268,10 +270,12 @@ namespace Neurotrauma
         private void AddLimbAfflictions()
         {
             LimbAfflictionsToAdd["Example1Limb"] = new(0, 100, []);
+            LimbAfflictionsToAdd["Example1Limb"].ID = "Example1Limb";
             LimbAfflictionsToAdd["Example1Limb"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHuman.CharacterAfflictions.NTHumanLimbAffData AffData) =>
             {
-                // To quickly Access our affliction strength do 'AffStrength[ID][Limb]' and boom. You now have the strength of this affliction.
+                // Bit different here but same idea.
+                AffData.Strength[Limb] = 100; // Since this is a limb affliction we gotta access the limb specific strength.
             };
 
             foreach (KeyValuePair<string, NTLimbAffliction> Pair in LimbAfflictionsToAdd)
@@ -283,10 +287,11 @@ namespace Neurotrauma
         private void AddBloodAfflictions()
         {
             BloodAfflictionsToAdd["Example1Blood"] = new(0, 100, []);
+            BloodAfflictionsToAdd["Example1Blood"].ID = "Example1Blood";
             BloodAfflictionsToAdd["Example1Blood"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHuman.CharacterAfflictions.NTHumanBloodAffData AffData) =>
             {
-                // To quickly Access our affliction strength do 'AffStrength[ID]' and boom. You now have the strength of this affliction.
+                // Same as non limb.
             };
 
             foreach (KeyValuePair<string, NTBloodAffliction> Pair in BloodAfflictionsToAdd)

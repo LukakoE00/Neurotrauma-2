@@ -56,6 +56,9 @@ public class HumanUpdate
                     string ID = Pair.Key;
                     CharacterAfflictions.NTHumanNonLimbAffData AffData = Pair.Value;
                     NTNonLimbAffliction Aff = AffData.AffTemplate;
+
+                    if (!Priorities.Contains(Aff.Priority)) continue; // Skip to the next affliction, we don't have the same priority currently.
+
                     AffData.Strength = HF.GetAfflictionStrength(Human, ID);
                     double PrevStrength = AffData.Strength;
                     Aff.UpdateAction(this, ID, LimbType.Torso, AffData);
@@ -73,6 +76,9 @@ public class HumanUpdate
                         string ID = Pair.Key;
                         CharacterAfflictions.NTHumanLimbAffData AffData = Pair.Value;
                         NTLimbAffliction Aff = AffData.AffTemplate;
+
+                        if (!Priorities.Contains(Aff.Priority)) continue;
+
                         AffData.Strength[Limb] = HF.GetAfflictionStrengthLimb(Human,Limb,ID);
                         double PrevStrength = AffData.Strength[Limb];
                         Aff.UpdateAction(this, ID, Limb, AffData);
@@ -89,6 +95,9 @@ public class HumanUpdate
                     string ID = Pair.Key;
                     CharacterAfflictions.NTHumanBloodAffData AffData = Pair.Value;
                     NTBloodAffliction Aff = AffData.AffTemplate;
+
+                    if (!Priorities.Contains(Aff.Priority)) continue;
+
                     AffData.Strength = HF.GetAfflictionStrength(Human, ID);
                     double PrevStrength = AffData.Strength;
                     Aff.UpdateAction(this, ID, LimbType.Torso, AffData);
@@ -459,20 +468,6 @@ public class HumanUpdate
     private void Update(List<AfflictionPriority> priorities)
     {
         List<Character> CHList = Character.CharacterList;
-
-        //foreach (Character c in CHList) // This is the old fetching Character for Update system. We're now using a hook method instead. Leaving this here so we can go back incase it breaks.
-        //{
-            //if (c.isDead) continue; // Skip to next iteration
-
-            //if (c.IsHuman && c.Enabled)
-            //{
-                //AddHumanToUpdate(c);
-            //}
-            //else
-            //{
-                //AddMonsterToUpdate(c);
-            //}
-        //}
 
         UpdateHumans(priorities);
 
