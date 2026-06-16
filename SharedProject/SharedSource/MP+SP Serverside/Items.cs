@@ -94,6 +94,65 @@ public class NTItemMethods
 
     public static void DefineAllItems()
     {
+        RegisterItemUseFunction("adrenaline", infos =>
+        {
+            HF.AddAffliction(infos.target, "afadrenaline", 55, infos.user);
+            HF.AddAffliction(infos.target, "adrenalinerush", 8, infos.user);
+    
+            if (HF.HasAffliction(infos.target, "cardiacarrest", 0.1f))
+            {
+                HF.AddAffliction(infos.target, "cardiacarrest", -100, infos.user);
+                HF.AddAffliction(infos.target, "fibrillation", 20, infos.user);
+            }
+
+            HF.RemoveItem(infos.item);
+            HF.GiveItem(infos.target, "ntsfx_syringe");
+
+        });
+
+        // REWRITTEN FROM XML
+        RegisterItemUseFunction("alienblood", infos =>
+        {
+            if (HF.GetSkillRequirmentMet(infos.user, "medical", 55f))
+            {
+                HF.AddAffliction(infos.target, "bloodloss", 20f, infos.user);
+                HF.AddAffliction(infos.target, "hemotransfusionshock", 100f, infos.user);
+                HF.AddAffliction(infos.target, "psychosis", 30f, infos.user);
+                HF.AddAffliction(infos.target, "bloodpressure", 20f, infos.user);
+
+            } else
+            {
+                HF.AddAffliction(infos.target, "bloodloss", 15f, infos.user);
+                HF.AddAffliction(infos.target, "hemotransfusionshock", 100f, infos.user);
+                HF.AddAffliction(infos.target, "psychosis", 30f, infos.user);
+                HF.AddAffliction(infos.target, "bloodpressure", 15f, infos.user);
+            }
+
+            HF.RemoveItem(infos.item);
+            HF.GiveItem(infos.target, "ntsfx_syringe");
+        });
+
+        // REWRITTEN FROM XML
+        RegisterItemUseFunction("antiparalysis", infos =>
+        {
+            if (HF.GetSkillRequirmentMet(infos.user, "medical", 64f))
+            {
+                HF.AddAffliction(infos.target, "paralysisresistance", 800f, infos.user);
+                HF.AddAffliction(infos.target, "psychosis", 5f, infos.user);
+                HF.AddAffliction(infos.target, "anesthesia", -200f, infos.user);
+                HF.AddAffliction(infos.target, "afanaesthetic", -200f, infos.user);
+            }
+            else
+            {
+
+                // TODO Apply it over time
+                
+            }
+
+            HF.RemoveItem(infos.item);
+            HF.GiveItem(infos.target, "ntsfx_syringe");
+        });
+
         // Azathioprine
         RegisterItemUseFunction("immunosuppressant", infos =>
         {
@@ -887,6 +946,44 @@ public class NTItemMethods
             HF.GiveItem(infos.target, "ntsfx_syringe");
 
            
+        });
+
+        RegisterItemUseFunction("propofol", infos =>
+        {
+            float anesthesiaStrength = HF.GetAfflictionStrength(infos.target, "anesthesia", 0);
+            float anesthesiaGained = 1;
+
+            if (HF.HasTalent(infos.user, "ntsp_propofol")) anesthesiaGained = 15;
+
+            if (anesthesiaStrength < 15)
+            {
+                HF.AddAffliction(infos.target, "anesthesia", anesthesiaGained, infos.user);
+            } else
+            {
+                anesthesiaGained = 15 - anesthesiaStrength;
+                HF.AddAffliction(infos.target, "anesthesia", anesthesiaGained, infos.user);
+            }
+
+            HF.AddAffliction(infos.target, "afanaesthetic", 100, infos.user);
+            HF.RemoveItem(infos.item);
+            HF.GiveItem(infos.target, "ntsfx_syringe");
+
+        });
+
+        RegisterItemUseFunction("streptokinase", infos =>
+        {
+            HF.AddAffliction(infos.target, "heartattack", -100, infos.user);
+            HF.AddAffliction(infos.target, "hemotransfusionshock", -100, infos.user);
+            HF.AddAffliction(infos.target, "afstreptokinase", 50, infos.user);
+
+            if (HF.HasAffliction(infos.target, "stroke"))
+            {
+                HF.AddAffliction(infos.target, "stroke", 5, infos.user);
+                HF.AddAffliction(infos.target, "cerebralhypoxia", 10, infos.user);
+            }
+
+            HF.RemoveItem(infos.item);
+            HF.GiveItem(infos.target, "ntsfx_syringe");
         });
     }
 

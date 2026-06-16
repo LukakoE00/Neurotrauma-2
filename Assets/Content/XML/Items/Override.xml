@@ -166,27 +166,6 @@
             <Holdable canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" holdangle="10" handle1="0,0" msg="ItemMsgPickUpSelect">
                 <RequiredSkill identifier="medical" level="55"/>
 
-                <StatusEffect type="OnUse" target="This" Condition="-100.0" disabledeltatime="true">
-                    <Sound file="Content/Items/Medical/Syringe.ogg" range="500" />
-                </StatusEffect>
-
-                <StatusEffect statuseffecttags="medical" type="OnSuccess" target="UseTarget" multiplyafflictionsbymaxvitality="true" disabledeltatime="true">
-                    <ReduceAffliction identifier="bloodloss" amount="20" />
-                    <Affliction identifier="hemotransfusionshock" amount="100"/>
-                    <Affliction identifier="psychosis" amount="30" />
-                    <Affliction identifier="bloodpressure" amount="20" />
-                </StatusEffect>
-
-                <StatusEffect statuseffecttags="medical" type="OnFailure" target="UseTarget" multiplyafflictionsbymaxvitality="true" disabledeltatime="true">
-                    <ReduceAffliction identifier="bloodloss" amount="15" />
-                    <Affliction identifier="hemotransfusionshock" amount="100"/>
-                    <Affliction identifier="psychosis" amount="30" />
-                    <Affliction identifier="bloodpressure" amount="15" />
-                </StatusEffect>
-
-                <StatusEffect type="OnBroken" target="This">
-                    <Remove/>
-                </StatusEffect>
             </Holdable>
 
             <SkillRequirementHint identifier="medical" level="55"/>
@@ -1585,34 +1564,18 @@
 
             <MeleeWeapon canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="40,5" handle1="0,0" holdangle="220" reload="1.0" msg="ItemMsgPickUpSelect" HitOnlyCharacters="true">
                 <RequiredSkill identifier="medical" level="64" />
-                <StatusEffect type="OnSuccess" target="This" Condition="-100.0" setvalue="true"/>
-                <StatusEffect type="OnFailure" target="This" Condition="-100.0" setvalue="true"/>
-                <StatusEffect statuseffecttags="medical" type="OnSuccess" target="UseTarget" duration="1.0">
-                    <Affliction identifier="paralysisresistance" amount="800" />
-                    <Affliction identifier="psychosis" amount="5" />
-                    <ReduceAffliction identifier="anesthesia" amount="200" />
-                    <ReduceAffliction identifier="afanaesthetic" amount="200" />
-                </StatusEffect>
+                
                 <StatusEffect statuseffecttags="medical" type="OnFailure" target="UseTarget" duration="60.0">
                     <Affliction identifier="paralysisresistance" amount="6.5" />
                     <Affliction identifier="psychosis" amount="0.75" />
                     <ReduceAffliction identifier="anesthesia" amount="3" />
                     <ReduceAffliction identifier="afanaesthetic" amount="3" />
                 </StatusEffect>
-                <StatusEffect type="OnSuccess" target="UseTarget">
-                    <Conditional entitytype="eq Character"/>
-                    <Sound file="Content/Items/Medical/Syringe.ogg" range="500" />
-                </StatusEffect>
-                <StatusEffect type="OnFailure" target="UseTarget">
-                    <Conditional entitytype="eq Character"/>
-                    <Sound file="Content/Items/Medical/Syringe.ogg" range="500" />
-                </StatusEffect>
+                
                 <StatusEffect type="OnImpact" target="UseTarget" multiplyafflictionsbymaxvitality="true" AllowWhenBroken="true">
                     <Affliction identifier="stun" amount="0.1" />
                 </StatusEffect>
-                <StatusEffect type="OnBroken" target="This">
-                    <Remove />
-                </StatusEffect>
+
             </MeleeWeapon>
 
             <Projectile characterusable="false" launchimpulse="18.0" sticktocharacters="true" launchrotation="-90" inheritstatuseffectsfrom="MeleeWeapon" inheritrequiredskillsfrom="MeleeWeapon" />
