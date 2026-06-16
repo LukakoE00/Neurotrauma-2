@@ -114,11 +114,33 @@ namespace Neurotrauma
     /// </summary>
     public abstract class NTAffliction // Added to NTHuman updatingAfflictions
     {
+        /// <summary>
+        /// Should this affliction always be running? If on, is always added to the updating afflictions list. Off by default.
+        /// </summary>
+        public bool Const = false;
+        /// <summary>
+        /// The minimum strength the affliction can have.
+        /// </summary>
         public double MinStrength { get; set; }
+        /// <summary>
+        /// The maximum strength the affliction can have.
+        /// </summary>
         public double MaxStrength { get; set; }
+        /// <summary>
+        /// The list of ID's of our dependent afflictions. These afflictions get added to our updating afflictions list on update.
+        /// </summary>
         public List<string> DependentAfflictions { get; set; } = [];
+        /// <summary>
+        /// The priority of our affliction, higher intervals meaner more updates.
+        /// </summary>
         public AfflictionPriority Priority { get; set; }
+        /// <summary>
+        /// The ID of the affliction.
+        /// </summary>
         public string ID = "";
+        /// <summary>
+        /// The main update function of our affliction.
+        /// </summary>
         public Action<HumanUpdate.NTHuman,string,LimbType> UpdateAction = 
             (HumanUpdate.NTHuman C, string ID, LimbType Limb) => 
             { 
