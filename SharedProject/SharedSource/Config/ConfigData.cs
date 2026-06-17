@@ -12,13 +12,13 @@ namespace Neurotrauma
                     {
                         ["NT_header1"] = new ConfigEntry
                         {
-                            Name = "Neurotrauma",
+                            Name = TextManager.Get("ntconfigname_header1"),
                             Type = ConfigEntryType.Category,
                         },
 
                         ["NT_dislocationChance"] = new ConfigEntry
                         {
-                            Name = "Dislocation chance multiplier",
+                            Name = TextManager.Get("ntconfigname_dislocationchance"),
                             Default = 1f,
                             Range = new float[] { 0, 100 },
                             Type = ConfigEntryType.Float,
@@ -28,7 +28,7 @@ namespace Neurotrauma
 
                         ["NT_fractureChance"] = new ConfigEntry
                         {
-                            Name = "Fracture chance multiplier",
+                            Name = TextManager.Get("ntconfigname_fracturechance"),
                             Default = 1f,
                             Range = new float[] { 0, 100 },
                             Type = ConfigEntryType.Float,
@@ -38,7 +38,7 @@ namespace Neurotrauma
 
                         ["NT_pneumothoraxChance"] = new ConfigEntry
                         {
-                            Name = "Pneumothorax chance multiplier",
+                            Name = TextManager.Get("ntconfigname_pneumothoraxchance"),
                             Default = 1f,
                             Range = new float[] { 0, 100 },
                             Type = ConfigEntryType.Float,
@@ -48,7 +48,7 @@ namespace Neurotrauma
 
                         ["NT_tamponadeChance"] = new ConfigEntry
                         {
-                            Name = "Tamponade chance multiplier",
+                            Name = TextManager.Get("ntconfigname_tamponadechance"),
                             Default = 1f,
                             Range = new float[] { 0, 100 },
                             Type = ConfigEntryType.Float,
@@ -58,7 +58,7 @@ namespace Neurotrauma
 
                         ["NT_heartattackChance"] = new ConfigEntry
                         {
-                            Name = "Heart attack chance multiplier",
+                            Name = TextManager.Get("ntconfigname_heartattackchance"),
                             Default = 1f,
                             Range = new float[] { 0, 100 },
                             Type = ConfigEntryType.Float,
@@ -68,7 +68,7 @@ namespace Neurotrauma
 
                         ["NT_strokeChance"] = new ConfigEntry
                         {
-                            Name = "Stroke chance multiplier",
+                            Name = TextManager.Get("ntconfigname_strokechance"),
                             Default = 1f,
                             Range = new float[] { 0, 100 },
                             Type = ConfigEntryType.Float,
@@ -78,7 +78,7 @@ namespace Neurotrauma
 
                         ["NT_infectionRate"] = new ConfigEntry
                         {
-                            Name = "Infection rate multiplier",
+                            Name = TextManager.Get("ntconfigname_infectionrate"),
                             Default = 1f,
                             Range = new float[] { 0, 100 },
                             Type = ConfigEntryType.Float,
@@ -88,7 +88,7 @@ namespace Neurotrauma
 
                         ["NT_SepsisRate"] = new ConfigEntry
                         {
-                            Name = "Sepsis rate multiplier",
+                            Name = TextManager.Get("ntconfigname_sepsisrate"),
                             Default = 1f,
                             Range = new float[] { 0, 100 },
                             Type = ConfigEntryType.Float,
@@ -98,7 +98,7 @@ namespace Neurotrauma
 
                         ["NT_CPRFractureChance"] = new ConfigEntry
                         {
-                            Name = "CPR fracture chance multiplier",
+                            Name = TextManager.Get("ntconfigname_cprfracturechance"),
                             Default = 1f,
                             Range = new float[] { 0, 100 },
                             Type = ConfigEntryType.Float,
@@ -108,7 +108,7 @@ namespace Neurotrauma
 
                         ["NT_traumaticAmputationChance"] = new ConfigEntry
                         {
-                            Name = "Traumatic amputation chance multiplier",
+                            Name = TextManager.Get("ntconfigname_traumaticamputationchance"),
                             Default = 1f,
                             Range = new float[] { 0, 100 },
                             Type = ConfigEntryType.Float,
@@ -118,7 +118,7 @@ namespace Neurotrauma
 
                         ["NT_neurotraumaGain"] = new ConfigEntry
                         {
-                            Name = "Neurotrauma gain rate",
+                            Name = TextManager.Get("ntconfigname_neurotraumagain"),
                             Default = 1f,
                             Range = new float[] { 0, 100 },
                             Type = ConfigEntryType.Float,
@@ -128,7 +128,7 @@ namespace Neurotrauma
 
                         ["NT_organDamageGain"] = new ConfigEntry
                         {
-                            Name = "Organ damage gain rate",
+                            Name = TextManager.Get("ntconfigname_organdamagegain"),
                             Default = 1f,
                             Range = new float[] { 0, 100 },
                             Type = ConfigEntryType.Float,
@@ -138,7 +138,7 @@ namespace Neurotrauma
 
                         ["NT_fibrillationSpeed"] = new ConfigEntry
                         {
-                            Name = "Fibrillation gain rate",
+                            Name = TextManager.Get("ntconfigname_fibrillationspeed"),
                             Default = 1f,
                             Range = new float[] { 0, 100 },
                             Type = ConfigEntryType.Float,
@@ -148,7 +148,7 @@ namespace Neurotrauma
 
                         ["NT_gangrenespeed"] = new ConfigEntry
                         {
-                            Name = "Gangrene gain rate",
+                            Name = TextManager.Get("ntconfigname_gangrenespeed"),
                             Default = 1f,
                             Range = new float[] { 0, 100 },
                             Type = ConfigEntryType.Float,
@@ -158,7 +158,7 @@ namespace Neurotrauma
 
                         ["NT_falldamageCeiling"] = new ConfigEntry
                         {
-                            Name = "Maximum fall damage multiplier",
+                            Name = TextManager.Get("ntconfigname_falldamageceiling"),
                             Default = 1f,
                             Range = new float[] { 0, 100 },
                             Type = ConfigEntryType.Float,
@@ -168,7 +168,7 @@ namespace Neurotrauma
 
                         ["NT_falldamage"] = new ConfigEntry
                         {
-                            Name = "Falldamage multiplier",
+                            Name = TextManager.Get("ntconfigname_falldamage"),
                             Default = 1f,
                             Range = new float[] { 0, 100 },
                             Type = ConfigEntryType.Float,
@@ -178,7 +178,7 @@ namespace Neurotrauma
 
                         ["NT_falldamageSeriousInjuryChance"] = new ConfigEntry
                         {
-                            Name = "Falldamage serious injury chance multiplier",
+                            Name = TextManager.Get("ntconfigname_falldamageseriousinjurychance"),
                             Default = 1f,
                             Range = new float[] { 0, 100 },
                             Type = ConfigEntryType.Float,
@@ -188,71 +188,63 @@ namespace Neurotrauma
 
                         ["NT_Calculations"] = new ConfigEntry
                         {
-                            Name = "Character calculations",
+                            Name = TextManager.Get("ntconfigname_calculations"),
                             Default = true,
                             Type = ConfigEntryType.Bool,
-                            Description = "Runs calculations that are necessary for the functionality of the mod. Shouldn't be disabled unless there is borderline unplayable desynchronisation and lag, in which case it might help with a bit.",
+                            Description = TextManager.Get("ntconfigdescription_calculations"),
                         },
 
                         ["NT_vanillaSkillCheck"] = new ConfigEntry
                         {
-                            Name = "Vanilla skill check formula",
+                            Name = TextManager.Get("ntconfigname_vanillaskillcheck"),
                             Default = false,
                             Type = ConfigEntryType.Bool,
-                            Description = "Changes the chance to succeed a lua skillcheck from skill/requiredskill to 100-(requiredskill-skill))/100 .",
+                            Description = TextManager.Get("ntconfigdescription_vanillaskillcheck"),
                         },
 
                         ["NT_disableBotAlgorithms"] = new ConfigEntry
                         {
-                            Name = "Disable bot treatment algorithms",
+                            Name = TextManager.Get("ntconfigname_disablebotalgorithms"),
                             Default = true,
                             Type = ConfigEntryType.Bool,
-                            Description = "Prevents bots from attempting to treat afflictions.\nThis is desireable, because bots suck at treating things for the current moment.",
+                            Description = TextManager.Get("ntconfigdescription_disablebotalgorithms"),
                         },
 
                         ["NT_screams"] = new ConfigEntry
                         {
-                            Name = "Screams",
+                            Name = TextManager.Get("ntconfigname_screams"),
                             Default = true,
                             Type = ConfigEntryType.Bool,
-                            Description = "Characters scream when in pain.",
-                        },
-
-                        ["NT_ignoreModConflicts"] = new ConfigEntry
-                        {
-                            Name = "Ignore mod conflicts",
-                            Default = false,
-                            Type = ConfigEntryType.Bool,
-                            Description = "Prevent the mod conflict affliction from showing up.",
+                            Description = TextManager.Get("ntconfigdescription_screams"),
                         },
 
                         ["NT_organRejection"] = new ConfigEntry
                         {
-                            Name = "Organ rejection",
+                            Name = TextManager.Get("ntconfigname_organrejection"),
                             Default = false,
                             Type = ConfigEntryType.Bool,
-                            Description = "When transplanting an organ, there is a chance that the organ gets rejected.\nThe higher the patients immunity at the time of the transplant, the higher the chance.",
+                            Description = TextManager.Get("ntconfigdescription_organrejection"),
                         },
 
                         ["NT_fracturesRemoveCasts"] = new ConfigEntry
                         {
-                            Name = "Fractures remove casts",
+                            Name = TextManager.Get("ntconfigname_fracturesremovecasts"),
                             Default = true,
                             Type = ConfigEntryType.Bool,
-                            Description = "When receiving damage that would cause a fracture, remove plaster casts on the limb",
+                            Description = TextManager.Get("ntconfigdescription_fracturesremovecasts"),
                         },
 
                         ["NTCRE_ConsentRequiredExtra"] = new ConfigEntry
                         {
-                            Name = "NPCs consent requirement to medical interactions",
+                            Name = TextManager.Get("ntconfigname_consentrequiredextra"),
                             Default = false,
                             Type = ConfigEntryType.Bool,
-                            Description = "Integrated consent required mod.\nIf enabled, NPCs outside of your team or submarine mission will get aggravated by medical interactions.",
+                            Description = TextManager.Get("ntconfigdescription_consentrequiredextra"),
                         },
 
                         ["NT_creatureNoFallDamage"] = new ConfigEntry
                         {
-                            Name = "Excluded creatures that abuse the fall damage mechanic",
+                            Name = TextManager.Get("ntconfigname_creaturenofalldamage"),
                             Default = new List<string>
                             {
                                 "Mudraptor",
@@ -260,54 +252,54 @@ namespace Neurotrauma
                                 "Mudraptor_veteran",
                                 "Spineling_giant",
                             },
-                            Style = "SpeciesName,SpeciesName",
+                            Style = TextManager.Get("ntconfigstyle_creaturenofalldamage"),
                             Type = ConfigEntryType.String,
                             Boxsize = 0.1f,
-                            Description = "An abuse of fall damage is commonly shown by creatures with heavy or ridicilous knockback, that at worst will instakill or stunlock you.\nYou can add or remove creatures to customize this list to your liking. Use debug command `nt_listcreatures` to list the SpeciesName of the creature you are patching in your game.\nReport other creatures that abuse fall damage to the discord server to improve this default list.",
+                            Description = TextManager.Get("ntconfigdescription_creaturenofalldamage"),
                         },
 
                         ["NTSCAN_header1"] = new ConfigEntry
                         {
-                            Name = "Scanner Settings",
+                            Name = TextManager.Get("ntconfigname_header2"),
                             Type = ConfigEntryType.Category,
                         },
 
                         ["NTSCAN_enablecoloredscanner"] = new ConfigEntry
                         {
-                            Name = "Colored Scanner",
+                            Name = TextManager.Get("ntconfigname_enablecoloredscanner"),
                             Default = true,
                             Type = ConfigEntryType.Bool,
-                            Description = "Enable colored health scanner text messages.",
+                            Description = TextManager.Get("ntconfigdescription_enablecoloredscanner"),
                         },
 
                         ["NTSCAN_lowmedThreshold"] = new ConfigEntry
                         {
-                            Name = "Low-Medium Text Threshold",
+                            Name = TextManager.Get("ntconfigname_lowmedthreshold"),
                             Default = 25f,
                             Range = new float[] { 0, 100 },
                             Type = ConfigEntryType.Float,
-                            Description = "Where the Low progress color ends and Medium progress color begins.",
+                            Description = TextManager.Get("ntconfigdescription_lowmedthreshold"),
                             Group = true,
                         },
 
                         ["NT_medhighThreshold"] = new ConfigEntry
                         {
-                            Name = "Medium-High Text Threshold",
+                            Name = TextManager.Get("ntconfigname_medhighthreshold"),
                             Default = 65f,
                             Range = new float[] { 0, 100 },
                             Type = ConfigEntryType.Float,
-                            Description = "Where the Medium progress color ends and High progress color begins.",
+                            Description = TextManager.Get("ntconfigdescription_medhighthreshold"),
                             Group = true,
                         },
 
                         ["NTSCAN_basecolor"] = new ConfigEntry
                         {
-                            Name = "Base Text Color",
+                            Name = TextManager.Get("ntconfigname_basecolor"),
                             Default = new List<string> { "100,100,200" },
-                            Style = "R,G,B",
+                            Style = TextManager.Get("ntconfigstyle_basecolor"),
                             Type = ConfigEntryType.String,
                             Boxsize = 0.05f,
-                            Description = "Scanner text color.",
+                            Description = TextManager.Get("ntconfigdescription_basecolor"),
                             NoMLTB = true,
                             Group = true,
                             Resettable = true,
@@ -315,12 +307,12 @@ namespace Neurotrauma
 
                         ["NTSCAN_namecolor"] = new ConfigEntry
                         {
-                            Name = "Name Text Color",
+                            Name = TextManager.Get("ntconfigname_namecolor"),
                             Default = new List<string> { "125,125,225" },
-                            Style = "R,G,B",
+                            Style = TextManager.Get("ntconfigstyle_namecolor"),
                             Type = ConfigEntryType.String,
                             Boxsize = 0.05f,
-                            Description = "Scanner text color for player names.",
+                            Description = TextManager.Get("ntconfigdescription_namecolor"),
                             NoMLTB = true,
                             Group = true,
                             Resettable = true,
@@ -328,12 +320,12 @@ namespace Neurotrauma
 
                         ["NTSCAN_lowcolor"] = new ConfigEntry
                         {
-                            Name = "Low Priority Color",
+                            Name = TextManager.Get("ntconfigname_lowcolor"),
                             Default = new List<string> { "100,200,100" },
-                            Style = "R,G,B",
+                            Style = TextManager.Get("ntconfigstyle_lowcolor"),
                             Type = ConfigEntryType.String,
                             Boxsize = 0.05f,
-                            Description = "Scanner text color for afflictions that have low progress.",
+                            Description = TextManager.Get("ntconfigdescription_lowcolor"),
                             NoMLTB = true,
                             Group = true,
                             Resettable = true,
@@ -341,12 +333,12 @@ namespace Neurotrauma
 
                         ["NTSCAN_medcolor"] = new ConfigEntry
                         {
-                            Name = "Medium Priority Color",
+                            Name = TextManager.Get("ntconfigname_medcolor"),
                             Default = new List<string> { "200,200,100" },
-                            Style = "R,G,B",
+                            Style = TextManager.Get("ntconfigstyle_medcolor"),
                             Type = ConfigEntryType.String,
                             Boxsize = 0.05f,
-                            Description = "Scanner text color for afflictions that have medium progress.",
+                            Description = TextManager.Get("ntconfigdescription_medcolor"),
                             NoMLTB = true,
                             Group = true,
                             Resettable = true,
@@ -354,12 +346,12 @@ namespace Neurotrauma
 
                         ["NTSCAN_highcolor"] = new ConfigEntry
                         {
-                            Name = "High Priority Color",
+                            Name = TextManager.Get("ntconfigname_highcolor"),
                             Default = new List<string> { "250,100,100" },
-                            Style = "R,G,B",
+                            Style = TextManager.Get("ntconfigstyle_highcolor"),
                             Type = ConfigEntryType.String,
                             Boxsize = 0.05f,
-                            Description = "Scanner text color for afflictions that have high progress.",
+                            Description = TextManager.Get("ntconfigdescription_highcolor"),
                             NoMLTB = true,
                             Group = true,
                             Resettable = true,
@@ -367,12 +359,12 @@ namespace Neurotrauma
 
                         ["NTSCAN_vitalcolor"] = new ConfigEntry
                         {
-                            Name = "Vital Priority Color",
+                            Name = TextManager.Get("ntconfigname_vitalcolor"),
                             Default = new List<string> { "255,0,0" },
-                            Style = "R,G,B",
+                            Style = TextManager.Get("ntconfigstyle_vitalcolor"),
                             Type = ConfigEntryType.String,
                             Boxsize = 0.05f,
-                            Description = "Scanner text color for vital afflictions (Arterial bleed, Traumatic amputation).",
+                            Description = TextManager.Get("ntconfigdescription_vitalcolor"),
                             NoMLTB = true,
                             Group = true,
                             Resettable = true,
@@ -380,12 +372,12 @@ namespace Neurotrauma
 
                         ["NTSCAN_removalcolor"] = new ConfigEntry
                         {
-                            Name = "Removed Organ Color",
+                            Name = TextManager.Get("ntconfigname_removalcolor"),
                             Default = new List<string> { "0,255,255" },
-                            Style = "R,G,B",
+                            Style = TextManager.Get("ntconfigstyle_removalcolor"),
                             Type = ConfigEntryType.String,
                             Boxsize = 0.05f,
-                            Description = "Scanner text color for removed organs (Heart removed, leg amputation).",
+                            Description = TextManager.Get("ntconfigdescription_removalcolor"),
                             NoMLTB = true,
                             Group = true,
                             Resettable = true,
@@ -393,12 +385,12 @@ namespace Neurotrauma
 
                         ["NTSCAN_customcolor"] = new ConfigEntry
                         {
-                            Name = "Custom Category Color",
+                            Name = TextManager.Get("ntconfigname_customcolor"),
                             Default = new List<string> { "180,50,200" },
-                            Style = "R,G,B",
+                            Style = TextManager.Get("ntconfigstyle_customcolor"),
                             Type = ConfigEntryType.String,
                             Boxsize = 0.05f,
-                            Description = "Scanner text color for the custom category.",
+                            Description = TextManager.Get("ntconfigdescription_customcolor"),
                             NoMLTB = true,
                             Group = true,
                             Resettable = true,
@@ -406,7 +398,7 @@ namespace Neurotrauma
 
                         ["NTSCAN_VitalCategory"] = new ConfigEntry
                         {
-                            Name = "Included Vital Afflictions",
+                            Name = TextManager.Get("ntconfigname_vitalcategory"),
                             Default = new List<string>
                             {
                                 "cardiacarrest",
@@ -419,15 +411,15 @@ namespace Neurotrauma
                                 "tll_amputation",
                                 "th_amputation",
                             },
-                            Style = "identifier,identifier",
+                            Style = TextManager.Get("ntconfigstyle_vitalcategory"),
                             Type = ConfigEntryType.String,
                             Boxsize = 0.1f,
-                            Description = "You can add or remove afflictions to customize this list to your liking.",
+                            Description = TextManager.Get("ntconfigdescription_vitalcategory"),
                         },
 
                         ["NTSCAN_RemovalCategory"] = new ConfigEntry
                         {
-                            Name = "Included Removal Affictions",
+                            Name = TextManager.Get("ntconfigname_removalcategory"),
                             Default = new List<string>
                             {
                                 "heartremoved",
@@ -441,44 +433,44 @@ namespace Neurotrauma
                                 "sll_amputation",
                                 "sh_amputation",
                             },
-                            Style = "identifier, identifier",
+                            Style = TextManager.Get("ntconfigstyle_removalcategory"),
                             Type = ConfigEntryType.String,
                             Boxsize = 0.1f,
-                            Description = "You can add or remove afflictions to customize this list to your liking.",
+                            Description = TextManager.Get("ntconfigdescription_removalcategory"),
                         },
 
                         ["NTSCAN_CustomCategory"] = new ConfigEntry
                         {
-                            Name = "Custom Affliction Category",
+                            Name = TextManager.Get("ntconfigname_customcategory"),
                             Default = new List<string> { "" },
-                            Style = "identifier,identifier",
+                            Style = TextManager.Get("ntconfigstyle_customcategory"),
                             Type = ConfigEntryType.String,
                             Boxsize = 0.1f,
-                            Description = "You can add or remove afflictions to customize this list to your liking.",
+                            Description = TextManager.Get("ntconfigdescription_customcategory"),
                         },
 
                         ["NTSCAN_IgnoredCategory"] = new ConfigEntry
                         {
-                            Name = "Ignored Afflictions",
+                            Name = TextManager.Get("ntconfigname_ignoredcategory"),
                             Default = new List<string> { "" },
-                            Style = "identifier,identifier",
+                            Style = TextManager.Get("ntconfigstyle_ignoredcategory"),
                             Type = ConfigEntryType.String,
                             Boxsize = 0.1f,
-                            Description = "Afflictions added to this category will be ignored by the health scanner.",
+                            Description = TextManager.Get("ntconfigdescription_ignoredcategory"),
                         },
 
                         // ================================= COMMON ITEMS ========================================
                         ["NT_ItemPriceHeaderFirstAid"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Common Item Price Multipliers",
+                            Name = TextManager.Get("ntconfigname_header3"),
                             Type = ConfigEntryType.Category,
                         },
 
                         ["NT_ItemPrice_antidama1"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Morphine",
+                            Name = TextManager.Get("ntconfigname_itemprice_antidama1"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -489,7 +481,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_gypsum"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Gypsum",
+                            Name = TextManager.Get("ntconfigname_itemprice_gypsum"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -500,7 +492,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_suture"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Suture",
+                            Name = TextManager.Get("ntconfigname_itemprice_suture"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -511,7 +503,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_tourniquet"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Tourniquet",
+                            Name = TextManager.Get("ntconfigname_itemprice_tourniquet"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -522,7 +514,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_needle"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Needle",
+                            Name = TextManager.Get("ntconfigname_itemprice_needle"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -533,7 +525,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_drainage"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Drainage",
+                            Name = TextManager.Get("ntconfigname_itemprice_drainage"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -544,7 +536,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_gelipack"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Gel Coolant Pack",
+                            Name = TextManager.Get("ntconfigname_itemprice_gelipack"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -555,7 +547,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_ointment"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Antibiotic Ointment",
+                            Name = TextManager.Get("ntconfigname_itemprice_ointment"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -566,7 +558,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_antibleeding1"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Bandage",
+                            Name = TextManager.Get("ntconfigname_itemprice_antibleeding1"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -577,7 +569,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_antibleeding2"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Plastiseal",
+                            Name = TextManager.Get("ntconfigname_itemprice_antibleeding2"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -588,7 +580,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_bloodpacks"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Blood Packs",
+                            Name = TextManager.Get("ntconfigname_itemprice_bloodpacks"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -599,7 +591,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_emptybloodpack"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Empty Blood Pack",
+                            Name = TextManager.Get("ntconfigname_itemprice_emptybloodpack"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -610,7 +602,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_osteosynthesisimplants"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Osteosynthesis Implants",
+                            Name = TextManager.Get("ntconfigname_itemprice_osteosynthesisimplants"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -621,7 +613,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_spinalimplant"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Spinal Cord Implants",
+                            Name = TextManager.Get("ntconfigname_itemprice_spinalimplant"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -633,14 +625,14 @@ namespace Neurotrauma
                         ["NT_ItemPriceHeaderBodyParts"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Bodypart Price Multipliers",
+                            Name = TextManager.Get("ntconfigname_header4"),
                             Type = ConfigEntryType.Category,
                         },
 
                         ["NT_ItemPrice_arms"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Arms",
+                            Name = TextManager.Get("ntconfigname_itemprice_arms"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -651,7 +643,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_legs"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Legs",
+                            Name = TextManager.Get("ntconfigname_itemprice_legs"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -662,7 +654,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_bionicarms"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Bionic Arms",
+                            Name = TextManager.Get("ntconfigname_itemprice_bionicarms"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -673,7 +665,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_bioniclegs"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Bionic Legs",
+                            Name = TextManager.Get("ntconfigname_itemprice_bioniclegs"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -684,7 +676,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_livertransplant"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Liver Transplant",
+                            Name = TextManager.Get("ntconfigname_itemprice_livertransplant"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -695,7 +687,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_lungtransplant"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Lung Transplant",
+                            Name = TextManager.Get("ntconfigname_itemprice_lungtransplant"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -706,7 +698,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_kidneytransplant"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Kidney Transplant",
+                            Name = TextManager.Get("ntconfigname_itemprice_kidneytransplant"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -717,7 +709,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_hearttransplant"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Heart Transplant",
+                            Name = TextManager.Get("ntconfigname_itemprice_hearttransplant"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -729,14 +721,14 @@ namespace Neurotrauma
                         ["NT_ItemPriceHeaderGear"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Gear Price Multipliers",
+                            Name = TextManager.Get("ntconfigname_header5"),
                             Type = ConfigEntryType.Category,
                         },
 
                         ["NT_ItemPrice_healthscanner"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Health Scanner",
+                            Name = TextManager.Get("ntconfigname_itemprice_healthscanner"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -747,7 +739,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_bloodanalyzer"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Hematology Analyzer",
+                            Name = TextManager.Get("ntconfigname_itemprice_bloodanalyzer"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -758,7 +750,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_defibrillator"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Manual Defibrillator",
+                            Name = TextManager.Get("ntconfigname_itemprice_defibrillator"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -769,7 +761,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_aed"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Automated External Defibrillator",
+                            Name = TextManager.Get("ntconfigname_itemprice_aed"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -780,7 +772,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_bvm"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "BVM",
+                            Name = TextManager.Get("ntconfigname_itemprice_bvm"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -791,7 +783,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_autocpr"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "AutoPulse",
+                            Name = TextManager.Get("ntconfigname_itemprice_autocpr"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -802,7 +794,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_organcrate"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Refrigerated Crate",
+                            Name = TextManager.Get("ntconfigname_itemprice_organcrate"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -813,7 +805,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_organtoolbox"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Refrigerated Container",
+                            Name = TextManager.Get("ntconfigname_itemprice_organtoolbox"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -824,7 +816,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_medtoolbox"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Medical Container",
+                            Name = TextManager.Get("ntconfigname_itemprice_medtoolbox"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -835,7 +827,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_surgerytoolbox"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Surgery Toolbox",
+                            Name = TextManager.Get("ntconfigname_itemprice_surgerytoolbox"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -846,7 +838,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_surgerytoolboxset"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Surgery Toolbox (Kit)",
+                            Name = TextManager.Get("ntconfigname_itemprice_surgerytoolboxset"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -857,7 +849,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_medstartercrate"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Medical Starter Crate",
+                            Name = TextManager.Get("ntconfigname_itemprice_medstartercrate"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -868,7 +860,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_bodybag"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Bodybag",
+                            Name = TextManager.Get("ntconfigname_itemprice_bodybag"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -879,7 +871,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_stasisbag"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Stasis Bag",
+                            Name = TextManager.Get("ntconfigname_itemprice_stasisbag"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -890,7 +882,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_wheelchair"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Wheelchair",
+                            Name = TextManager.Get("ntconfigname_itemprice_wheelchair"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -901,7 +893,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_analgesictank"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Analgesic Tank",
+                            Name = TextManager.Get("ntconfigname_itemprice_analgesictank"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -912,7 +904,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_toxfilter"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Toxin Filter",
+                            Name = TextManager.Get("ntconfigname_itemprice_toxfilter"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -923,7 +915,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_dialyzer"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Dialyzer",
+                            Name = TextManager.Get("ntconfigname_itemprice_dialyzer"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -935,14 +927,14 @@ namespace Neurotrauma
                         ["NT_ItemPriceHeaderMedicines"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Other Medicine Items Price Multipliers",
+                            Name = TextManager.Get("ntconfigname_header6"),
                             Type = ConfigEntryType.Category,
                         },
 
                         ["NT_ItemPrice_antibloodloss1"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Saline",
+                            Name = TextManager.Get("ntconfigname_itemprice_antibloodloss1"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -953,7 +945,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_opium"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Opium",
+                            Name = TextManager.Get("ntconfigname_itemprice_opium"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -964,7 +956,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_antidama2"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Fentanyl",
+                            Name = TextManager.Get("ntconfigname_itemprice_antidama2"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -975,7 +967,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_ringerssolution"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Ringer's Solution",
+                            Name = TextManager.Get("ntconfigname_itemprice_ringerssolution"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -986,7 +978,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_mannitol"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Mannitol",
+                            Name = TextManager.Get("ntconfigname_itemprice_mannitol"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -997,7 +989,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_immunosuppressant"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Azathioprine",
+                            Name = TextManager.Get("ntconfigname_itemprice_immunosuppressant"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -1008,7 +1000,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_thiamine"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Thiamine",
+                            Name = TextManager.Get("ntconfigname_itemprice_thiamine"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -1019,7 +1011,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_streptokinase"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Streptokinase",
+                            Name = TextManager.Get("ntconfigname_itemprice_streptokinase"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -1030,7 +1022,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_antinarc"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Naloxone",
+                            Name = TextManager.Get("ntconfigname_itemprice_antinarc"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -1041,7 +1033,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_antibiotics"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Broad-Spectrum Antibiotics",
+                            Name = TextManager.Get("ntconfigname_itemprice_antibiotics"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -1052,7 +1044,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_adrenaline"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Adrenaline",
+                            Name = TextManager.Get("ntconfigname_itemprice_adrenaline"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -1063,7 +1055,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_liquidoxygenite"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Liquid Oxygenite",
+                            Name = TextManager.Get("ntconfigname_itemprice_liquidoxygenite"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -1074,7 +1066,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_deusizine"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Deusizine",
+                            Name = TextManager.Get("ntconfigname_itemprice_deusizine"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -1085,7 +1077,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_antibleeding3"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Antibiotic Glue",
+                            Name = TextManager.Get("ntconfigname_itemprice_antibleeding3"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -1096,7 +1088,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_meth"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Methamphetamine",
+                            Name = TextManager.Get("ntconfigname_itemprice_meth"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -1107,7 +1099,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_hyperzine"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Hyperzine",
+                            Name = TextManager.Get("ntconfigname_itemprice_hyperzine"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -1118,7 +1110,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_antipsychosis"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Haloperidol",
+                            Name = TextManager.Get("ntconfigname_itemprice_antipsychosis"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -1129,7 +1121,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_antiparalysis"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Anaparalyzant",
+                            Name = TextManager.Get("ntconfigname_itemprice_antiparalysis"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -1140,7 +1132,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_nitroglycerin"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Nitroglycerin",
+                            Name = TextManager.Get("ntconfigname_itemprice_nitroglycerin"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -1152,14 +1144,14 @@ namespace Neurotrauma
                         ["NT_ItemPriceHeaderSurgeryTools"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Surgical Tools Price Multipliers",
+                            Name = TextManager.Get("ntconfigname_header7"),
                             Type = ConfigEntryType.Category,
                         },
 
                         ["NT_ItemPrice_advhemostat"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Hemostat",
+                            Name = TextManager.Get("ntconfigname_itemprice_advhemostat"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -1170,7 +1162,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_advretractors"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Retractors",
+                            Name = TextManager.Get("ntconfigname_itemprice_advretractors"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -1181,7 +1173,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_surgicaldrill"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Surgical Drill",
+                            Name = TextManager.Get("ntconfigname_itemprice_surgicaldrill"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -1192,7 +1184,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_surgerysaw"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Surgical Saw",
+                            Name = TextManager.Get("ntconfigname_itemprice_surgerysaw"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -1203,7 +1195,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_tweezers"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Tweezers",
+                            Name = TextManager.Get("ntconfigname_itemprice_tweezers"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -1214,7 +1206,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_traumashears"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Trauma Shears",
+                            Name = TextManager.Get("ntconfigname_itemprice_traumashears"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -1225,7 +1217,7 @@ namespace Neurotrauma
                         ["NT_ItemPrice_advscalpel"] = new ConfigEntry
                         {
                             Page = "prices",
-                            Name = "Multipurpose Scalpel ",
+                            Name = TextManager.Get("ntconfigname_itemprice_advscalpel"),
                             Default = 1f,
                             Range = new float[] { 0, 10 },
                             Type = ConfigEntryType.Float,
@@ -1237,13 +1229,13 @@ namespace Neurotrauma
                         ["NT_ItemDurabilityHeader"] = new ConfigEntry
                         {
                             Page = "availability",
-                            Name = "Change Item Use Amounts",
+                            Name = TextManager.Get("ntconfigname_header8"),
                             Type = ConfigEntryType.Category,
                         },
 
                         ["NT_OsteoImplants_uses"] = new ConfigEntry
                         {
-                            Name = "Osteosynthesis Implant Uses",
+                            Name = TextManager.Get("ntconfigname_osteoimplants_uses"),
                             Page = "availability",
                             Default = 4f,
                             Range = new float[] { 1, 10 },
@@ -1255,7 +1247,7 @@ namespace Neurotrauma
                         ["NT_SpinalImplants_uses"] = new ConfigEntry
                         {
                             Page = "availability",
-                            Name = "Spinal Cord Implant Uses",
+                            Name = TextManager.Get("ntconfigname_spinalimplants_uses"),
                             Default = 1f,
                             Range = new float[] { 0.99f, 10 },
                             Type = ConfigEntryType.Float,
@@ -1266,37 +1258,37 @@ namespace Neurotrauma
                         ["NT_HardmodeAorticRupture"] = new ConfigEntry
                         {
                             Page = "availability",
-                            Name = "Hardmode Aortic Rupture",
+                            Name = TextManager.Get("ntconfigname_hardmodeaorticrupture"),
                             Default = false,
                             Type = ConfigEntryType.Bool,
-                            Description = "Enable the Medical Stent and Aortic Balloon as the only method to fix Aortic Rupture.",
+                            Description = TextManager.Get("ntconfigdescription_hardmodeaorticrupture"),
                         },
 
                         ["NT_OpenCloseTamponade"] = new ConfigEntry
                         {
                             Page = "availability",
-                            Name = "Open Close Tamponade",
+                            Name = TextManager.Get("ntconfigname_openclosetamponade"),
                             Default = false,
                             Type = ConfigEntryType.Bool,
-                            Description = "Enable the closing with sutures as the only method to fix Cardiac Tamponade.",
+                            Description = TextManager.Get("ntconfigdescription_openclosetamponade"),
                         },
 
                         ["NT_DoNitroprusside"] = new ConfigEntry
                         {
                             Page = "availability",
-                            Name = "Enable Sodium Nitroprusside",
+                            Name = TextManager.Get("ntconfigname_donitroprusside"),
                             Default = false,
                             Type = ConfigEntryType.Bool,
-                            Description = "Allow Sodium Nitroprusside to be fabricated, bought and found.",
+                            Description = TextManager.Get("ntconfigdescription_donitroprusside"),
                         },
 
                         ["NT_DoOrganScalpels"] = new ConfigEntry
                         {
                             Page = "availability",
-                            Name = "Enable Organ Scalpels",
+                            Name = TextManager.Get("ntconfigname_doorganscalpels"),
                             Default = false,
                             Type = ConfigEntryType.Bool,
-                            Description = "Allow Organ scalpels and Surgery Box Scalpel set to be fabricated, bought and found.",
+                            Description = TextManager.Get("ntconfigdescription_doorganscalpels"),
                         },
                     }
                 }

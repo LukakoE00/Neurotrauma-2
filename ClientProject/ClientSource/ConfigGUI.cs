@@ -215,9 +215,10 @@ namespace Neurotrauma
         {
             list.Content.ClearChildren();
 
-            new GUITextBlock(new RectTransform(new Vector2(1, 0.1f), list.Content.RectTransform), TextManager.Get("ntgui_defaultmessage_config"), font: GUIStyle.SubHeadingFont)
+            new GUITextBlock(new RectTransform(new Vector2(1, 0.1f), list.Content.RectTransform), TextManager.Get("ntgui_defaultmessage_config"), font: GUIStyle.SmallFont)
             {
-                CanBeFocused = false
+                CanBeFocused = false,
+                TextAlignment = Alignment.Center
             };
 
             var layout = PrebuildConfigLayout(NTConfig.Entries, selectedExpansion, selectedType);
@@ -364,7 +365,7 @@ namespace Neurotrauma
                 var TextCell = new GUILayoutGroup(new RectTransform(new Vector2(TextWidth, 1f), row.RectTransform), isHorizontal: true);
                 var InputCell = new GUILayoutGroup(new RectTransform(new Vector2(InputWidth, 1f), row.RectTransform), isHorizontal: true);
                 var ResetCell = new GUILayoutGroup(new RectTransform(new Vector2(ResetWidth, 0.6f), row.RectTransform), isHorizontal: true);
-                var Label = entry.Name + (string.IsNullOrEmpty(entry.Style) ? "" : $" ({entry.Style})");
+                var Label = entry.Name + (entry.Style.IsNullOrWhiteSpace() ? "" : $" ({entry.Style})");
                 new GUITextBlock(new RectTransform(new Vector2(1f, 0.4f), TextCell.RectTransform), Label)
                 {
                     CanBeFocused = false,
@@ -469,7 +470,7 @@ namespace Neurotrauma
                             AutoScaleHorizontal = true
                         };
 
-                        if (!string.IsNullOrWhiteSpace(entry.Description))
+                        if (!entry.Description.IsNullOrEmpty())
                         {
                             Label.ToolTip = entry.Description;
                             Label.CanBeFocused = true;
@@ -511,7 +512,7 @@ namespace Neurotrauma
                     {
                         var TickBox = new GUITickBox(new RectTransform(new Vector2(0.5f, 0.05f), list.Content.RectTransform), entry.Name);
 
-                        if (!string.IsNullOrWhiteSpace(entry.Description))
+                        if (!entry.Description.IsNullOrWhiteSpace())
                         {
                             TickBox.ToolTip = entry.Description;
                         }
@@ -529,7 +530,7 @@ namespace Neurotrauma
 
                 case ConfigEntryType.String:
                     {
-                        string styleSuffix = string.IsNullOrWhiteSpace(entry.Style) ? string.Empty : $" ({entry.Style})";
+                        string styleSuffix = entry.Style.IsNullOrWhiteSpace() ? string.Empty : $" ({entry.Style})";
 
                         var Label = new GUITextBlock(new RectTransform(new Vector2(1f, 0.05f), list.Content.RectTransform), $"{entry.Name}{styleSuffix}")
                         {
@@ -539,7 +540,7 @@ namespace Neurotrauma
                             AutoScaleHorizontal = true
                         };
 
-                        if (!string.IsNullOrWhiteSpace(entry.Description))
+                        if (!entry.Description.IsNullOrWhiteSpace())
                         {
                             Label.ToolTip = entry.Description;
                             Label.CanBeFocused = true;

@@ -18,15 +18,15 @@ namespace Neurotrauma
 
     public class ConfigEntry
     {
-        public string Name;
+        public LocalizedString Name;
         public ConfigEntryType Type;
         public object Default;
         public object Value;
         public float[] Range;
         public bool Group;
         public bool Resettable;
-        public string Description;
-        public string Style;
+        public LocalizedString Description;
+        public LocalizedString Style;
         public float Boxsize;
         public bool NoMLTB;
         public string Page;

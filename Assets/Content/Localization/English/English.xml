@@ -16,25 +16,6 @@
 <MyModName.SampleSettingShared.DisplayName>Sample Shared Setting</MyModName.SampleSettingShared.DisplayName>
 <MyModName.SampleSettingShared.DisplayCategory>Sample</MyModName.SampleSettingShared.DisplayCategory>
 <MyModName.SampleSettingShared.Tooltip>Sample tooltip!</MyModName.SampleSettingShared.Tooltip>
-
-<!-- ================================================= GUI LOCALIZATION ================================================= -->
-
-<!-- Pause Menu Button -->
-<ntgui_pausemenubutton_name>Neurotrauma Config</ntgui_pausemenubutton_name>
-	
-<!-- Button Row-->
-<ntgui_configmenubutton_saveexit>Save and Exit</ntgui_configmenubutton_saveexit>
-<ntgui_configmenubutton_discardexit>Discard and Exit</ntgui_configmenubutton_discardexit>
-<ntgui_configmenubutton_resetvalues>Reset Settings</ntgui_configmenubutton_resetvalues>
-
-<!-- Default Title -->
-<ntgui_config_title>Neurotrauma Config Settings</ntgui_config_title>
-	
-<!-- Default Warning -->
-<ntgui_defaultmessage_config>Server config can only be changed by host or authorized clients.</ntgui_defaultmessage_config>
-
-<!-- Reset Button-->
-<ntgui_resetbutton_tooltip>Reset to Default</ntgui_resetbutton_tooltip>
 	
 <!-- ================================================= AFFLICTIONS ================================================= -->
 <!-- TEMPLATE -->
@@ -968,5 +949,422 @@ Can give blood to: AB+</entitydescription.ab_positivecard>
 <!-- Stasis bag Equip Warning -->
 <stasisbagequipconfirmation>Equipping this will cause you to go unconscious. Are you sure?</stasisbagequipconfirmation>
 <!--<emergencysuitequipconfirmation>Equipping this will cause you to go immobile. Are you sure?</emergencysuitequipconfirmation>-->
+
+<!-- ================================================= Config Options ================================================= -->
+<!-- Pause Menu Button -->
+<ntgui_pausemenubutton_name>Neurotrauma Config</ntgui_pausemenubutton_name>
+
+<!-- Button Row-->
+<ntgui_configmenubutton_saveexit>Save and Exit</ntgui_configmenubutton_saveexit>
+<ntgui_configmenubutton_discardexit>Discard and Exit</ntgui_configmenubutton_discardexit>
+<ntgui_configmenubutton_resetvalues>Reset Settings</ntgui_configmenubutton_resetvalues>
+
+<!-- Default Title -->
+<ntgui_config_title>Neurotrauma Config Settings</ntgui_config_title>
+
+<!-- Default Warning -->
+<ntgui_defaultmessage_config>Server config can only be changed by host or authorized clients.</ntgui_defaultmessage_config>
+
+<!-- Reset Button-->
+<ntgui_resetbutton_tooltip>Reset to Default</ntgui_resetbutton_tooltip>
+
+<!-- =================== Default Config Content =================== -->
+<ntconfigname_header1>Neurotrauma</ntconfigname_header1>
+
+<!-- Dislocation chance multiplier -->
+<ntconfigname_dislocationchance>Dislocation chance multiplier</ntconfigname_dislocationchance>
+
+<!-- Fracture chance multiplier -->
+<ntconfigname_fracturechance>Fracture chance multiplier</ntconfigname_fracturechance>
+
+<!-- Pneumothorax chance multiplier -->
+<ntconfigname_pneumothoraxchance>Pneumothorax chance multiplier</ntconfigname_pneumothoraxchance>
+
+<!-- Tamponade chance multiplier -->
+<ntconfigname_tamponadechance>Tamponade chance multiplier</ntconfigname_tamponadechance>
+
+<!-- Heart attack chance multiplier -->
+<ntconfigname_heartattackchance>Heart attack chance multiplier</ntconfigname_heartattackchance>
+
+<!-- Stroke chance multiplier -->
+<ntconfigname_strokechance>Stroke chance multiplier</ntconfigname_strokechance>
+
+<!-- Infection rate multiplier -->
+<ntconfigname_infectionrate>Infection rate multiplier</ntconfigname_infectionrate>
+
+<!-- Sepsis rate multiplier -->
+<ntconfigname_sepsisrate>Sepsis rate multiplier</ntconfigname_sepsisrate>
+
+<!-- CPR fracture chance multiplier -->
+<ntconfigname_cprfracturechance>CPR fracture chance multiplier</ntconfigname_cprfracturechance>
+
+<!-- Traumatic amputation chance multiplier -->
+<ntconfigname_traumaticamputationchance>Traumatic amputation chance multiplier</ntconfigname_traumaticamputationchance>
+
+<!-- Neurotrauma gain rate -->
+<ntconfigname_neurotraumagain>Neurotrauma gain rate</ntconfigname_neurotraumagain>
+
+<!-- Organ damage gain rate -->
+<ntconfigname_organdamagegain>Organ damage gain rate</ntconfigname_organdamagegain>
+
+<!-- Fibrillation gain rate -->
+<ntconfigname_fibrillationspeed>Fibrillation gain rate</ntconfigname_fibrillationspeed>
+
+<!-- Gangrene gain rate -->
+<ntconfigname_gangrenespeed>Gangrene gain rate</ntconfigname_gangrenespeed>
+
+<!-- Maximum fall damage multiplier -->
+<ntconfigname_falldamageceiling>Maximum fall damage multiplier</ntconfigname_falldamageceiling>
+
+<!-- Falldamage multiplier -->
+<ntconfigname_falldamage>Falldamage multiplier</ntconfigname_falldamage>
+
+<!-- Falldamage serious injury chance multiplier -->
+<ntconfigname_falldamageseriousinjurychance>Falldamage serious injury chance multiplier</ntconfigname_falldamageseriousinjurychance>
+
+<!-- Character calculations -->
+<ntconfigname_calculations>Character calculations</ntconfigname_calculations>
+<ntconfigdescription_calculations>Runs calculations that are necessary for the functionality of the mod. Shouldn't be disabled unless there is borderline unplayable desynchronisation and lag, in which case it might help with a bit.</ntconfigdescription_calculations>
+
+<!-- Vanilla skill check formula -->
+<ntconfigname_vanillaskillcheck>Vanilla skill check formula</ntconfigname_vanillaskillcheck>
+<ntconfigdescription_vanillaskillcheck>Changes the chance to succeed a lua skillcheck from skill/requiredskill to 100-(requiredskill-skill))/100 .</ntconfigdescription_vanillaskillcheck>
+
+<!-- Disable bot treatment algorithms -->
+<ntconfigname_disablebotalgorithms>Disable bot treatment algorithms</ntconfigname_disablebotalgorithms>
+<ntconfigdescription_disablebotalgorithms>Prevents bots from attempting to treat afflictions.\nThis is desireable, because bots suck at treating things for the current moment.</ntconfigdescription_disablebotalgorithms>
+
+<!-- Screams -->
+<ntconfigname_screams>Screams</ntconfigname_screams>
+<ntconfigdescription_screams>Characters scream when in pain.</ntconfigdescription_screams>
+
+<!-- Organ rejection -->
+<ntconfigname_organrejection>Organ rejection</ntconfigname_organrejection>
+<ntconfigdescription_organrejection>When transplanting an organ, there is a chance that the organ gets rejected.\nThe higher the patients immunity at the time of the transplant, the higher the chance.</ntconfigdescription_organrejection>
+
+<!-- Fractures remove casts -->
+<ntconfigname_fracturesremovecasts>Fractures remove casts</ntconfigname_fracturesremovecasts>
+<ntconfigdescription_fracturesremovecasts>When receiving damage that would cause a fracture, remove plaster casts on the limb</ntconfigdescription_fracturesremovecasts>
+
+<!-- NPC Consent Required -->
+<ntconfigname_consentrequiredextra>NPCs consent requirement to medical interactions</ntconfigname_consentrequiredextra>
+<ntconfigdescription_consentrequiredextra>Integrated consent required mod.\nIf enabled, NPCs outside of your team or submarine mission will get aggravated by medical interactions.</ntconfigdescription_consentrequiredextra>
+
+<!-- Excluded creatures that abuse the fall damage mechanic -->
+<ntconfigname_creaturenofalldamage>Excluded creatures that abuse the fall damage mechanic</ntconfigname_creaturenofalldamage>
+<ntconfigstyle_creaturenofalldamage>SpeciesName,SpeciesName</ntconfigstyle_creaturenofalldamage>
+<ntconfigdescription_creaturenofalldamage>An abuse of fall damage is commonly shown by creatures with heavy or ridicilous knockback, that at worst will instakill or stunlock you.\nYou can add or remove creatures to customize this list to your liking. Use debug command `nt_listcreatures` to list the SpeciesName of the creature you are patching in your game.\nReport other creatures that abuse fall damage to the discord server to improve this default list.</ntconfigdescription_creaturenofalldamage>
+
+<!-- =================== Scanner Settings =================== -->
+<ntconfigname_header2>Scanner Settings</ntconfigname_header2>
+
+<!-- Colored Scanner -->
+<ntconfigname_enablecoloredscanner>Colored Scanner</ntconfigname_enablecoloredscanner>
+<ntconfigdescription_enablecoloredscanner>Enable colored health scanner text messages.</ntconfigdescription_enablecoloredscanner>
+
+<!-- Low-Medium Text Threshold -->
+<ntconfigname_lowmedthreshold>Low-Medium Text Threshold</ntconfigname_lowmedthreshold>
+<ntconfigdescription_lowmedthreshold>Where the Low progress color ends and Medium progress color begins.</ntconfigdescription_lowmedthreshold>
+
+<!-- Medium-High Text Threshold -->
+<ntconfigname_medhighthreshold>Medium-High Text Threshold</ntconfigname_medhighthreshold>
+<ntconfigdescription_medhighthreshold>Where the Medium progress color ends and High progress color begins.</ntconfigdescription_medhighthreshold>
+
+<!-- Base Text Color -->
+<ntconfigname_basecolor>Base Text Color</ntconfigname_basecolor>
+<ntconfigstyle_basecolor>R,G,B</ntconfigstyle_basecolor>
+<ntconfigdescription_basecolor>Scanner text color.</ntconfigdescription_basecolor>
+
+<!-- Name Text Color -->
+<ntconfigname_namecolor>Name Text Color</ntconfigname_namecolor>
+<ntconfigstyle_namecolor>R,G,B</ntconfigstyle_namecolor>
+<ntconfigdescription_namecolor>Scanner text color for player names.</ntconfigdescription_namecolor>
+
+<!-- Low Priority Color -->
+<ntconfigname_lowcolor>Low Priority Color</ntconfigname_lowcolor>
+<ntconfigstyle_lowcolor>R,G,B</ntconfigstyle_lowcolor>
+<ntconfigdescription_lowcolor>Scanner text color for afflictions that have low progress.</ntconfigdescription_lowcolor>
+
+<!-- Medium Priority Color -->
+<ntconfigname_medcolor>Medium Priority Color</ntconfigname_medcolor>
+<ntconfigstyle_medcolor>R,G,B</ntconfigstyle_medcolor>
+<ntconfigdescription_medcolor>Scanner text color for afflictions that have medium progress.</ntconfigdescription_medcolor>
+
+<!-- High Priority Color -->
+<ntconfigname_highcolor>High Priority Color</ntconfigname_highcolor>
+<ntconfigstyle_highcolor>R,G,B</ntconfigstyle_highcolor>
+<ntconfigdescription_highcolor>Scanner text color for afflictions that have high progress.</ntconfigdescription_highcolor>
+
+<!-- Vital Priority Color -->
+<ntconfigname_vitalcolor>Vital Priority Color</ntconfigname_vitalcolor>
+<ntconfigstyle_vitalcolor>R,G,B</ntconfigstyle_vitalcolor>
+<ntconfigdescription_vitalcolor>Scanner text color for vital afflictions (Arterial bleed, Traumatic amputation).</ntconfigdescription_vitalcolor>
+
+<!-- Removed Organ Color -->
+<ntconfigname_removalcolor>Removed Organ Color</ntconfigname_removalcolor>
+<ntconfigstyle_removalcolor>R,G,B</ntconfigstyle_removalcolor>
+<ntconfigdescription_removalcolor>Scanner text color for removed organs (Heart removed, leg amputation).</ntconfigdescription_removalcolor>
+
+<!-- Custom Category Color -->
+<ntconfigname_customcolor>Custom Category Color</ntconfigname_customcolor>
+<ntconfigstyle_customcolor>R,G,B</ntconfigstyle_customcolor>
+<ntconfigdescription_customcolor>Scanner text color for the custom category.</ntconfigdescription_customcolor>
+
+<!-- Included Vital Afflictions -->
+<ntconfigname_vitalcategory>Included Vital Afflictions</ntconfigname_vitalcategory>
+<ntconfigstyle_vitalcategory>identifier,identifier</ntconfigstyle_vitalcategory>
+<ntconfigdescription_vitalcategory>You can add or remove afflictions to customize this list to your liking.</ntconfigdescription_vitalcategory>
+
+<!-- Included Removal Affictions -->
+<ntconfigname_removalcategory>Included Removal Affictions</ntconfigname_removalcategory>
+<ntconfigstyle_removalcategory>identifier, identifier</ntconfigstyle_removalcategory>
+<ntconfigdescription_removalcategory>You can add or remove afflictions to customize this list to your liking.</ntconfigdescription_removalcategory>
+
+<!-- Custom Affliction Category -->
+<ntconfigname_customcategory>Custom Affliction Category</ntconfigname_customcategory>
+<ntconfigstyle_customcategory>identifier,identifier</ntconfigstyle_customcategory>
+<ntconfigdescription_customcategory>You can add or remove afflictions to customize this list to your liking.</ntconfigdescription_customcategory>
+
+<!-- Ignored Afflictions -->
+<ntconfigname_ignoredcategory>Ignored Afflictions</ntconfigname_ignoredcategory>
+<ntconfigstyle_ignoredcategory>identifier,identifier</ntconfigstyle_ignoredcategory>
+<ntconfigdescription_ignoredcategory>Afflictions added to this category will be ignored by the health scanner.</ntconfigdescription_ignoredcategory>
+
+<!-- =================== Common Item Price Multipliers =================== -->
+<ntconfigname_header3>Common Item Price Multipliers</ntconfigname_header3>
+<!-- Morphine -->
+<ntconfigname_itemprice_antidama1>Morphine</ntconfigname_itemprice_antidama1>
+
+<!-- Gypsum -->
+<ntconfigname_itemprice_gypsum>Gypsum</ntconfigname_itemprice_gypsum>
+
+<!-- Suture -->
+<ntconfigname_itemprice_suture>Suture</ntconfigname_itemprice_suture>
+
+<!-- Tourniquet -->
+<ntconfigname_itemprice_tourniquet>Tourniquet</ntconfigname_itemprice_tourniquet>
+
+<!-- Needle -->
+<ntconfigname_itemprice_needle>Needle</ntconfigname_itemprice_needle>
+
+<!-- Drainage -->
+<ntconfigname_itemprice_drainage>Drainage</ntconfigname_itemprice_drainage>
+
+<!-- Gel Coolant Pack -->
+<ntconfigname_itemprice_gelipack>Gel Coolant Pack</ntconfigname_itemprice_gelipack>
+
+<!-- Antibiotic Ointment -->
+<ntconfigname_itemprice_ointment>Antibiotic Ointment</ntconfigname_itemprice_ointment>
+
+<!-- Bandage -->
+<ntconfigname_itemprice_antibleeding1>Bandage</ntconfigname_itemprice_antibleeding1>
+
+<!-- Plastiseal -->
+<ntconfigname_itemprice_antibleeding2>Plastiseal</ntconfigname_itemprice_antibleeding2>
+
+<!-- Blood Packs -->
+<ntconfigname_itemprice_bloodpacks>Blood Packs</ntconfigname_itemprice_bloodpacks>
+
+<!-- Empty Blood Pack -->
+<ntconfigname_itemprice_emptybloodpack>Empty Blood Pack</ntconfigname_itemprice_emptybloodpack>
+
+<!-- Osteosynthesis Implants -->
+<ntconfigname_itemprice_osteosynthesisimplants>Osteosynthesis Implants</ntconfigname_itemprice_osteosynthesisimplants>
+
+<!-- Spinal Cord Implants -->
+<ntconfigname_itemprice_spinalimplant>Spinal Cord Implants</ntconfigname_itemprice_spinalimplant>
+
+<!-- =================== Bodypart Price Multipliers =================== -->
+<ntconfigname_header4>Bodypart Price Multipliers</ntconfigname_header4>
+
+<!-- Arms -->
+<ntconfigname_itemprice_arms>Arms</ntconfigname_itemprice_arms>
+
+<!-- Legs -->
+<ntconfigname_itemprice_legs>Legs</ntconfigname_itemprice_legs>
+
+<!-- Bionic Arms -->
+<ntconfigname_itemprice_bionicarms>Bionic Arms</ntconfigname_itemprice_bionicarms>
+
+<!-- Bionic Legs -->
+<ntconfigname_itemprice_bioniclegs>Bionic Legs</ntconfigname_itemprice_bioniclegs>
+
+<!-- Liver Transplant -->
+<ntconfigname_itemprice_livertransplant>Liver Transplant</ntconfigname_itemprice_livertransplant>
+
+<!-- Lung Transplant -->
+<ntconfigname_itemprice_lungtransplant>Lung Transplant</ntconfigname_itemprice_lungtransplant>
+
+<!-- Kidney Transplant -->
+<ntconfigname_itemprice_kidneytransplant>Kidney Transplant</ntconfigname_itemprice_kidneytransplant>
+
+<!-- Heart Transplant -->
+<ntconfigname_itemprice_hearttransplant>Heart Transplant</ntconfigname_itemprice_hearttransplant>
+
+<!-- =================== Gear Price Multipliers =================== -->
+<ntconfigname_header5>Gear Price Multipliers</ntconfigname_header5>
+
+<!-- Health Scanner -->
+<ntconfigname_itemprice_healthscanner>Health Scanner</ntconfigname_itemprice_healthscanner>
+
+<!-- Hematology Analyzer -->
+<ntconfigname_itemprice_bloodanalyzer>Hematology Analyzer</ntconfigname_itemprice_bloodanalyzer>
+
+<!-- Manual Defibrillator -->
+<ntconfigname_itemprice_defibrillator>Manual Defibrillator</ntconfigname_itemprice_defibrillator>
+
+<!-- Automated External Defibrillator -->
+<ntconfigname_itemprice_aed>Automated External Defibrillator</ntconfigname_itemprice_aed>
+
+<!-- BVM -->
+<ntconfigname_itemprice_bvm>BVM</ntconfigname_itemprice_bvm>
+
+<!-- AutoPulse -->
+<ntconfigname_itemprice_autocpr>AutoPulse</ntconfigname_itemprice_autocpr>
+
+<!-- Refrigerated Crate -->
+<ntconfigname_itemprice_organcrate>Refrigerated Crate</ntconfigname_itemprice_organcrate>
+
+<!-- Refrigerated Container -->
+<ntconfigname_itemprice_organtoolbox>Refrigerated Container</ntconfigname_itemprice_organtoolbox>
+
+<!-- Medical Container -->
+<ntconfigname_itemprice_medtoolbox>Medical Container</ntconfigname_itemprice_medtoolbox>
+
+<!-- Surgery Toolbox -->
+<ntconfigname_itemprice_surgerytoolbox>Surgery Toolbox</ntconfigname_itemprice_surgerytoolbox>
+
+<!-- Surgery Toolbox (Kit) -->
+<ntconfigname_itemprice_surgerytoolboxset>Surgery Toolbox (Kit)</ntconfigname_itemprice_surgerytoolboxset>
+
+<!-- Medical Starter Crate -->
+<ntconfigname_itemprice_medstartercrate>Medical Starter Crate</ntconfigname_itemprice_medstartercrate>
+
+<!-- Bodybag -->
+<ntconfigname_itemprice_bodybag>Bodybag</ntconfigname_itemprice_bodybag>
+
+<!-- Stasis Bag -->
+<ntconfigname_itemprice_stasisbag>Stasis Bag</ntconfigname_itemprice_stasisbag>
+
+<!-- Wheelchair -->
+<ntconfigname_itemprice_wheelchair>Wheelchair</ntconfigname_itemprice_wheelchair>
+
+<!-- Analgesic Tank -->
+<ntconfigname_itemprice_analgesictank>Analgesic Tank</ntconfigname_itemprice_analgesictank>
+
+<!-- Toxin Filter -->
+<ntconfigname_itemprice_toxfilter>Toxin Filter</ntconfigname_itemprice_toxfilter>
+
+<!-- Dialyzer -->
+<ntconfigname_itemprice_dialyzer>Dialyzer</ntconfigname_itemprice_dialyzer>
+
+<!-- =================== Other Medicine Items Price Multipliers =================== -->
+<ntconfigname_header6>Other Medicine Items Price Multipliers</ntconfigname_header6>
+
+<!-- Saline -->
+<ntconfigname_itemprice_antibloodloss1>Saline</ntconfigname_itemprice_antibloodloss1>
+
+<!-- Opium -->
+<ntconfigname_itemprice_opium>Opium</ntconfigname_itemprice_opium>
+
+<!-- Fentanyl -->
+<ntconfigname_itemprice_antidama2>Fentanyl</ntconfigname_itemprice_antidama2>
+
+<!-- Ringer's Solution -->
+<ntconfigname_itemprice_ringerssolution>Ringer's Solution</ntconfigname_itemprice_ringerssolution>
+
+<!-- Mannitol -->
+<ntconfigname_itemprice_mannitol>Mannitol</ntconfigname_itemprice_mannitol>
+
+<!-- Azathioprine -->
+<ntconfigname_itemprice_immunosuppressant>Azathioprine</ntconfigname_itemprice_immunosuppressant>
+
+<!-- Thiamine -->
+<ntconfigname_itemprice_thiamine>Thiamine</ntconfigname_itemprice_thiamine>
+
+<!-- Streptokinase -->
+<ntconfigname_itemprice_streptokinase>Streptokinase</ntconfigname_itemprice_streptokinase>
+
+<!-- Naloxone -->
+<ntconfigname_itemprice_antinarc>Naloxone</ntconfigname_itemprice_antinarc>
+
+<!-- Broad-Spectrum Antibiotics -->
+<ntconfigname_itemprice_antibiotics>Broad-Spectrum Antibiotics</ntconfigname_itemprice_antibiotics>
+
+<!-- Adrenaline -->
+<ntconfigname_itemprice_adrenaline>Adrenaline</ntconfigname_itemprice_adrenaline>
+
+<!-- Liquid Oxygenite -->
+<ntconfigname_itemprice_liquidoxygenite>Liquid Oxygenite</ntconfigname_itemprice_liquidoxygenite>
+
+<!-- Deusizine -->
+<ntconfigname_itemprice_deusizine>Deusizine</ntconfigname_itemprice_deusizine>
+
+<!-- Antibiotic Glue -->
+<ntconfigname_itemprice_antibleeding3>Antibiotic Glue</ntconfigname_itemprice_antibleeding3>
+
+<!-- Methamphetamine -->
+<ntconfigname_itemprice_meth>Methamphetamine</ntconfigname_itemprice_meth>
+
+<!-- Hyperzine -->
+<ntconfigname_itemprice_hyperzine>Hyperzine</ntconfigname_itemprice_hyperzine>
+
+<!-- Haloperidol -->
+<ntconfigname_itemprice_antipsychosis>Haloperidol</ntconfigname_itemprice_antipsychosis>
+
+<!-- Anaparalyzant -->
+<ntconfigname_itemprice_antiparalysis>Anaparalyzant</ntconfigname_itemprice_antiparalysis>
+
+<!-- Nitroglycerin -->
+<ntconfigname_itemprice_nitroglycerin>Nitroglycerin</ntconfigname_itemprice_nitroglycerin>
+
+<!-- =================== Surgical Tools Price Multipliers =================== -->
+<ntconfigname_header7>Surgical Tools Price Multipliers</ntconfigname_header7>
+
+<!-- Hemostat -->
+<ntconfigname_itemprice_advhemostat>Hemostat</ntconfigname_itemprice_advhemostat>
+
+<!-- Retractors -->
+<ntconfigname_itemprice_advretractors>Retractors</ntconfigname_itemprice_advretractors>
+
+<!-- Surgical Drill -->
+<ntconfigname_itemprice_surgicaldrill>Surgical Drill</ntconfigname_itemprice_surgicaldrill>
+
+<!-- Surgical Saw -->
+<ntconfigname_itemprice_surgerysaw>Surgical Saw</ntconfigname_itemprice_surgerysaw>
+
+<!-- Tweezers -->
+<ntconfigname_itemprice_tweezers>Tweezers</ntconfigname_itemprice_tweezers>
+
+<!-- Trauma Shears -->
+<ntconfigname_itemprice_traumashears>Trauma Shears</ntconfigname_itemprice_traumashears>
+
+<!-- Multipurpose Scalpel -->
+<ntconfigname_itemprice_advscalpel>Multipurpose Scalpel</ntconfigname_itemprice_advscalpel>
+
+<!-- =================== Dynamic Item Availability ===================-->
+<ntconfigname_header8>Change Item Use Amounts</ntconfigname_header8>
+
+<!-- Osteosynthesis Implant Uses -->
+<ntconfigname_osteoimplants_uses>Osteosynthesis Implant Uses</ntconfigname_osteoimplants_uses>
+
+<!-- Spinal Cord Implant Uses -->
+<ntconfigname_spinalimplants_uses>Spinal Cord Implant Uses</ntconfigname_spinalimplants_uses>
+
+<!-- Hardmode Aortic Rupture -->
+<ntconfigname_hardmodeaorticrupture>Hardmode Aortic Rupture</ntconfigname_hardmodeaorticrupture>
+<ntconfigdescription_hardmodeaorticrupture>Enable the Medical Stent and Aortic Balloon as the only method to fix Aortic Rupture.</ntconfigdescription_hardmodeaorticrupture>
+
+<!-- Open Close Tamponade -->
+<ntconfigname_openclosetamponade>Open Close Tamponade</ntconfigname_openclosetamponade>
+<ntconfigdescription_openclosetamponade>Enable the closing with sutures as the only method to fix Cardiac Tamponade.</ntconfigdescription_openclosetamponade>
+
+<!-- Enable Sodium Nitroprusside -->
+<ntconfigname_donitroprusside>Enable Sodium Nitroprusside</ntconfigname_donitroprusside>
+<ntconfigdescription_donitroprusside>Allow Sodium Nitroprusside to be fabricated, bought and found.</ntconfigdescription_donitroprusside>
+
+<!-- Enable Organ Scalpels -->
+<ntconfigname_doorganscalpels>Enable Organ Scalpels</ntconfigname_doorganscalpels>
+<ntconfigdescription_doorganscalpels>Allow Organ scalpels and Surgery Box Scalpel set to be fabricated, bought and found.</ntconfigdescription_doorganscalpels>
 
 </infotexts>
