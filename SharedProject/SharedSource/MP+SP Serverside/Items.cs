@@ -442,10 +442,17 @@ public class NTItemMethods
         });
 
         // Ringer's Solution
-        // TODO
         RegisterItemUseFunction("ringerssolution", infos =>
         {
+            bool success = HF.GetSkillRequirementMet(infos.user, "Medical", 20);
 
+            int totalAmount = success ? 50 : 30;
+            int duration = 10;
+
+            HF.ApplyAfflictionOverTime(infos.target, "afringerssolution", totalAmount, duration, infos.user);
+
+            HF.RemoveItem(infos.item);
+            HF.GiveItem(infos.target, "ntsfx_syringe");
         });
 
         // Mannitol

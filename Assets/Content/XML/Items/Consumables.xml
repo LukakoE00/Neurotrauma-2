@@ -185,26 +185,12 @@
         </Deconstruct>
 
         <SuitableTreatment identifier="bloodloss" suitability="30"/>
-        
+
         <InventoryIcon texture="%ModDir%/Images/InventoryItemIconAtlas.png" sourcerect="448,192,64,64" origin="0.5,0.5"/>
         <Sprite texture="%ModDir%/Images/InGameItemIconAtlas.png" sourcerect="679,386,51,128" depth="0.6" origin="0.5,0.5"/>
         <Body width="80" height="45" density="11"/>
 
-        <Holdable canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" handle1="0,0" msg="ItemMsgPickUpSelect">
-            <StatusEffect type="OnUse" target="This" Condition="-100.0" disabledeltatime="true"/>
-            <RequiredSkill identifier="medical" level="20"/>
-            <StatusEffect statuseffecttags="medical" multiplyafflictionsbymaxvitality="true" type="OnSuccess" target="UseTarget" duration="10">
-                <Sound file="Content/Items/Medical/Syringe.ogg" range="500"/>
-                <Affliction identifier="afringerssolution" amount="5"/>
-            </StatusEffect>
-            <StatusEffect statuseffecttags="medical" multiplyafflictionsbymaxvitality="true" type="OnFailure" target="UseTarget" duration="10">
-                <Sound file="Content/Items/Medical/Syringe.ogg" range="500"/>
-                <Affliction identifier="afringerssolution" amount="3"/>
-            </StatusEffect>
-            <StatusEffect type="OnBroken" target="This">
-                <Remove/>
-            </StatusEffect>
-        </Holdable>
+        <Holdable canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" handle1="0,0" msg="ItemMsgPickUpSelect"/>
 
         <AiTarget sightrange="1000" static="true"/>
         <SkillRequirementHint identifier="medical" level="20"/>
