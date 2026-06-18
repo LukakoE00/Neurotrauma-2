@@ -198,21 +198,7 @@
             <Sprite texture="Content/Items/Medical/Medicines.png" sourcerect="0,261,83,46" depth="0.6" origin="0.5,0.5"/>
             <Body width="80" height="45" density="11"/>
 
-            <Holdable canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" handle1="0,0" msg="ItemMsgPickUpSelect">
-                <RequiredSkill identifier="medical" level="10"/>
-                <StatusEffect statuseffecttags="medical" type="OnUse" target="This" Condition="-100.0" disabledeltatime="true">
-                    <Sound file="Content/Items/Medical/Syringe.ogg" range="500" />
-                </StatusEffect>
-                <StatusEffect statuseffecttags="medical" multiplyafflictionsbymaxvitality="true" type="OnSuccess" target="UseTarget, This" duration="10">
-                    <Affliction identifier="afsaline" amount="5"/>
-                </StatusEffect>
-                <StatusEffect statuseffecttags="medical" multiplyafflictionsbymaxvitality="true" type="OnFailure" target="UseTarget, This" duration="10">
-                    <Affliction identifier="afsaline" amount="3"/>
-                </StatusEffect>
-                <StatusEffect type="OnBroken" target="This">
-                    <Remove/>
-                </StatusEffect>
-            </Holdable>
+            <Holdable canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" handle1="0,0" msg="ItemMsgPickUpSelect"/>
 
             <AiTarget sightrange="1000" static="true"/>
             <SkillRequirementHint identifier="medical" level="10"/>

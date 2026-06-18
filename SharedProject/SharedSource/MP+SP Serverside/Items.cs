@@ -917,10 +917,17 @@ public class NTItemMethods
         });
 
         // Saline
-        // TODO
         RegisterItemUseFunction("antibloodloss1", infos =>
         {
+            bool success = HF.GetSkillRequirementMet(infos.user, "Medical", 10);
 
+            int totalAmount = success ? 50 : 30;
+            int duration = 10;
+
+            HF.ApplyAfflictionOverTime(infos.target, "afsaline", totalAmount, duration, infos.user);
+
+            HF.RemoveItem(infos.item);
+            HF.GiveItem(infos.target, "ntsfx_syringe");
         });
 
         // Bandage
