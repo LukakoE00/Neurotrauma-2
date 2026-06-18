@@ -17,13 +17,18 @@ public class HumanUpdate
 
     // ---------------------------------------- NT Human Update Classes -------------------------------------------------- \\
 
-    public class NTHuman(Character Human)
+    public class NTHuman
     {
-        // Lowkey got too much class nesting in here
+        public NTHuman(Character NewHuman)
+        {
+            Human = NewHuman;
+            LocalStats = new CharacterStats();
+            LocalAfflictions = new CharacterAfflictions(NewHuman,this);
+        }
 
-        public Character Human = Human; // Our Human Ref
-        public CharacterStats LocalStats = new CharacterStats();
-        public CharacterAfflictions LocalAfflictions = new CharacterAfflictions(Human);
+        public Character Human; // Our Human Ref
+        public CharacterStats LocalStats;
+        public CharacterAfflictions LocalAfflictions;
 
         public Dictionary<string, CharacterAfflictions.NTHumanNonLimbAffData> GetAffData()
         {
@@ -47,7 +52,7 @@ public class HumanUpdate
 
         public void Update(List<AfflictionPriority> Priorities)
         {
-
+            if (Human == null) return;
             foreach (KeyValuePair<string,CharacterAfflictions.NTHumanNonLimbAffData> Pair in LocalAfflictions.UpdatingAfflictions)
             {
                 if (Pair.Key != null)
@@ -113,10 +118,10 @@ public class HumanUpdate
         public class CharacterAfflictions
         {
 
-            public CharacterAfflictions(Character Human2)
+            public CharacterAfflictions(Character Human2, NTHuman C)
             {
                 Human = Human2;
-                CharacterNT = CharacterToNTHuman(Human2);
+                CharacterNT = C;
 
                 AddAfflictions(); // ADD OUR AFFLICTIONS YEAHHHHH
             }
@@ -147,7 +152,7 @@ public class HumanUpdate
             }
 
             public Character Human { get; set; } // Our Human Ref
-            public NTHuman? CharacterNT { get; set; } // Our NTHuman Ref
+            public NTHuman CharacterNT { get; set; } // Our NTHuman Ref
 
             public Dictionary<string, NTHumanNonLimbAffData> UpdatingAfflictions = new(); // Stores the ID's of our updating afflictions.
             public Dictionary<string, NTHumanLimbAffData> UpdatingLimbAfflictions = new(); // Stores the ID's of our updating (Limb) afflictions.
@@ -174,37 +179,30 @@ public class HumanUpdate
 
             public void RegisterNonLimbAffliction(string ID, NTNonLimbAffliction NTNonLimbAff, double Strength)
             {
-                if (NTAfflictions.HasAffliction(ID) && !CharacterNT.LocalAfflictions.UpdatingAfflictions.ContainsKey(ID))
+                if (CharacterNT == null) return;
+                if (NTAfflictions.HasAffliction(ID) && !UpdatingAfflictions.ContainsKey(ID))
                 {
 
-                    if (CharacterNT != null)
-                    {
                         UpdatingAfflictions[ID] = new NTHumanNonLimbAffData(NTNonLimbAff, ID, Strength);
-
-                    }
 
                 }
             }
 
             public void RegisterLimbAffliction(string ID, NTLimbAffliction NTLimbAff, Dictionary<LimbType,double> Strength)
             {
-                if (NTAfflictions.HasAffliction(ID) && !CharacterNT.LocalAfflictions.UpdatingLimbAfflictions.ContainsKey(ID))
+                if (CharacterNT == null) return;
+                if (NTAfflictions.HasAffliction(ID) && !UpdatingLimbAfflictions.ContainsKey(ID))
                 {
-                    if (CharacterNT != null)
-                    {
                         UpdatingLimbAfflictions[ID] = new NTHumanLimbAffData(NTLimbAff, ID, Strength);
-                    }
                 }
             }
 
             public void RegisterBloodAffliction(string ID, NTBloodAffliction NTBloodAff, double Strength)
             {
-                if (NTAfflictions.HasAffliction(ID) && !CharacterNT.LocalAfflictions.UpdatingBloodAfflictions.ContainsKey(ID))
+                if (CharacterNT == null) return;
+                if (NTAfflictions.HasAffliction(ID) && !UpdatingBloodAfflictions.ContainsKey(ID))
                 {
-                    if (CharacterNT != null)
-                    {
                         UpdatingBloodAfflictions[ID] = new NTHumanBloodAffData(NTBloodAff, ID, Strength);
-                    }
                 }
             }
 
@@ -380,7 +378,7 @@ public class HumanUpdate
 
     // ---------------------------------------- The Human Update -------------------------------------------------- \\
 
-    public static NTHuman? CharacterToNTHuman(Character Character)
+    public static NTHuman CharacterToNTHuman(Character Character)
     {
         if (!UpdatingHumans.ContainsKey(Character)) return null;
         return UpdatingHumans[Character];
@@ -464,7 +462,7 @@ public class HumanUpdate
     }
 
     // Returns a list 
-    private static List<AfflictionPriority> GetLowestPriority(int cd)
+    private static List<AfflictionPriority> GetLowestPriority(int cd) // Cookie fix me
     {
         List<AfflictionPriority> output = [];
 
@@ -506,6 +504,7 @@ public class HumanUpdate
         List<AfflictionPriority> checkedPriorities = GetLowestPriority(UpdateCooldown);
         if (checkedPriorities.Count == 0) return;
 
+        HF.Print("Actually Update");
         Update(checkedPriorities);
 
         UpdateCooldown++;

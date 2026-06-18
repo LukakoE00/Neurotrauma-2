@@ -7,7 +7,7 @@ namespace Neurotrauma
 
         private void DefineAllAfflictions()
         {
-
+            NTAfflictionsToAdd AffsToAdd = new NTAfflictionsToAdd();
         }
 
         public void InitializeServer()
