@@ -264,12 +264,7 @@
             <Sprite texture="Content/Items/Medical/Medicines.png" sourcerect="310,33,26,42" depth="0.6" origin="0.5,0.5" />
             <Body width="25" height="40" density="10.05" />
 
-            <MeleeWeapon canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="40,5" handle1="0,0" holdangle="10" reload="1.0" msg="ItemMsgPickUpSelect" HitOnlyCharacters="true">
-                <StatusEffect type="OnBroken" target="This">
-                    <Remove/>
-                </StatusEffect>
-            </MeleeWeapon>
-
+            <MeleeWeapon canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="40,5" handle1="0,0" holdangle="10" reload="1.0" msg="ItemMsgPickUpSelect" HitOnlyCharacters="true"/>
             <SkillRequirementHint identifier="medical" level="10"/>
         </Item>
 
