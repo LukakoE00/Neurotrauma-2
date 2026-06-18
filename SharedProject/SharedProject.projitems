@@ -22,7 +22,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)sharedsource\MP+SP Serverside\MultiScalpel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)sharedsource\MP+SP Serverside\NTCompat.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)sharedsource\MP+SP Serverside\OnDamaged.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)sharedsource\MP+SP Serverside\OnFire.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)sharedsource\MP+SP Serverside\Screams.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)sharedsource\SharedInit.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)sharedsource\MP+SP Serverside\Stats.cs" />
