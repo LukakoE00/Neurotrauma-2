@@ -485,10 +485,17 @@ public class NTItemMethods
         });
 
         // Thiamine
-        // TODO
         RegisterItemUseFunction("thiamine", infos =>
         {
+            bool success = HF.GetSkillRequirementMet(infos.user, "Medical", 10);
 
+            int duration = 10;
+            int totalAmount = success ? 50 : 30;
+
+            HF.ApplyAfflictionOverTime(infos.target, "afthiamine", totalAmount, duration, infos.user);
+
+            HF.GiveItem(infos.target, "ntsfx_pills");
+            HF.RemoveItem(infos.item);
         });
 
         // Streptokinase

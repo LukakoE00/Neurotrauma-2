@@ -251,25 +251,7 @@
         <Sprite texture="%ModDir%/Images/InGameItemIconAtlas.png" sourcerect="768,384,128,128" depth="0.6" origin="0.5,0.5"/>
         <Body width="35" height="70" density="20"/>
 
-        <MeleeWeapon canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="40,5" handle1="0,0" holdangle="220" reload="1.0" msg="ItemMsgPickUpSelect">
-            <StatusEffect type="OnUse" target="This" Condition="-100.0" disabledeltatime="true"/>
-            <RequiredSkill identifier="medical" level="10"/>
-            <StatusEffect statuseffecttags="medical" multiplyafflictionsbymaxvitality="true" type="OnSuccess" target="UseTarget" duration="10">
-                <Sound file="%ModDir%/Sounds/ItemApplication/Consumables/pills1.ogg" range="500"/>
-                <Sound file="%ModDir%/Sounds/ItemApplication/Consumables/pills2.ogg" range="500"/>
-                <Sound file="%ModDir%/Sounds/ItemApplication/Consumables/pills3.ogg" range="500"/>
-                <Affliction identifier="afthiamine" amount="5"/>
-            </StatusEffect>
-            <StatusEffect statuseffecttags="medical" multiplyafflictionsbymaxvitality="true" type="OnFailure" target="UseTarget" duration="10">
-                <Sound file="%ModDir%/Sounds/ItemApplication/Consumables/pills1.ogg" range="500"/>
-                <Sound file="%ModDir%/Sounds/ItemApplication/Consumables/pills2.ogg" range="500"/>
-                <Sound file="%ModDir%/Sounds/ItemApplication/Consumables/pills3.ogg" range="500"/>
-                <Affliction identifier="afthiamine" amount="3"/>
-            </StatusEffect>
-            <StatusEffect type="OnBroken" target="This">
-                <Remove/>
-            </StatusEffect>
-        </MeleeWeapon>
+        <MeleeWeapon canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="40,5" handle1="0,0" holdangle="220" reload="1.0" msg="ItemMsgPickUpSelect"/>
         <SkillRequirementHint identifier="medical" level="10"/>
     </Item>
 

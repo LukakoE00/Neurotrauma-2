@@ -30,9 +30,9 @@ Azathioprine: DONE
 Tourniquet: DONE
 Gel Ice Pack: DONE
 Gypsum: DONE
-Ringer’s Solution: Todo C#
-Mannitol: Todo C#
-Thiamine: Todo C#
+Ringer’s Solution: DONE
+Mannitol: DONE
+Thiamine: DONE
 Streptokinase: DONE
 Propofol: DONE
 
