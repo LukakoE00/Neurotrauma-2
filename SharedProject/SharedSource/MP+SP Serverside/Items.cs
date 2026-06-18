@@ -38,7 +38,6 @@ public class NTItemMethods
             this.XPGain = xpGain;
             this.Conditions = conditions;
         }
-    
     }
 
     /// <summary>
@@ -94,6 +93,10 @@ public class NTItemMethods
         return $"‖color:{color.R},{color.G},{color.B}‖{content}‖color:end‖";
     }
 
+    // REFER TO README.MD WITHIN THE ITEMS FOLDER IN ASSETS!!!!!!!!
+    // REFER TO README.MD WITHIN THE ITEMS FOLDER IN ASSETS!!!!!!!!
+    // REFER TO README.MD WITHIN THE ITEMS FOLDER IN ASSETS!!!!!!!!
+
     public static void DefineAllItems()
     {
         // ============== Blood ==============
@@ -123,15 +126,9 @@ public class NTItemMethods
         {
             // Only work if not on cooldown
             if (infos.item.Condition < 50) return;
-
             bool success = HF.GetSkillRequirementMet(infos.user, "medical", 30);
-
             float BloodLossInduced = 3f;
-
-            if (success)
-            {
-                BloodLossInduced = 1f;
-            }
+            if (success) BloodLossInduced = 1f;
 
             HF.AddAffliction(infos.target, "bloodloss", BloodLossInduced, infos.user);
 
@@ -210,25 +207,17 @@ public class NTItemMethods
 
             HashSet<string> checkedAfflictions = [];
 
+            // I personally like using brackets in single-line if statements but this is way more compact - Lukako
             foreach (var value in infos.target.CharacterHealth.GetAllAfflictions())
             {
                 float strength = MathF.Round(value.Strength);
                 var prefab = value.Prefab;
-
                 string id = value.Identifier.Value;
 
                 if (strength <= 2) continue;
                 if (!HematologyDetectable.Contains(prefab.Identifier.Value)) continue;
-
-                if (!checkedAfflictions.Add(id))
-                {
-                    continue;
-                }
-
-                if (ignoredCategory.Contains(id))
-                {
-                    continue;
-                }
+                if (!checkedAfflictions.Add(id)) continue;
+                if (ignoredCategory.Contains(id)) continue;
 
                 string entry = $"\n{prefab.Name.Value}: {strength}%";
 
@@ -237,52 +226,25 @@ public class NTItemMethods
                 bool isCustom = customCategory.Contains(id);
                 bool isPressure = pressureCategory.Contains(id);
 
-                if (isVital)
-                {
-                    vitalReadout += entry;
-                }
-                else if (isRemoval)
-                {
-                    removalReadout += entry;
-                }
-                else if (isCustom)
-                {
-                    customReadout += entry;
-                }
+                if (isVital) vitalReadout += entry;
+                else if (isRemoval) removalReadout += entry;
+                else if (isCustom) customReadout += entry;
                 else if (isPressure)
                 {
-                    if (strength > 130 || strength < 70)
-                    {
-                        highPressureReadout += entry;
-                    }
-                    else
-                    {
-                        lowPressureReadout += entry;
-                    }
+                    if (strength > 130 || strength < 70) highPressureReadout += entry;
+                    else lowPressureReadout += entry;
                 }
                 else
                 {
-                    if (strength < lowMedThreshold)
-                    {
-                        lowStrengthReadout += entry;
-                    }
-                    else if (strength < medHighThreshold)
-                    {
-                        mediumStrengthReadout += entry;
-                    }
-                    else
-                    {
-                        highStrengthReadout += entry;
-                    }
+                    if (strength < lowMedThreshold) lowStrengthReadout += entry;
+                    else if (strength < medHighThreshold) mediumStrengthReadout += entry;
+                    else highStrengthReadout += entry;
                 }
 
                 afflictionsDisplayed++;
             }
 
-            if (afflictionsDisplayed <= 0)
-            {
-                lowStrengthReadout += "\nNo blood pressure detected...";
-            }
+            if (afflictionsDisplayed <= 0) lowStrengthReadout += "\nNo blood pressure detected...";
 
             HF.DMClient(
                 HF.CharacterToClient(infos.user),
@@ -299,10 +261,12 @@ public class NTItemMethods
             );
         });
 
+        // Blood Packs (A, B, AB, 0)
+        // TODO
+
         // Empty Blood Pack
         RegisterItemUseFunction("emptybloodpack", infos =>
         {
-
             if (infos.item.condition <= 0) return;
 
             // changing from 31 to somthing like 15 can stop easy station kill by using two blood pack in a row
@@ -322,7 +286,6 @@ public class NTItemMethods
 
             HF.SetAffliction(infos.target, "acidosis", (float)HF.GetAfflictionStrength(infos.target, "acidosis", 0) * (float)0.9, infos.user, 0);
             HF.SetAffliction(infos.target, "alkalosis", (float)HF.GetAfflictionStrength(infos.target, "alkalosis", 0) * (float)0.9, infos.user, 0);
-
             HF.AddAffliction(infos.target, "bloodloss", bloodlossinduced, infos.user);
 
             string btID = bloodtype == "o_negative" ? "antibloodloss2" : "bloodpack" + bloodtype;
@@ -342,34 +305,42 @@ public class NTItemMethods
 
                 Item item = (Item)args[3];
 
-                foreach (var tag in tags)
-                {
-                    item.AddTag(tag);
-                }
+                foreach (var tag in tags) item.AddTag(tag);
 
             }, acidosis, alkalosis, sepsis);
 
-
-            infos.item.Condition = 0f;
+            HF.RemoveItem(infos.item);
             HF.GiveItem(infos.target, "ntsfx_syringe");
-
-
         });
 
         // ============== BodyParts ==============
+        // Liver Transplant
+        // TODO
+
+        // Lung Transplant
+        // TODO
+
+        // Kidney Transplant
+        // TODO
+
+        // Heart Transplant
+        // TODO
+
+        // Brain Transplant
+        // TODO
+
+        // Extremity Transplants
+        // TODO
+        // In Lua, these use the reattachLimb HF for each specific limbtype; RightArm, LeftArm, RightLeg, LeftLeg.
+
+        // Bionic Prosthetics
+        // TODO
+        // In Lua, these just re-use the Arm/Leg transplants above, respective to the prosthetic.
 
         // ============== Consumables ==============
-        // Azathioprine
-        RegisterItemUseFunction("immunosuppressant", infos =>
-        {
-            bool success = HF.GetSkillRequirementMet(infos.user, "Medical", 10);
-            HF.AddAffliction(infos.target, "afimmunosuppressant", success ? 5 : 3, infos.user);
-        });
-
         // Antibiotic Ointment
         RegisterItemUseFunction("ointment", (infos) =>
         {
-
             bool success = HF.GetSkillRequirementMet(infos.user, "medical", 10);
 
             HF.AddAfflictionLimb(infos.target, "ointmented", infos.targetLimb.type, success ? 120 : 60, infos.user);
@@ -381,11 +352,65 @@ public class NTItemMethods
                 HF.AddAfflictionLimb(infos.target, "burn", infos.targetLimb.type, success ? -12 : (float)-7.2, infos.user);
             }
 
+            HF.RemoveItem(infos.item);
             HF.GiveItem(infos.target, "ntsfx_ointment");
+        });
+
+        // Azathioprine
+        RegisterItemUseFunction("immunosuppressant", infos =>
+        {
+            // XML applied 5 or 3 strength for 10 seconds; use a new HF to do the same. - Lukako
+            // TODO: Emulate MultiplyByMaxVitality
+            bool success = HF.GetSkillRequirementMet(infos.user, "Medical", 10);
+
+            int totalAmount = success ? 50 : 30;
+            int duration = 10;
+
+            HF.ApplyAfflictionOverTime(infos.target, "afimmunosuppressant", totalAmount, duration, infos.user);
+
+            // Technically, this is different from the XML original; this applies 1 Sepsis instantly, the other had a 50% chance to apply per tick.
+            if (!success && HF.Chance(0.5f))
+            {
+                HF.AddAffliction(infos.target, "sepsis", 1f, null);
+            }
+
+            HF.RemoveItem(infos.item);
+            HF.GiveItem(infos.target, "ntsfx_pills");
+        });
+
+        // Tourniquet
+        RegisterItemUseFunction("tourniquet", infos =>
+        {
+            if (HF.HasAfflictionLimb(infos.target, "tourniqueted", infos.targetLimb.type, 1)) return;
+
+            // Failure
+            if (!HF.GetSkillRequirementMet(infos.user, "medical", 30))
+            {
+                HF.AddAfflictionLimb(infos.target, "blunttrauma", infos.targetLimb.type, 6, infos.user);
+                return;
+            }
+
+            if (HF.LimbIsExtremity(infos.targetLimb.type))
+            {
+                HF.SetAfflictionLimb(infos.target, "tourniqueted", infos.targetLimb.type, 100, infos.user, 0);
+            }
+            else if (infos.targetLimb.type == LimbType.Head)
+            {
+                HF.SetAffliction(infos.target, "oxygenlow", 200, infos.user, 0);
+                HF.AddAffliction(infos.target, "neurotrauma", 15, infos.user);
+            }
+
+            HF.RemoveItem(infos.item);
+            HF.GiveItem(infos.target, "ntsfx_bandage");
+        });
+
+        // Gel Ice Pack
+        RegisterItemUseFunction("gelipack", infos =>
+        {
 
         });
 
-        // Gypsum
+            // Gypsum
         RegisterItemUseFunction("gypsum", infos =>
         {
             if (HF.HasAffliction(infos.target, "stasis", (float)0.1)) { return; }
@@ -408,31 +433,30 @@ public class NTItemMethods
             HF.RemoveItem(infos.item);
         });
 
-        // Tourniquet
-        RegisterItemUseFunction("tourniquet", infos =>
+        // Ringer's Solution
+        // TODO
+
+        // Mannitol
+        // TODO
+
+        // Thiamine
+        // TODO
+
+        // Streptokinase
+        RegisterItemUseFunction("streptokinase", infos =>
         {
+            HF.AddAffliction(infos.target, "heartattack", -100, infos.user);
+            HF.AddAffliction(infos.target, "hemotransfusionshock", -100, infos.user);
+            HF.AddAffliction(infos.target, "afstreptokinase", 50, infos.user);
 
-            if (HF.HasAfflictionLimb(infos.target, "arteriesclamp", infos.targetLimb.type, 1)) return;
-
-            // Failure
-            if (!HF.GetSkillRequirementMet(infos.user, "medcial", 30))
+            if (HF.HasAffliction(infos.target, "stroke"))
             {
-                HF.AddAfflictionLimb(infos.target, "blunttrauma", infos.targetLimb.type, 6, infos.user);
-                return;
-            }
-
-            if (HF.LimbIsExtremity(infos.targetLimb.type))
-            {
-                HF.SetAfflictionLimb(infos.target, "arteriesclamp", infos.targetLimb.type, 100, infos.user, 0);
-            }
-            else if (infos.targetLimb.type == LimbType.Head)
-            {
-                HF.SetAffliction(infos.target, "oxygenlow", 200, infos.user, 0);
-                HF.AddAffliction(infos.target, "cerebralhypoxia", 15, infos.user);
+                HF.AddAffliction(infos.target, "stroke", 5, infos.user);
+                HF.AddAffliction(infos.target, "cerebralhypoxia", 10, infos.user);
             }
 
             HF.RemoveItem(infos.item);
-
+            HF.GiveItem(infos.target, "ntsfx_syringe");
         });
 
         // Propofol
@@ -459,87 +483,19 @@ public class NTItemMethods
 
         });
 
-        // Streptokinase
-        RegisterItemUseFunction("streptokinase", infos =>
-        {
-            HF.AddAffliction(infos.target, "heartattack", -100, infos.user);
-            HF.AddAffliction(infos.target, "hemotransfusionshock", -100, infos.user);
-            HF.AddAffliction(infos.target, "afstreptokinase", 50, infos.user);
-
-            if (HF.HasAffliction(infos.target, "stroke"))
-            {
-                HF.AddAffliction(infos.target, "stroke", 5, infos.user);
-                HF.AddAffliction(infos.target, "cerebralhypoxia", 10, infos.user);
-            }
-
-            HF.RemoveItem(infos.item);
-            HF.GiveItem(infos.target, "ntsfx_syringe");
-        });
-
         // ============== OtherEquipment ==============
+        // Manual Defibrillator
+        // TODO
+
+        // AED
+        // TODO
+
+        // Blue Shark
+        // TODO
 
         // ============== Overrides ==============
-        // Alien Blood
-        // REWRITTEN FROM XML
-        RegisterItemUseFunction("alienblood", infos =>
-        {
-            if (HF.GetSkillRequirementMet(infos.user, "medical", 55f))
-            {
-                HF.AddAffliction(infos.target, "bloodloss", 20f, infos.user);
-                HF.AddAffliction(infos.target, "hemotransfusionshock", 100f, infos.user);
-                HF.AddAffliction(infos.target, "psychosis", 30f, infos.user);
-                HF.AddAffliction(infos.target, "bloodpressure", 20f, infos.user);
-
-            }
-            else
-            {
-                HF.AddAffliction(infos.target, "bloodloss", 15f, infos.user);
-                HF.AddAffliction(infos.target, "hemotransfusionshock", 100f, infos.user);
-                HF.AddAffliction(infos.target, "psychosis", 30f, infos.user);
-                HF.AddAffliction(infos.target, "bloodpressure", 15f, infos.user);
-            }
-
-            HF.RemoveItem(infos.item);
-            HF.GiveItem(infos.target, "ntsfx_syringe");
-        });
-
-        // Anaparalyzant
-        // REWRITTEN FROM XML
-        RegisterItemUseFunction("antiparalysis", infos =>
-        {
-            if (HF.GetSkillRequirementMet(infos.user, "medical", 64f))
-            {
-                HF.AddAffliction(infos.target, "paralysisresistance", 800f, infos.user);
-                HF.AddAffliction(infos.target, "psychosis", 5f, infos.user);
-                HF.AddAffliction(infos.target, "anesthesia", -200f, infos.user);
-                HF.AddAffliction(infos.target, "afanaesthetic", -200f, infos.user);
-            }
-            else
-            {
-
-                // TODO Apply it over time
-
-            }
-
-            HF.RemoveItem(infos.item);
-            HF.GiveItem(infos.target, "ntsfx_syringe");
-        });
-
-        // Adrenaline
-        RegisterItemUseFunction("adrenaline", infos =>
-        {
-            HF.AddAffliction(infos.target, "afadrenaline", 55, infos.user);
-            HF.AddAffliction(infos.target, "adrenalinerush", 8, infos.user);
-
-            if (HF.HasAffliction(infos.target, "cardiacarrest", 0.1f))
-            {
-                HF.AddAffliction(infos.target, "cardiacarrest", -100, infos.user);
-                HF.AddAffliction(infos.target, "fibrillation", 20, infos.user);
-            }
-
-            HF.RemoveItem(infos.item);
-            HF.GiveItem(infos.target, "ntsfx_syringe");
-        });
+        // Wrench + Variants
+        // TODO
 
         // Health Scanner
         RegisterItemUseFunction("healthscanner", infos =>
@@ -713,6 +669,116 @@ public class NTItemMethods
                 );
             }, 2000);
         });
+
+        // Alien Blood
+        // REWRITTEN FROM XML
+        RegisterItemUseFunction("alienblood", infos =>
+        {
+            if (HF.GetSkillRequirementMet(infos.user, "medical", 55f))
+            {
+                HF.AddAffliction(infos.target, "bloodloss", 20f, infos.user);
+                HF.AddAffliction(infos.target, "hemotransfusionshock", 100f, infos.user);
+                HF.AddAffliction(infos.target, "psychosis", 30f, infos.user);
+                HF.AddAffliction(infos.target, "bloodpressure", 20f, infos.user);
+
+            }
+            else
+            {
+                HF.AddAffliction(infos.target, "bloodloss", 15f, infos.user);
+                HF.AddAffliction(infos.target, "hemotransfusionshock", 100f, infos.user);
+                HF.AddAffliction(infos.target, "psychosis", 30f, infos.user);
+                HF.AddAffliction(infos.target, "bloodpressure", 15f, infos.user);
+            }
+
+            HF.RemoveItem(infos.item);
+            HF.GiveItem(infos.target, "ntsfx_syringe");
+        });
+
+        // Saline
+        // TODO
+
+        // Bandage
+        // TODO
+
+        // Plastiseal
+        // TODO
+
+        // Opium
+        // TODO
+
+        // Morphine
+        // TODO
+
+        // Fentanyl
+        // TODO
+
+        // Naloxone
+        // TODO
+
+        // Broad-Spectrum Antibiotics
+        // TODO
+
+        // Adrenaline
+        RegisterItemUseFunction("adrenaline", infos =>
+        {
+            HF.AddAffliction(infos.target, "afadrenaline", 55, infos.user);
+            HF.AddAffliction(infos.target, "adrenalinerush", 8, infos.user);
+
+            if (HF.HasAffliction(infos.target, "cardiacarrest", 0.1f))
+            {
+                HF.AddAffliction(infos.target, "cardiacarrest", -100, infos.user);
+                HF.AddAffliction(infos.target, "fibrillation", 20, infos.user);
+            }
+
+            HF.RemoveItem(infos.item);
+            HF.GiveItem(infos.target, "ntsfx_syringe");
+        });
+
+        // Liquid Oxygenite
+        // TODO
+
+        // Deusizine
+        // TODO
+
+        // Antibiotic Glue
+        // TODO
+
+        // Methamphetamine
+        // TODO
+
+        // Hyperzine
+        // TODO
+
+        // Haloperidol
+        // TODO
+
+        // Anaparalyzant
+        // REWRITTEN FROM XML
+        RegisterItemUseFunction("antiparalysis", infos =>
+        {
+            if (HF.GetSkillRequirementMet(infos.user, "medical", 64f))
+            {
+                HF.AddAffliction(infos.target, "paralysisresistance", 800f, infos.user);
+                HF.AddAffliction(infos.target, "psychosis", 5f, infos.user);
+                HF.AddAffliction(infos.target, "anesthesia", -200f, infos.user);
+                HF.AddAffliction(infos.target, "afanaesthetic", -200f, infos.user);
+            }
+            else
+            {
+
+                // TODO Apply it over time
+
+            }
+
+            HF.RemoveItem(infos.item);
+            HF.GiveItem(infos.target, "ntsfx_syringe");
+        });
+
+        // Tonic Liquid
+        // TODO
+
+        // Nitroglycerin
+        // TODO
 
         // ============== SurgicalEquipment ==============
         // Sutures
@@ -904,6 +970,15 @@ public class NTItemMethods
             }
         });
 
+        // Needle
+        // TODO
+
+        // Osteosynthesis Implants
+        // TODO
+
+        // Spinal Cord Implants
+        // TODO
+
         // Scalpel
         RegisterItemUseFunction("advscalpel", infos =>
         {
@@ -957,6 +1032,18 @@ public class NTItemMethods
             HF.AddAfflictionLimb(infos.target, "retractedskin", infos.targetLimb.type, 1 + HF.GetSurgerySkill(infos.user) / 2, infos.user);
         });
 
+        // Surgical Drill
+        // TODO
+
+        // Surgical Saw
+        // TODO
+
+        // Tweezers
+        // TODO
+
+        // Organ Scalpels [Lungs, Heart, Kidneys, Liver, Brain]; used by the MultiScalpel + Toggleable StandAlone Scalpels
+        // TODO
+
         // Trauma Shears
         CuttableAfflictions.Add("bandaged");
         CuttableAfflictions.Add("bandageddirty");
@@ -1008,10 +1095,22 @@ public class NTItemMethods
 
         });
 
-        // ============== Toggleable ==============
-        
-    }
+        // Antiseptic Sprayer
+        // TODO
 
+        // ============== Toggleable ==============
+        // Endovascular Balloon
+        // TODO
+
+        // Medical Stent
+        // TODO
+
+        // Antiseptic
+        // TODO
+
+        // Sodium Nitroprusside
+        // TODO
+    }
 
     /**<summary>
      * Register a new identifier => function to the NTItemRegistry.

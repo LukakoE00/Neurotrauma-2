@@ -19,25 +19,17 @@
             <RequiredItem identifier="antibiotics" amount="1"/>
         </Fabricate>
 
-        <Deconstruct/>
+        <Deconstruct time="1"/>
 
         <SuitableTreatment identifier="infectedwound" suitability="100"/>
         <SuitableTreatment identifier="burn_deg1" suitability="50"/>
         <SuitableTreatment identifier="burn_deg2" suitability="50"/>
+
         <InventoryIcon texture="%ModDir%/Images/InventoryItemIconAtlas.png" sourcerect="64,64,64,64" origin="0.5,0.5"/>
         <Sprite texture="%ModDir%/Images/InGameItemIconAtlas.png" sourcerect="128,256,128,128" depth="0.6" origin="0.5,0.5"/>
         <Body width="60" height="20" density="20"/>
 
-        <MeleeWeapon canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="5,0" handle1="-5,0" holdangle="10" reload="1.0" msg="ItemMsgPickUpSelect">
-            <RequiredSkill identifier="medical" level="55" />
-            <StatusEffect type="OnUse" target="This" Condition="-100.0" setvalue="true">
-                <Sound file="%ModDir%/Sounds/ItemApplication/Consumables/ointment.ogg" range="500" />
-            </StatusEffect>
-            <StatusEffect type="OnBroken" target="This">
-                <Remove/>
-            </StatusEffect>
-        </MeleeWeapon>
-
+        <MeleeWeapon canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="5,0" handle1="-5,0" holdangle="10" reload="1.0" msg="ItemMsgPickUpSelect"/>
         <SkillRequirementHint identifier="medical" level="10"/>
     </Item>
 
@@ -64,27 +56,7 @@
         <Sprite texture="%ModDir%/Images/InventoryItemIconAtlas.png" sourcerect="196,196,64,64" depth="0.6" origin="0.5,0.5"/>
         <Body width="35" height="70" density="20"/>
 
-        <MeleeWeapon canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="40,5" handle1="0,0" holdangle="220" reload="1.0" msg="ItemMsgPickUpSelect">
-            <StatusEffect type="OnUse" target="This" Condition="-100.0" disabledeltatime="true"/>
-            <RequiredSkill identifier="medical" level="10"/>
-            <StatusEffect statuseffecttags="medical" multiplyafflictionsbymaxvitality="true" type="OnSuccess" target="UseTarget" duration="10">
-                <Sound file="%ModDir%/Sounds/ItemApplication/Consumables/pills1.ogg" range="500"/>
-                <Sound file="%ModDir%/Sounds/ItemApplication/Consumables/pills2.ogg" range="500"/>
-                <Sound file="%ModDir%/Sounds/ItemApplication/Consumables/pills3.ogg" range="500"/>
-                <Affliction identifier="afimmunosuppressant" amount="5"/>
-            </StatusEffect>
-            <StatusEffect statuseffecttags="medical" multiplyafflictionsbymaxvitality="true" type="OnFailure" target="UseTarget" duration="10">
-                <Sound file="%ModDir%/Sounds/ItemApplication/Consumables/pills1.ogg" range="500"/>
-                <Sound file="%ModDir%/Sounds/ItemApplication/Consumables/pills2.ogg" range="500"/>
-                <Sound file="%ModDir%/Sounds/ItemApplication/Consumables/pills3.ogg" range="500"/>
-                <Affliction identifier="afimmunosuppressant" amount="3"/>
-                <Affliction identifier="sepsis" amount="0.1" probability="0.5"/>
-            </StatusEffect>
-            <StatusEffect type="OnBroken" target="This">
-                <Remove/>
-            </StatusEffect>
-        </MeleeWeapon>
-
+        <MeleeWeapon canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="40,5" handle1="0,0" holdangle="220" reload="1.0" msg="ItemMsgPickUpSelect"/>
         <SkillRequirementHint identifier="medical" level="10"/>
     </Item>
 
@@ -93,6 +65,10 @@
         <!--<PreferredContainer primary="toxcontainer" spawnprobability="0.2"/>-->
         <PreferredContainer primary="medcab" minamount="10" maxamount="16" spawnprobability="1"/>
 
+        <Price baseprice="50" soldbydefault="true">
+            <Price storeidentifier="merchantmedical" sold="true" multiplier="0.9" minavailable="5"/>
+        </Price>
+
         <Fabricate suitablefabricators="medicalfabricator" amount="2">
             <RequiredSkill identifier="medical" level="15"/>
             <RequiredItem identifier="organicfiber"/>
@@ -100,26 +76,13 @@
 
         <Deconstruct time="2"/>
 
-        <Price baseprice="50" soldbydefault="true">
-            <Price storeidentifier="merchantmedical" sold="true" multiplier="0.9" minavailable="5"/>
-        </Price>
+        <SuitableTreatment identifier="arterialcut" suitability="50"/>
 
         <InventoryIcon texture="%ModDir%/Images/InventoryItemIconAtlas.png" sourcerect="384,0,64,64" origin="0.5,0.5"/>
         <Sprite texture="%ModDir%/Images/InGameItemIconAtlas.png" sourcerect="384,128,128,128" depth="0.55" origin="0.5,0.5"/>
         <Body width="100" height="100" density="50"/>
-        <SuitableTreatment identifier="arterialcut" suitability="50"/>
 
-        <MeleeWeapon slots="Any,RightHand,LeftHand" aimpos="5,0" handle1="-5,0" holdangle="10" reload="1.0">
-            <RequiredSkill identifier="medical" level="30"/>
-            <StatusEffect type="OnUse" target="This">
-                <Sound file="Content/Items/Medical/Bandage1.ogg" type="OnUse" range="500"/>
-                <Sound file="Content/Items/Medical/Bandage2.ogg" type="OnUse" range="500"/>
-            </StatusEffect>
-            <StatusEffect type="OnBroken" target="This">
-                <Remove/>
-            </StatusEffect>
-        </MeleeWeapon>
-
+        <MeleeWeapon slots="Any,RightHand,LeftHand" aimpos="5,0" handle1="-5,0" holdangle="10" reload="1.0"/>
         <SkillRequirementHint identifier="medical" level="30"/>
     </Item>
 
@@ -149,6 +112,7 @@
         <SuitableTreatment identifier="blunttrauma" suitability="40"/>
         <SuitableTreatment identifier="infectedwound" suitability="-100"/>
         <SuitableTreatment identifier="inflammation" suitability="-100"/>
+        
         <InventoryIcon texture="%ModDir%/Images/InventoryItemIconAtlas.png" sourcerect="64,256,64,64" origin="0.5,0.5"/>
         <Sprite texture="%ModDir%/Images/InGameItemIconAtlas.png" sourcerect="896,512,128,128" depth="0.6" origin="0.5,0.5"/>
         <Body width="80" height="45" density="11"/>
