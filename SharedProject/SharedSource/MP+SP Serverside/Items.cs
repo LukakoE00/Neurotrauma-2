@@ -456,10 +456,32 @@ public class NTItemMethods
         });
 
         // Mannitol
-        // TODO
         RegisterItemUseFunction("mannitol", infos =>
         {
+            bool success = HF.GetSkillRequirementMet(infos.user, "Medical", 60);
 
+            int duration = 10;
+
+            // Why does applying it stun for 0.1s?
+            HF.AddAffliction(infos.target, "stun", 0.1f, infos.user);
+
+            if (success)
+            {
+                HF.ApplyAfflictionOverTime(infos.target, "afmannitol", 50, duration, infos.user);
+                HF.ApplyAfflictionOverTime(infos.target, "organdamage", 5, duration, infos.user);
+                HF.ApplyAfflictionOverTime(infos.target, "heartdamage", 10, duration, infos.user);
+                HF.ApplyAfflictionOverTime(infos.target, "kidneydamage", 10, duration, infos.user);
+            }
+            else
+            {
+                HF.ApplyAfflictionOverTime(infos.target, "afmannitol", 30, duration, infos.user);
+                HF.ApplyAfflictionOverTime(infos.target, "organdamage", 10, duration, infos.user);
+                HF.ApplyAfflictionOverTime(infos.target, "heartdamage", 20, duration, infos.user);
+                HF.ApplyAfflictionOverTime(infos.target, "kidneydamage", 20, duration, infos.user);
+            }
+
+            HF.GiveItem(infos.target, "ntsfx_syringe");
+            HF.RemoveItem(infos.item);
         });
 
         // Thiamine
