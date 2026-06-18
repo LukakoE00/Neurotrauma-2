@@ -71,15 +71,15 @@ Morphine: Todo C# / Don't double apply if XML overriden
 Fentanyl: Todo C# / Don't double apply if XML overriden
 Naloxone: Todo C# / Don't double apply if XML overriden
 Broad-Spectrum Antibiotics: Todo C# / Don't double apply if XML overriden
-Adrenaline: Todo C# / Don't double apply if XML overriden
-Captains Pipe: Todo C# / Don't double apply if XML overriden
-Cigar: Todo C# / Don't double apply if XML overriden
+Adrenaline: DONE / Don't double apply if XML overriden
+Captains Pipe: Good enough XML
+Cigar: Good enough XML
 Liquid Oxygenite: Todo C# / Don't double apply if XML overriden
 Deusizine: Todo C# / Don't double apply if XML overriden
 Antibiotic Glue: Todo C# / Don't double apply if XML overriden
 Meth: Todo C# / Don't double apply if XML overriden
 Hyperzine: Todo C# / Don't double apply if XML overriden
-Diving Knife: Todo C#
+Diving Knife: DONE
 Haloperidol: Todo C# / Don't double apply if XML overriden
 Anaparalyzant: Todo C# / Don't double apply if XML overriden
 Handcuffs: TBD
