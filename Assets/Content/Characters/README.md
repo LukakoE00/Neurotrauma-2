@@ -1,1 +1,0 @@
-- Re-add Human.xml override here once Afflictions / Items are done.
