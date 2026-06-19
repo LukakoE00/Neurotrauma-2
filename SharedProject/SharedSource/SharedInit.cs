@@ -5,14 +5,10 @@ namespace Neurotrauma
     {
         // Server-specific code
 
-        private void DefineAllAfflictions()
-        {
-            NTAfflictionsToAdd AffsToAdd = new NTAfflictionsToAdd();
-        }
-
         public void InitializeServer()
         {
-            DefineAllAfflictions();
+            NTAfflictions.DefineAllAfflictions();
+            NTStats.DefineAllStats();
             NTItemMethods.DefineAllItems();
         }
 
@@ -27,7 +23,7 @@ namespace Neurotrauma
             LoveBots.InitBotPatches(); // Add the HarmonyPatches to disable bot treatment
             CPRHooks.InitCPRHooks(); // Add the CPR Success/Failure hooks
 
-            // What a mess. - Lukako
+            // What a mess. - Lukako (holy old status)
             harmony = new Harmony("neurotrauma.server");
 
             var originalApplyDamage = AccessTools.Method(typeof(CharacterHealth), "ApplyDamage", [typeof(Limb), typeof(AttackResult), typeof(bool), typeof(bool)]);

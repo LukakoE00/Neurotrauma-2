@@ -25,6 +25,11 @@ namespace Neurotrauma
         private static List<string> AfflictionsMEDIUM = [];
         private static List<string> AfflictionsHIGH = [];
 
+        public static void DefineAllAfflictions()
+        {
+            NTAfflictionsToAdd AffsToAdd = new();
+        }
+
         public static void RegisterAffliction(string id, NTAffliction affliction)
         {
             if (!Afflictions.ContainsKey(id))

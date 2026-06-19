@@ -1,8 +1,81 @@
 namespace Neurotrauma
 {
-    public static class NTStats // Cookie this all you bro :peace:
+    public static class NTStats
     {
         public static Dictionary<string, NTStat> Stats = new Dictionary<string, NTStat>();
+
+        public static void DefineAllStats()
+        {
+            // This isnt done, just a basic template.
+            Stats["healingrate"] = new NTStat(0, 100, 1, (HumanUpdate.NTHuman C) => 
+            { 
+
+            });
+            Stats["specificOrganDamageHealMultiplier"] = new NTStat(0, 100, 1, (HumanUpdate.NTHuman C) => 
+            { 
+            
+            });
+            Stats["neworgandamage"] = new NTStat(0, 100, 1, (HumanUpdate.NTHuman C) => 
+            { 
+            
+            });
+            Stats["clottingrate"] = new NTStat(0, 100, 1, (HumanUpdate.NTHuman C) => 
+            {
+
+            });
+            Stats["bloodamount"] = new NTStat(0, 100, 1, (HumanUpdate.NTHuman C) => 
+            { 
+            
+            });
+            Stats["stasis"] = new NTStat(0, 100, 1, (HumanUpdate.NTHuman C) => 
+            { 
+            
+            });
+            Stats["sedated"] = new NTStat(0, 100, 1, (HumanUpdate.NTHuman C) => 
+            { 
+            
+            });
+            Stats["withdrawal"] = new NTStat(0, 100, 1, (HumanUpdate.NTHuman C) => 
+            { 
+            
+            });
+            Stats["availableoxygen"] = new NTStat(0, 100, 1, (HumanUpdate.NTHuman C) => 
+            { 
+            
+            });
+            Stats["speedmultiplier"] = new NTStat(0, 100, 1, (HumanUpdate.NTHuman C) => 
+            { 
+            
+            });
+            Stats["lockleftarm"] = new NTStat(0, 100, 1, (HumanUpdate.NTHuman C) => 
+            { 
+            
+            });
+            Stats["lockrightarm"] = new NTStat(0, 100, 1, (HumanUpdate.NTHuman C) => 
+            { 
+            
+            });
+            Stats["lockleftleg"] = new NTStat(0, 100, 1, (HumanUpdate.NTHuman C) => 
+            { 
+            
+            });
+            Stats["lockrightleg"] = new NTStat(0, 100, 1, (HumanUpdate.NTHuman C) => 
+            { 
+            
+            });
+            Stats["wheelchaired"] = new NTStat(0, 100, 1, (HumanUpdate.NTHuman C) => 
+            { 
+            
+            });
+            Stats["bonegrowthCount"] = new NTStat(0, 100, 1, (HumanUpdate.NTHuman C) => 
+            { 
+            
+            });
+            Stats["burndamage"] = new NTStat(0, 100, 1, (HumanUpdate.NTHuman C) => 
+            { 
+            
+            });
+        }
 
         public static void RegisterStat(string id, NTStat NewStat) // Register a new stat to the NTStat Dictionary.
         {
@@ -46,12 +119,12 @@ namespace Neurotrauma
 
     public class NTStat(double MinStrength = 0, double MaxStrength = 1, double DefaultStrength = 1, Action<HumanUpdate.NTHuman> Update = null)
     {
-        private double Amount = Math.Clamp(DefaultStrength, MinStrength, MaxStrength);
+        private double Strength = Math.Clamp(DefaultStrength, MinStrength, MaxStrength);
         private Action<HumanUpdate.NTHuman> StatUpdate = Update;
 
         public void AddStrength(double AddingAmount)
         {
-            Amount += AddingAmount;
+            Strength += AddingAmount;
         }
 
         public void RemoveStrength(double RemovingAmount) // This function is kinda stupid.
@@ -61,7 +134,7 @@ namespace Neurotrauma
 
         public void SetStrength(double SetingAmount)
         {
-            Amount = SetingAmount;
+            Strength = SetingAmount;
         }
 
         public void Recalculate(HumanUpdate.NTHuman Character)
