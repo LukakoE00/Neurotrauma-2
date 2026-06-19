@@ -224,13 +224,20 @@ namespace Neurotrauma
             ID = NewID;
             MinStrength = NewMinStrength;
             MaxStrength = NewMaxStrength;
-            DefaultStrength = Math.Clamp(NewDefaultStrength, NewMinStrength, NewMaxStrength);
+            DefaultStrength = Math.Clamp(NewDefaultStrength, NewMinStrength, NewMaxStrength);   
             Priority = NewPriority;
         }
     }
 
-    public class NTSymptom : NTAffliction
+    public class NTSymptom : NTNonLimbAffliction
     {
+
+        public Action<HumanUpdate.NTHuman, string, LimbType, HumanUpdate.NTHuman.CharacterAfflictions.NTHumanSymptomData> UpdateAction =
+            (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHuman.CharacterAfflictions.NTHumanSymptomData SymData) =>
+            {
+                // Insert your Affliction Update in here.
+            };
+
         public NTSymptom(string NewID, double NewMinStrength = 0, double NewMaxStrength = 100, double NewDefaultStrength = 0, AfflictionPriority NewPriority = AfflictionPriority.HIGH) 
                             : base(NewID, NewMinStrength, NewMaxStrength, NewDefaultStrength, NewPriority)
         {
@@ -240,8 +247,6 @@ namespace Neurotrauma
             DefaultStrength = Math.Clamp(NewDefaultStrength, NewMinStrength, NewMaxStrength);
             Priority = NewPriority;
         }
-
-        int HumanUpdateTime = 0; // How long the Symptom lasts.
     }
 
 
@@ -291,6 +296,8 @@ namespace Neurotrauma
                                 new Dictionary<string, NTLimbAffliction>();
         Dictionary<string, NTBloodAffliction> BloodAfflictionsToAdd =
                                 new Dictionary<string, NTBloodAffliction>();
+        Dictionary<string, NTSymptom> SymptomsToAdd =
+                                new Dictionary<string, NTSymptom>();
 
         public NTAfflictionsToAdd() // Initalize the afflictions.
         {
@@ -347,8 +354,6 @@ namespace Neurotrauma
 
         private void AddBloodAfflictions()
         {
-            
-
             foreach (KeyValuePair<string, NTBloodAffliction> Pair in BloodAfflictionsToAdd)
             {
                 NTAfflictions.RegisterAffliction(Pair.Key, Pair.Value);
@@ -357,7 +362,10 @@ namespace Neurotrauma
 
         private void AddSymptoms()
         {
-
+            foreach (KeyValuePair<string, NTSymptom> Pair in SymptomsToAdd)
+            {
+                NTAfflictions.RegisterAffliction(Pair.Key, Pair.Value);
+            }
         }
     }
 }
