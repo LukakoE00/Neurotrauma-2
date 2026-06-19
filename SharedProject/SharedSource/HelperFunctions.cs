@@ -356,7 +356,7 @@ namespace Neurotrauma
             GiveItem(Character, ItemIdentifier, Condition);
         }
 
-        public static void SpawnItemPlusFunction(string ItemIdentifier, CharacterInventory Inventory, InvSlotType Slot, Vector2 Position, LuaCsAction Function, params object[] Parameters)
+        public static void SpawnItemPlusFunction(string ItemIdentifier, Inventory Inventory, InvSlotType Slot, Vector2 Position, LuaCsAction Function, params object[] Parameters)
         {
             #if CLIENT
                 if (HF.GameIsMultiplayer()) return;
@@ -392,6 +392,7 @@ namespace Neurotrauma
 
             }, 35);
         }
+
 
         public static void GiveItemPlusFunction(string ItemIdentifier, Character Character, LuaCsAction Function, params object[] Parameters)
         {
