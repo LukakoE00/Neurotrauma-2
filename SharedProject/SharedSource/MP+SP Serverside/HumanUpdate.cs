@@ -506,6 +506,7 @@ public class HumanUpdate
         if (checkedPriorities.Count == 0) return;
 
         HF.Print("Actually Update");
+        NTAfflictions.DeltaTime = NTDeltaTime;
         Update(checkedPriorities);
     }
 

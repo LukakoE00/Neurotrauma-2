@@ -17,6 +17,7 @@ namespace Neurotrauma
     // We should provide functions to Lua to add Afflictions here. 
     public static class NTAfflictions
     {
+        public static double DeltaTime = 2;
 
         public static Dictionary<string, NTAffliction> Afflictions { get; } = new Dictionary<string, NTAffliction>(); // Stores all of our registered afflictions (regardless of categeory)
 
@@ -116,7 +117,7 @@ namespace Neurotrauma
     public abstract class NTAffliction // Added to NTHuman updatingAfflictions
     {
         /// <summary>
-        /// Should this affliction always be running? If on, is always added to the updating afflictions list. Off by default.
+        /// Should this affliction always be running? If on, regardless of current affliction strength, this will update.
         /// </summary>
         public bool Const = false;
         /// <summary>
@@ -129,9 +130,17 @@ namespace Neurotrauma
         public double MaxStrength { get; set; }
 
         /// <summary>
+        /// The strength of the affliction on creation.
+        /// </summary>
+        public double DefaultStrength { get; set; }
+        /// <summary>
         /// The priority of our affliction, higher intervals meaner more updates.
         /// </summary>
         public AfflictionPriority Priority { get; set; }
+        /// <summary>
+        /// If false, doesnt update on stasis.
+        /// </summary>
+        public bool IgnoreStasis { get; set; } = true;
         /// <summary>
         /// The ID of the affliction.
         /// </summary>
@@ -144,12 +153,13 @@ namespace Neurotrauma
             { 
                 // Insert your Affliction Update in here.
             };
-        public NTAffliction(string NewID, double NewMinStrength = 0, double NewMaxStrength = 100,
+        public NTAffliction(string NewID, double NewMinStrength = 0, double NewMaxStrength = 100, double NewDefaultStrength = 0,
                                         AfflictionPriority NewPriority = AfflictionPriority.HIGH)
         {
             ID = NewID;
             MinStrength = NewMinStrength;
             MaxStrength = NewMaxStrength;
+            DefaultStrength = Math.Clamp(NewDefaultStrength,NewMinStrength,NewMaxStrength);
             Priority = NewPriority;
         }
     }
@@ -162,12 +172,13 @@ namespace Neurotrauma
                 // Insert your Affliction Update in here.
             };
         
-        public NTNonLimbAffliction(string NewID, double NewMinStrength =0, double NewMaxStrength= 100, AfflictionPriority NewPriority = AfflictionPriority.HIGH) : 
-                                        base(NewID, NewMinStrength, NewMaxStrength, NewPriority)
+        public NTNonLimbAffliction(string NewID, double NewMinStrength =0, double NewMaxStrength= 100, double NewDefaultStrength = 0, AfflictionPriority NewPriority = AfflictionPriority.HIGH) : 
+                                        base(NewID, NewMinStrength, NewMaxStrength, NewDefaultStrength, NewPriority)
         {
             ID = NewID;
             MinStrength = NewMinStrength;
             MaxStrength = NewMaxStrength;
+            DefaultStrength = Math.Clamp(NewDefaultStrength, NewMinStrength, NewMaxStrength);
             Priority = NewPriority;
         }
     }
@@ -180,13 +191,15 @@ namespace Neurotrauma
                 // Insert your Affliction Update in here.
             };
 
-        public NTLimbAffliction(string NewID, double NewMinStrength = 0, double NewMaxStrength = 100, AfflictionPriority NewPriority = AfflictionPriority.HIGH) :
-                                        base(NewID, NewMinStrength, NewMaxStrength, NewPriority)
+        public NTLimbAffliction(string NewID, double NewMinStrength = 0, double NewMaxStrength = 100, double NewDefaultStrength = 0, AfflictionPriority NewPriority = AfflictionPriority.HIGH) :
+                                        base(NewID, NewMinStrength, NewMaxStrength, NewDefaultStrength, NewPriority)
         {
             ID = NewID;
             MinStrength = NewMinStrength;
             MaxStrength = NewMaxStrength;
+            DefaultStrength = Math.Clamp(NewDefaultStrength, NewMinStrength, NewMaxStrength);
             Priority = NewPriority;
+            IgnoreStasis = false;
         }
 
         public List<LimbType> AllowedLimbs { get; set; } = HF.LimbsToCheck; // I'll add this one later.
@@ -200,12 +213,13 @@ namespace Neurotrauma
                 // Insert your Affliction Update in here.
             };
 
-        public NTBloodAffliction(string NewID, double NewMinStrength = 0, double NewMaxStrength = 100, AfflictionPriority NewPriority = AfflictionPriority.HIGH) :
-                                        base(NewID, NewMinStrength, NewMaxStrength, NewPriority)
+        public NTBloodAffliction(string NewID, double NewMinStrength = 0, double NewMaxStrength = 100, double NewDefaultStrength = 0, AfflictionPriority NewPriority = AfflictionPriority.HIGH) :
+                                        base(NewID, NewMinStrength, NewMaxStrength, NewDefaultStrength, NewPriority)
         {
             ID = NewID;
             MinStrength = NewMinStrength;
             MaxStrength = NewMaxStrength;
+            DefaultStrength = Math.Clamp(NewDefaultStrength, NewMinStrength, NewMaxStrength);
             Priority = NewPriority;
         }
     }
@@ -262,7 +276,15 @@ namespace Neurotrauma
 
         private void AddAfflictions() // Create your afflictions in here.
         {
-            
+
+            // EXAMPLE AFFLICTION
+
+            //AfflictionsToAdd["ExampleAff"] = new("ExampleAff",0,100,50,AfflictionPriority.LOW);
+            //AfflictionsToAdd["ExampleAff"].UpdateAction =
+                //(HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHuman.CharacterAfflictions.NTHumanNonLimbAffData AffData) =>
+                //{
+
+                //};
 
             foreach (KeyValuePair<string,NTNonLimbAffliction> Pair in AfflictionsToAdd)
             {
@@ -278,11 +300,18 @@ namespace Neurotrauma
             LimbAfflictionsToAdd["bleeding"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHuman.CharacterAfflictions.NTHumanLimbAffData AffData) =>
                 {
-                    if (AffData.Strength[Limb] >= 50)
-                    {
-                        AffData.Strength[Limb] = 100; // Since this is a limb affliction we gotta access the limb specific strength.
-                        HF.Print("BLEEEDDDDD");
-                    }
+                    // You can access the NT.Deltatime by doing this:
+                    double HowDoIGetDeltaTime = NTAfflictions.DeltaTime;
+                    // To set the strength of an affliction do this:
+                    AffData.Strength[Limb] = 100; // Note you only add the Limb part for Limb Afflictions.
+                    // How do I access other afflictions????
+                    //C.GetLimbAffData()["ExampleAff"].Strength[Limb] = 5;
+                    // What about Non Limb afflictions????
+                    //C.GetAffData()["ExampleAff"].Strength = 5;
+                    // Blood Afflictions????
+                    //C.GetBloodAffData()["ExampleAff"].Strength = 20;
+                    // How do I get player stats????
+                    C.GetStats();
                 };
 
             foreach (KeyValuePair<string, NTLimbAffliction> Pair in LimbAfflictionsToAdd)
