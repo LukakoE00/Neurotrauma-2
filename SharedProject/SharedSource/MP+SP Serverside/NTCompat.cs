@@ -21,6 +21,48 @@
             HumanUpdate.NTHuman.CharacterAfflictions.NTHumanSymptomData Sym = Afflictions[SymptomIdentifier];
             Sym.HumanUpdateStoptime = Duration;
         }
+
+        public static void DebugPrintAllData() // UNFINISHED
+        {
+            string Res = "Neurotrauma Compatibility Data:\n";
+            foreach (KeyValuePair<Character,HumanUpdate.NTHuman> Pair in NeurotraumaInit.HU.GetUpdatingCharacters())
+            {
+                Character Char = Pair.Key;
+                HumanUpdate.NTHuman NTHum = Pair.Value;
+                Res += "\n" + Char.Name;
+
+            }
+
+            HF.Print(Res); // Not 1:1 with OG NT
+        }
+
+        public static List<Action<HumanUpdate.NTHuman>> PreHumanUpdateHooks = new(); // Store our functions to call in here.
+
+        public static void AddPreHumanUpdateHook(Action<HumanUpdate.NTHuman> Hook)
+        {
+            PreHumanUpdateHooks.Add(Hook);
+        }
+
+        public static List<Action<HumanUpdate.NTHuman>> PostHumanUpdateHooks = new(); // Store our functions to call in here.
+
+        public static void AddPostHumanUpdateHook(Action<HumanUpdate.NTHuman> Hook)
+        {
+            PostHumanUpdateHooks.Add(Hook);
+        }
+
+        public static List<Action<CharacterHealth,AttackResult,Limb>> OnDamagedHooks = new();
+
+        public static void AddOnDamagedHook(Action<CharacterHealth, AttackResult, Limb> Hook)
+        {
+            OnDamagedHooks.Add(Hook);
+        }
+
+        public static List<Func<CharacterHealth, AttackResult, Limb, Affliction>> ModifyingOnDamagedHooks = new(); // I Dont't think this one works.
+
+        public static void AddModifyingOnDamagedHook(Func<CharacterHealth, AttackResult, Limb, Affliction> Hook) // I Dont't think this one works.
+        {
+            ModifyingOnDamagedHooks.Add(Hook);
+        }
     }
 
 }

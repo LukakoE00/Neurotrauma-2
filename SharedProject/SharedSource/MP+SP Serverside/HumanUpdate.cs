@@ -15,6 +15,16 @@ public class HumanUpdate
     static private Dictionary<Character, NTHuman> UpdatingHumans = new();
     static private List<NTMonster> UpdatingMonsters = new List<NTMonster>();
 
+    public Dictionary<Character, NTHuman> GetUpdatingCharacters()
+    {
+        return UpdatingHumans;
+    }
+
+    public List<NTMonster> GetUpdatingMonsters()
+    {
+        return UpdatingMonsters;
+    }
+
     // ---------------------------------------- NT Human Update Classes -------------------------------------------------- \\
 
     public class NTHuman
@@ -139,15 +149,18 @@ public class HumanUpdate
                     CharacterAfflictions.NTHumanSymptomData SymData = Pair.Value;
                     NTSymptom Sym = SymData.SymTemplate;
 
-                    if (SymData.HumanUpdateTime <= 0) SymData.Strength = 0;
-                    else SymData.Strength = 100; SymData.HumanUpdateTime--;
-
                     if (!Priorities.Contains(Sym.Priority)) continue;
 
                     double CurrentStrength = HF.GetAfflictionStrength(Human, ID);
                     SymData.Strength = CurrentStrength;
 
                     if (!Sym.Const && CurrentStrength < Sym.MinStrength) continue; // Our second check to see if we should run this affliction. Basically, if this affliction isn't active on the limb, and not constant, don't update.
+
+                    if (SymData.HumanUpdateTime <= 0) SymData.Strength = 0;
+                    else SymData.Strength = 100; SymData.HumanUpdateTime--;
+
+                    if (SymData.HumanUpdateStoptime > 0) SymData.Strength = 0;
+                    else SymData.HumanUpdateStoptime--;
 
                     double PrevStrength = SymData.Strength;
                     Sym.UpdateAction(this, ID, LimbType.Torso, SymData);
@@ -447,7 +460,7 @@ public class HumanUpdate
 
     }
 
-    class NTMonster(Character Monster) // To Do
+    public class NTMonster(Character Monster) // To Do
     {
         public Character Monster = Monster; // Our Monster Ref
 

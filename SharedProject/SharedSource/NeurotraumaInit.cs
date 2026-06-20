@@ -14,8 +14,8 @@ namespace Neurotrauma
         public readonly ILuaScriptManagementService luaScriptManagementService = LuaCsSetup.Instance.LuaScriptManagementService;
         private Harmony harmony;
 
-        // --------------------------- Local Variables/Classes --------------------------- \\
-        private static readonly HumanUpdate HU = new HumanUpdate(); // Create our local Human Update class.
+        // --------------------------- Global Variables/Classes --------------------------- \\
+        public static readonly HumanUpdate HU = new HumanUpdate(); // Create our local Human Update class.
 
         // ---------------------------        Functions        --------------------------- \\
         // Called right after the constructor
