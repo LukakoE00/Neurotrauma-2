@@ -63,6 +63,20 @@
         {
             ModifyingOnDamagedHooks.Add(Hook);
         }
+
+        public static void AddHematologyAffliction(string Identifier) 
+        {
+
+        }
+
+        public class AffApplication
+        {
+            double XPGain = 1;
+            string Case = "";
+            Action<Item,HumanUpdate.NTHuman, HumanUpdate.NTHuman,Limb> ActionUpdate = null;
+        }
+
+
     }
 
 }

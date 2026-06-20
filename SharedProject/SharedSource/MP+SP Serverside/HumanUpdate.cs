@@ -1,8 +1,11 @@
-﻿using Barotrauma.LuaCs.Compatibility;
+﻿using Barotrauma;
+using Barotrauma.LuaCs.Compatibility;
 using Barotrauma.LuaCs.Events;
 using LightInject;
 using MonoMod.RuntimeDetour;
+using MoonSharp.Interpreter;
 using static Barotrauma.Networking.MessageFragment;
+using static Neurotrauma.NTC;
 
 namespace Neurotrauma;
 
@@ -13,7 +16,10 @@ public class HumanUpdate
     private static readonly int UpdateIntervalMedium = (int)AfflictionPriority.MEDIUM; // 240 = 4s
     private static readonly int UpdateIntervalLow = (int)AfflictionPriority.LOW; // 480 = 8s
     static private Dictionary<Character, NTHuman> UpdatingHumans = new();
-    static private List<NTMonster> UpdatingMonsters = new List<NTMonster>();
+    static private List<NTMonster> UpdatingMonsters = new();
+
+    public List<string> HematologyDetectable = new();
+    public Dictionary<string, AffApplication> SutureAfflictions = new();
 
     public Dictionary<Character, NTHuman> GetUpdatingCharacters()
     {
@@ -27,6 +33,9 @@ public class HumanUpdate
 
     // ---------------------------------------- NT Human Update Classes -------------------------------------------------- \\
 
+    /// <summary>
+    /// The Neurotrauma version of a Human Character. Stores crucial info required for NT to work.
+    /// </summary>
     public class NTHuman
     {
         public NTHuman(Character NewHuman)
@@ -34,11 +43,13 @@ public class HumanUpdate
             Human = NewHuman;
             LocalStats = new CharacterStats(this);
             LocalAfflictions = new CharacterAfflictions(NewHuman,this);
+            LocalTags = new CharacterTags();
         }
 
         public Character Human; // Our Human Ref
         public CharacterStats LocalStats;
         public CharacterAfflictions LocalAfflictions;
+        public CharacterTags LocalTags;
 
         public Dictionary<string, CharacterAfflictions.NTHumanNonLimbAffData> GetAffData()
         {
@@ -63,6 +74,11 @@ public class HumanUpdate
         public CharacterStats? GetStats()
         {
             return LocalStats;
+        }
+
+        public CharacterTags GetTags()
+        {
+            return LocalTags;
         }
 
         public void Update(List<AfflictionPriority> Priorities)
@@ -170,6 +186,9 @@ public class HumanUpdate
 
         }
 
+        /// <summary>
+        /// The primary backbone of NT Characters. Stores all of the afflictions that our character uses. Also contains the strengths of each individual character.
+        /// </summary>
         public class CharacterAfflictions
         {
 
@@ -420,6 +439,9 @@ public class HumanUpdate
             }
         }
 
+        /// <summary>
+        /// Stores all the stats of our character. Stats are similar to afflictions, as they have updates and strengths. However unlike afflictions, stats are dependent.
+        /// </summary>
         public class CharacterStats
         {
             public CharacterStats(NTHuman C)
@@ -456,6 +478,46 @@ public class HumanUpdate
             public Dictionary<string, NTHumanStatDoubleData> DoubleStats = new();
             public Dictionary<string, NTHumanStatBoolData> BoolStats = new();
 
+        }
+
+        /// <summary>
+        /// Stores the Tags that our character has. Used by NTCompat for adding/setting tags and for giving speed multipliers.
+        /// </summary>
+        public class CharacterTags
+        {
+            Dictionary<string,double> Tags = new();
+
+            public void SetTag(string Prefix, string TagID, double Amount = 1)
+            {
+                Tags[Prefix + "_" + TagID] = Amount;
+            }
+
+            public void SetTagsByPrefix(string Prefix, double Amount)
+            {
+                foreach (KeyValuePair<string,double> Pair in Tags) // Why is this read only?????
+                {
+                    if (Pair.Key.StartsWith(Prefix))
+                    {
+                        Tags[Pair.Key] = Amount;
+                    }
+                }
+            }
+
+            public void SetTagsByTagID(string TagID, double Amount)
+            {
+                foreach (KeyValuePair<string, double> Pair in Tags)
+                {
+                    if (Pair.Key.EndsWith(TagID))
+                    {
+                        Tags[Pair.Key] = Amount;
+                    }
+                }
+            }
+
+            public void RemoveTag(string Prefix, string TagID)
+            {
+                Tags.Remove(Prefix + "_" + TagID);
+            }
         }
 
     }
