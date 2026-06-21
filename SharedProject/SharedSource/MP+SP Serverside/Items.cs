@@ -73,6 +73,11 @@ public class NTItemMethods
     public static List<string> WrenchItems { get; } = [];
 
     /// <summary>
+    /// Contains the list of BloodPack ID's.
+    /// </summary>
+    public static List<string> BloodPacks { get; } = [];
+
+    /// <summary>
     /// Contains all the data necessary for an item use function.
     /// </summary>
     public class ItemUpdateFunctionInfos
@@ -146,6 +151,79 @@ public class NTItemMethods
         }
     }
 
+    // Used to handle Blood Infusions
+    public static void InfuseBloodpack(ItemUpdateFunctionInfos infos)
+    {
+        string id = infos.item.Prefab.Identifier.Value;
+
+        bool packhasantibodyA = id is "bloodpacka_positive" or "bloodpacka_negative" or "bloodpackab_positive" or "bloodpackab_negative";
+        bool packhasantibodyB = id is "bloodpackb_positive" or "bloodpackb_negative" or "bloodpackab_positive" or "bloodpackab_negative";
+        bool packhasantibodyC = false; 
+        bool packhasantibodyRh = id is "bloodpacko_positive" or "bloodpacka_positive" or "bloodpackb_positive" or "bloodpackab_positive";
+
+        string targettype = NTBloodTypes.GetBloodType(infos.target);
+        bool targethasantibodyA = targettype.Contains("a");
+        bool targethasantibodyB = targettype.Contains("b");
+        bool targethasantibodyC = targettype.Contains("c");
+        bool targethasantibodyRh = targettype.Contains("positive");
+
+        bool compatible = (targethasantibodyRh || !packhasantibodyRh)
+                       && (targethasantibodyA || !packhasantibodyA)
+                       && (targethasantibodyB || !packhasantibodyB)
+                       && (targethasantibodyC || !packhasantibodyC);
+
+        // TODO: give always true to team of bots on enemy submarines for future medic AI logic
+
+        float bloodloss = HF.GetAfflictionStrength(infos.target, "bloodloss", 0);
+        float usefulFraction = Math.Clamp(bloodloss / 30f, 0f, 1f);
+
+        if (compatible)
+        {
+            HF.AddAffliction(infos.target, "bloodloss", -30, infos.user);
+            HF.AddAffliction(infos.target, "bloodpressure", 30, infos.user);
+            HF.GiveSkillScaled(infos.user, "medical", 4000 * HF.BoolToNum(bloodloss > 100));
+        }
+        else
+        {
+            HF.AddAffliction(infos.target, "bloodloss", -20, infos.user);
+            HF.AddAffliction(infos.target, "bloodpressure", 30, infos.user);
+            HF.GiveSkillScaled(infos.user, "medical", 4000 * HF.BoolToNum(bloodloss > 100));
+
+            float immunity = HF.GetAfflictionStrength(infos.target, "immunity", 100);
+            HF.AddAffliction(infos.target, "hemotransfusionshock", Math.Max(immunity - 6f, 0f), infos.user);
+        }
+
+        // Move towards isotonic
+        HF.SetAffliction(infos.target, "acidosis", HF.GetAfflictionStrength(infos.target, "acidosis", 0) * Single.Lerp(1f, 0.9f, usefulFraction), null, 0);
+        HF.SetAffliction(infos.target, "alkalosis", HF.GetAfflictionStrength(infos.target, "alkalosis", 0) * Single.Lerp(1f, 0.9f, usefulFraction), null, 0);
+
+        // Check item tags for acidosis, alkalosis, sepsis
+        string[] tags = infos.item.Tags.Split(',');
+
+        foreach (string tag in tags)
+        {
+            string t = tag.Trim();
+
+            if (t == "sepsis")
+            {
+                HF.AddAffliction(infos.target, "sepsis", 1f, infos.user);
+            }
+            else if (t.StartsWith("acid"))
+            {
+                string[] split = t.Split(':');
+                if (split.Length > 1 && float.TryParse(split[1], out float acidVal)) HF.AddAffliction(infos.target, "acidosis", acidVal / 10f * usefulFraction, infos.user);
+            }
+            else if (t.StartsWith("alkal"))
+            {
+                string[] split = t.Split(':');
+                if (split.Length > 1 && float.TryParse(split[1], out float alkalVal)) HF.AddAffliction(infos.target, "alkalosis", alkalVal / 10f * usefulFraction, infos.user);
+            }
+        }
+
+        HF.RemoveItem(infos.item);
+        HF.GiveItem(infos.user, "emptybloodpack");
+        HF.GiveItem(infos.target, "ntsfx_syringe");
+    }
 
     // REFER TO README.MD WITHIN THE ITEMS FOLDER IN ASSETS!!!!!!!!
     // REFER TO README.MD WITHIN THE ITEMS FOLDER IN ASSETS!!!!!!!!
@@ -319,6 +397,22 @@ public class NTItemMethods
 
         // Blood Packs (A, B, AB, 0)
         // TODO
+        BloodPacks.AddRange(
+        [
+            "antibloodloss2",
+            "bloodpacko_positive",
+            "bloodpacka_positive",
+            "bloodpacka_negative",
+            "bloodpackb_positive",
+            "bloodpackb_negative",
+            "bloodpackab_positive",
+            "bloodpackab_negative"
+        ]);
+
+        foreach (string id in BloodPacks)
+        {
+            RegisterItemUseFunction(id, InfuseBloodpack);
+        }
 
         // Empty Blood Pack
         RegisterItemUseFunction("emptybloodpack", infos =>
@@ -346,18 +440,17 @@ public class NTItemMethods
 
             string btID = bloodtype == "o_negative" ? "antibloodloss2" : "bloodpack" + bloodtype;
 
-            // Inshallah ca marche -Cookie
             HF.GiveItemPlusFunction(btID, infos.user, (args) => {
 
-                string[] tags = [];
+                List<string> tags = [];
 
                 double acid = (double)args[0];
                 double alkal = (double)args[1];
                 double seps = (double)args[2];
 
-                if (acid > 0) tags.Append($"acid:{Math.Round(acid)}");
-                if (alkal > 0) tags.Append($"alkal:{Math.Round(alkal)}");
-                if (seps > 0) tags.Append($"sepsis");
+                if (acid > 0) tags.Add($"acid:{Math.Round(acid)}");
+                if (alkal > 0) tags.Add($"alkal:{Math.Round(alkal)}");
+                if (seps > 0) tags.Add("sepsis");
 
                 Item item = (Item)args[3];
 

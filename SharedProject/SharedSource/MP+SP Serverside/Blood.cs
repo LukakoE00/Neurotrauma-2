@@ -156,7 +156,6 @@ namespace Neurotrauma
                     var tags = (contained.Tags ?? "").Split(',');
 
                     // Check for defects and their strengths.
-                    // Probably works. Cannot test easily until ItemMethods works! - Lukako
                     foreach (var raw in tags)
                     {
                         var t = raw.Trim();

@@ -823,6 +823,13 @@ namespace Neurotrauma
 
         public static void AddAffliction(Character Character, string Identifier, float Strength, Character Aggressor)
         {
+            if (Strength < 0)
+            {
+                float current = GetAfflictionStrength(Character, Identifier, 0);
+                SetAffliction(Character, Identifier, Math.Max(current + Strength, 0), Aggressor, 0);
+                return;
+            }
+
             AddAfflictionLimb(Character, Identifier, LimbType.Torso, Strength, Aggressor);
         }
 
