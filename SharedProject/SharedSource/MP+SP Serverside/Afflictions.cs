@@ -171,8 +171,8 @@ namespace Neurotrauma
 
     public class NTNonLimbAffliction : NTAffliction
     {
-        public Action<HumanUpdate.NTHuman, string, LimbType, HumanUpdate.NTHuman.CharacterAfflictions.NTHumanNonLimbAffData> UpdateAction =
-            (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHuman.CharacterAfflictions.NTHumanNonLimbAffData AffData) =>
+        public Action<HumanUpdate.NTHuman, string, LimbType, HumanUpdate.NTHumanNonLimbAffData> UpdateAction =
+            (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanNonLimbAffData AffData) =>
             {
                 // Insert your Affliction Update in here.
             };
@@ -190,8 +190,8 @@ namespace Neurotrauma
 
     public class NTLimbAffliction : NTAffliction
     {
-        public Action<HumanUpdate.NTHuman, string, LimbType, HumanUpdate.NTHuman.CharacterAfflictions.NTHumanLimbAffData> UpdateAction =
-            (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHuman.CharacterAfflictions.NTHumanLimbAffData AffData) =>
+        public Action<HumanUpdate.NTHuman, string, LimbType, HumanUpdate.NTHumanLimbAffData> UpdateAction =
+            (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanLimbAffData AffData) =>
             {
                 // Insert your Affliction Update in here.
             };
@@ -212,8 +212,8 @@ namespace Neurotrauma
 
     public class NTBloodAffliction : NTAffliction
     {
-        public Action<HumanUpdate.NTHuman, string, LimbType, HumanUpdate.NTHuman.CharacterAfflictions.NTHumanBloodAffData> UpdateAction =
-            (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHuman.CharacterAfflictions.NTHumanBloodAffData AffData) =>
+        public Action<HumanUpdate.NTHuman, string, LimbType, HumanUpdate.NTHumanBloodAffData> UpdateAction =
+            (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanBloodAffData AffData) =>
             {
                 // Insert your Affliction Update in here.
             };
@@ -232,8 +232,8 @@ namespace Neurotrauma
     public class NTSymptom : NTNonLimbAffliction
     {
 
-        public Action<HumanUpdate.NTHuman, string, LimbType, HumanUpdate.NTHuman.CharacterAfflictions.NTHumanSymptomData> UpdateAction =
-            (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHuman.CharacterAfflictions.NTHumanSymptomData SymData) =>
+        public Action<HumanUpdate.NTHuman, string, LimbType, HumanUpdate.NTHumanSymptomData> UpdateAction =
+            (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanSymptomData SymData) =>
             {
                 // Insert your Affliction Update in here.
             };
@@ -330,7 +330,7 @@ namespace Neurotrauma
 
             LimbAfflictionsToAdd["bleeding"] = new("bleeding");
             LimbAfflictionsToAdd["bleeding"].UpdateAction =
-                (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHuman.CharacterAfflictions.NTHumanLimbAffData AffData) =>
+                (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanLimbAffData AffData) =>
                 {
                     // You can access the NT.Deltatime by doing this:
                     double HowDoIGetDeltaTime = NTAfflictions.DeltaTime;

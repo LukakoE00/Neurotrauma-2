@@ -21,7 +21,7 @@ namespace Neurotrauma
             });
             Stats["bloodamount"] = new NTStatDouble("healingrate", 0, 100, 1, (C) => 
             {
-                return Math.Clamp(100 - C.GetAffData()["bloodloss"].Strength,0,100);
+                return Math.Clamp(100 - C.GetAffDatas()["bloodloss"].Strength,0,100);
             });
             Stats["stasis"] = new NTStatBool("stasis",false, (C) => 
             {

@@ -30,20 +30,22 @@ public class NTItemMethods
            </code>
            </example>
         */
+        public string Case { get; } = "";
         public Func<ItemUpdateFunctionInfos, bool> Conditions { get; }
 
-        public ItemsAfflictionInfos(string affID, int xpGain, Func<ItemUpdateFunctionInfos, bool> conditions) 
+        public ItemsAfflictionInfos(string affID, int xpGain, Func<ItemUpdateFunctionInfos, bool> conditions, string newCase = "") 
         { 
-            this.AfflictionID = affID;
-            this.XPGain = xpGain;
-            this.Conditions = conditions;
+            AfflictionID = affID;
+            XPGain = xpGain;
+            Conditions = conditions;
+            Case = newCase;
         }
     }
 
     /// <summary>
     /// Contains the list of every afflictions cured by drainage.
     /// </summary>
-    public static List<ItemsAfflictionInfos> DrainageAfflictions { get; } = [];
+    public static Dictionary<string,ItemsAfflictionInfos> DrainageAfflictions { get; } = [];
 
     /// <summary>
     /// Contains the list of every afflictions removable by traumashears and knives.
@@ -58,7 +60,7 @@ public class NTItemMethods
     /// <summary>
     /// Contains the list of every afflictions healable by sutures.
     /// </summary>
-    public static List<ItemsAfflictionInfos> SutureAfflictions { get; } = [];
+    public static Dictionary<string, ItemsAfflictionInfos> SutureAfflictions { get; } = [];
 
     /// <summary>
     /// Contains the list of detectable afflictions when using the Hematology Analyzer
@@ -1036,92 +1038,92 @@ public class NTItemMethods
         // ============== SurgicalEquipment ==============
         // Sutures
         // Bad to the bones 💀
-        SutureAfflictions.Add(new ItemsAfflictionInfos("bonecut", 0, infos => {
+        SutureAfflictions["bonecut"] = new ItemsAfflictionInfos("bonecut", 0, infos => {
             return HF.HasAfflictionLimb(infos.target, "surgeryincision", infos.targetLimb.type, 95);
-        }));
+        });
 
-        SutureAfflictions.Add(new ItemsAfflictionInfos("drilledbones", 0, infos => {
+        SutureAfflictions["drilledbones"] = new ItemsAfflictionInfos("drilledbones", 0, infos => {
             return HF.HasAfflictionLimb(infos.target, "surgeryincision", infos.targetLimb.type, 95);
-        }));
+        });
 
         // Organs
-        SutureAfflictions.Add(new ItemsAfflictionInfos("liverswap", 0, infos => {
+        SutureAfflictions["liverswap"] = new ItemsAfflictionInfos("liverswap", 0, infos => {
             return HF.HasAfflictionLimb(infos.target, "surgeryincision", infos.targetLimb.type, 95);
-        }));
+        });
 
-        SutureAfflictions.Add(new ItemsAfflictionInfos("heartswap", 0, infos => {
+        SutureAfflictions["heartswap"] = new ItemsAfflictionInfos("heartswap", 0, infos => {
             return HF.HasAfflictionLimb(infos.target, "surgeryincision", infos.targetLimb.type, 95);
-        }));
+        });
 
-        SutureAfflictions.Add(new ItemsAfflictionInfos("lungswap", 0, infos => {
+        SutureAfflictions["lungswap"] = new ItemsAfflictionInfos("lungswap", 0, infos => {
             return HF.HasAfflictionLimb(infos.target, "surgeryincision", infos.targetLimb.type, 95);
-        }));
+        });
 
-        SutureAfflictions.Add(new ItemsAfflictionInfos("kidneyswap", 0, infos => {
+        SutureAfflictions["kidneyswap"] = new ItemsAfflictionInfos("kidneyswap", 0, infos => {
             return HF.HasAfflictionLimb(infos.target, "surgeryincision", infos.targetLimb.type, 95);
-        }));
+        });
 
-        SutureAfflictions.Add(new ItemsAfflictionInfos("brainswap", 0, infos => {
+        SutureAfflictions["brainswap"] = new ItemsAfflictionInfos("brainswap", 0, infos => {
             return HF.HasAfflictionLimb(infos.target, "surgeryincision", infos.targetLimb.type, 95);
-        }));
+        });
 
         // Arterialcuts
 
-        SutureAfflictions.Add(new ItemsAfflictionInfos("arterialcut", 3, infos => {
+        SutureAfflictions["arterialcut"] = new ItemsAfflictionInfos("arterialcut", 3, infos => {
             return HF.HasAfflictionLimb(infos.target, "retractedskin", infos.targetLimb.type, 95);
-        }));
+        });
 
-        SutureAfflictions.Add(new ItemsAfflictionInfos("carotidarterialcut", 3, infos => {
+        SutureAfflictions["carotidarterialcut"] = new ItemsAfflictionInfos("carotidarterialcut", 3, infos => {
             return HF.HasAfflictionLimb(infos.target, "retractedskin", infos.targetLimb.type, 95);
-        }));
+        });
 
-        SutureAfflictions.Add(new ItemsAfflictionInfos("aorticrupture", 3, infos => {
+        SutureAfflictions["aorticrupture"] = new ItemsAfflictionInfos("aorticrupture", 3, infos => {
 
             if (!NTConfig.Get<bool>("NT_HardmodeAorticRupture", false)) return false;
 
             return HF.HasAfflictionLimb(infos.target, "retractedskin", infos.targetLimb.type, 95);
-        }));
+        });
 
         // Tamponade
 
-        SutureAfflictions.Add(new ItemsAfflictionInfos("tamponade", 3, infos => {
+        SutureAfflictions["tamponade"] = new ItemsAfflictionInfos("tamponade", 3, infos => {
 
             if (NTConfig.Get<bool>("NT_OpenCloseTamponade", false)) return false;
 
             return HF.HasAfflictionLimb(infos.target, "retractedskin", infos.targetLimb.type, 95);
-        }));
+        });
 
         // Misc
 
-        SutureAfflictions.Add(new ItemsAfflictionInfos("arteriesclamp", 0, infos => {
+        SutureAfflictions["arteriesclamp"] = new ItemsAfflictionInfos("arteriesclamp", 0, infos => {
             return HF.HasAfflictionLimb(infos.target, "retractedskin", infos.targetLimb.type, 95);
-        }));
+        });
 
-        SutureAfflictions.Add(new ItemsAfflictionInfos("internalbleeding", 3, infos => {
+        SutureAfflictions["internalbleeding"] = new ItemsAfflictionInfos("internalbleeding", 3, infos => {
             return HF.HasAfflictionLimb(infos.target, "retractedskin", infos.targetLimb.type, 95);
-        }));
+        });
 
-        SutureAfflictions.Add(new ItemsAfflictionInfos("stroke", 6, infos => {
+        SutureAfflictions["stroke"] = new ItemsAfflictionInfos("stroke", 6, infos => {
             return HF.HasAfflictionLimb(infos.target, "retractedskin", infos.targetLimb.type, 95);
-        }));
+        });
 
         // Surgery Related
 
-        SutureAfflictions.Add(new ItemsAfflictionInfos("clampedbleeders", 0, infos => {
+        SutureAfflictions["clampedbleeders"] = new ItemsAfflictionInfos("clampedbleeders", 0, infos => {
             return true;
-        }));
+        });
 
-        SutureAfflictions.Add(new ItemsAfflictionInfos("surgeryincision", 0, infos => {
+        SutureAfflictions["surgeryincision"] = new ItemsAfflictionInfos("surgeryincision", 0, infos => {
             return true;
-        }));
+        });
 
-        SutureAfflictions.Add(new ItemsAfflictionInfos("retractedskin", 0, infos => {
+        SutureAfflictions["retractedskin"] = new ItemsAfflictionInfos("retractedskin", 0, infos => {
             return true;
-        }));
+        });
 
-        SutureAfflictions.Add(new ItemsAfflictionInfos("caviclean", 0, infos => {
+        SutureAfflictions["caviclean"] = new ItemsAfflictionInfos("caviclean", 0, infos => {
             return true;
-        }));
+        });
 
         RegisterItemUseFunction("suture", infos =>
         {
@@ -1164,8 +1166,9 @@ public class NTItemMethods
             HF.AddAffliction(infos.target, "tshocktimeout", -100, infos.user);
 
             // rewritten
-            foreach (var affInfos in SutureAfflictions)
+            foreach (KeyValuePair<string,ItemsAfflictionInfos> Pair in SutureAfflictions)
             {
+                ItemsAfflictionInfos affInfos = Pair.Value;
                 // If the target doesn't has the affliction, we skip it
                 if (!HF.HasAfflictionLimb(infos.target, affInfos.AfflictionID, infos.targetLimb.type, 1)) continue;
 
@@ -1195,27 +1198,28 @@ public class NTItemMethods
         });
 
         // Drainage
-        DrainageAfflictions.Add(new ItemsAfflictionInfos("pneumothorax", 3, infos =>
+        DrainageAfflictions["pneumothorax"] = new ItemsAfflictionInfos("pneumothorax", 3, infos =>
         {
             return HF.HasAfflictionLimb(infos.target, "retractedskin", LimbType.Torso, 95);
-        }));
+        });
 
-        DrainageAfflictions.Add(new ItemsAfflictionInfos("tamponade", 3, infos =>
+        DrainageAfflictions["tamponade"] = new ItemsAfflictionInfos("tamponade", 3, infos =>
         {
             bool retractedSkin = HF.HasAfflictionLimb(infos.target, "retractedskin", LimbType.Torso, 95);
 
             if (NTConfig.Get<bool>("NT_OpenCloseTamponade", false)) return false;
 
             return retractedSkin;
-        }));
+        });
 
         // From 48 lines to 12 my point stands, why tf was the lua function so girthy?
         RegisterItemUseFunction("drainage", infos =>
         {
             if (HF.HasAffliction(infos.target, "stasis", (float)0.1)) { return; }
 
-            foreach (var affInfos in DrainageAfflictions)
+            foreach (KeyValuePair<string, ItemsAfflictionInfos> Pair in DrainageAfflictions)
             {
+                ItemsAfflictionInfos affInfos = Pair.Value;
                 if (!affInfos.Conditions(infos)) continue;
 
                 HF.SetAffliction(infos.target, affInfos.AfflictionID, 0, infos.user, 0);

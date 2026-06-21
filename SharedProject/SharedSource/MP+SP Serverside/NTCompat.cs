@@ -1,31 +1,28 @@
-﻿namespace Neurotrauma
+﻿using System;
+
+namespace Neurotrauma
 {
     public static class NTC
     {
-        public static List<Identifier> AfflictionsAffectingVitality = ["bleeding","bleedingnonstop","burn","acidburn","opiateaddiction",
-                                                                "lacerations","gunshotwound","bitewounds","explosiondamage",
-                                                                "blunttrauma","internaldamage","organdamage","neurotrauma",
-                                                                "gangrene","th_amputation","sh_amputation","alcoholaddiction"];
-
         // Symptom magic
         public static void SetSymptomTrue(HumanUpdate.NTHuman Human, string SymptomIdentifier, int Duration = 2)
         {
-            Dictionary<string, HumanUpdate.NTHuman.CharacterAfflictions.NTHumanSymptomData> Afflictions = Human.LocalAfflictions.UpdatingSymptoms;
-            HumanUpdate.NTHuman.CharacterAfflictions.NTHumanSymptomData Sym = Afflictions[SymptomIdentifier];
+            Dictionary<string, HumanUpdate.NTHumanSymptomData> Afflictions = Human.LocalAfflictions.UpdatingSymptoms;
+            HumanUpdate.NTHumanSymptomData Sym = Afflictions[SymptomIdentifier];
             Sym.HumanUpdateTime = Duration;
         }
 
         public static void SetSymptomFalse(HumanUpdate.NTHuman Human, string SymptomIdentifier, int Duration = 2)
         {
-            Dictionary<string, HumanUpdate.NTHuman.CharacterAfflictions.NTHumanSymptomData> Afflictions = Human.LocalAfflictions.UpdatingSymptoms;
-            HumanUpdate.NTHuman.CharacterAfflictions.NTHumanSymptomData Sym = Afflictions[SymptomIdentifier];
+            Dictionary<string, HumanUpdate.NTHumanSymptomData> Afflictions = Human.LocalAfflictions.UpdatingSymptoms;
+            HumanUpdate.NTHumanSymptomData Sym = Afflictions[SymptomIdentifier];
             Sym.HumanUpdateStoptime = Duration;
         }
 
         public static void DebugPrintAllData() // UNFINISHED
         {
             string Res = "Neurotrauma Compatibility Data:\n";
-            foreach (KeyValuePair<Character,HumanUpdate.NTHuman> Pair in NeurotraumaInit.HU.GetUpdatingCharacters())
+            foreach (KeyValuePair<Character, HumanUpdate.NTHuman> Pair in NeurotraumaInit.HU.GetUpdatingCharacters())
             {
                 Character Char = Pair.Key;
                 HumanUpdate.NTHuman NTHum = Pair.Value;
@@ -50,7 +47,7 @@
             PostHumanUpdateHooks.Add(Hook);
         }
 
-        public static List<Action<CharacterHealth,AttackResult,Limb>> OnDamagedHooks = new();
+        public static List<Action<CharacterHealth, AttackResult, Limb>> OnDamagedHooks = new();
 
         public static void AddOnDamagedHook(Action<CharacterHealth, AttackResult, Limb> Hook)
         {
@@ -64,19 +61,104 @@
             ModifyingOnDamagedHooks.Add(Hook);
         }
 
-        public static void AddHematologyAffliction(string Identifier) 
-        {
+        public static Dictionary<HumanUpdate.NTHuman, double> CharacterSpeedMultipliers = new();
 
+        public static void MultiplySpeed(HumanUpdate.NTHuman Character, double Multiplier)
+        {
+            if (CharacterSpeedMultipliers.ContainsKey(Character))
+            {
+                CharacterSpeedMultipliers[Character] *= Multiplier;
+                return;
+            }
+            CharacterSpeedMultipliers[Character] = Multiplier;
         }
 
-        public class AffApplication
+        public static void AddHematologyAffliction(string Identifier)
         {
-            double XPGain = 1;
-            string Case = "";
-            Action<Item,HumanUpdate.NTHuman, HumanUpdate.NTHuman,Limb> ActionUpdate = null;
+            NTItemMethods.HematologyDetectable.Add(Identifier);
         }
 
+        public static void AddSuturableAffliction(string Identifier, int SurgerySkillGain, string RequiredAfflictionID, Func<NTItemMethods.ItemUpdateFunctionInfos, bool> Func)
+        {
+            if (!NTItemMethods.SutureAfflictions.ContainsKey(Identifier))
+            {
+                NTItemMethods.SutureAfflictions[Identifier] = new(Identifier, SurgerySkillGain, Func, RequiredAfflictionID);
+            }
+        }
 
+        public static void AddDrainageAffliction(string Identifier, int SurgerySkillGain, string RequiredAfflictionID, Func<NTItemMethods.ItemUpdateFunctionInfos, bool> Func)
+        {
+            if (!NTItemMethods.DrainageAfflictions.ContainsKey(Identifier))
+            {
+                NTItemMethods.DrainageAfflictions[Identifier] = new(Identifier, SurgerySkillGain, Func, RequiredAfflictionID);
+            }
+        }
+
+        public static List<Identifier> AfflictionsAffectingVitality = ["bleeding","bleedingnonstop","burn","acidburn","opiateaddiction",
+                                                                "lacerations","gunshotwound","bitewounds","explosiondamage",
+                                                                "blunttrauma","internaldamage","organdamage","neurotrauma",
+                                                                "gangrene","th_amputation","sh_amputation","alcoholaddiction"];
+
+        public static void AddAfflictionAffectingVitality(string Identifier)
+        {
+            if (!AfflictionsAffectingVitality.Contains(Identifier))
+            {
+                AfflictionsAffectingVitality.Add(Identifier);
+            }
+        }
+
+        public static bool HasSymptom(HumanUpdate.NTHuman Character, string SymIdentifier) // Formerly "GetSymptom", renamed to "HasSymptom" for a more accurate name.
+        {
+            if (Character == null) return false;
+            HumanUpdate.NTHumanSymptomData Symptom = Character.GetSymptomAffData(SymIdentifier);
+            if (Symptom.Strength > 0) return true;
+            return false;
+        }
+
+        public static bool HasSymptomFalse(HumanUpdate.NTHuman Character, string SymIdentifier) // Formerly "GetSymptom", renamed to "HasSymptom" for a more accurate name.
+        {
+            if (Character == null) return false;
+            HumanUpdate.NTHumanSymptomData Symptom = Character.GetSymptomAffData(SymIdentifier);
+            if (Symptom.HumanUpdateStoptime <= 0) return true;
+            return false;
+        }
+
+        public static void SetMultiplier(HumanUpdate.NTHuman Character, string MultiplierIdentifier, double Multiplier)
+        {
+            HumanUpdate.CharacterTags Tags = Character.GetTags();
+            double CurrentMultiplier = GetMultiplier(Character, MultiplierIdentifier);
+            Tags.SetTag("mult", MultiplierIdentifier, CurrentMultiplier * Multiplier);
+        }
+
+        public static double GetMultiplier(HumanUpdate.NTHuman Character, string MultiplierIdentifier)
+        {
+            HumanUpdate.CharacterTags Tags = Character.GetTags();
+            if (!Tags.HasTag("mult", MultiplierIdentifier)) return 1;
+            return Tags.GetTag("mult", MultiplierIdentifier);
+        }
+
+        public static void SetTag(HumanUpdate.NTHuman Character, string TagIdentifier)
+        {
+            Character.GetTags().SetTag("tag", TagIdentifier);
+        }
+
+        public static bool HasTag(HumanUpdate.NTHuman Character, string TagIdentifier)
+        {
+            return Character.GetTags().HasTag("tag",TagIdentifier);
+        }
+
+        public static void TickCharacterTags(HumanUpdate.NTHuman Character) // Previously "TickCharacter", however due to changes with code this is a different function now.
+        {
+            List<string> TagsToRemove = new();
+            foreach (KeyValuePair<string,double> Pair in Character.GetTags().Tags)
+            {
+                string Tag = Pair.Key;
+                if (Tag.StartsWith("mult"))
+                {
+                    TagsToRemove.Add(Tag);
+                }
+            }
+        }
     }
 
 }
