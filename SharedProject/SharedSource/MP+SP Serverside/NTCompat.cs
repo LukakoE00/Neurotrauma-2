@@ -178,6 +178,10 @@ namespace Neurotrauma
                     TagsToRemove.Add(Tag);
                 }
             }
+            foreach (string Tag in TagsToRemove)
+            {
+                Character.GetTags().Tags.Remove(Tag);
+            }
         }
     }
 

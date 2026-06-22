@@ -523,6 +523,11 @@ public class HumanUpdate
         {
             if (Human == null) return;
 
+            if (!(Human.IsHuman && Human.TeamID == CharacterTeamType.Team1 || Human.TeamID == CharacterTeamType.Team2 && !Human.IsDead))
+            {
+                if (!HasAffliction(Human, "luabotomy")) return;
+            }
+
             foreach (Action<NTHuman> Hook in PreHumanUpdateHooks) // Pre hooks.
             {
                 Hook.Invoke(this);
@@ -530,14 +535,14 @@ public class HumanUpdate
 
             // ----------------------------------------- Stat updates ----------------------------------------- \\
 
-            foreach (KeyValuePair<string,CharacterStats.NTHumanStatDoubleData> Pair in LocalStats.DoubleStats) // Update all of out 
+            foreach (KeyValuePair<string,CharacterStats.NTHumanStatDoubleData> Pair in LocalStats.DoubleStats) // Update all of our double stats
             {
                 string ID = Pair.Key;
                 CharacterStats.NTHumanStatDoubleData StatData = Pair.Value;
                 SetDoubleStatStrength(Pair.Key, GetDoubleStatUpdate(this, ID));
             }
 
-            foreach (KeyValuePair<string, CharacterStats.NTHumanStatBoolData> Pair in LocalStats.BoolStats) // Update all of out 
+            foreach (KeyValuePair<string, CharacterStats.NTHumanStatBoolData> Pair in LocalStats.BoolStats) // Update all of our boolean stats
             {
                 string ID = Pair.Key;
                 CharacterStats.NTHumanStatBoolData StatData = Pair.Value;
@@ -580,7 +585,7 @@ public class HumanUpdate
                         NTHumanLimbAffData AffData = Pair.Value;
                         NTLimbAffliction Aff = AffData.AffTemplate;
 
-                        if (!Priorities.Contains(Aff.Priority)) continue;
+                        if (!Priorities.Contains(Aff.Priority) || (!Aff.IgnoreStasis && GetBoolStatStrength("stasis"))) continue;
 
                         double CurrentStrength = GetAfflictionStrengthLimb(Human, Limb, ID);
                         AffData.Strength[Limb] = CurrentStrength;
@@ -646,6 +651,8 @@ public class HumanUpdate
 
             // ----------------------------------------- Clearing ----------------------------------------- \\
 
+            NTC.TickCharacterTags(this);
+
             foreach (Action<NTHuman> Hook in PostHumanUpdateHooks) // Post hooks.
             {
                 Hook.Invoke(this);
@@ -660,7 +667,23 @@ public class HumanUpdate
     public class NTMonster(Character Monster) // To Do
     {
         public Character Monster = Monster; // Our Monster Ref
+        
+        public void Update()
+        {
+            double BloodLoss = GetAfflictionStrength(Monster, "bloodloss", 0);
+            double OxygenLow = GetAfflictionStrength(Monster, "oxygenlow", 0);
 
+            if (BloodLoss > 0)
+            {
+                AddAffliction(Monster, "organdamage", (float)BloodLoss * 2, Monster);
+                SetAffliction(Monster, "bloodloss", 0, Monster, (float)BloodLoss);
+            }
+            else if (OxygenLow > 50)
+            {
+                AddAffliction(Monster, "organdamage", (float) (OxygenLow - 50) * 2, Monster);
+                SetAffliction(Monster, "oxygenlow", 50, Monster, (float) OxygenLow);
+            }
+        }
     }
 
 
@@ -684,7 +707,7 @@ public class HumanUpdate
         }
         else
         {
-            //AddMonsterToUpdate(NewCharacter); I gotta test this more.
+            AddMonsterToUpdate(NewCharacter);
         }
     }
 
@@ -700,7 +723,7 @@ public class HumanUpdate
             }
             else
             {
-                //RemoveMonsterFromUpdate(NewCharacter);
+                RemoveMonsterFromUpdate(NewCharacter);
             }
         }
     }
@@ -788,10 +811,13 @@ public class HumanUpdate
         if (!(Tick < 0)) { return; }
         else { Tick = Interval; HF.Print("Human Update Tick"); }
 
+        if (!NTConfig.Get("NT_Calculations", true)) return; // Check the config.
+
         // We check if timer is up
         List<AfflictionPriority> checkedPriorities = GetLowestPriority(UpdateCooldown);
         UpdateCooldown++;
-        if (checkedPriorities.Count == 0) return;
+        if (checkedPriorities.Count == 3) UpdateCooldown = 0;
+        else if (checkedPriorities.Count == 0) return;
 
         HF.Print("Actually Update");
         NTAfflictions.DeltaTime = NTDeltaTime;
@@ -800,11 +826,9 @@ public class HumanUpdate
 
     private void Update(List<AfflictionPriority> priorities)
     {
-        List<Character> CHList = Character.CharacterList;
-
         UpdateHumans(priorities);
 
-        UpdateMonsters(priorities);
+        UpdateMonsters();
     }
 
     private void UpdateHumans(List<AfflictionPriority> priorities)
@@ -817,13 +841,36 @@ public class HumanUpdate
         }
     }
 
-    private void UpdateMonsters(List<AfflictionPriority> priorities)
+    private void UpdateMonsters()
     {
-
+        foreach (NTMonster Monster in UpdatingMonsters)
+        {
+            Monster.Update();
+        }
     }
 
-    private static void UpdateMonster(Character character)
+    public static void CleanBotomy(Character C)
     {
+        if (HasAffliction(C, "surgeryincision")) SetAffliction(C, "tshocktimeout", 15, C, 0);
 
+        if (C.TeamID == CharacterTeamType.Team1 || C.TeamID == CharacterTeamType.Team2)
+        {
+            SetAffliction(C, "luabotomypurger", 2, C, 0);
+            LuaCsSetup.Instance.Timer.Wait((params object[] _) =>
+            {
+                SetAffliction(C,"luabotomy",0.1f,C,0);
+            }, 8000);
+        }
+    }
+
+    public static void ForceLuabotomy(Character C) // What, what does this function do?
+    {
+        LuaCsSetup.Instance.Timer.Wait((params object[] _) =>
+        {
+            if (C.IsHuman && C.TeamID == CharacterTeamType.Team1 || C.TeamID == CharacterTeamType.Team2 && !C.IsDead)
+            {
+                if (!HasAffliction(C, "luabotomy")) return;
+            }
+        }, 5000);
     }
 }

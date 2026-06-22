@@ -304,6 +304,7 @@ namespace Neurotrauma
             AddAfflictions();
             AddLimbAfflictions();
             AddBloodAfflictions();
+            AddSymptoms();
         }
 
         private void AddAfflictions() // Create your afflictions in here.
@@ -311,13 +312,61 @@ namespace Neurotrauma
 
             // EXAMPLE AFFLICTION
 
-            //AfflictionsToAdd["ExampleAff"] = new("ExampleAff",0,100,50,AfflictionPriority.LOW);
-            //AfflictionsToAdd["ExampleAff"].UpdateAction =
-                //(HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHuman.CharacterAfflictions.NTHumanNonLimbAffData AffData) =>
-                //{
+            AfflictionsToAdd["respiratoryarrest"] = new("respiratoryarrest", 0,100,0,AfflictionPriority.HIGH);
+            AfflictionsToAdd["respiratoryarrest"].Const = true; // This affliction should always run
+            AfflictionsToAdd["respiratoryarrest"].UpdateAction =
+                (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanNonLimbAffData AffData) =>
+                {
+                    AffData.Strength -= (0.05 + HF.BoolToNum(C.GetSymptomAffData("unconsciousness").Strength < .1, .45f)) * NTAfflictions.DeltaTime;
 
-                //};
+                    if
+                        (!NTC.HasSymptomFalse(C, "respiratoryarrest")
+                        && (
+                        C.GetBoolStatStrength("stasis")
+                        || C.GetAffData("lungremoved").Strength > 0
+                        || C.GetAffData("brainremoved").Strength > 0
+                        || C.GetAffData("opiateoverdose").Strength > 50
+                        || C.GetAffData("lungdamage").Strength > 99 && HF.Chance(.8f)
+                        || C.GetAffData("traumaticshock").Strength > 30 && HF.Chance(.2f)
+                        || (
+                            (C.GetAffData("neurotrauma").Strength > 100 || C.GetAffData("neurotrauma").Strength > 70
+                            && HF.Chance(.05f))
+                        )
+                      )
+                      )
+                    {
+                        AffData.Strength += 10;
+                    }
+                };
 
+            AfflictionsToAdd["fracturedribs"] = new("fracturedribs");
+            AfflictionsToAdd["fracturedneck"] = new("fracturedneck");
+            AfflictionsToAdd["fracturedskull"] = new("fracturedskull");
+            AfflictionsToAdd["stroke"] = new("stroke");
+            AfflictionsToAdd["neurotrauma"] = new("neurotrauma");
+            AfflictionsToAdd["seizure"] = new("seizure");
+            AfflictionsToAdd["coma"] = new("coma");
+            AfflictionsToAdd["traumaticshock"] = new("traumaticshock");
+            // Drugs//
+            AfflictionsToAdd["opiateoverdose"] = new("opiateoverdose");
+            // Organs //
+            AfflictionsToAdd["lungdamage"] = new("lungdamage");
+            AfflictionsToAdd["lungremoved"] = new("lungremoved");
+            AfflictionsToAdd["brainremoved"] = new("brainremoved");
+            AfflictionsToAdd["brainswap"] = new("brainswap");
+            // Limbs //
+            AfflictionsToAdd["tra_amputation"] = new("tra_amputation");
+            AfflictionsToAdd["tla_amputation"] = new("tla_amputation");
+            AfflictionsToAdd["trl_amputation"] = new("trl_amputation");
+            AfflictionsToAdd["tll_amputation"] = new("tll_amputation");
+            AfflictionsToAdd["th_amputation"] = new("th_amputation");
+            AfflictionsToAdd["sra_amputation"] = new("sra_amputation");
+            AfflictionsToAdd["sla_amputation"] = new("sla_amputation");
+            AfflictionsToAdd["srl_amputation"] = new("srl_amputation");
+            AfflictionsToAdd["sll_amputation"] = new("sll_amputation");
+            AfflictionsToAdd["sh_amputation"] = new("sh_amputation");
+
+            // Now add these afflictions.
             foreach (KeyValuePair<string,NTNonLimbAffliction> Pair in AfflictionsToAdd)
             {
                 NTAfflictions.RegisterAffliction(Pair.Key, Pair.Value);
@@ -332,19 +381,16 @@ namespace Neurotrauma
             LimbAfflictionsToAdd["bleeding"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanLimbAffData AffData) =>
                 {
-                    // You can access the NT.Deltatime by doing this:
-                    double HowDoIGetDeltaTime = NTAfflictions.DeltaTime;
-                    // To set the strength of an affliction do this:
-                    AffData.Strength[Limb] = 100; // Note you only add the Limb part for Limb Afflictions.
-                    // How do I access other afflictions????
-                    //C.GetLimbAffData()["ExampleAff"].Strength[Limb] = 5;
-                    // What about Non Limb afflictions????
-                    //C.GetAffData()["ExampleAff"].Strength = 5;
-                    // Blood Afflictions????
-                    //C.GetBloodAffData()["ExampleAff"].Strength = 20;
-                    // How do I get player stats????
-                    C.GetStats();
                 };
+            LimbAfflictionsToAdd["bonedamage"] = new("bonedamage");
+            LimbAfflictionsToAdd["stimulatedbonegrowth"] = new("stimulatedbonegrowth");
+            LimbAfflictionsToAdd["fracturedextremity"] = new("fracturedextremity");
+            LimbAfflictionsToAdd["dislocation"] = new("dislocation");
+            LimbAfflictionsToAdd["tourniqueted"] = new("tourniqueted");
+            LimbAfflictionsToAdd["plastercast"] = new("plastercast");
+            LimbAfflictionsToAdd["plastercast"] = new("plastercast");
+            LimbAfflictionsToAdd["arterialcut"] = new("arterialcut");
+            LimbAfflictionsToAdd["gangrene"] = new("gangrene");
 
             foreach (KeyValuePair<string, NTLimbAffliction> Pair in LimbAfflictionsToAdd)
             {
@@ -354,6 +400,14 @@ namespace Neurotrauma
 
         private void AddBloodAfflictions()
         {
+            BloodAfflictionsToAdd["bloodpressure"] = new("bloodpressure");
+            BloodAfflictionsToAdd["hypoxemia"] = new("hypoxemia");
+            BloodAfflictionsToAdd["alkalosis"] = new("alkalosis");
+            BloodAfflictionsToAdd["acidosis"] = new("acidosis");
+            BloodAfflictionsToAdd["hemotransfusionshock"] = new("hemotransfusionshock");
+            BloodAfflictionsToAdd["sepsis"] = new("sepsis");
+            BloodAfflictionsToAdd["immunity"] = new("immunity");
+
             foreach (KeyValuePair<string, NTBloodAffliction> Pair in BloodAfflictionsToAdd)
             {
                 NTAfflictions.RegisterAffliction(Pair.Key, Pair.Value);
@@ -362,6 +416,32 @@ namespace Neurotrauma
 
         private void AddSymptoms()
         {
+            SymptomsToAdd["cough"] = new("cough");
+            SymptomsToAdd["paleskin"] = new("paleskin");
+            SymptomsToAdd["lightheadedness"] = new("lightheadedness");
+            SymptomsToAdd["blurredvision"] = new("blurredvision");
+            SymptomsToAdd["confusion"] = new("confusion");
+            SymptomsToAdd["headache"] = new("headache");
+            SymptomsToAdd["legswelling"] = new("legswelling");
+            SymptomsToAdd["weakness"] = new("weakness");
+            SymptomsToAdd["wheezing"] = new("wheezing");
+            SymptomsToAdd["vomiting"] = new("vomiting");
+            SymptomsToAdd["vomitingblood"] = new("vomitingblood");
+            SymptomsToAdd["fever"] = new("fever");
+            SymptomsToAdd["abdominaldiscomfort"] = new("abdominaldiscomfort");
+            SymptomsToAdd["bloating"] = new("bloating");
+            SymptomsToAdd["jaundice"] = new("jaundice");
+            SymptomsToAdd["sweating"] = new("sweating");
+            SymptomsToAdd["palpitations"] = new("palpitations");
+            SymptomsToAdd["unconsciousness"] = new("unconsciousness");
+            SymptomsToAdd["inflammation"] = new("inflammation");
+            SymptomsToAdd["spasm"] = new("spasm");
+            SymptomsToAdd["craving"] = new("craving");
+            SymptomsToAdd["nausea"] = new("nausea");
+            SymptomsToAdd["chestpain"] = new("chestpain");
+            SymptomsToAdd["abdominalpain"] = new("abdominalpain");
+            SymptomsToAdd["intensepain"] = new("intensepain");
+
             foreach (KeyValuePair<string, NTSymptom> Pair in SymptomsToAdd)
             {
                 NTAfflictions.RegisterAffliction(Pair.Key, Pair.Value);
