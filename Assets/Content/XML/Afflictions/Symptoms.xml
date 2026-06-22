@@ -15,7 +15,7 @@
       
       showinhealthscannerthreshold="999"
       showiconthreshold="0"
-      maxstrength="2">
+      maxstrength="100">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="7,0" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -33,7 +33,7 @@
       
       showinhealthscannerthreshold="999"
       showiconthreshold="0"
-      maxstrength="2">
+      maxstrength="100">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="0,0" sheetelementsize="128,128" color="255,255,255,255" origin="0,0"/>
     </Affliction>
@@ -52,7 +52,7 @@
       
       showinhealthscannerthreshold="999"
       showiconthreshold="0"
-      maxstrength="2">
+      maxstrength="100">
 
       <icon texture="%ModDir%/Images/AfflictionIcons2.png" sheetindex="0,0" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -70,7 +70,7 @@
       
       showinhealthscannerthreshold="999"
       showiconthreshold="0"
-      maxstrength="2">
+      maxstrength="100">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="3,1" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -88,7 +88,7 @@
       
       showinhealthscannerthreshold="999"
       showiconthreshold="0"
-      maxstrength="2">
+      maxstrength="100">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="2,1" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -108,7 +108,7 @@
       
       showinhealthscannerthreshold="999"
       showiconthreshold="0"
-      maxstrength="2">
+      maxstrength="100">
 
       <icon texture="%ModDir%/Images/AfflictionIcons2.png" sheetindex="1,0" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -126,7 +126,7 @@
       
       showinhealthscannerthreshold="999"
       showiconthreshold="0"
-      maxstrength="2">
+      maxstrength="100">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="4,1" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -144,7 +144,7 @@
       
       showinhealthscannerthreshold="999"
       showiconthreshold="0"
-      maxstrength="2">
+      maxstrength="100">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="5,1" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -163,7 +163,7 @@
       
       showinhealthscannerthreshold="999"
       showiconthreshold="0"
-      maxstrength="2">
+      maxstrength="100">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="6,1" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -182,7 +182,7 @@
       
       showinhealthscannerthreshold="999"
       showiconthreshold="0"
-      maxstrength="2">
+      maxstrength="100">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="7,1" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -201,7 +201,7 @@
 
       showinhealthscannerthreshold="999"
       showiconthreshold="0"
-      maxstrength="2">
+      maxstrength="100">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="7,1" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -219,7 +219,7 @@
       
       showinhealthscannerthreshold="999"
       showiconthreshold="0"
-      maxstrength="2">
+      maxstrength="100">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="0,2" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -237,7 +237,7 @@
       
       showinhealthscannerthreshold="999"
       showiconthreshold="0"
-      maxstrength="2">
+      maxstrength="100">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="1,2" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -255,7 +255,7 @@
       
       showinhealthscannerthreshold="999"
       showiconthreshold="0"
-      maxstrength="2">
+      maxstrength="100">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="1,2" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -273,7 +273,7 @@
       
       showinhealthscannerthreshold="999"
       showiconthreshold="0"
-      maxstrength="2">
+      maxstrength="100">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="0,0" sheetelementsize="128,128" color="255,255,0,255" origin="0,0"/>
     </Affliction>
@@ -292,7 +292,7 @@
 
       showinhealthscannerthreshold="999"
       showiconthreshold="0"
-      maxstrength="2">
+      maxstrength="100">
         
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="2,2" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -312,7 +312,7 @@
       
       showinhealthscannerthreshold="999"
       showiconthreshold="0"
-      maxstrength="2">
+      maxstrength="100">
         
       <icon texture="%ModDir%/Images/AfflictionIcons2.png" sheetindex="2,0" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -329,7 +329,7 @@
 
       showinhealthscannerthreshold="999"
       showiconthreshold="0"
-      maxstrength="2">
+      maxstrength="100">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="3,2" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -346,7 +346,7 @@
       
       showinhealthscannerthreshold="999"
       showiconthreshold="0"
-      maxstrength="2">
+      maxstrength="100">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="4,3" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -363,7 +363,7 @@
 
       showinhealthscannerthreshold="999"
       showiconthreshold="0"
-      maxstrength="2">
+      maxstrength="100">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="7,2" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -382,7 +382,7 @@
       
       showinhealthscannerthreshold="999"
       showiconthreshold="0"
-      maxstrength="2">
+      maxstrength="100">
 
       <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="384,768,128,128" color="195,180,60,255" origin="0,0"/>
     </Affliction>
@@ -401,7 +401,7 @@
         
         showinhealthscannerthreshold="999"
         showiconthreshold="0"
-        maxstrength="2">
+        maxstrength="100">
 
         <icon texture="Content/UI/CommandUIAtlas.png" sourcerect="896,896,128,128" origin="0,0"/>
       </Affliction>
@@ -420,7 +420,7 @@
       
       showinhealthscannerthreshold="999"
       showiconthreshold="0"
-      maxstrength="10">
+      maxstrength="100">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="1,2" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -439,7 +439,7 @@
       
       showinhealthscannerthreshold="999"
       showiconthreshold="0"
-      maxstrength="10">
+      maxstrength="100">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="1,2" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -457,7 +457,7 @@
       
       showinhealthscannerthreshold="999"
       showiconthreshold="0"
-      maxstrength="10">
+      maxstrength="100">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="7,2" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>

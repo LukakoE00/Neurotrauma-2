@@ -796,82 +796,99 @@ namespace Neurotrauma
         private void AddSymptoms()
         {
             // Cough
-            SymptomsToAdd["cough"] = new("cough");
+            SymptomsToAdd["cough"] = new("cough", 0, 100, 0, AfflictionPriority.HIGH);
+            SymptomsToAdd["cough"].Const = true; // This affliction should always run
+            SymptomsToAdd["cough"].UpdateAction =
+                (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanSymptomData AffData) =>
+                {
+                    AffData.Strength = HF.BoolToNum(
+                        !NTC.HasSymptomFalse(C, ID)
+                        && C.GetSymptomAffData("unconsciousness").Strength <= 0
+                        && C.GetAffData("lungremoved").Strength <= 0
+                        && (
+                            NTC.HasSymptom(C, ID)
+                            || C.GetAffData("lungdamage").Strength > 50
+                            || C.GetAffData("heartdamage").Strength > 50
+                            || C.GetAffData("tamponade").Strength > 20
+                        ),
+                        100
+                    );
+                };
 
             // Pale Skin
-            SymptomsToAdd["paleskin"] = new("paleskin");
+            SymptomsToAdd["paleskin"] = new("paleskin", 0, 100, 0, AfflictionPriority.HIGH);
 
             // Lightheadedness
-            SymptomsToAdd["lightheadedness"] = new("lightheadedness");
+            SymptomsToAdd["lightheadedness"] = new("lightheadedness", 0, 100, 0, AfflictionPriority.HIGH);
 
             // Blurred Vision
-            SymptomsToAdd["blurredvision"] = new("blurredvision");
+            SymptomsToAdd["blurredvision"] = new("blurredvision", 0, 100, 0, AfflictionPriority.HIGH);
 
             // Confusion
-            SymptomsToAdd["confusion"] = new("confusion");
+            SymptomsToAdd["confusion"] = new("confusion", 0, 100, 0, AfflictionPriority.HIGH);
 
             // Headache
-            SymptomsToAdd["headache"] = new("headache");
+            SymptomsToAdd["headache"] = new("headache", 0, 100, 0, AfflictionPriority.HIGH);
 
             // Leg Swelling
-            SymptomsToAdd["legswelling"] = new("legswelling");
+            SymptomsToAdd["legswelling"] = new("legswelling", 0, 100, 0, AfflictionPriority.HIGH);
 
             // Weakness
-            SymptomsToAdd["weakness"] = new("weakness");
+            SymptomsToAdd["weakness"] = new("weakness", 0, 100, 0, AfflictionPriority.HIGH);
 
             // Wheezing
-            SymptomsToAdd["wheezing"] = new("wheezing");
+            SymptomsToAdd["wheezing"] = new("wheezing", 0, 100, 0, AfflictionPriority.HIGH);
 
             // Vomiting
-            SymptomsToAdd["vomiting"] = new("vomiting");
+            SymptomsToAdd["vomiting"] = new("vomiting", 0, 100, 0, AfflictionPriority.HIGH);
 
             // Vomiting Blood
-            SymptomsToAdd["vomitingblood"] = new("vomitingblood");
+            SymptomsToAdd["vomitingblood"] = new("vomitingblood", 0, 100, 0, AfflictionPriority.HIGH);
 
             // Fever
-            SymptomsToAdd["fever"] = new("fever");
+            SymptomsToAdd["fever"] = new("fever", 0, 100, 0, AfflictionPriority.HIGH);
 
             // Abdominal Discomfort
-            SymptomsToAdd["abdominaldiscomfort"] = new("abdominaldiscomfort");
+            SymptomsToAdd["abdominaldiscomfort"] = new("abdominaldiscomfort", 0, 100, 0, AfflictionPriority.HIGH);
 
             // Bloating
-            SymptomsToAdd["bloating"] = new("bloating");
+            SymptomsToAdd["bloating"] = new("bloating", 0, 100, 0, AfflictionPriority.HIGH);
 
             // Jaundice
-            SymptomsToAdd["jaundice"] = new("jaundice");
+            SymptomsToAdd["jaundice"] = new("jaundice", 0, 100, 0, AfflictionPriority.HIGH);
 
             // Sweating
-            SymptomsToAdd["sweating"] = new("sweating");
+            SymptomsToAdd["sweating"] = new("sweating", 0, 100, 0, AfflictionPriority.HIGH);
 
             // Palpitations
-            SymptomsToAdd["palpitations"] = new("palpitations");
+            SymptomsToAdd["palpitations"] = new("palpitations", 0, 100, 0, AfflictionPriority.HIGH);
 
             // Unconsciousness
-            SymptomsToAdd["unconsciousness"] = new("unconsciousness");
+            SymptomsToAdd["unconsciousness"] = new("unconsciousness", 0, 100, 0, AfflictionPriority.HIGH);
 
             // Inflammation
-            SymptomsToAdd["inflammation"] = new("inflammation");
+            SymptomsToAdd["inflammation"] = new("inflammation", 0, 100, 0, AfflictionPriority.HIGH);
 
             // Spasms
-            SymptomsToAdd["spasm"] = new("spasm");
+            SymptomsToAdd["spasm"] = new("spasm", 0, 100, 0, AfflictionPriority.HIGH);
 
             // Craving
-            SymptomsToAdd["craving"] = new("craving");
+            SymptomsToAdd["craving"] = new("craving", 0, 100, 0, AfflictionPriority.HIGH);
 
             // Nausea
-            SymptomsToAdd["nausea"] = new("nausea");
+            SymptomsToAdd["nausea"] = new("nausea", 0, 100, 0, AfflictionPriority.HIGH);
 
             // Chest Pain
-            SymptomsToAdd["chestpain"] = new("chestpain");
+            SymptomsToAdd["chestpain"] = new("chestpain", 0, 100, 0, AfflictionPriority.HIGH);
 
             // Abdominal Pain
-            SymptomsToAdd["abdominalpain"] = new("abdominalpain");
+            SymptomsToAdd["abdominalpain"] = new("abdominalpain", 0, 100, 0, AfflictionPriority.HIGH);
 
             // Intense Pain
-            SymptomsToAdd["intensepain"] = new("intensepain");
+            SymptomsToAdd["intensepain"] = new("intensepain", 0, 100, 0, AfflictionPriority.HIGH);
 
             // Shortness of Breath
-            SymptomsToAdd["shortnessofbreath"] = new("shortnessofbreath");
+            SymptomsToAdd["shortnessofbreath"] = new("shortnessofbreath", 0, 100, 0, AfflictionPriority.HIGH);
 
             foreach (KeyValuePair<string, NTSymptom> Pair in SymptomsToAdd)
             {
