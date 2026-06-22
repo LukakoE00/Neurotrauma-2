@@ -226,7 +226,7 @@
       
       showinhealthscannerthreshold="0"
       showiconthreshold="0"
-      maxstrength="1">
+      maxstrength="100">
 
       <Effect minstrength="0" maxstrength="100" MultiplyByMaxVitality="true" minvitalitydecrease="1000" maxvitalitydecrease="1000"/>
 

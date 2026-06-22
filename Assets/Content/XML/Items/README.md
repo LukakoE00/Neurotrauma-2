@@ -8,21 +8,20 @@ Empty Blood Pack: DONE
 Blood Type Cards: DONE (Add to Health UI?)
 
 ## BodyParts:
-Liver Transplant Surgery: DONE
-Lung Transplant Surgery: DONE
-Kidney Transplant Surgery: DONE
-Heart Transplant Surgery: DONE
-Brain Transplant Surgery: DONE
-Right Arm: Deterioration in XML, rest todo C#
-Left Arm: Deterioration in XML, rest todo C#
-Right Leg: Deterioration in XML, rest todo C#
-Left Leg: Deterioration in XML, rest todo C#
-Head Traumatic Amputation: Deterioration in XML, rest todo C#
-Head Surgical Amputation: Deterioration in XML, rest todo C#
-Right Arm Bionic: Todo C#
-Left Arm Bionic: Todo C#
-Right Leg Bionic: Todo C#
-Left Leg Bionic: Todo C#
+Liver Transplant: DONE
+Lung Transplant: DONE
+Kidney Transplant: DONE
+Heart Transplant: DONE
+Brain Transplant: DONE
+Right Arm: DONE
+Left Arm: DONE
+Right Leg: DONE
+Left Leg: DONE
+Head Surgical Amputation: DONE
+Right Arm Bionic: DONE
+Left Arm Bionic: DONE
+Right Leg Bionic: DONE
+Left Leg Bionic: DONE
 
 ## Consumables:
 Antibiotic Ointment: DONE
@@ -43,7 +42,7 @@ Medical Container: Good enough XML
 Surgery Toolbox: Good enough XML
 Surgery Toolbox (Kit): Good enough XML
 Surgery Toolbox (Kit + Scalpels) (Deprecated?)
-Medical Starter Crate: Spawning items needs C#
+Medical Starter Crate: DONE
 Body Bag: Look into changing Overlay system
 Stasis Bag: Look into changing Overlay system
 Analgesic Tank: Good enough XML
@@ -62,7 +61,7 @@ Wrench: DONE
 Health Scanner: DONE
 Alien Blood: DONE
 Saline: DONE
-0- Blood Pack: Todo C#
+0- Blood Pack: DONE
 Bandage: DONE
 Plastiseal: DONE
 Basegame Beds: Good enough XML
@@ -100,7 +99,7 @@ Surgical Saw: DONE
 Tweezers: DONE
 Trauma Shears: DONE
 Scalpel: DONE
-Multi-Purpose Scalpel: Todo C#
+Multi-Purpose Scalpel: DONE
 Antiseptic Sprayer: DONE
 
 ## Toggleable:
@@ -108,4 +107,4 @@ Endovascular Balloon: DONE // Surgery integration todo
 Medical Stent: DONE // Surgery integration todo
 Antiseptic: Good enough XML
 Sodium Nitroprusside: DONE
-Organ Scalpels: Todo C#
+Organ Scalpels: DONE

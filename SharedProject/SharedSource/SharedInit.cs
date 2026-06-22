@@ -23,6 +23,7 @@ namespace Neurotrauma
             LoveBots.InitBotPatches(); // Add the HarmonyPatches to disable bot treatment
             CPRHooks.InitCPRHooks(); // Add the CPR Success/Failure hooks
             LootCrates.Init(); // Add MedSpawnerCrate + JobItems Hooks
+            NTMultiscalpel.RegisterMultiscalpel(); // Add the Multiscalpel hooks
 
             // What a mess. - Lukako (holy old status)
             harmony = new Harmony("neurotrauma.server");

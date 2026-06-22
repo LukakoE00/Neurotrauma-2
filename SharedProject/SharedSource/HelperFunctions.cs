@@ -97,11 +97,14 @@ namespace Neurotrauma
             return Value;
         }
 
-        public static string CreateLimbAfflictionID(LimbType GivenLimbType, string Identifier, string FailSafe)
+        public static string CreateLimbAfflictionID(LimbType limbType, string identifier)
         {
-            LimbType NormalizedLimb = NormalizeLimbType(GivenLimbType);
-            ShortHandLimbsToCheck.TryGetValue(NormalizedLimb, out string Value);
-            return (Value + "_" + Identifier) ?? FailSafe;
+            limbType = NormalizeLimbType(limbType);
+
+            if (!ShortHandLimbsToCheck.TryGetValue(limbType, out string value))
+                return null;
+
+            return $"{value}_{identifier}";
         }
 
         public static bool LimbIsExtremity(LimbType GivenLimbType)
@@ -968,16 +971,18 @@ namespace Neurotrauma
             return HasAfflictionLimb(Character, "arterialcut", GivenLimbType);
         }
 
-        public static bool LimbIsTraumaticallyAmputated(Character Character, LimbType GivenLimbType)
+        public static bool LimbIsTraumaticallyAmputated(Character character, LimbType givenLimbType)
         {
-            GivenLimbType = NormalizeLimbType(GivenLimbType);
-            return HasAfflictionLimb(Character, CreateLimbAfflictionID(GivenLimbType, "amputation", "ll_amputation") + "t", GivenLimbType);
+            givenLimbType = NormalizeLimbType(givenLimbType);
+
+            return HasAfflictionLimb(character, "t" + CreateLimbAfflictionID(givenLimbType, "amputation"), givenLimbType);
         }
 
-        public static bool LimbIsSurgicallyAmputated(Character Character, LimbType GivenLimbType)
+        public static bool LimbIsSurgicallyAmputated(Character character, LimbType givenLimbType)
         {
-            GivenLimbType = NormalizeLimbType(GivenLimbType);
-            return HasAfflictionLimb(Character, CreateLimbAfflictionID(GivenLimbType, "amputation", "ll_amputation") + "s", GivenLimbType);
+            givenLimbType = NormalizeLimbType(givenLimbType);
+
+            return HasAfflictionLimb( character, "s" + CreateLimbAfflictionID(givenLimbType, "amputation"), givenLimbType);
         }
 
         public static bool LimbIsAmputated(Character Character, LimbType GivenLimbType)
@@ -1028,31 +1033,69 @@ namespace Neurotrauma
             AddAfflictionLimb(Character, LimbToAffliction[GivenLimbType] + "_2", GivenLimbType, 10, Character);
         }
 
-        public static void SurgicallyAmputateLimbAndGenerateItem(Character UsingCharacter, Character TargetCharacter, LimbType GivenLimbType) // Holy mouth full
+        /// <summary>
+        /// Removes an extremity by applying the Surgical Amputation affliction respective to that limb and spawning the respective transplant item.
+        /// </summary>
+        /// <param name="usingCharacter">Character performing the surgery.</param>
+        /// <param name="targetCharacter">Character recieving the surgery.</param>
+        /// <param name="limbType">Limb being surgically removed.</param>
+        public static void SurgicallyAmputateLimbAndGenerateItem(Character usingCharacter, Character targetCharacter, LimbType limbType)
         {
-            Item PrevItem = GetItemInHeadWear(TargetCharacter);
-            if (PrevItem != null && GivenLimbType == LimbType.Head) { PrevItem.Drop(UsingCharacter, true); }
-            bool DropLimb = !LimbIsAmputated(TargetCharacter, GivenLimbType) || !HasAfflictionLimb(TargetCharacter, "gangrene", GivenLimbType, 15);
-            if (DropLimb)
+            limbType = NormalizeLimbType(limbType);
+
+            Item prevItem = GetItemInHeadWear(targetCharacter);
+
+            if (prevItem != null && limbType == LimbType.Head) prevItem.Drop(usingCharacter, true);
+
+            bool dropLimb = !LimbIsAmputated(targetCharacter, limbType) && !HasAfflictionLimb(targetCharacter, "gangrene", limbType, 15);
+
+            SurgicallyAmputateLimb(targetCharacter, limbType);
+
+            if (!dropLimb) return;
+
+            Dictionary<LimbType, string> limbToItem = new()
             {
-                Dictionary<LimbType, string> LimbToItem = new Dictionary<LimbType, string>() { {LimbType.RightLeg,"rleg" }, { LimbType.LeftLeg, "lleg" },
-                                                                                                { LimbType.RightArm, "rarm" },{ LimbType.LeftArm, "larm" },
-                                                                                                { LimbType.Head, "headsa" } };
-                if (LimbToItem[GivenLimbType] != null)
-                {
-                    GiveItem(UsingCharacter, LimbToItem[GivenLimbType]);
-                }
+                { LimbType.RightLeg, "rleg" },
+                { LimbType.LeftLeg, "lleg" },
+                { LimbType.RightArm, "rarm" },
+                { LimbType.LeftArm, "larm" },
+                { LimbType.Head, "headsa" }
+            };
+
+            if (limbToItem.TryGetValue(limbType, out string itemIdentifier))
+            {
+                GiveItem(usingCharacter, itemIdentifier);
+                GiveSurgerySkill(usingCharacter, 0.5f);
             }
         }
 
-        public static void SurgicallyAmputateLimb(Character Character, LimbType GivenLimbType, float Strength = 100, float TraumampStrength = 0)
+        /// <summary>
+        /// Removes an extremity by applying the Surgical Amputation affliction respective to that limb.
+        /// </summary>
+        /// <param name="usingCharacter">Character performing the surgery.</param>
+        /// <param name="targetCharacter">Character recieving the surgery.</param>
+        /// <param name="limbType">Limb being surgically removed.</param>
+        public static void SurgicallyAmputateLimb(Character character, LimbType GivenLimbType, float strength = 100f, float traumampStrength = 0f)
         {
             GivenLimbType = NormalizeLimbType(GivenLimbType);
-            SetAffliction(Character, CreateLimbAfflictionID(GivenLimbType, "amputation", "ll_amputation") + "s", Strength, Character, Strength);
-            SetAffliction(Character, CreateLimbAfflictionID(GivenLimbType, "amputation", "ll_amputation") + "t", TraumampStrength, Character, TraumampStrength);
-            SetAffliction(Character, "gangrene", 0, Character, 0);
+
+            string baseId = CreateLimbAfflictionID(GivenLimbType, "amputation");
+
+            SetAffliction(character, "s" + baseId, strength, null, 0);
+
+            if (traumampStrength > 0f)
+            {
+                SetAffliction(character, "t" + baseId, traumampStrength, null, 0);
+            }
+
+            SetAfflictionLimb(character, "gangrene", GivenLimbType, 0, null, 0);
         }
 
+        /// <summary>
+        /// Checks if Surgery can be performed on a character.
+        /// </summary>
+        /// <param name="Character">The character that gets checked for Surgery Viability.</param>
+        /// <returns>'True' if Surgery can be performed; otherwise 'False'.</returns>
         public static bool CanPerformSurgeryOn(Character Character)
         {
             return HasAffliction(Character, "analgesia", 1) || HasAffliction(Character, "sym_unconsciousness", (float).1);
