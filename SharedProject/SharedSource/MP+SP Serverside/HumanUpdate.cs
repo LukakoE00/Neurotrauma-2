@@ -65,6 +65,15 @@ public class HumanUpdate
         public string ID = ID;
     }
 
+    public class NTHumanLimbSymptomData(NTSymptom Sym, string ID)
+    {
+        public NTSymptom SymTemplate = Sym;
+        public Dictionary<LimbType, double> Strength;
+        public Dictionary<LimbType, int> HumanUpdateTime;
+        public Dictionary<LimbType, int> HumanUpdateStoptime;
+        public string ID = ID;
+    }
+
     /// <summary>
     /// The primary backbone of NT Characters. Stores all of the afflictions that our character uses. Also contains the strengths of each individual character.
     /// </summary>

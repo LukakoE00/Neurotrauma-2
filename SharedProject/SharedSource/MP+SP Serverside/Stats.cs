@@ -215,6 +215,11 @@ namespace Neurotrauma
         {
 
         }
+
+        public void Set()
+        {
+
+        }
     }
 
     public class NTStatDouble(string Name, double MinStrength = 0, double MaxStrength = 1, double DefaultStrength = 1, Func<HumanUpdate.NTHuman, double> Update = null) : NTStat(Name)

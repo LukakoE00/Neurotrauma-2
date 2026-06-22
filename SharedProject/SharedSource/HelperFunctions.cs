@@ -823,7 +823,7 @@ namespace Neurotrauma
             Character.CharacterHealth.ApplyAffliction(
                 Character.AnimController.GetLimb(GivenLimbType),
                 Affliction,
-                true, // allowStacking: true https://evilfactory.github.io/LuaCsForBarotrauma/lua-docs/code/characterhealth/#ApplyAffliction
+                true, // allowStacking: true https://evilfactory.github.io/LuaCsForBarotrauma/lua-docs/code/characterhealth/#ApplyAffliction // Unc plugged me a link like Im gonna click it
                 false,
                 RecalculateVitality
             );
