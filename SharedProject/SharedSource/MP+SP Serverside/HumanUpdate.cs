@@ -915,14 +915,4 @@ public class HumanUpdate
         }
     }
 
-    public static void ForceLuabotomy(Character C) // What, what does this function do?
-    {
-        LuaCsSetup.Instance.Timer.Wait((params object[] _) =>
-        {
-            if (C.IsHuman && C.TeamID == CharacterTeamType.Team1 || C.TeamID == CharacterTeamType.Team2 && !C.IsDead)
-            {
-                if (!HasAffliction(C, "luabotomy")) return;
-            }
-        }, 5000);
-    }
 }

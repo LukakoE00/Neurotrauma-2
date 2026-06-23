@@ -696,6 +696,7 @@ namespace Neurotrauma
             LimbAfflictionsToAdd["bleeding"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanLimbAffData AffData) =>
                 {
+                    AffData.Strength[Limb] -= (C.GetDoubleStatStrength("clottingrate") * .1 * NTAfflictions.DeltaTime);
                 };
 
             // Bone Damage
@@ -756,6 +757,22 @@ namespace Neurotrauma
             // Third-degree Burn
             LimbAfflictionsToAdd["thirddegreeburn"] = new("thirddegreeburn");
 
+            LimbAfflictionsToAdd["lacerations"] = new("lacerations");
+            LimbAfflictionsToAdd["lacerations"].UpdateAction  =
+                (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanLimbAffData AffData) =>
+                {
+                    if (AffData.Strength[Limb] < 50)
+                    {
+                        AffData.Strength[Limb] -= (
+                                C.GetBloodAffData("immunity").PrevStrength / 3000
+                                + Math.Clamp(C.GetLimbAffStrength("bandaged", Limb), 0, 1) * .1
+                                + Math.Clamp(C.GetLimbAffStrength("skinointmented", Limb), 0, 1) * .12
+                                )
+                                * C.GetDoubleStatStrength("healingrate")
+                                * NTAfflictions.DeltaTime;
+                    }
+                };
+
 
             // I did it ... I added all the template afflictions. Good luck Lukako, this is all you. :peace: :crying emoji:
 
@@ -767,6 +784,8 @@ namespace Neurotrauma
 
         private void AddBloodAfflictions()
         {
+            // Blood afflictions are literally the same to write as NonLimbAfflictions, they're just here for organization purposes.
+
             // Blood Pressure
             BloodAfflictionsToAdd["bloodpressure"] = new("bloodpressure");
 
