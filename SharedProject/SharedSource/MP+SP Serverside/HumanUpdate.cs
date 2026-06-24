@@ -36,6 +36,9 @@ public class HumanUpdate
 
     // ---------------------------------------- NT Human Update Classes -------------------------------------------------- \\
 
+    /// <summary>
+    /// The abstract data class we use to store Afflictions.
+    /// </summary>
     public abstract class NTHumanAffData()
     {
         public NTAffliction AffTemplate; // Stores our aff template for updates and clamps.
@@ -44,6 +47,9 @@ public class HumanUpdate
         public string ID;
     }
 
+    /// <summary>
+    /// The data class stored in NTHumans to represent our Afflictions.
+    /// </summary>
     public class NTHumanNonLimbAffData : NTHumanAffData // Stores our characters Aff Data
     {
         new public NTNonLimbAffliction AffTemplate;
@@ -57,6 +63,9 @@ public class HumanUpdate
         }
     }
 
+    /// <summary>
+    /// The data class stored in NTHumans to represent our Limb Afflictions.
+    /// </summary>
     public class NTHumanLimbAffData : NTHumanAffData // Stores our characters Aff Data
     {
         new public NTLimbAffliction AffTemplate;
@@ -72,6 +81,9 @@ public class HumanUpdate
         }
     }
 
+    /// <summary>
+    /// The data class stored in NTHumans to represent our Blood Afflictions.
+    /// </summary>
     public class NTHumanBloodAffData : NTHumanAffData // Stores our characters Aff Data
     {
         new public NTBloodAffliction AffTemplate;
@@ -85,6 +97,9 @@ public class HumanUpdate
         }
     }
 
+    /// <summary>
+    /// The data class stored in NTHumans to represent our Symptoms.
+    /// </summary>
     public class NTHumanSymptomData : NTHumanAffData
     {
         public NTSymptom SymTemplate;
@@ -100,13 +115,24 @@ public class HumanUpdate
         }
     }
 
-    public class NTHumanLimbSymptomData(NTSymptom Sym, string ID) : NTHumanAffData
+    /// <summary>
+    /// The data class stored in NTHumans to represent our Limb Specific Symptoms.
+    /// </summary>
+    public class NTHumanLimbSymptomData : NTHumanAffData
     {
-        public NTSymptom SymTemplate = Sym;
-        public Dictionary<LimbType, double> Strength;
-        public Dictionary<LimbType, int> HumanUpdateTime;
-        public Dictionary<LimbType, int> HumanUpdateStoptime;
-        public string ID = ID;
+        public NTLimbSymptom SymTemplate;
+        public Dictionary<LimbType, double> Strength = new();
+        public Dictionary<LimbType, int> HumanUpdateTime = new();
+        public Dictionary<LimbType, int> HumanUpdateStoptime = new();
+
+        public NTHumanLimbSymptomData(NTLimbSymptom NewAff, string NewID)
+        {
+            AffTemplate = NewAff; // Failsafe, don't reference this when using NTSymptom.
+            base.AffTemplate = NewAff;
+            SymTemplate = NewAff; // Stores our template. The reason we aren't just creating a new affliction for each character is performance. I'm pretty sure it's more peformance efficent to just reference our affliction.
+            PrevStrength = 0;
+            ID = NewID;
+        }
     }
 
     /// <summary>
@@ -134,25 +160,29 @@ public class HumanUpdate
         public Dictionary<string, NTHumanSymptomData> UpdatingSymptoms = new();                 // Stores the ID's of our symptoms.
         public Dictionary<string, NTHumanLimbSymptomData> UpdatingLimbSymptoms = new();         // Stores the ID's of our limb symptoms.
 
-        public void RegisterAffliction(string ID, NTAffliction Aff, double Strength)
+        public void RegisterAffliction(string ID, NTAffliction Aff)
         {
             if (Aff != null)
             {
-                if (Aff is NTNonLimbAffliction)
-                {
-                    RegisterNonLimbAffliction(ID, (NTNonLimbAffliction)Aff, Strength);
-                }
-                if (Aff is NTBloodAffliction)
-                {
-                    RegisterBloodAffliction(ID, (NTBloodAffliction)Aff, Strength);
-                }
-                if (Aff is NTLimbAffliction)
-                {
-                    RegisterLimbAffliction(ID, (NTLimbAffliction)Aff, new Dictionary<LimbType, double>() { });
-                }
                 if (Aff is NTSymptom)
                 {
                     RegisterSymptom(ID, (NTSymptom)Aff);
+                }
+                else if (Aff is NTLimbSymptom)
+                {
+                    RegisterLimbSymptom(ID, (NTLimbSymptom)Aff);
+                }
+                else if (Aff is NTNonLimbAffliction)
+                {
+                    RegisterNonLimbAffliction(ID, (NTNonLimbAffliction)Aff, 0);
+                }
+                else if (Aff is NTBloodAffliction)
+                {
+                    RegisterBloodAffliction(ID, (NTBloodAffliction)Aff, 0);
+                }
+                else if (Aff is NTLimbAffliction)
+                {
+                    RegisterLimbAffliction(ID, (NTLimbAffliction)Aff, DefaultLimbAffStrengths);
                 }
             }
         }
@@ -211,6 +241,20 @@ public class HumanUpdate
                 if (UpdatingSymptoms[ID].AffTemplate.Const)
                 {
                     ConstantAfflictions[ID] = UpdatingSymptoms[ID];
+                }
+            }
+        }
+
+        public void RegisterLimbSymptom(string ID, NTLimbSymptom Sym)
+        {
+            if (CharacterNT == null) return;
+            if (NTAfflictions.HasAffliction(ID) && !UpdatingSymptoms.ContainsKey(ID))
+            {
+                UpdatingLimbSymptoms[ID] = new NTHumanLimbSymptomData(Sym, ID);
+                UpdatingAfflictions[ID] = UpdatingLimbSymptoms[ID];
+                if (UpdatingLimbSymptoms[ID].AffTemplate.Const)
+                {
+                    ConstantAfflictions[ID] = UpdatingLimbSymptoms[ID];
                 }
             }
         }
@@ -348,31 +392,14 @@ public class HumanUpdate
         {
             foreach (KeyValuePair<string, NTAffliction> Pair in NTAfflictions.Afflictions)
             {
-                string ID = Pair.Key;
-                NTAffliction Aff = Pair.Value;
-                string Type = NTAfflictionToType(Aff);
-                switch (Type)
-                {
-                    case "NTNonLimbAffliction":
-                        RegisterNonLimbAffliction(ID, (NTNonLimbAffliction)Aff, 0);
-                        break;
-
-                    case "NTLimbAffliction":
-                        RegisterLimbAffliction(ID, (NTLimbAffliction)Aff, HF.DefaultLimbAffStrengths);
-                        break;
-
-                    case "NTBloodAffliction":
-                        RegisterBloodAffliction(ID, (NTBloodAffliction)Aff, 0);
-                        break;
-
-                    case "NTSymptom":
-                        RegisterSymptom(ID, (NTSymptom)Aff);
-                        break;
-                }
+                RegisterAffliction(Pair.Key,Pair.Value);
             }
         }
     }
 
+    /// <summary>
+    /// The stats of out NTHumans, used to read and write data.
+    /// </summary>
     public class CharacterStats
     {
         public CharacterStats(NTHuman C)
@@ -579,6 +606,21 @@ public class HumanUpdate
             return (LocalAfflictions.UpdatingSymptoms.ContainsKey(Identifier)) ? LocalAfflictions.UpdatingSymptoms[Identifier].Strength : 0;
         }
 
+        public Dictionary<string,NTHumanLimbSymptomData> GetLimbSymptomDatas()
+        {
+            return LocalAfflictions.UpdatingLimbSymptoms;
+        }
+
+        public NTHumanLimbSymptomData GetLimbSymptomData(string Identifier)
+        {
+            return LocalAfflictions.UpdatingLimbSymptoms[Identifier];
+        }
+
+        public double GetLimbSymptomStrength(string Identifier, LimbType Limb)
+        {
+            return (LocalAfflictions.UpdatingLimbSymptoms.ContainsKey(Identifier)) ? LocalAfflictions.UpdatingLimbSymptoms[Identifier].Strength[Limb] : 0;
+        }
+
         public CharacterAfflictions? GetAfflictions()
         {
             return LocalAfflictions;
@@ -710,7 +752,7 @@ public class HumanUpdate
             }
         }
 
-        private void UpdateAfflictionsLegacy(List<AfflictionPriority> Priorities)
+        private void UpdateAfflictionsLegacy(List<AfflictionPriority> Priorities) // Here as a back up incase stuff goes south.
         {
             foreach (KeyValuePair<string, NTHumanNonLimbAffData> Pair in LocalAfflictions.UpdatingNonLimbAfflictions) // Update Non Limb Afflictions
             {
@@ -1050,6 +1092,9 @@ public class HumanUpdate
 
     }
 
+    /// <summary>
+    /// The Neurotrauma version of a Monster Character.
+    /// </summary>
     public class NTMonster(Character Monster) // To Do
     {
         public Character Monster = Monster; // Our Monster Ref

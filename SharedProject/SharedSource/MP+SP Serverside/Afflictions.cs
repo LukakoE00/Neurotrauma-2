@@ -251,7 +251,7 @@ namespace Neurotrauma
                 // Insert your Affliction Update in here.
             };
 
-        public NTBloodAffliction(string NewID, double NewMinStrength = 0, double NewMaxStrength = 100, double NewDefaultStrength = 0, AfflictionPriority NewPriority = AfflictionPriority.HIGH) :
+        public NTBloodAffliction(string NewID, double NewMinStrength = 0, double NewMaxStrength = 100, double NewDefaultStrength = 0, AfflictionPriority NewPriority = AfflictionPriority.HIGH, bool NewAddToHematology = true) :
                                         base(NewID, NewMinStrength, NewMaxStrength, NewDefaultStrength, NewPriority)
         {
             ID = NewID;
@@ -259,6 +259,10 @@ namespace Neurotrauma
             MaxStrength = NewMaxStrength;
             DefaultStrength = Math.Clamp(NewDefaultStrength, NewMinStrength, NewMaxStrength);   
             Priority = NewPriority;
+            if (NewAddToHematology)
+            {
+                NTC.AddHematologyAffliction(ID);
+            }
         }
     }
 
@@ -285,6 +289,28 @@ namespace Neurotrauma
         }
     }
 
+    public class NTLimbSymptom : NTLimbAffliction
+    {
+
+        new public NTAfflictionType Type = NTAfflictionType.LIMBSYMPTOM;
+        new public int AffSortID = 5;
+
+        public Action<HumanUpdate.NTHuman, string, LimbType, HumanUpdate.NTHumanLimbSymptomData> UpdateAction =
+            (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanLimbSymptomData SymData) =>
+            {
+                // Insert your Affliction Update in here.
+            };
+
+        public NTLimbSymptom(string NewID, double NewMinStrength = 0, double NewMaxStrength = 100, double NewDefaultStrength = 0, AfflictionPriority NewPriority = AfflictionPriority.HIGH)
+                            : base(NewID, NewMinStrength, NewMaxStrength, NewDefaultStrength, NewPriority)
+        {
+            ID = NewID;
+            MinStrength = NewMinStrength;
+            MaxStrength = NewMaxStrength;
+            DefaultStrength = Math.Clamp(NewDefaultStrength, NewMinStrength, NewMaxStrength);
+            Priority = NewPriority;
+        }
+    }
 
     public abstract class AfflictionsPackage 
     {
@@ -316,6 +342,11 @@ namespace Neurotrauma
         {
             throw new NotImplementedException();
         }
+
+        private void AddLimbSymptoms()
+        {
+            throw new NotImplementedException();
+        }
     }
 
 
@@ -336,6 +367,8 @@ namespace Neurotrauma
                                 new Dictionary<string, NTBloodAffliction>();
         Dictionary<string, NTSymptom> SymptomsToAdd =
                                 new Dictionary<string, NTSymptom>();
+        Dictionary<string, NTSymptom> LimbSymptomsToAdd =
+                                new Dictionary<string, NTSymptom>();
 
         public NTAfflictionsToAdd() // Initalize the afflictions.
         {
@@ -343,6 +376,7 @@ namespace Neurotrauma
             AddLimbAfflictions();
             AddBloodAfflictions();
             AddSymptoms();
+            AddLimbSymptoms();
         }
 
         private void AddAfflictions() // Create your afflictions in here.
@@ -944,6 +978,15 @@ namespace Neurotrauma
 
             SymptomsToAdd["triggersym_respiratoryarrest"] = new("triggersym_respiratoryarrest", 0, 100, 0, AfflictionPriority.HIGH);
             SymptomsToAdd["triggersym_respiratoryarrest"].Const = true;
+
+            foreach (KeyValuePair<string, NTSymptom> Pair in SymptomsToAdd)
+            {
+                NTAfflictions.RegisterAffliction(Pair.Key, Pair.Value);
+            }
+        }
+
+        private void AddLimbSymptoms()
+        {
 
             foreach (KeyValuePair<string, NTSymptom> Pair in SymptomsToAdd)
             {

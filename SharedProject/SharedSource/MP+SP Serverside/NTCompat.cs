@@ -12,11 +12,25 @@ namespace Neurotrauma
             Sym.HumanUpdateTime = Duration;
         }
 
+        public static void SetLimbSymptomTrue(HumanUpdate.NTHuman Human, string SymptomIdentifier, LimbType Limb, int Duration = 2)
+        {
+            Dictionary<string, HumanUpdate.NTHumanLimbSymptomData> Afflictions = Human.LocalAfflictions.UpdatingLimbSymptoms;
+            HumanUpdate.NTHumanLimbSymptomData Sym = Afflictions[SymptomIdentifier];
+            Sym.HumanUpdateTime[Limb] = Duration;
+        }
+
         public static void SetSymptomFalse(HumanUpdate.NTHuman Human, string SymptomIdentifier, int Duration = 2)
         {
             Dictionary<string, HumanUpdate.NTHumanSymptomData> Afflictions = Human.LocalAfflictions.UpdatingSymptoms;
             HumanUpdate.NTHumanSymptomData Sym = Afflictions[SymptomIdentifier];
             Sym.HumanUpdateStoptime = Duration;
+        }
+
+        public static void SetLimbSymptomFalse(HumanUpdate.NTHuman Human, string SymptomIdentifier, LimbType Limb, int Duration = 2)
+        {
+            Dictionary<string, HumanUpdate.NTHumanLimbSymptomData> Afflictions = Human.LocalAfflictions.UpdatingLimbSymptoms;
+            HumanUpdate.NTHumanLimbSymptomData Sym = Afflictions[SymptomIdentifier];
+            Sym.HumanUpdateStoptime[Limb] = Duration;
         }
 
         public static void DebugPrintAllData() // UNFINISHED
@@ -136,12 +150,30 @@ namespace Neurotrauma
             return false;
         }
 
+        public static bool HasLimbSymptom(HumanUpdate.NTHuman Character, string SymIdentifier, LimbType Limb)
+        {
+            if (Character == null) return false;
+            HumanUpdate.NTHumanLimbSymptomData Symptom = Character.GetLimbSymptomData(SymIdentifier);
+            if (Symptom == null) return false;
+            if (Symptom.Strength[Limb] > 0) return true;
+            return false;
+        }
+
         public static bool HasSymptomFalse(HumanUpdate.NTHuman Character, string SymIdentifier)
         {
             if (Character == null) return false;
             HumanUpdate.NTHumanSymptomData Symptom = Character.GetSymptomAffData(SymIdentifier);
             if (Symptom == null) return false;
             if (Symptom.HumanUpdateStoptime <= 0) return true;
+            return false;
+        }
+
+        public static bool HasLimbSymptomFalse(HumanUpdate.NTHuman Character, string SymIdentifier, LimbType Limb)
+        {
+            if (Character == null) return false;
+            HumanUpdate.NTHumanLimbSymptomData Symptom = Character.GetLimbSymptomData(SymIdentifier);
+            if (Symptom == null) return false;
+            if (Symptom.HumanUpdateStoptime[Limb] <= 0) return true;
             return false;
         }
 
