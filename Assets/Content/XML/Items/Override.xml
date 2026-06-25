@@ -294,7 +294,7 @@
             <SuitableTreatment type="bleeding" suitability="32"/>
             <SuitableTreatment type="burn" suitability="35"/>
             <SuitableTreatment identifier="infectedwound" suitability="6"/>
-            <SuitableTreatment identifier="dirtybandage" suitability="100"/>
+            <SuitableTreatment identifier="bandageddirty" suitability="100"/>
 
             <MeleeWeapon canBeCombined="true" removeOnCombined="true" slots="Any,RightHand,LeftHand" aimpos="40,5" handle1="0,0" holdangle="10" reload="1.0" msg="ItemMsgPickUpSelect" HitOnlyCharacters="true">
                 <StatusEffect type="OnBroken" target="This">
@@ -1410,7 +1410,7 @@
             <InventoryIcon texture="Content/Items/InventoryIconAtlas.png" sourcerect="835,385,64,64" origin="0.5,0.5" />
             <Sprite texture="Content/Items/Weapons/weapons_new.png" sourcerect="183,203,66,16" depth="0.55" origin="0.5,0.5" />
             <Body width="65" height="15" density="25" />
-            <SuitableTreatment identifier="dirtybandage" suitability="50"/>
+            <SuitableTreatment identifier="bandageddirty" suitability="50"/>
             <SuitableTreatment identifier="bandaged" suitability="50"/>
             <SuitableTreatment identifier="triagetag_green" suitability="100"/>
             <SuitableTreatment identifier="triagetag_yellow" suitability="100"/>

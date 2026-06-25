@@ -146,6 +146,10 @@
       showiconthreshold="0"
       maxstrength="100">
 
+      <Effect minstrength="0" maxstrength="2">
+        <StatValue stattype="MeleeAttackMultiplier" minvalue="-0.8" maxvalue="-0.8" />
+      </Effect>
+
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="5,1" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
 

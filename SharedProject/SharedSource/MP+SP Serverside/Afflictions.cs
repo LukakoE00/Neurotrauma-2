@@ -374,31 +374,28 @@ namespace Neurotrauma
         {
             // EXAMPLE AFFLICTION
 
+            // Respiratory Arrest
+            // TYPE: Non-Limb Specific, Interrim
+            // Applies Symptoms when present, caused by its own sources.
             AfflictionsToAdd["respiratoryarrest"] = new("respiratoryarrest", 0, 100, 0, AfflictionPriority.HIGH);
-            AfflictionsToAdd["respiratoryarrest"].Const = true; // This affliction should always run
-            AfflictionsToAdd["respiratoryarrest"].UpdateAction = // The update function of the affliction, like how it is in Lua
-                (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanNonLimbAffData AffData) =>
-                {
-                    AffData.Strength -= (0.05 + HF.BoolToNum(C.GetSymptomAffData("unconsciousness").Strength < .1, .45f)) * NT.DeltaTime;
-                    if
-                        (!NTC.HasSymptomFalse(C, "triggersym_respiratoryarrest")
-                        && (NTC.HasSymptomFalse(C, "triggersym_respiratoryarrest")
-                        || C.GetBoolStatStrength("stasis")
-                        || C.GetNonLimbAffData("lungremoved").Strength > 0
-                        || C.GetNonLimbAffData("brainremoved").Strength > 0
-                        || C.GetNonLimbAffData("opiateoverdose").Strength > 50
-                        || C.GetNonLimbAffData("lungdamage").Strength > 99 && HF.Chance(.8f)
-                        || C.GetNonLimbAffData("traumaticshock").Strength > 30 && HF.Chance(.2f)
-                        || (
-                            (C.GetNonLimbAffData("neurotrauma").Strength > 100 || C.GetNonLimbAffData("neurotrauma").Strength > 70
-                            && HF.Chance(.05f))
-                        )
-                      )
-                      )
+            AfflictionsToAdd["respiratoryarrest"].UpdateAction =
+                    (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanNonLimbAffData AffData) =>
                     {
-                        AffData.Strength += 10;
-                    }
-                };
+                        if (/*!C.GetBoolStatStrength("stasis") &&*/
+                                HF.GetAfflictionStrength(C.Human, "lungremoved") <= 0
+                            //&& C.GetAffData("brainremoved").Strength <= 0
+                            //&& C.GetAffData("opiateoverdose").Strength <= 60
+                            //&& C.GetAffData("lungdamage").Strength <= 99
+                            //&& C.GetAffData("traumaticshock").Strength <= 30
+                            //&& C.GetAffData("neurotrauma").Strength <= 100
+                            //&& C.GetAffData("hypoxemia").Strength <= 70
+                            ) ;
+                        {
+                            HF.Print("ShouldRegenerateProcced");
+                            AffData.Strength -= (5f + HF.BoolToNum(C.GetAffStrength("unconsciousness") < 0.1f, 45f)) * NT.DeltaTime;
+                        }
+                    };
+
 
             // Rib Fractures
             AfflictionsToAdd["fracturedribs"] = new("fracturedribs", 0, 100, 0, AfflictionPriority.MEDIUM);
@@ -434,7 +431,17 @@ namespace Neurotrauma
             AfflictionsToAdd["lungdamage"] = new("lungdamage");
 
             // Lung Removed
-            AfflictionsToAdd["lungremoved"] = new("lungremoved");
+            // TYPE: Surgical Action
+            // Applies effects. Removed and Applied via Surgical Procedures.
+            AfflictionsToAdd["lungremoved"] = new("lungremoved", 0, 100, 0, AfflictionPriority.HIGH);
+            AfflictionsToAdd["lungremoved"].UpdateAction =
+                (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanNonLimbAffData AffData) =>
+                {
+                    if (AffData.Strength > 0)
+                    {
+                        HF.AddAffliction(C.Human, "respiratoryarrest", 200f, null);
+                    }
+                };
 
             // Lung Swap
             AfflictionsToAdd["lungswap"] = new("lungswap");

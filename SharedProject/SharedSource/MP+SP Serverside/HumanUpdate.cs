@@ -862,7 +862,6 @@ public class HumanUpdate
 
         private void UpdateAfflictons(List<AfflictionPriority> Priorities)
         {
-            Print("Update afflictions");
             IReadOnlyCollection<Affliction> CurrentAfflictions = Human.CharacterHealth.GetAllAfflictions();
             IEnumerable<Affliction> FilteredAfflictions = CurrentAfflictions.Where(aff => { return LocalAfflictions.UpdatingAfflictions.ContainsKey(aff.Identifier.ToString()); });
             List < Affliction > SortedAfflictions = FilteredAfflictions.OrderBy(
@@ -882,7 +881,6 @@ public class HumanUpdate
                     {
                         case NTAfflictionType.NONLIMB:
 
-                            // Fetch the data of the affliction
                             string ID = RealAff.Identifier.ToString();
                             NTHumanNonLimbAffData AffData = (NTHumanNonLimbAffData)Data;
                             NTNonLimbAffliction Aff = AffData.AffTemplate;
@@ -919,7 +917,7 @@ public class HumanUpdate
                                 LimbAffData.PrevStrength[Limb] = LimbPrevStrength;
 
                                 LimbAff.UpdateAction(this, LimbID, Limb, LimbAffData);
-                                ApplyAfflictionChangeLimb(Human, Limb, LimbID, (float)LimbAffData.Strength[Limb], (float)LimbPrevStrength, (float)LimbAffData.AffTemplate.MinStrength, (float)LimbAffData.AffTemplate.MaxStrength);
+                                HF.ApplyAfflictionChangeLimb(Human, Limb, LimbID, (float)LimbAffData.Strength[Limb], (float)LimbPrevStrength, (float)LimbAffData.AffTemplate.MinStrength, (float)LimbAffData.AffTemplate.MaxStrength);
                             }
 
                             break;
@@ -940,7 +938,7 @@ public class HumanUpdate
                             BloodAffData.PrevStrength = BloodPrevStrength;
 
                             BloodAff.UpdateAction(this, BloodID, LimbType.Torso, BloodAffData);
-                            ApplyAfflictionChange(Human, BloodID, (float)BloodAffData.Strength, (float)BloodPrevStrength, (float)BloodAffData.AffTemplate.MinStrength, (float)BloodAffData.AffTemplate.MaxStrength);
+                            HF.ApplyAfflictionChange(Human, BloodID, (float)BloodAffData.Strength, (float)BloodPrevStrength, (float)BloodAffData.AffTemplate.MinStrength, (float)BloodAffData.AffTemplate.MaxStrength);
 
                             break;
 
@@ -961,7 +959,8 @@ public class HumanUpdate
                                 SymData.Strength = 0;
                                 SymData.HumanUpdateTime--;
                             }
-                            else SymData.Strength = 100; SymData.HumanUpdateTime--;
+                            else 
+                                SymData.Strength = 100; SymData.HumanUpdateTime--;
 
                             if (SymData.HumanUpdateStoptime > 0)
                             {
@@ -970,7 +969,7 @@ public class HumanUpdate
                             }
 
                             if (SymData.HumanUpdateStoptime <= 0) Sym.UpdateAction(this, SymID, LimbType.Torso, SymData);
-                            ApplyAfflictionChange(Human, SymID, (float)SymData.Strength, (float)SymPrevStrength, (float)SymData.SymTemplate.MinStrength, (float)SymData.SymTemplate.MaxStrength);
+                            HF.ApplyAfflictionChange(Human, SymID, (float)SymData.Strength, (float)SymPrevStrength, (float)SymData.SymTemplate.MinStrength, (float)SymData.SymTemplate.MaxStrength);
 
                             break;
                     }
@@ -1090,7 +1089,6 @@ public class HumanUpdate
                     }
                 }
             }
-            Print("End Update");
         }
 
     }
@@ -1261,8 +1259,6 @@ public class HumanUpdate
 
     private void Update(List<AfflictionPriority> priorities)
     {
-        Print("Update");
-
         if (UpdatingMonsters.Count > 0)
         {
             Thread MonsterUpdateThread = new(UpdateMonsters); // We create a new thread to run monsters along humans. This should help greatly with mods such as barotraumatic.
@@ -1274,8 +1270,6 @@ public class HumanUpdate
         {
             UpdateHumans(priorities);
         }
-
-        Print("Threads synced");
     }
 
     private void UpdateHumans(List<AfflictionPriority> priorities)

@@ -17,7 +17,25 @@
       showiconthreshold="0"
       maxstrength="100">
 
-      <Effect minstrength="0" maxstrength="100" strengthchange="30"/>
+      <Effect minstrength="0" maxstrength="100" strengthchange="30">
+
+      <StatusEffect target="Limb,Character">
+        <Conditional clampedbleeding="lte 0.5"/>
+        <Affliction identifier="bloodloss" strength="0.7" />
+      </StatusEffect>
+
+      <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true" comparison="and">
+        <Conditional analgesia="lte 0.5" anesthesia="lte 0.5" unconsciousness="lte 0.1"/>
+        <Affliction identifier="traumaticshock" amount="2"/>
+      </StatusEffect>
+
+      <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true" interval="0.5" disabledeltatime="true" comparison="and">
+        <Conditional isonplayerteam="true"/>
+        <Conditional isbot="true"/>
+        <Conditional stun="lt 0.5"/>
+        <Affliction identifier="stun" amount="1"/>
+      </StatusEffect>
+    </Effect>
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="0,7" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -58,7 +76,13 @@
       showiconthreshold="0"
       maxstrength="100">
 
-      <Effect minstrength="0" maxstrength="100" strengthchange="15"/>
+      <Effect minstrength="0" maxstrength="100" strengthchange="15">
+
+      <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true" comparison="and">
+        <Conditional table="eq 0" unconsciousness="lte 0.1"/>
+        <Affliction identifier="traumaticshock" amount="1.5"/>
+      </StatusEffect>
+    </Effect>
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="4,7" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -78,7 +102,13 @@
       showiconthreshold="0"
       maxstrength="100">
 
-      <Effect minstrength="0" maxstrength="100" strengthchange="10"/>
+      <Effect minstrength="0" maxstrength="100" strengthchange="10">
+
+      <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true" comparison="and">
+        <Conditional table="eq 0" unconsciousness="lte 0.1"/>
+        <Affliction identifier="traumaticshock" amount="2"/>
+      </StatusEffect>
+    </Effect>
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="2,7" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -138,7 +168,12 @@
       showiconthreshold="0"
       maxstrength="100">
 
-      <Effect minstrength="0" maxstrength="100" strengthchange="10"/>
+      <Effect minstrength="0" maxstrength="100" strengthchange="10">
+        <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true" comparison="and">
+          <Conditional table="eq 0" unconsciousness="lte 0.1"/>
+          <Affliction identifier="traumaticshock" amount="1.5"/>
+        </StatusEffect>
+      </Effect>
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="5,7" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -158,6 +193,13 @@
       showinhealthscannerthreshold="5"
       showiconthreshold="5"
       maxstrength="100">
+
+      <Effect minstrength="0" maxstrength="5">
+        <StatusEffect target="Character">
+          <Conditional ishuman="false"/>
+          <ReduceAffliction identifier="traumaticshock" amount="999"/>
+        </StatusEffect>
+      </Effect>
       
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="6,7" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -177,6 +219,48 @@
       showinhealthscannerthreshold="0"
       showiconthreshold="0"
       maxstrength="100">
+
+      <Effect minstrength="0" maxstrength="100">
+        <StatusEffect target="Character" targetlimb="LeftArm">
+          <ReduceAffliction type="bleeding" strength="2"/>
+        </StatusEffect>
+
+        <StatusEffect target="Character" targetlimb="RightArm">
+          <ReduceAffliction type="bleeding" strength="2"/>
+        </StatusEffect>
+
+        <StatusEffect target="Character" targetlimb="LeftLeg">
+          <ReduceAffliction type="bleeding" strength="2"/>
+        </StatusEffect>
+
+        <StatusEffect target="Character" targetlimb="RightLeg">
+          <ReduceAffliction type="bleeding" strength="2"/>
+        </StatusEffect>
+
+        <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true">
+          <Affliction identifier="organdamage" strength="0.5"/>
+          <Affliction identifier="liverdamage" strength="0.5"/>
+          <Affliction identifier="kidneydamage" strength="0.5"/>
+        </StatusEffect>
+      </Effect>
+
+      <PeriodicEffect mininterval="1" maxinterval="3">
+        <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true" targetlimb="LeftArm" disabledeltatime="true">
+          <Affliction identifier="gangrene" strength="2" probability="0.5" />
+        </StatusEffect>
+
+        <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true" targetlimb="RightArm" disabledeltatime="true">
+          <Affliction identifier="gangrene" strength="2" probability="0.5"/>
+        </StatusEffect>
+
+        <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true" targetlimb="LeftLeg" disabledeltatime="true">
+          <Affliction identifier="gangrene" strength="2" probability="0.5"/>
+        </StatusEffect>
+        
+        <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true" targetlimb="RightLeg" disabledeltatime="true">
+          <Affliction identifier="gangrene" strength="2" probability="0.5"/>
+        </StatusEffect>
+      </PeriodicEffect>
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="1,4" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>

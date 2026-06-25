@@ -13,6 +13,9 @@ namespace Neurotrauma
         /// <param name="Duration"> The duration of human updates the symptom should be true for.</param>
         public static void SetSymptomTrue(HumanUpdate.NTHuman Human, string SymptomIdentifier, int Duration = 2)
         {
+            // FORCE SYMPTOM ACTIVE!!!!!!!! FUCK MY LIFEEEEEEEEEEE
+            HF.SetAffliction(Human.Human, SymptomIdentifier, 100f, null, 0f);
+
             Dictionary<string, HumanUpdate.NTHumanSymptomData> Afflictions = Human.LocalAfflictions.UpdatingSymptoms;
             HumanUpdate.NTHumanSymptomData Sym = Afflictions[SymptomIdentifier];
             Sym.HumanUpdateTime = Duration;
@@ -198,6 +201,7 @@ namespace Neurotrauma
             if (Character == null) return false;
             HumanUpdate.NTHumanSymptomData Symptom = Character.GetSymptomAffData(SymIdentifier);
             if (Symptom == null) return false;
+
             if (Symptom.HumanUpdateStoptime <= 0) return true;
             return false;
         }
@@ -207,6 +211,7 @@ namespace Neurotrauma
             if (Character == null) return false;
             HumanUpdate.NTHumanLimbSymptomData Symptom = Character.GetLimbSymptomData(SymIdentifier);
             if (Symptom == null) return false;
+
             if (Symptom.HumanUpdateStoptime[Limb] <= 0) return true;
             return false;
         }
