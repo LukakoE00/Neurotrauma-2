@@ -21,6 +21,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)sharedsource\MP+SP Serverside\LoveBots.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)sharedsource\MP+SP Serverside\MultiScalpel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)sharedsource\MP+SP Serverside\NTCompat.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)sharedsource\MP+SP Serverside\NTXmlClasses.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)sharedsource\MP+SP Serverside\OnDamaged.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)sharedsource\MP+SP Serverside\Screams.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)sharedsource\SharedInit.cs" />
