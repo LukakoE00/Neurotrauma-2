@@ -50,3 +50,13 @@ NT Repository (Lua version) can be found [here](https://github.com/OlegBSTU/Neur
 - Tina/Mannatu: For making the original NT mod in Lua.
 
 - Heelge: For maintaing/updating the NT Fork.
+
+- Lukako: 
+
+- Cookie:
+
+- Finka:
+
+- BigEvilGreenBean:
+
+- Walter:
