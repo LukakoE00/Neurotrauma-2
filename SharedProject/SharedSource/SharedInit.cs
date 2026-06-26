@@ -29,6 +29,7 @@ namespace Neurotrauma
             CPRHooks.InitCPRHooks(); // Add the CPR Success/Failure hooks
             LootCrates.Init(); // Add MedSpawnerCrate + JobItems Hooks
             NTMultiscalpel.RegisterMultiscalpel(); // Add the Multiscalpel hooks
+            DynamicItems.InitDynamicItems(); // Add the DynamicItems hooks
 
             // What a mess. - Lukako (holy old status)
             harmony = new Harmony("neurotrauma.server");
