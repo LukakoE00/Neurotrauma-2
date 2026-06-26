@@ -1,4 +1,6 @@
-﻿// Disable the Hook warning
+﻿// *** There's probably a way better and much shorter way to do this without the wrappers and reflection bullshittery and harmony patching workarounds, but it works
+
+// Disable the Hook warning
 #pragma warning disable CS0618
 
 using System;
@@ -59,7 +61,7 @@ namespace Neurotrauma
 
         public static void InitDynamicItemsClient()
         {
-            // Manual harmony patch for fabricators cause it decided to say fuck you
+            // Manual harmony patch for fabricators cause it decided to say fuck you, function at the bottom
             try
             {
                 var harmony = new Harmony("com.neurotrauma.dynamicitems");
