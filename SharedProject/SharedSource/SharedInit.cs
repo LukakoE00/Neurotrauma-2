@@ -22,13 +22,13 @@ namespace Neurotrauma
             HF.Print("Running OnLoadCompletedServerside");
             NTInfo.PrintNTInitInfo(); // Prints the current Neurotrauma information in the console.
             NTBloodTypes.InitializeBloodHooks(); // Initializes LuaHooks needed for Blood.cs
-            InitLuaHooks(); // Initializes the Lua hooks at the bottom of this file
             CharacterPatches.InitCharacterPatches(); // Add the HarmonyPatches to change aiming
             CauseScreams.InitScreamsHook(); // Initializes LuaHooks needed to toggle Screams
             LoveBots.InitBotPatches(); // Add the HarmonyPatches to disable bot treatment
             CPRHooks.InitCPRHooks(); // Add the CPR Success/Failure hooks
             LootCrates.Init(); // Add MedSpawnerCrate + JobItems Hooks
             NTMultiscalpel.RegisterMultiscalpel(); // Add the Multiscalpel hooks
+            InitLuaHooks(); // Initializes the Lua hooks at the bottom of this file
 
             // What a mess. - Lukako (holy old status)
             harmony = new Harmony("neurotrauma.server");
@@ -43,15 +43,6 @@ namespace Neurotrauma
             harmony.Patch(originalDamageLimb, prefix: new HarmonyMethod(typeof(OnDamaged), nameof(OnDamaged.Override_DamageLimb)));
             harmony.Patch(originalUse, prefix: new HarmonyMethod(typeof(NTItemMethods), nameof(NTItemMethods.Override_Use)));
             harmony.Patch(originalApplyTreatment, prefix: new HarmonyMethod(typeof(NTItemMethods), nameof(NTItemMethods.Override_ApplyTreatment)));
-
-            // Character Patches
-            var characterCreation = AccessTools.Constructor(typeof(CharacterHealth), // Server Side Version. In singleplayer this doesn't account for Humans for some reason.
-                [typeof(ContentXElement),typeof(Character),typeof(ContentXElement)]);
-            harmony.Patch(characterCreation, postfix: new HarmonyMethod(typeof(HumanUpdate), nameof(HumanUpdate.AddCharacterToUpdate))); // The Character Created hook.
-
-            var characterDeath = AccessTools.Method(typeof(Character), "RecordKill",
-                [typeof(Character)]);
-            harmony.Patch(characterDeath, prefix: new HarmonyMethod(typeof(HumanUpdate), nameof(HumanUpdate.RemoveCharacterFromUpdate))); // The Character died hook.
         }
 
         public void DisposeServer()

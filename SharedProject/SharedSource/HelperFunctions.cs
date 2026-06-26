@@ -303,12 +303,13 @@ namespace Neurotrauma
         public static bool InGame()
         {
 #if SERVER
+            if (GameMain.Server == null) return false;
             return GameMain.Server.GameStarted;
             //return GameMain.GameSession.IsRunning;
 #elif SHARED
             return LuaGame.RoundStarted;
 #endif
-
+            if (GameMain.GameSession == null) return false;
             return GameMain.GameSession.IsRunning;
         }
 

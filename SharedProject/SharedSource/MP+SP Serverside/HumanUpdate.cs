@@ -18,6 +18,7 @@ namespace Neurotrauma;
 public class HumanUpdate
 {
 
+
     private static int UpdateCooldown = 0;
     private static readonly int UpdateIntervalHigh = (int)AfflictionPriority.HIGH; // 120 = 2s
     private static readonly int UpdateIntervalMedium = (int)AfflictionPriority.MEDIUM; // 240 = 4s
@@ -25,7 +26,6 @@ public class HumanUpdate
     static private Dictionary<Character, NTHuman> UpdatingHumans = new();
 
     static private List<NTMonster> UpdatingMonsters = new();
-    Thread MonsterUpdateThread = new(UpdateMonsters); // We create a new thread to run monsters along humans. This should help greatly with mods such as barotraumatic.
 
     public Dictionary<Character, NTHuman> GetUpdatingCharacters()
     {
@@ -1075,7 +1075,7 @@ public class HumanUpdate
         return UpdatingHumans[Character];
     }
 
-    public static void AddCharacterToUpdate(ContentXElement element, Character character, ContentXElement limbHealthElement)
+    public void AddCharacterToUpdate(Character character)
     {
         if (character != null)
         {
@@ -1093,7 +1093,7 @@ public class HumanUpdate
         }
     }
 
-    public static void RemoveCharacterFromUpdate(Character target)
+    public void RemoveCharacterFromUpdate(Character target)
     {
         if (target is Character)
         {
@@ -1110,7 +1110,7 @@ public class HumanUpdate
         }
     }
 
-    public static void AddHumanToUpdate(Character AddedCharacter)
+    public void AddHumanToUpdate(Character AddedCharacter)
     {
         if (!UpdatingHumans.ContainsKey(AddedCharacter))
         {
@@ -1119,13 +1119,13 @@ public class HumanUpdate
         }
     }
 
-    public static void RemoveHumanFromUpdate(Character RemovingCharacter) // Probably a better way to do this.
+    public void RemoveHumanFromUpdate(Character RemovingCharacter) // Probably a better way to do this.
     {
         if (UpdatingHumans.ContainsKey(RemovingCharacter)) return;
         UpdatingHumans.Remove(RemovingCharacter);
     }
 
-    public static void AddMonsterToUpdate(Character AddedMonster)
+    public void AddMonsterToUpdate(Character AddedMonster)
     {
         if (!AddedMonster.IsHuman)
         {
@@ -1137,7 +1137,7 @@ public class HumanUpdate
         }
     }
 
-    public static void RemoveMonsterFromUpdate(Character RemovingMonster) // Probably a better way to do this.
+    public void RemoveMonsterFromUpdate(Character RemovingMonster) // Probably a better way to do this.
     {
         NTMonster MonsterToRemove = null; // We store the index of what to remove so we don't remove while iterating.
         foreach (NTMonster Monster in UpdatingMonsters)
@@ -1155,7 +1155,7 @@ public class HumanUpdate
     }
 
     // Returns a list 
-    private static List<AfflictionPriority> GetLowestPriority(int cd)
+    private  List<AfflictionPriority> GetLowestPriority(int cd)
     {
         List<AfflictionPriority> output = [];
 
@@ -1185,9 +1185,8 @@ public class HumanUpdate
     // Gets called 60 times a second
     public void ThinkUpdate()
     {
-
         // If game paused we just skip
-        if (HF.GameIsPaused() || !HF.InGame()) return;
+        if ((!HF.InGame()) || HF.GameIsPaused()) return;
 
         Tick--; // Decrement our tick.
         if (!(Tick < 0)) { return; }
@@ -1209,9 +1208,10 @@ public class HumanUpdate
     {
         if (UpdatingMonsters.Count > 0)
         {
-            MonsterUpdateThread.Start(); // Update.
+            Task MonsterUpdateTask = new(UpdateMonsters); // We create a new task to run monsters along humans. This should help greatly with mods such as barotraumatic.
+            MonsterUpdateTask.Start();
             UpdateHumans(priorities);
-            MonsterUpdateThread.Join(); // Syncs our threads.
+            MonsterUpdateTask.Wait();
         }
         else 
         {
@@ -1236,7 +1236,7 @@ public class HumanUpdate
         return;
     }
 
-    public static void CleanBotomy(Character C)
+    public void CleanBotomy(Character C)
     {
         if (HasAffliction(C, "surgeryincision")) SetAffliction(C, "tshocktimeout", 15, C, 0);
 
