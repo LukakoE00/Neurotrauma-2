@@ -17,11 +17,14 @@ namespace Neurotrauma;
 
 public class HumanUpdate
 {
+
+
     private static int UpdateCooldown = 0;
     private static readonly int UpdateIntervalHigh = (int)AfflictionPriority.HIGH; // 120 = 2s
     private static readonly int UpdateIntervalMedium = (int)AfflictionPriority.MEDIUM; // 240 = 4s
     private static readonly int UpdateIntervalLow = (int)AfflictionPriority.LOW; // 480 = 8s
     static private Dictionary<Character, NTHuman> UpdatingHumans = new();
+
     static private List<NTMonster> UpdatingMonsters = new();
 
     public Dictionary<Character, NTHuman> GetUpdatingCharacters()
@@ -121,6 +124,7 @@ public class HumanUpdate
     public class NTHumanLimbSymptomData : NTHumanAffData
     {
         public NTLimbSymptom SymTemplate;
+        public Dictionary<LimbType, double> PrevStrength = new();
         public Dictionary<LimbType, double> Strength = new();
         public Dictionary<LimbType, int> HumanUpdateTime = new();
         public Dictionary<LimbType, int> HumanUpdateStoptime = new();
@@ -130,7 +134,6 @@ public class HumanUpdate
             AffTemplate = NewAff; // Failsafe, don't reference this when using NTSymptom.
             base.AffTemplate = NewAff;
             SymTemplate = NewAff; // Stores our template. The reason we aren't just creating a new affliction for each character is performance. I'm pretty sure it's more peformance efficent to just reference our affliction.
-            PrevStrength = 0;
             ID = NewID;
         }
     }
@@ -159,6 +162,8 @@ public class HumanUpdate
         public Dictionary<string, NTHumanBloodAffData> UpdatingBloodAfflictions = new();        // Stores the ID's of our updating (blood) afflictions.
         public Dictionary<string, NTHumanSymptomData> UpdatingSymptoms = new();                 // Stores the ID's of our symptoms.
         public Dictionary<string, NTHumanLimbSymptomData> UpdatingLimbSymptoms = new();         // Stores the ID's of our limb symptoms.
+
+        public List<Affliction> LastUpdatedAfflictions = new();
 
         public void RegisterAffliction(string ID, NTAffliction Aff)
         {
@@ -706,7 +711,7 @@ public class HumanUpdate
 
             // ----------------------------------------- Affliction updates ----------------------------------------- \\
 
-            UpdateAfflictons(Priorities);
+            UpdateAfflictions([AfflictionPriority.HIGH,AfflictionPriority.MEDIUM,AfflictionPriority.LOW]);
 
             // ----------------------------------------- Clearing ----------------------------------------- \\
 
@@ -860,14 +865,16 @@ public class HumanUpdate
             }
         }
 
-        private void UpdateAfflictons(List<AfflictionPriority> Priorities)
+        private void UpdateAfflictions(List<AfflictionPriority> Priorities)
         {
-            Print("Update afflictions");
             IReadOnlyCollection<Affliction> CurrentAfflictions = Human.CharacterHealth.GetAllAfflictions();
             IEnumerable<Affliction> FilteredAfflictions = CurrentAfflictions.Where(aff => { return LocalAfflictions.UpdatingAfflictions.ContainsKey(aff.Identifier.ToString()); });
             List < Affliction > SortedAfflictions = FilteredAfflictions.OrderBy(
                                 aff => LocalAfflictions.UpdatingAfflictions[aff.Identifier.ToString()].AffTemplate.AffSortID
                             ).ToList();
+
+            SortedAfflictions = SortedAfflictions.Union(LocalAfflictions.LastUpdatedAfflictions).ToList(); // We merge our last updated afflictions with our new afflictions.
+
             if (SortedAfflictions != null && SortedAfflictions.Count() > 0)
             {
                 // Our Current Afflictions Update
@@ -877,106 +884,8 @@ public class HumanUpdate
                     if (!LocalAfflictions.UpdatingAfflictions.ContainsKey(RealAff.Identifier.ToString())) continue;
                     NTHumanAffData Data = LocalAfflictions.UpdatingAfflictions[RealAff.Identifier.ToString()];
                     if (Data.AffTemplate.Const) continue;
-
                     NTAfflictionType AffType = Data.AffTemplate.Type;
-                    switch (AffType)
-                    {
-                        case NTAfflictionType.NONLIMB:
-
-                            // Fetch the data of the affliction
-                            string ID = RealAff.Identifier.ToString();
-                            NTHumanNonLimbAffData AffData = (NTHumanNonLimbAffData)Data;
-                            NTNonLimbAffliction Aff = AffData.AffTemplate;
-
-                            if (!Priorities.Contains(Aff.Priority)) continue; // Skip to the next affliction, we don't have the same priority currently.
-
-                            double PrevStrength = AffData.Strength;
-
-                            double CurrentStrength = GetAfflictionStrength(Human, ID);
-                            AffData.Strength = CurrentStrength;
-                            AffData.PrevStrength = PrevStrength;
-
-                            if (!Aff.Const && CurrentStrength <= Aff.MinStrength) continue; // Our second check to see if we should run this affliction. Basically, if this affliction isn't active on the limb, and not constant, don't update.
-
-                            Aff.UpdateAction(this, ID, LimbType.Torso, AffData);
-                            ApplyAfflictionChange(Human, ID, (float)AffData.Strength, (float)PrevStrength, (float)AffData.AffTemplate.MinStrength, (float)AffData.AffTemplate.MaxStrength);
-
-                            break;
-
-                        case NTAfflictionType.LIMB:
-
-                            foreach (LimbType Limb in LimbsToCheck)
-                            {
-                                // Fetch the data of the affliction
-                                string LimbID = RealAff.Identifier.ToString();
-                                NTHumanLimbAffData LimbAffData = (NTHumanLimbAffData)Data;
-                                NTLimbAffliction LimbAff = LimbAffData.AffTemplate;
-
-                                if (!Priorities.Contains(LimbAff.Priority) || (!LimbAff.IgnoreStasis && GetBoolStatStrength("stasis"))) continue;
-
-                                double LimbPrevStrength = LimbAffData.Strength[Limb];
-
-                                double LimbCurrentStrength = GetAfflictionStrengthLimb(Human, Limb, LimbID);
-                                LimbAffData.Strength[Limb] = LimbCurrentStrength;
-
-                                LimbAffData.PrevStrength[Limb] = LimbPrevStrength;
-
-                                if (!LimbAff.Const && LimbCurrentStrength <= LimbAff.MinStrength) continue; // Our second check to see if we should run this affliction. Basically, if this affliction isn't active on the limb, and not constant, don't update.
-
-                                LimbAff.UpdateAction(this, LimbID, Limb, LimbAffData);
-                                ApplyAfflictionChangeLimb(Human, Limb, LimbID, (float)LimbAffData.Strength[Limb], (float)LimbPrevStrength, (float)LimbAffData.AffTemplate.MinStrength, (float)LimbAffData.AffTemplate.MaxStrength);
-                            }
-
-                            break;
-
-                        case NTAfflictionType.BLOOD:
-
-                            // Fetch the data of the affliction
-                            string BloodID = RealAff.Identifier.ToString();
-                            NTHumanBloodAffData BloodAffData = (NTHumanBloodAffData)Data;
-                            NTBloodAffliction BloodAff = BloodAffData.AffTemplate;
-
-                            if (!Priorities.Contains(BloodAff.Priority)) continue;
-
-                            double BloodPrevStrength = BloodAffData.Strength;
-
-                            double BloodCurrentStrength = GetAfflictionStrength(Human, BloodID);
-                            BloodAffData.Strength = BloodCurrentStrength;
-                            BloodAffData.PrevStrength = BloodPrevStrength;
-
-                            if (!BloodAff.Const && BloodCurrentStrength <= BloodAff.MinStrength) continue; // Our second check to see if we should run this affliction. Basically, if this affliction isn't active on the limb, and not constant, don't update.
-
-                            BloodAff.UpdateAction(this, BloodID, LimbType.Torso, BloodAffData);
-                            ApplyAfflictionChange(Human, BloodID, (float)BloodAffData.Strength, (float)BloodPrevStrength, (float)BloodAffData.AffTemplate.MinStrength, (float)BloodAffData.AffTemplate.MaxStrength);
-
-                            break;
-
-                        case NTAfflictionType.SYMPTOM:
-
-                            // Fetch the data of the affliction
-                            string SymID = RealAff.Identifier.ToString();
-                            NTHumanSymptomData SymData = (NTHumanSymptomData)Data;
-                            NTSymptom Sym = SymData.SymTemplate;
-
-                            if (!Priorities.Contains(Sym.Priority)) continue;
-
-                            double SymCurrentStrength = GetAfflictionStrength(Human, SymID);
-                            SymData.Strength = SymCurrentStrength;
-
-                            if (!Sym.Const && SymCurrentStrength <= Sym.MinStrength) continue; // Our second check to see if we should run this affliction. Basically, if this affliction isn't active on the limb, and not constant, don't update.
-
-                            if (SymData.HumanUpdateTime <= 0) SymData.Strength = 0;
-                            else SymData.Strength = 100; SymData.HumanUpdateTime--;
-
-                            if (SymData.HumanUpdateStoptime > 0) SymData.Strength = 0;
-                            else SymData.HumanUpdateStoptime--;
-
-                            double SymPrevStrength = SymData.Strength;
-                            Sym.UpdateAction(this, SymID, LimbType.Torso, SymData);
-                            ApplyAfflictionChange(Human, SymID, (float)SymData.Strength, (float)SymPrevStrength, (float)SymData.SymTemplate.MinStrength, (float)SymData.SymTemplate.MaxStrength);
-
-                            break;
-                    }
+                    UpdateAffliction(AffType, Priorities, RealAff.Identifier.ToString(), Data);
                 }
             }
 
@@ -987,107 +896,147 @@ public class HumanUpdate
                 {
                     if (Pair.Key == null || Pair.Value == null) continue;
                     NTAfflictionType AffType = Pair.Value.AffTemplate.Type;
-                    switch (AffType)
-                    {
-                        case NTAfflictionType.NONLIMB:
-
-                            // Fetch the data of the affliction
-                            string ID = Pair.Key;
-                            NTHumanNonLimbAffData AffData = (NTHumanNonLimbAffData)Pair.Value;
-                            NTNonLimbAffliction Aff = AffData.AffTemplate;
-
-                            if (!Priorities.Contains(Aff.Priority)) continue; // Skip to the next affliction, we don't have the same priority currently.
-
-                            double PrevStrength = AffData.Strength;
-
-                            double CurrentStrength = GetAfflictionStrength(Human, ID);
-                            AffData.Strength = CurrentStrength;
-                            AffData.PrevStrength = PrevStrength;
-
-                            if (!Aff.Const && CurrentStrength <= Aff.MinStrength) continue; // Our second check to see if we should run this affliction. Basically, if this affliction isn't active on the limb, and not constant, don't update.
-
-                            Aff.UpdateAction(this, ID, LimbType.Torso, AffData);
-                            ApplyAfflictionChange(Human, ID, (float)AffData.Strength, (float)PrevStrength, (float)AffData.AffTemplate.MinStrength, (float)AffData.AffTemplate.MaxStrength);
-
-                            break;
-
-                        case NTAfflictionType.LIMB:
-
-                            foreach (LimbType Limb in LimbsToCheck)
-                            {
-                                // Fetch the data of the affliction
-                                string LimbID = Pair.Key;
-                                NTHumanLimbAffData LimbAffData = (NTHumanLimbAffData)Pair.Value;
-                                NTLimbAffliction LimbAff = LimbAffData.AffTemplate;
-
-                                if (!Priorities.Contains(LimbAff.Priority) || (!LimbAff.IgnoreStasis && GetBoolStatStrength("stasis"))) continue;
-
-                                double LimbPrevStrength = LimbAffData.Strength[Limb];
-
-                                double LimbCurrentStrength = GetAfflictionStrengthLimb(Human, Limb, LimbID);
-                                LimbAffData.Strength[Limb] = LimbCurrentStrength;
-
-                                LimbAffData.PrevStrength[Limb] = LimbPrevStrength;
-
-                                if (!LimbAff.Const && LimbCurrentStrength <= LimbAff.MinStrength) continue; // Our second check to see if we should run this affliction. Basically, if this affliction isn't active on the limb, and not constant, don't update.
-
-                                LimbAff.UpdateAction(this, LimbID, Limb, LimbAffData);
-                                ApplyAfflictionChangeLimb(Human, Limb, LimbID, (float)LimbAffData.Strength[Limb], (float)LimbPrevStrength, (float)LimbAffData.AffTemplate.MinStrength, (float)LimbAffData.AffTemplate.MaxStrength);
-                            }
-
-                            break;
-
-                        case NTAfflictionType.BLOOD:
-
-                            // Fetch the data of the affliction
-                            string BloodID = Pair.Key;
-                            NTHumanBloodAffData BloodAffData = (NTHumanBloodAffData)Pair.Value;
-                            NTBloodAffliction BloodAff = BloodAffData.AffTemplate;
-
-                            if (!Priorities.Contains(BloodAff.Priority)) continue;
-
-                            double BloodPrevStrength = BloodAffData.Strength;
-
-                            double BloodCurrentStrength = GetAfflictionStrength(Human, BloodID);
-                            BloodAffData.Strength = BloodCurrentStrength;
-                            BloodAffData.PrevStrength = BloodPrevStrength;
-
-                            if (!BloodAff.Const && BloodCurrentStrength <= BloodAff.MinStrength) continue; // Our second check to see if we should run this affliction. Basically, if this affliction isn't active on the limb, and not constant, don't update.
-
-                            BloodAff.UpdateAction(this, BloodID, LimbType.Torso, BloodAffData);
-                            ApplyAfflictionChange(Human, BloodID, (float)BloodAffData.Strength, (float)BloodPrevStrength, (float)BloodAffData.AffTemplate.MinStrength, (float)BloodAffData.AffTemplate.MaxStrength);
-
-                            break;
-
-                        case NTAfflictionType.SYMPTOM:
-
-                            // Fetch the data of the affliction
-                            string SymID = Pair.Key;
-                            NTHumanSymptomData SymData = (NTHumanSymptomData)Pair.Value;
-                            NTSymptom Sym = SymData.SymTemplate;
-
-                            if (!Priorities.Contains(Sym.Priority)) continue;
-
-                            double SymCurrentStrength = GetAfflictionStrength(Human, SymID);
-                            SymData.Strength = SymCurrentStrength;
-
-                            if (!Sym.Const && SymCurrentStrength <= Sym.MinStrength) continue; // Our second check to see if we should run this affliction. Basically, if this affliction isn't active on the limb, and not constant, don't update.
-
-                            if (SymData.HumanUpdateTime <= 0) SymData.Strength = 0;
-                            else SymData.Strength = 100; SymData.HumanUpdateTime--;
-
-                            if (SymData.HumanUpdateStoptime > 0) SymData.Strength = 0;
-                            else SymData.HumanUpdateStoptime--;
-
-                            double SymPrevStrength = SymData.Strength;
-                            Sym.UpdateAction(this, SymID, LimbType.Torso, SymData);
-                            ApplyAfflictionChange(Human, SymID, (float)SymData.Strength, (float)SymPrevStrength, (float)SymData.SymTemplate.MinStrength, (float)SymData.SymTemplate.MaxStrength);
-
-                            break;
-                    }
+                    UpdateAffliction(AffType,Priorities,Pair.Key, Pair.Value);
                 }
             }
-            Print("End Update");
+
+            LocalAfflictions.LastUpdatedAfflictions = SortedAfflictions;
+            LocalAfflictions.LastUpdatedAfflictions = LocalAfflictions.LastUpdatedAfflictions.Where(aff => { return Human.CharacterHealth.GetAllAfflictions().Contains(aff); }).ToList();
+        }
+
+        private void UpdateAffliction(NTAfflictionType AffType, List<AfflictionPriority> Priorities, string Key, NTHumanAffData Data)
+        {
+            switch (AffType)
+            {
+                case NTAfflictionType.NONLIMB:
+
+                    // Fetch the data of the affliction
+                    string ID = Key;
+                    NTHumanNonLimbAffData AffData = (NTHumanNonLimbAffData)Data;
+                    NTNonLimbAffliction Aff = AffData.AffTemplate;
+
+                    if (!Priorities.Contains(Aff.Priority)) return; // Skip to the next affliction, we don't have the same priority currently.
+
+                    double PrevStrength = AffData.Strength;
+
+                    double CurrentStrength = GetAfflictionStrength(Human, ID);
+                    AffData.Strength = CurrentStrength;
+                    AffData.PrevStrength = PrevStrength;
+
+                    Aff.UpdateAction(this, ID, LimbType.Torso, AffData);
+                    ApplyAfflictionChange(Human, ID, (float)AffData.Strength, (float)PrevStrength, (float)AffData.AffTemplate.MinStrength, (float)AffData.AffTemplate.MaxStrength);
+
+                    break;
+
+                case NTAfflictionType.LIMB:
+
+                    foreach (LimbType Limb in LimbsToCheck)
+                    {
+                        // Fetch the data of the affliction
+                        string LimbID = Key;
+                        NTHumanLimbAffData LimbAffData = (NTHumanLimbAffData)Data;
+                        NTLimbAffliction LimbAff = LimbAffData.AffTemplate;
+
+                        if (!Priorities.Contains(LimbAff.Priority) || (!LimbAff.IgnoreStasis && GetBoolStatStrength("stasis"))) continue;
+
+                        double LimbPrevStrength = LimbAffData.Strength[Limb];
+
+                        double LimbCurrentStrength = GetAfflictionStrengthLimb(Human, Limb, LimbID);
+                        LimbAffData.Strength[Limb] = LimbCurrentStrength;
+
+                        LimbAffData.PrevStrength[Limb] = LimbPrevStrength;
+
+                        LimbAff.UpdateAction(this, LimbID, Limb, LimbAffData);
+                        ApplyAfflictionChangeLimb(Human, Limb, LimbID, (float)LimbAffData.Strength[Limb], (float)LimbPrevStrength, (float)LimbAffData.AffTemplate.MinStrength, (float)LimbAffData.AffTemplate.MaxStrength);
+                    }
+
+                    break;
+
+                case NTAfflictionType.BLOOD:
+
+                    // Fetch the data of the affliction
+                    string BloodID = Key;
+                    NTHumanBloodAffData BloodAffData = (NTHumanBloodAffData)Data;
+                    NTBloodAffliction BloodAff = BloodAffData.AffTemplate;
+
+                    if (!Priorities.Contains(BloodAff.Priority)) return;
+
+                    double BloodPrevStrength = BloodAffData.Strength;
+
+                    double BloodCurrentStrength = GetAfflictionStrength(Human, BloodID);
+                    BloodAffData.Strength = BloodCurrentStrength;
+                    BloodAffData.PrevStrength = BloodPrevStrength;
+
+                    BloodAff.UpdateAction(this, BloodID, LimbType.Torso, BloodAffData);
+                    ApplyAfflictionChange(Human, BloodID, (float)BloodAffData.Strength, (float)BloodPrevStrength, (float)BloodAffData.AffTemplate.MinStrength, (float)BloodAffData.AffTemplate.MaxStrength);
+
+                    break;
+
+                case NTAfflictionType.SYMPTOM:
+
+                    // Fetch the data of the affliction
+                    string SymID = Key;
+                    NTHumanSymptomData SymData = (NTHumanSymptomData)Data;
+                    NTSymptom Sym = SymData.SymTemplate;
+
+                    if (!Priorities.Contains(Sym.Priority)) return;
+
+                    double SymCurrentStrength = GetAfflictionStrength(Human, SymID);
+                    SymData.Strength = SymCurrentStrength;
+                    double SymPrevStrength = SymData.Strength;
+
+                    if (SymData.HumanUpdateTime <= 0)
+                    {
+                        SymData.Strength = 0;
+                        SymData.HumanUpdateTime--;
+                    }
+                    else SymData.Strength = 100; SymData.HumanUpdateTime--;
+
+                    if (SymData.HumanUpdateStoptime > 0)
+                    {
+                        SymData.Strength = 0;
+                        SymData.HumanUpdateStoptime--;
+                    }
+
+                    if (SymData.HumanUpdateStoptime <= 0) Sym.UpdateAction(this, SymID, LimbType.Torso, SymData);
+                    ApplyAfflictionChange(Human, SymID, (float)SymData.Strength, (float)SymPrevStrength, (float)SymData.SymTemplate.MinStrength, (float)SymData.SymTemplate.MaxStrength);
+
+                    break;
+
+                case NTAfflictionType.LIMBSYMPTOM:
+
+                    foreach (LimbType Limb in LimbsToCheck)
+                    {
+                        // Fetch the data of the affliction
+                        string LimbSymID = Key;
+                        NTHumanLimbSymptomData LimbSymData = (NTHumanLimbSymptomData)Data;
+                        NTLimbSymptom LimbSym = LimbSymData.SymTemplate;
+
+                        if (!Priorities.Contains(LimbSym.Priority)) return;
+
+                        double LimbSymCurrentStrength = GetAfflictionStrengthLimb(Human, Limb, LimbSymID);
+                        LimbSymData.Strength[Limb] = LimbSymCurrentStrength;
+                        double LimbSymPrevStrength = LimbSymData.Strength[Limb];
+                        if (LimbSymData.HumanUpdateTime[Limb] <= 0)
+                        {
+                            LimbSymData.Strength[Limb] = 0;
+                            LimbSymData.HumanUpdateTime[Limb]--;
+                        }
+                        else
+                            LimbSymData.Strength[Limb] = 100; LimbSymData.HumanUpdateTime[Limb]--;
+
+                        if (LimbSymData.HumanUpdateStoptime[Limb] > 0)
+                        {
+                            LimbSymData.Strength[Limb] = 0;
+                            LimbSymData.HumanUpdateStoptime[Limb]--;
+                        }
+
+                        if (LimbSymData.HumanUpdateStoptime[Limb] <= 0) LimbSym.UpdateAction(this, LimbSymID, LimbType.Torso, LimbSymData);
+                        HF.ApplyAfflictionChangeLimb(Human, Limb, LimbSymID, (float)LimbSymData.Strength[Limb], (float)LimbSymPrevStrength, (float)LimbSymData.SymTemplate.MinStrength, (float)LimbSymData.AffTemplate.MaxStrength);
+                    }
+
+                    break;
+            }
         }
 
     }
@@ -1126,7 +1075,7 @@ public class HumanUpdate
         return UpdatingHumans[Character];
     }
 
-    public static void AddCharacterToUpdate(ContentXElement element, Character character, ContentXElement limbHealthElement)
+    public void AddCharacterToUpdate(Character character)
     {
         if (character != null)
         {
@@ -1144,7 +1093,7 @@ public class HumanUpdate
         }
     }
 
-    public static void RemoveCharacterFromUpdate(Character target)
+    public void RemoveCharacterFromUpdate(Character target)
     {
         if (target is Character)
         {
@@ -1161,7 +1110,7 @@ public class HumanUpdate
         }
     }
 
-    public static void AddHumanToUpdate(Character AddedCharacter)
+    public void AddHumanToUpdate(Character AddedCharacter)
     {
         if (!UpdatingHumans.ContainsKey(AddedCharacter))
         {
@@ -1170,13 +1119,13 @@ public class HumanUpdate
         }
     }
 
-    public static void RemoveHumanFromUpdate(Character RemovingCharacter) // Probably a better way to do this.
+    public void RemoveHumanFromUpdate(Character RemovingCharacter) // Probably a better way to do this.
     {
         if (UpdatingHumans.ContainsKey(RemovingCharacter)) return;
         UpdatingHumans.Remove(RemovingCharacter);
     }
 
-    public static void AddMonsterToUpdate(Character AddedMonster)
+    public void AddMonsterToUpdate(Character AddedMonster)
     {
         if (!AddedMonster.IsHuman)
         {
@@ -1188,7 +1137,7 @@ public class HumanUpdate
         }
     }
 
-    public static void RemoveMonsterFromUpdate(Character RemovingMonster) // Probably a better way to do this.
+    public void RemoveMonsterFromUpdate(Character RemovingMonster) // Probably a better way to do this.
     {
         NTMonster MonsterToRemove = null; // We store the index of what to remove so we don't remove while iterating.
         foreach (NTMonster Monster in UpdatingMonsters)
@@ -1206,7 +1155,7 @@ public class HumanUpdate
     }
 
     // Returns a list 
-    private static List<AfflictionPriority> GetLowestPriority(int cd)
+    private  List<AfflictionPriority> GetLowestPriority(int cd)
     {
         List<AfflictionPriority> output = [];
 
@@ -1236,9 +1185,8 @@ public class HumanUpdate
     // Gets called 60 times a second
     public void ThinkUpdate()
     {
-
         // If game paused we just skip
-        if (HF.GameIsPaused() || !HF.InGame()) return;
+        if ((!HF.InGame()) || HF.GameIsPaused()) return;
 
         Tick--; // Decrement our tick.
         if (!(Tick < 0)) { return; }
@@ -1252,27 +1200,23 @@ public class HumanUpdate
         if (checkedPriorities.Count == 3) UpdateCooldown = 0;
         else if (checkedPriorities.Count == 0) return;
 
-        NTAfflictions.DeltaTime = NTDeltaTime;
+        NT.DeltaTime = NTDeltaTime;
         Update(checkedPriorities);
     }
 
     private void Update(List<AfflictionPriority> priorities)
     {
-        Print("Update");
-
         if (UpdatingMonsters.Count > 0)
         {
-            Thread MonsterUpdateThread = new(UpdateMonsters); // We create a new thread to run monsters along humans. This should help greatly with mods such as barotraumatic.
-            MonsterUpdateThread.Start(); // Update.
+            Task MonsterUpdateTask = new(UpdateMonsters); // We create a new task to run monsters along humans. This should help greatly with mods such as barotraumatic.
+            MonsterUpdateTask.Start();
             UpdateHumans(priorities);
-            MonsterUpdateThread.Join(); // Syncs our threads.
+            MonsterUpdateTask.Wait();
         }
         else 
         {
             UpdateHumans(priorities);
         }
-
-        Print("Threads synced");
     }
 
     private void UpdateHumans(List<AfflictionPriority> priorities)
@@ -1283,7 +1227,7 @@ public class HumanUpdate
         }
     }
 
-    private void UpdateMonsters()
+    private static void UpdateMonsters()
     {
         foreach (NTMonster Monster in UpdatingMonsters)
         {
@@ -1292,7 +1236,7 @@ public class HumanUpdate
         return;
     }
 
-    public static void CleanBotomy(Character C)
+    public void CleanBotomy(Character C)
     {
         if (HasAffliction(C, "surgeryincision")) SetAffliction(C, "tshocktimeout", 15, C, 0);
 

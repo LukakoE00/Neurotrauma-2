@@ -73,6 +73,26 @@
       showiconthreshold="90"
       maxstrength="100">
 
+      <Effect minstrength="0" maxstrength="6">
+        <StatusEffect target="Character">
+          <sound file="%ModDir%/Sounds/Bones/bonebreak4.ogg"  selectionmode="random"/>
+          <sound file="%ModDir%/Sounds/Bones/bonebreak3.ogg"/>
+          <sound file="%ModDir%/Sounds/Bones/bonebreak2.ogg"/>
+          <sound file="%ModDir%/Sounds/Bones/bonebreak1.ogg"/>
+        </StatusEffect>
+      </Effect>
+
+      <Effect minstrength="6" maxstrength="100"/>
+
+      <!-- Cause Pneumothorax when unbandaged every 60 to 120 seconds when not Bandaged. -->
+      <PeriodicEffect mininterval="60" maxinterval="120">
+        <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true" comparison="And">
+          <Conditional bandaged="eq 0" bandageddirty="eq 0" />
+          <Conditional pneumothorax="eq 0"/>
+          <Affliction identifier="pneumothorax" amount="5" probability="0.3" />
+        </StatusEffect>
+      </PeriodicEffect>
+
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="6,2" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
 
@@ -92,6 +112,35 @@
       showiconthreshold="90"
       maxstrength="100">
 
+
+      <Effect minstrength="0" maxstrength="6">
+        <StatusEffect target="Character">
+          <sound file="%ModDir%/Sounds/Bones/bonebreak4.ogg"  selectionmode="random"/>
+          <sound file="%ModDir%/Sounds/Bones/bonebreak3.ogg"/>
+          <sound file="%ModDir%/Sounds/Bones/bonebreak2.ogg"/>
+          <sound file="%ModDir%/Sounds/Bones/bonebreak1.ogg"/>
+        </StatusEffect>
+      </Effect>
+
+      <Effect minstrength="6" maxstrength="100"/>
+
+      <!-- Cause Internal Damage to the Head if not Bandaged. -->
+      <PeriodicEffect mininterval="1" maxinterval="1">
+        <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true" targetlimb="Head" disabledeltatime="true">
+          <Conditional bandaged="eq 0" bandageddirty="eq 0" />
+          <Affliction identifier="internaldamage" indicatorlimb="Limb" amount="0.1"/>
+        </StatusEffect>
+      </PeriodicEffect>
+
+      <!-- Cause Spinal Cord Injury when unbandaged every 20 to 50 seconds. -->
+      <PeriodicEffect mininterval="20" maxinterval="50">
+        <StatusEffect target="Character" targetlimbs="Head" multiplyafflictionsbymaxvitality="true" comparison="And">
+          <Conditional bandaged="eq 0" bandageddirty="eq 0" />
+          <Conditional fracturedneck="gte 100"/>
+          <Affliction identifier="spinalcordinjury" amount="5" />
+        </StatusEffect>
+      </PeriodicEffect>
+
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="1,3" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
 
@@ -110,6 +159,17 @@
       showinhealthscannerthreshold="5"
       showiconthreshold="90"
       maxstrength="100">
+
+      <Effect minstrength="0" maxstrength="6">
+        <StatusEffect target="Character">
+          <sound file="%ModDir%/Sounds/Bones/bonebreak4.ogg"  selectionmode="random"/>
+          <sound file="%ModDir%/Sounds/Bones/bonebreak3.ogg"/>
+          <sound file="%ModDir%/Sounds/Bones/bonebreak2.ogg"/>
+          <sound file="%ModDir%/Sounds/Bones/bonebreak1.ogg"/>
+        </StatusEffect>
+      </Effect>
+
+      <Effect minstrength="6" maxstrength="100"/>
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="2,3" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>

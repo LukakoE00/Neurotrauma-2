@@ -1,17 +1,19 @@
-﻿using MonoGame.Utilities;
+﻿using Barotrauma.LuaCs.Events;
+using MonoGame.Utilities;
 using MoonSharp.Interpreter;
 
 namespace Neurotrauma
 {
-    public partial class NeurotraumaInit : IAssemblyPlugin
+    public partial class NeurotraumaInit : IAssemblyPlugin, IEventChangeFallDamage, IEventUpdate, IEventCharacterCreated, IEventCharacterDeath
     {
         // ---------------------------         Ydrec Shit         --------------------------- \\
 
         // These are automatically assigned by the plugin service after the Constructor is called
         public IConfigService ConfigService { get; set; }
+        public IEventService EventService { get; set; }
         public IPluginManagementService PluginService { get; set; }
         public ILoggerService LoggerService { get; set; }
-        public readonly ILuaScriptManagementService luaScriptManagementService = LuaCsSetup.Instance.LuaScriptManagementService;
+        public ILuaScriptManagementService luaScriptManagementService = LuaCsSetup.Instance.LuaScriptManagementService;
         private Harmony harmony;
 
         // --------------------------- Global Variables/Classes --------------------------- \\
@@ -30,6 +32,7 @@ namespace Neurotrauma
         // No fucking clue what should go here for now tbh. - Lukako
         public void Initialize()
         {
+
             UserData.RegisterType(typeof(HF));
 
             if (HF.GameIsMultiplayer())
@@ -48,6 +51,22 @@ namespace Neurotrauma
             }
         }
 
+        public void AddPatches()
+        {
+            EventService.Subscribe<IEventChangeFallDamage>(this);  //subscribe your plugin
+            //EventService.Subscribe<IEventUpdate>(this);  //subscribe your plugin
+            EventService.Subscribe<IEventCharacterCreated>(this);  //subscribe your plugin
+            EventService.Subscribe<IEventCharacterDeath>(this);  //subscribe your plugin
+        }
+
+        public void RemovePatches()
+        {
+            EventService.Unsubscribe<IEventChangeFallDamage>(this); //remove your plugin
+            //EventService.Unsubscribe<IEventUpdate>(this);  //remove your plugin
+            EventService.Unsubscribe<IEventCharacterCreated>(this);  //remove your plugin
+            EventService.Unsubscribe<IEventCharacterDeath>(this);  //remove your plugin
+        }
+
         // After all plugins have loaded
         // Put code that interacts with other plugins here.
         public void OnLoadCompleted()
@@ -63,6 +82,7 @@ namespace Neurotrauma
                 #if SERVER
                     HF.Print("OnLoadCompleted for Multiplayer.");
                     OnLoadCompletedServerside();
+                    AddPatches();
                 #endif
             }
 
@@ -71,6 +91,7 @@ namespace Neurotrauma
                 // ServersideInit.cs
                 HF.Print("OnLoadCompleted for Singleplayer.");
                 OnLoadCompletedServerside();
+                AddPatches();
             }
 
             // Clientside code
@@ -88,9 +109,45 @@ namespace Neurotrauma
 
         public void Dispose()
         {
+            RemovePatches();
+
             #if SERVER
                 DisposeServer();
             #endif
+
+            this.LoggerService = null;
+            this.ConfigService = null;
+            this.EventService = null;
+            this.PluginService = null;
+            this.luaScriptManagementService = null;
+        }
+
+        // -------------------------------------- Our IEvent Plugins -------------------------------------- \\
+
+        public float? OnChangeFallDamage(float impactDamage, Character character, Vector2 impactPos, Vector2 velocity)
+        {
+            HF.Print("Fall Damage Check");
+            NTFallDamage.OnChangeFallDamage(impactDamage, character, impactPos, velocity);
+            return 0;
+        }
+
+        public void OnUpdate(double deltaTime) // Unused
+        {
+            if (HU != null)
+            {
+                HF.Print($"{HU}");
+                HU.ThinkUpdate();
+            }
+        }
+
+        public void OnCharacterCreated(Character character)
+        {
+            HU.AddCharacterToUpdate(character);
+        }
+
+        public void OnCharacterDeath(Character character, Affliction causeOfDeathAffliction, CauseOfDeathType causeOfDeathType)
+        {
+            HU.RemoveCharacterFromUpdate(character);
         }
     }
 

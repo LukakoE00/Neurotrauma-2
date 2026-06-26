@@ -17,6 +17,19 @@
       showiconthreshold="999"
       maxstrength="100">
 
+      <PeriodicEffect mininterval="1" maxinterval="3">
+        <StatusEffect target="Character" disabledeltatime="true" stackable="false" delay="1" checkconditionalalways="false">
+          <Conditional ishuman="false" />
+          <ReduceAffliction identifier="aorticrupture" amount="1000"/>
+        </StatusEffect>
+        
+        <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true" disabledeltatime="true" stackable="false" delay="1" checkconditionalalways="false">
+          <Conditional balloonedaorta="lte 1"/>
+          <Affliction identifier="internalbleeding" strength="8" />
+          <Affliction identifier="bloodloss" strength="4" />
+        </StatusEffect>
+      </PeriodicEffect>
+
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="3,3" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
 

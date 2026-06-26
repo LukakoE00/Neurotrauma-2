@@ -1338,7 +1338,7 @@ public class NTItemMethods
             int successNum = success ? 1 : 0;
             int talentNum = hasMedExpertise ? 1 : 0;
 
-            HF.AddAfflictionLimb(infos.target, "dirtybandage", infos.targetLimb.type, -100, infos.user);
+            HF.AddAfflictionLimb(infos.target, "bandageddirty", infos.targetLimb.type, -100, infos.user);
             HF.AddAfflictionLimb(infos.target, "bandaged", infos.targetLimb.type, 36 + successNum * 12 + talentNum * 12, infos.user);
             HF.AddAfflictionLimb(infos.target, "bleeding", infos.targetLimb.type, -18 - successNum * 6 - talentNum * 6, infos.user);
 
@@ -1352,7 +1352,7 @@ public class NTItemMethods
             bool success = HF.GetSkillRequirementMet(infos.user, "medical", 22);
             int successNum = success ? 1 : 0;
 
-            HF.AddAfflictionLimb(infos.target, "dirtybandage", infos.targetLimb.type, -100, infos.user);
+            HF.AddAfflictionLimb(infos.target, "bandageddirty", infos.targetLimb.type, -100, infos.user);
             HF.AddAfflictionLimb(infos.target, "bandaged", infos.targetLimb.type, 50 + successNum * 50, infos.user);
             HF.AddAfflictionLimb(infos.target, "bleeding", infos.targetLimb.type, -24 - successNum * 24, infos.user);
 

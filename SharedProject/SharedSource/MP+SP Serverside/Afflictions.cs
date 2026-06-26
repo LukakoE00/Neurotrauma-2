@@ -191,9 +191,6 @@ namespace Neurotrauma
     public class NTNonLimbAffliction : NTAffliction
     {
 
-        new public NTAfflictionType Type = NTAfflictionType.NONLIMB;
-        new public int AffSortID = 1;
-
         public Action<HumanUpdate.NTHuman, string, LimbType, HumanUpdate.NTHumanNonLimbAffData> UpdateAction =
             (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanNonLimbAffData AffData) =>
             {
@@ -208,15 +205,13 @@ namespace Neurotrauma
             MaxStrength = NewMaxStrength;
             DefaultStrength = Math.Clamp(NewDefaultStrength, NewMinStrength, NewMaxStrength);
             Priority = NewPriority;
+            AffSortID = 1;
+            Type = NTAfflictionType.NONLIMB;
         }
     }
 
     public class NTLimbAffliction : NTAffliction
     {
-
-        new public NTAfflictionType Type = NTAfflictionType.LIMB;
-        new public int AffSortID = 2;
-
         public Action<HumanUpdate.NTHuman, string, LimbType, HumanUpdate.NTHumanLimbAffData> UpdateAction =
             (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanLimbAffData AffData) =>
             {
@@ -232,6 +227,8 @@ namespace Neurotrauma
             DefaultStrength = Math.Clamp(NewDefaultStrength, NewMinStrength, NewMaxStrength);
             Priority = NewPriority;
             IgnoreStasis = false;
+            AffSortID = 2;
+            Type = NTAfflictionType.LIMB;
         }
 
         public List<LimbType> AllowedLimbs { get; set; } = HF.LimbsToCheck; // I'll add this one later.
@@ -239,9 +236,6 @@ namespace Neurotrauma
 
     public class NTBloodAffliction : NTAffliction
     {
-
-        new public NTAfflictionType Type = NTAfflictionType.BLOOD;
-        new public int AffSortID = 3;
 
         public Action<HumanUpdate.NTHuman, string, LimbType, HumanUpdate.NTHumanBloodAffData> UpdateAction =
             (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanBloodAffData AffData) =>
@@ -257,6 +251,8 @@ namespace Neurotrauma
             MaxStrength = NewMaxStrength;
             DefaultStrength = Math.Clamp(NewDefaultStrength, NewMinStrength, NewMaxStrength);   
             Priority = NewPriority;
+            AffSortID = 3;
+            Type = NTAfflictionType.BLOOD;
             if (NewAddToHematology)
             {
                 NTC.AddHematologyAffliction(ID);
@@ -266,9 +262,6 @@ namespace Neurotrauma
 
     public class NTSymptom : NTNonLimbAffliction
     {
-
-        new public NTAfflictionType Type = NTAfflictionType.SYMPTOM;
-        new public int AffSortID = 4;
 
         public Action<HumanUpdate.NTHuman, string, LimbType, HumanUpdate.NTHumanSymptomData> UpdateAction =
             (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanSymptomData SymData) =>
@@ -284,15 +277,13 @@ namespace Neurotrauma
             MaxStrength = NewMaxStrength;
             DefaultStrength = Math.Clamp(NewDefaultStrength, NewMinStrength, NewMaxStrength);
             Priority = NewPriority;
-        }
+            Type = NTAfflictionType.SYMPTOM;
+            AffSortID = 4;
+    }
     }
 
     public class NTLimbSymptom : NTLimbAffliction
     {
-
-        new public NTAfflictionType Type = NTAfflictionType.LIMBSYMPTOM;
-        new public int AffSortID = 5;
-
         public Action<HumanUpdate.NTHuman, string, LimbType, HumanUpdate.NTHumanLimbSymptomData> UpdateAction =
             (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanLimbSymptomData SymData) =>
             {
@@ -307,6 +298,8 @@ namespace Neurotrauma
             MaxStrength = NewMaxStrength;
             DefaultStrength = Math.Clamp(NewDefaultStrength, NewMinStrength, NewMaxStrength);
             Priority = NewPriority;
+            AffSortID = 5;
+            Type = NTAfflictionType.LIMBSYMPTOM;
         }
     }
 
@@ -379,33 +372,41 @@ namespace Neurotrauma
 
         private void AddAfflictions() // Create your afflictions in here.
         {
-            // EXAMPLE AFFLICTION
-
-            AfflictionsToAdd["respiratoryarrest"] = new("respiratoryarrest", 0, 100, 0, AfflictionPriority.HIGH);
-            AfflictionsToAdd["respiratoryarrest"].Const = true; // This affliction should always run
-            AfflictionsToAdd["respiratoryarrest"].UpdateAction = // The update function of the affliction, like how it is in Lua
+            // Lung Removed
+            // TYPE: Surgical Action
+            // Applies effects. Removed and Applied via Surgical Procedures.
+            AfflictionsToAdd["lungremoved"] = new("lungremoved", 0, 100, 0, AfflictionPriority.HIGH);
+            AfflictionsToAdd["lungremoved"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanNonLimbAffData AffData) =>
                 {
-                    AffData.Strength -= (0.05 + HF.BoolToNum(C.GetSymptomAffData("unconsciousness").Strength < .1, .45f)) * NT.DeltaTime;
-                    if
-                        (!NTC.HasSymptomFalse(C, "triggersym_respiratoryarrest")
-                        && (NTC.HasSymptomFalse(C, "triggersym_respiratoryarrest")
-                        || C.GetBoolStatStrength("stasis")
-                        || C.GetNonLimbAffData("lungremoved").Strength > 0
-                        || C.GetNonLimbAffData("brainremoved").Strength > 0
-                        || C.GetNonLimbAffData("opiateoverdose").Strength > 50
-                        || C.GetNonLimbAffData("lungdamage").Strength > 99 && HF.Chance(.8f)
-                        || C.GetNonLimbAffData("traumaticshock").Strength > 30 && HF.Chance(.2f)
-                        || (
-                            (C.GetNonLimbAffData("neurotrauma").Strength > 100 || C.GetNonLimbAffData("neurotrauma").Strength > 70
-                            && HF.Chance(.05f))
-                        )
-                      )
-                      )
+                    if (AffData.Strength > 0)
                     {
-                        AffData.Strength += 10;
+                        HF.AddAffliction(C.Human, "respiratoryarrest", 200f, null);
                     }
                 };
+
+            // Respiratory Arrest
+            // TYPE: Non-Limb Specific, Interrim
+            // Applies Symptoms when present, caused by its own sources.
+            AfflictionsToAdd["respiratoryarrest"] = new("respiratoryarrest", 0, 100, 0, AfflictionPriority.HIGH);
+            AfflictionsToAdd["respiratoryarrest"].UpdateAction =
+                    (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanNonLimbAffData AffData) =>
+                    {
+                        if ((!C.GetBoolStatStrength("stasis")) &&
+                                C.GetNonLimbAffData("lungremoved").Strength <= 0
+                            && C.GetAffData("brainremoved").Strength <= 0
+                            && C.GetAffData("opiateoverdose").Strength <= 60
+                            && C.GetAffData("lungdamage").Strength <= 99
+                            && C.GetAffData("traumaticshock").Strength <= 30
+                            && C.GetAffData("neurotrauma").Strength <= 100
+                            && C.GetAffData("hypoxemia").Strength <= 70
+                            )
+                        {
+                            HF.Print("ShouldRegenerateProcced");
+                            AffData.Strength -= (5f + HF.BoolToNum(C.GetAffStrength("unconsciousness") < 0.1f, 45f)) * NT.DeltaTime;
+                        }
+                    };
+
 
             // Rib Fractures
             AfflictionsToAdd["fracturedribs"] = new("fracturedribs", 0, 100, 0, AfflictionPriority.MEDIUM);
@@ -439,9 +440,6 @@ namespace Neurotrauma
             // =============== Organs =============== //
             // Lung Damage
             AfflictionsToAdd["lungdamage"] = new("lungdamage");
-
-            // Lung Removed
-            AfflictionsToAdd["lungremoved"] = new("lungremoved");
 
             // Lung Swap
             AfflictionsToAdd["lungswap"] = new("lungswap");
@@ -762,6 +760,7 @@ namespace Neurotrauma
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanLimbAffData AffData) =>
                 {
                     AffData.Strength[Limb] -= (C.GetDoubleStatStrength("clottingrate") * .1 * NT.DeltaTime);
+                    NTC.SetSymptomFalse(C,"vomitingblood",10);
                 };
 
             // Stimulated Bone Growth
@@ -1009,7 +1008,7 @@ namespace Neurotrauma
             // Spasms
             LimbSymptomsToAdd["spasm"] = new("spasm", 0, 100, 0, AfflictionPriority.HIGH);
 
-            foreach (KeyValuePair<string, NTSymptom> Pair in SymptomsToAdd)
+            foreach (KeyValuePair<string, NTSymptom> Pair in LimbSymptomsToAdd)
             {
                 NTAfflictions.RegisterAffliction(Pair.Key, Pair.Value);
             }

@@ -5,13 +5,29 @@ namespace Neurotrauma
     public static class NTC
     {
         // Symptom magic
+        /// <summary>
+        /// Sets the symptom to true for a certain amount of human updates.
+        /// </summary>
+        /// <param name="Human"> The human to have the symptom.</param>
+        /// <param name="SymptomIdentifier"> The ID of the symptom.</param>
+        /// <param name="Duration"> The duration of human updates the symptom should be true for.</param>
         public static void SetSymptomTrue(HumanUpdate.NTHuman Human, string SymptomIdentifier, int Duration = 2)
         {
+            // FORCE SYMPTOM ACTIVE!!!!!!!! FUCK MY LIFEEEEEEEEEEE
+            HF.SetAffliction(Human.Human, SymptomIdentifier, 100f, null, 0f);
+
             Dictionary<string, HumanUpdate.NTHumanSymptomData> Afflictions = Human.LocalAfflictions.UpdatingSymptoms;
             HumanUpdate.NTHumanSymptomData Sym = Afflictions[SymptomIdentifier];
             Sym.HumanUpdateTime = Duration;
         }
 
+        /// <summary>
+        /// Sets the symptom to true for a certain amount of human updates.
+        /// </summary>
+        /// <param name="Human"> The human to have the symptom.</param>
+        /// <param name="SymptomIdentifier"> The ID of the symptom.</param>
+        /// <param name="Limb"> The limb to set the symptom on.</param>
+        /// <param name="Duration"> The duration of human updates the symptom should be true for.</param>
         public static void SetLimbSymptomTrue(HumanUpdate.NTHuman Human, string SymptomIdentifier, LimbType Limb, int Duration = 2)
         {
             Dictionary<string, HumanUpdate.NTHumanLimbSymptomData> Afflictions = Human.LocalAfflictions.UpdatingLimbSymptoms;
@@ -19,6 +35,12 @@ namespace Neurotrauma
             Sym.HumanUpdateTime[Limb] = Duration;
         }
 
+        /// <summary>
+        /// Sets the symptom to false for a certain amount of human updates.
+        /// </summary>
+        /// <param name="Human"> The human to have the symptom.</param>
+        /// <param name="SymptomIdentifier"> The ID of the symptom.</param>
+        /// <param name="Duration"> The duration of human updates the symptom should be false for.</param>
         public static void SetSymptomFalse(HumanUpdate.NTHuman Human, string SymptomIdentifier, int Duration = 2)
         {
             Dictionary<string, HumanUpdate.NTHumanSymptomData> Afflictions = Human.LocalAfflictions.UpdatingSymptoms;
@@ -26,6 +48,13 @@ namespace Neurotrauma
             Sym.HumanUpdateStoptime = Duration;
         }
 
+        /// <summary>
+        /// Sets the symptom to false for a certain amount of human updates.
+        /// </summary>
+        /// <param name="Human"> The human to have the symptom.</param>
+        /// <param name="SymptomIdentifier"> The ID of the symptom.</param>
+        /// <param name="Limb"> The limb to set the symptom on.</param>
+        /// <param name="Duration"> The duration of human updates the symptom should be false for.</param>
         public static void SetLimbSymptomFalse(HumanUpdate.NTHuman Human, string SymptomIdentifier, LimbType Limb, int Duration = 2)
         {
             Dictionary<string, HumanUpdate.NTHumanLimbSymptomData> Afflictions = Human.LocalAfflictions.UpdatingLimbSymptoms;
@@ -49,6 +78,10 @@ namespace Neurotrauma
 
         public static List<Action<HumanUpdate.NTHuman>> PreHumanUpdateHooks = new(); // Store our functions to call in here.
 
+        /// <summary>
+        /// Adds a mew Action<HumanUpdate.NTHuman> to the PreHumanUpdate List. Gets called for each human.
+        /// </summary>
+        /// <param name="Hook"></param>
         public static void AddPreHumanUpdateHook(Action<HumanUpdate.NTHuman> Hook)
         {
             PreHumanUpdateHooks.Add(Hook);
@@ -56,6 +89,10 @@ namespace Neurotrauma
 
         public static List<Action<HumanUpdate.NTHuman>> PostHumanUpdateHooks = new(); // Store our functions to call in here.
 
+        /// <summary>
+        /// Adds a mew Action<HumanUpdate.NTHuman> to the PostHumanUpdate List. Gets called for each human.
+        /// </summary>
+        /// <param name="Hook"></param>
         public static void AddPostHumanUpdateHook(Action<HumanUpdate.NTHuman> Hook)
         {
             PostHumanUpdateHooks.Add(Hook);
@@ -164,6 +201,7 @@ namespace Neurotrauma
             if (Character == null) return false;
             HumanUpdate.NTHumanSymptomData Symptom = Character.GetSymptomAffData(SymIdentifier);
             if (Symptom == null) return false;
+
             if (Symptom.HumanUpdateStoptime <= 0) return true;
             return false;
         }
@@ -173,6 +211,7 @@ namespace Neurotrauma
             if (Character == null) return false;
             HumanUpdate.NTHumanLimbSymptomData Symptom = Character.GetLimbSymptomData(SymIdentifier);
             if (Symptom == null) return false;
+
             if (Symptom.HumanUpdateStoptime[Limb] <= 0) return true;
             return false;
         }

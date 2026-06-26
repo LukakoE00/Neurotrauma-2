@@ -303,12 +303,13 @@ namespace Neurotrauma
         public static bool InGame()
         {
 #if SERVER
+            if (GameMain.Server == null) return false;
             return GameMain.Server.GameStarted;
             //return GameMain.GameSession.IsRunning;
 #elif SHARED
             return LuaGame.RoundStarted;
 #endif
-
+            if (GameMain.GameSession == null) return false;
             return GameMain.GameSession.IsRunning;
         }
 
@@ -1157,7 +1158,7 @@ namespace Neurotrauma
                        || (GetAfflictionStrengthLimb(C.Human, Limb, "bandaged") <= 0 && GetAfflictionStrengthLimb(
                            C.Human,
                            Limb,
-                           "dirtybandage"
+                           "bandageddirty"
                            ) <= 0 && GetAfflictionStrength(C.Human, "afadrenaline") <= 0 && LimbIsDislocated(
                                 C.Human,
                                 Limb,
@@ -1180,6 +1181,17 @@ namespace Neurotrauma
         {
             if (DamageValue >= 99 && !NoMaxStrength) return 100;
             return DamageValue - 0.01 * C.GetDoubleStatStrength("healingrate") * C.GetDoubleStatStrength("anyspecificorgandamage") * NT.DeltaTime;
+        }
+
+        public static double KidneyDamageCalc(HumanUpdate.NTHuman C, double DamageValue)
+        {
+            if (DamageValue >= 99) return 100;
+            if (DamageValue >= 50)
+            {
+                if (DamageValue <= 51) return DamageValue;
+                return DamageValue - 0.01 * C.GetDoubleStatStrength("healingrate") * C.GetDoubleStatStrength("specificOrganDamageHealMultiplier") * NT.DeltaTime;
+            }
+            return DamageValue - 0.02 * C.GetDoubleStatStrength("healingrate") * C.GetDoubleStatStrength("specificOrganDamageHealMultiplier") * NT.DeltaTime;
         }
 
         // ---------------------------------------- Client Related Helper Functions -------------------------------------------------- \\

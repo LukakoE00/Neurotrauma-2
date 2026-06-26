@@ -302,7 +302,7 @@
         <InventoryIcon texture="%ModDir%/Images/InventoryItemIconAtlas.png" sourcerect="0,192,64,64" origin="0.5,0.5"/>
         <Sprite texture="%ModDir%/Images/InventoryItemIconAtlas.png" sourcerect="0,192,64,64" depth="0.55" origin="0.5,0.5"/>
         <Body width="60" height="55" density="50"/>
-        <SuitableTreatment identifier="dirtybandage" suitability="100"/>
+        <SuitableTreatment identifier="bandageddirty" suitability="100"/>
         <SuitableTreatment identifier="bandaged" suitability="100"/>
         <SuitableTreatment identifier="gypsumcast" suitability="100"/>
         <SuitableTreatment identifier="arteriesclamp" suitability="100"/>

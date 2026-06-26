@@ -15,7 +15,7 @@
 
       showinhealthscannerthreshold="999"
       showiconthreshold="0"
-      maxstrength="2">
+      maxstrength="100">
 
       <Effect minstrength="0" maxstrength="2">
               <StatusEffect target="Character" speechimpediment="100"/>
@@ -38,7 +38,7 @@
       
       showinhealthscannerthreshold="999"
       showiconthreshold="0"
-      maxstrength="2">
+      maxstrength="100">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="4,0" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -57,7 +57,7 @@
       
       showinhealthscannerthreshold="999"
       showiconthreshold="0"
-      maxstrength="2">
+      maxstrength="100">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="5,0" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
@@ -76,7 +76,7 @@
       
       showinhealthscannerthreshold="999"
       showiconthreshold="0"
-      maxstrength="2">
+      maxstrength="100">
 
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="6,0" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>

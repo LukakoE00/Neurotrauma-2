@@ -14,11 +14,13 @@ namespace Neurotrauma
             {
                 return NTC.GetMultiplier(C,"healingrate");
             });
+
             Stats["anyspecificorgandamage"] = new NTStatDouble("anyspecificorgandamage", 0, 100, 1, (C) =>
             {
                 return NTC.GetMultiplier(C, "anyspecificorgandamage") 
                         + Clamp(C.GetBloodAffStrength("afthiamine"),0,1) * 4;
             });
+
             Stats["neworgandamage"] = new NTStatDouble("neworgandamage", 0, 100, 1, (C) => 
             {
                 return (
@@ -30,6 +32,7 @@ namespace Neurotrauma
                     * NTConfig.Get("NT_OrganDamageGain",1)
                     * NT.DeltaTime;
             });
+
             Stats["clottingrate"] = new NTStatDouble("clottingrate", 0, 100, 1, (C) => 
             {
                 return Clamp(1 - C.GetNonLimbAffStrength("liverdamage") / 100, 0, 1)
@@ -37,14 +40,17 @@ namespace Neurotrauma
                         * Clamp(1 - C.GetNonLimbAffStrength("afstreptokinase"), 0, 1)
                         * NTC.GetMultiplier(C, "clottingrate");
             });
+
             Stats["bloodamount"] = new NTStatDouble("bloodamount", 0, 100, 1, (C) => 
             {
                 return Math.Clamp(100 - C.GetNonLimbAffStrength("bloodloss"),0,100);
             });
+
             Stats["stasis"] = new NTStatBool("stasis",false, (C) => 
             {
                 return C.GetNonLimbAffStrength("stasis") > 0;
             });
+
             Stats["sedated"] = new NTStatBool("sedated",false, (C) => 
             {
                 return C.GetNonLimbAffStrength("analgesia") > 0
@@ -52,10 +58,12 @@ namespace Neurotrauma
                         || C.GetNonLimbAffStrength("drunk") > 20
                         || C.GetNonLimbAffStrength("stasis") > 0;
             });
+
             Stats["withdrawal"] = new NTStatDouble("withdrawal", 0, 100, 1, (C) => 
             {
                 return Max(Max(C.GetNonLimbAffStrength("opiatewithdrawal"), C.GetNonLimbAffStrength("chemwithdrawal")), C.GetNonLimbAffStrength("alcoholwithdrawal"));
             });
+
             Stats["availableoxygen"] = new NTStatDouble("availableoxygen", 0, 100, 1, (C) => 
             {
                 double Res = Clamp(C.Human.Oxygen,0,100);
@@ -65,6 +73,7 @@ namespace Neurotrauma
                 if (C.GetNonLimbAffStrength("cardiacarrest") > 1 || C.GetNonLimbAffStrength("lungdamage") == 100 || C.GetNonLimbAffStrength("lungremoved") > 0.1) Res = 0;
                 return Res;
             });
+
             Stats["speedmultiplier"] = new NTStatDouble("speedmultiplier", 0, 100, 1, (C) => 
             {
                 double Res = 1;
@@ -164,6 +173,7 @@ namespace Neurotrauma
 
                 return Res;
             });
+
             Stats["bonegrowthCount"] = new NTStatDouble("bonegrowthCount", 0, 100, 0, (C) =>
             {
                 double count = 0;
