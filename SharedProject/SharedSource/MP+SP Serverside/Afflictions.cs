@@ -372,32 +372,6 @@ namespace Neurotrauma
 
         private void AddAfflictions() // Create your afflictions in here.
         {
-            // EXAMPLE AFFLICTION
-
-<<<<<<< Updated upstream
-            // Respiratory Arrest
-            // TYPE: Non-Limb Specific, Interrim
-            // Applies Symptoms when present, caused by its own sources.
-            AfflictionsToAdd["respiratoryarrest"] = new("respiratoryarrest", 0, 100, 0, AfflictionPriority.HIGH);
-            AfflictionsToAdd["respiratoryarrest"].UpdateAction =
-                    (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanNonLimbAffData AffData) =>
-                    {
-                        if (/*!C.GetBoolStatStrength("stasis") &&*/
-                                HF.GetAfflictionStrength(C.Human, "lungremoved") <= 0
-                            //&& C.GetAffData("brainremoved").Strength <= 0
-                            //&& C.GetAffData("opiateoverdose").Strength <= 60
-                            //&& C.GetAffData("lungdamage").Strength <= 99
-                            //&& C.GetAffData("traumaticshock").Strength <= 30
-                            //&& C.GetAffData("neurotrauma").Strength <= 100
-                            //&& C.GetAffData("hypoxemia").Strength <= 70
-                            ) ;
-                        {
-                            HF.Print("ShouldRegenerateProcced");
-                            AffData.Strength -= (5f + HF.BoolToNum(C.GetAffStrength("unconsciousness") < 0.1f, 45f)) * NT.DeltaTime;
-                        }
-                    };
-
-=======
             // Lung Removed
             // TYPE: Surgical Action
             // Applies effects. Removed and Applied via Surgical Procedures.
@@ -410,7 +384,6 @@ namespace Neurotrauma
                         HF.AddAffliction(C.Human, "respiratoryarrest", 200f, null);
                     }
                 };
->>>>>>> Stashed changes
 
             // Respiratory Arrest
             // TYPE: Non-Limb Specific, Interrim
@@ -468,22 +441,6 @@ namespace Neurotrauma
             // Lung Damage
             AfflictionsToAdd["lungdamage"] = new("lungdamage");
 
-<<<<<<< Updated upstream
-            // Lung Removed
-            // TYPE: Surgical Action
-            // Applies effects. Removed and Applied via Surgical Procedures.
-            AfflictionsToAdd["lungremoved"] = new("lungremoved", 0, 100, 0, AfflictionPriority.HIGH);
-            AfflictionsToAdd["lungremoved"].UpdateAction =
-                (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanNonLimbAffData AffData) =>
-                {
-                    if (AffData.Strength > 0)
-                    {
-                        HF.AddAffliction(C.Human, "respiratoryarrest", 200f, null);
-                    }
-                };
-
-=======
->>>>>>> Stashed changes
             // Lung Swap
             AfflictionsToAdd["lungswap"] = new("lungswap");
 
