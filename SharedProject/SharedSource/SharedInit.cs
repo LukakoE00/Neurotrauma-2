@@ -64,6 +64,13 @@ namespace Neurotrauma
                 return null;
             }); // End of our Function
 
+            LuaCsSetup.Instance.Hook.Add("changeFallDamage", "NTCS.FallDamage", (params object[] _) => // The Hook details (TODO, make this in C#)
+            { // Start of our Function
+
+                NTFallDamage.OnChangeFallDamage((float)_[0], (Character)_[1], (Vector2)_[2], (Vector2)_[3]);
+                return 0;
+            }); // End of our Function
+
 #pragma warning restore CS0618 // Type or member is obsolete
         }
     }

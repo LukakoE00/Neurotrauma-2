@@ -98,8 +98,6 @@ namespace Neurotrauma
 
         public static void OnChangeFallDamage(float impactDamage, Character character, Vector2 impactPos, Vector2 velocity)
         {
-            Print("Fall Damage");
-
             if (!NTConfig.Get("NT_Calculations", true)) return;
             
             if (!character.IsHuman) return;
@@ -112,7 +110,7 @@ namespace Neurotrauma
 
             if (!HasAffliction(character, "luabotomy")) SetAffliction(character, "luabotomy", 1,character,0);
 
-            double VelocityMagnitude = Math.MaxMagnitude(velocity.X, velocity.Y);
+            double VelocityMagnitude = Magnitude(velocity);
             VelocityMagnitude = Math.Pow(VelocityMagnitude,1.3);
 
             // apply fall damage to all limbs based on fall direction
@@ -131,7 +129,7 @@ namespace Neurotrauma
                     Vector2 PosDif = LimbPosition - MainLimbPos;
                     PosDif.X /= 100;
                     PosDif.Y /= 100;
-                    double PosDifMagnitude = Math.MaxMagnitude(PosDif.X, PosDif.Y);
+                    double PosDifMagnitude = Magnitude(PosDif);
                     if (PosDifMagnitude > 1) PosDif.Normalize();
 
                     Vector2 NormalizedVelocity = new(velocity.X, velocity.Y);

@@ -275,6 +275,11 @@ namespace Neurotrauma
             );
         }
 
+        public static double Magnitude(Vector2 Vector)
+        {
+            return Math.Pow((Math.Pow(Vector.X, 2) + Math.Pow(Vector.Y, 2)), .5);
+        }
+
         public static bool Chance(float Chance)
         {
             float RandomChance = new Random().Range(0, 1);

@@ -53,7 +53,7 @@ namespace Neurotrauma
 
         public void AddPatches()
         {
-            EventService.Subscribe<IEventChangeFallDamage>(this);  //subscribe your plugin
+            //EventService.Subscribe<IEventChangeFallDamage>(this);  //subscribe your plugin
             //EventService.Subscribe<IEventUpdate>(this);  //subscribe your plugin
             EventService.Subscribe<IEventCharacterCreated>(this);  //subscribe your plugin
             EventService.Subscribe<IEventCharacterDeath>(this);  //subscribe your plugin
@@ -61,7 +61,7 @@ namespace Neurotrauma
 
         public void RemovePatches()
         {
-            EventService.Unsubscribe<IEventChangeFallDamage>(this); //remove your plugin
+            //EventService.Unsubscribe<IEventChangeFallDamage>(this); //remove your plugin
             //EventService.Unsubscribe<IEventUpdate>(this);  //remove your plugin
             EventService.Unsubscribe<IEventCharacterCreated>(this);  //remove your plugin
             EventService.Unsubscribe<IEventCharacterDeath>(this);  //remove your plugin
@@ -126,7 +126,6 @@ namespace Neurotrauma
 
         public float? OnChangeFallDamage(float impactDamage, Character character, Vector2 impactPos, Vector2 velocity)
         {
-            HF.Print("Fall Damage Check");
             NTFallDamage.OnChangeFallDamage(impactDamage, character, impactPos, velocity);
             return 0;
         }
