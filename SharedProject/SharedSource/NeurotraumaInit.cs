@@ -53,6 +53,10 @@ namespace Neurotrauma
 
         public void AddPatches()
         {
+            // Add our custom Lua Hooks
+            EventService.RegisterLuaEventAlias<IEventSyncLuaCharacters>("SyncLuaCharacters", nameof(IEventSyncLuaCharacters.SyncLuaCharacters));
+            EventService.RegisterLuaEventAlias<IEventSyncLuaHumanUpdate>("SyncLuaHumanUpdate", nameof(IEventSyncLuaHumanUpdate.SyncLuaHumanUpdate));
+
             //EventService.Subscribe<IEventChangeFallDamage>(this);  //subscribe your plugin
             //EventService.Subscribe<IEventUpdate>(this);  //subscribe your plugin
             EventService.Subscribe<IEventCharacterCreated>(this);  //subscribe your plugin

@@ -1,5 +1,7 @@
 NTC = {} -- a class containing compatibility functions for other mods to make use of neurotraumas symptom system
 
+
+
 -- use this function to register your expansion mod to be displayed by the
 -- console lua startup readout of neurotrauma expansions
 

@@ -1269,6 +1269,10 @@ public class HumanUpdate
         {
             UpdateHumans(priorities);
         }
+
+        Print("Try Sync");
+        LuaCsSetup.Instance.EventService.PublishEvent<IEventSyncLuaHumanUpdate>(x => x.SyncLuaHumanUpdate());
+        LuaCsSetup.Instance.EventService.PublishEvent<IEventSyncLuaCharacters>(x => x.SyncLuaCharacters());
     }
 
     private void UpdateHumans(List<AfflictionPriority> priorities)
