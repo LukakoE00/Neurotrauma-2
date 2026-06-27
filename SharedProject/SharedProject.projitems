@@ -16,6 +16,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)sharedsource\MP+SP Serverside\CPR.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)sharedsource\MP+SP Serverside\DynamicItems.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)sharedsource\MP+SP Serverside\FallDamage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)sharedsource\MP+SP Serverside\HumanUpdateLuaSync.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)sharedsource\MP+SP Serverside\Items.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)sharedsource\MP+SP Serverside\LootCrates.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)sharedsource\MP+SP Serverside\LoveBots.cs" />

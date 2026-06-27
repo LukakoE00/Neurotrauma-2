@@ -20,12 +20,29 @@ namespace Neurotrauma
         }
     }
 
+    /// <summary>
+    /// Sets an NT property in NTXmlProperties
+    /// </summary>
+    public class NTSet : ItemComponent
+    {
+        public string MyAttribute { get; init; }
+        public NTSet(Item item, ContentXElement element) : base(item, element)
+        {
+            MyAttribute = element.GetAttributeString("NTProperty", "default value");
+        }
+    }
+
     public static class NTXmlMethods
     {
         public static void PrintExample()
         {
             Print("THIS IS AN EXAMPLE");
         }
+    }
+
+    public struct NTXmlProperties
+    {
+
     }
 
 }
