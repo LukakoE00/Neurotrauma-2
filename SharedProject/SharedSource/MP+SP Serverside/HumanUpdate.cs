@@ -24,7 +24,6 @@ public class HumanUpdate
     private static readonly int UpdateIntervalMedium = (int)AfflictionPriority.MEDIUM; // 240 = 4s
     private static readonly int UpdateIntervalLow = (int)AfflictionPriority.LOW; // 480 = 8s
     static private Dictionary<Character, NTHuman> UpdatingHumans = new();
-
     static private List<NTMonster> UpdatingMonsters = new();
 
     public Dictionary<Character, NTHuman> GetUpdatingCharacters()
@@ -638,12 +637,40 @@ public class HumanUpdate
             return LocalStats;
         }
 
+        /// <summary>
+        /// Can return NTHumanStatDoubleData or NTHumanStatBoolData.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="Identifier"></param>
+        /// <returns></returns>
+        public T GetStat<T>(string Identifier) // Not my best work.
+        {
+            object ReturnType = null;
+            if (HasBoolStat(Identifier)) ReturnType = GetBoolStat(Identifier);
+            else ReturnType = GetDoubleStat(Identifier);
+            return (T) Convert.ChangeType(ReturnType, typeof(T));
+        }
+
+        public T GetStatStrength<T>(string Identifier) // Not my best work.
+        {
+            object ReturnType = null;
+            if (HasBoolStat(Identifier)) ReturnType = GetBoolStat(Identifier).Strength;
+            else ReturnType = GetDoubleStat(Identifier).Strength;
+            return (T)Convert.ChangeType(ReturnType, typeof(T));
+        }
+
+        public bool HasBoolStat(string Identifier)
+        {
+            if (LocalStats.BoolStats.ContainsKey(Identifier)) return true;
+            return false;
+        }
+
         public CharacterStats.NTHumanStatBoolData GetBoolStat(string Identifier)
         {
             return LocalStats.BoolStats[Identifier];
         }
 
-        public bool GetBoolStatUpdate(NTHuman C, string Identifier)
+        public bool GetBoolStatUpdate(NTHuman C, string Identifier) // SHOULDNT BE USED I REGRET WRITING THIS FUNCTION.
         {
             return (LocalStats.BoolStats.ContainsKey(Identifier)) ? LocalStats.BoolStats[Identifier].StatRef.Get(C) : false;
         }
@@ -661,12 +688,18 @@ public class HumanUpdate
             }
         }
 
+        public bool HasDoubleStat(string Identifier)
+        {
+            if (LocalStats.DoubleStats.ContainsKey(Identifier)) return true;
+            return false;
+        }
+
         public CharacterStats.NTHumanStatDoubleData GetDoubleStat(string Identifier)
         {
             return LocalStats.DoubleStats[Identifier];
         }
 
-        public double GetDoubleStatUpdate(NTHuman C, string Identifier)
+        public double GetDoubleStatUpdate(NTHuman C, string Identifier) // SHOULDNT BE USED I REGRET WRITING THIS FUNCTION.
         {
             return (LocalStats.DoubleStats.ContainsKey(Identifier)) ? LocalStats.DoubleStats[Identifier].StatRef.Get(C) : 0;
         }
