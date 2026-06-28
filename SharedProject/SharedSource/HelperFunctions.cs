@@ -779,13 +779,17 @@ namespace Neurotrauma
             return DefaultValue;
         }
 
-        public static void SetAffliction(Character Character, string Identifier, float Strength, Character Aggressor, float PreviousStrength)
+        public static void SetAffliction(Character Character, string Identifier, float Strength, Character Aggressor = null, float PreviousStrength = 0)
         {
+            if (Aggressor == null) Aggressor = Character;
+
             SetAfflictionLimb(Character, Identifier, LimbType.Torso, Strength, Aggressor, PreviousStrength);
         }
 
-        public static void SetAfflictionLimb(Character Character, string Identifier, LimbType GivenLimbType, float Strength, Character Aggressor, float PreviousStrength)
+        public static void SetAfflictionLimb(Character Character, string Identifier, LimbType GivenLimbType, float Strength, Character Aggressor = null, float PreviousStrength = 0)
         {
+            if (Aggressor == null) Aggressor = Character;
+
             if (Character == null) return;
 
             dynamic Check = AfflictionPrefab.Prefabs.TryGet(Identifier, out AfflictionPrefab Result); // Most likely a better way to acheive this but basically I don't know what this will return.
@@ -808,8 +812,10 @@ namespace Neurotrauma
             );
         }
 
-        public static void AddAfflictionLimb(Character Character, string Identifier, LimbType GivenLimbType, float Strength, Character Aggressor)
+        public static void AddAfflictionLimb(Character Character, string Identifier, LimbType GivenLimbType, float Strength, Character Aggressor = null)
         {
+            if (Aggressor == null) Aggressor = Character;
+
             if (Strength < 0)
             {
                 Character.CharacterHealth.ReduceAfflictionOnLimb(
@@ -840,8 +846,10 @@ namespace Neurotrauma
             );
         }
 
-        public static void AddAffliction(Character Character, string Identifier, float Strength, Character Aggressor)
+        public static void AddAffliction(Character Character, string Identifier, float Strength, Character Aggressor = null)
         {
+            if (Aggressor == null) Aggressor = Character;
+
             if (Strength < 0)
             {
                 float current = GetAfflictionStrength(Character, Identifier, 0);
@@ -852,8 +860,10 @@ namespace Neurotrauma
             AddAfflictionLimb(Character, Identifier, LimbType.Torso, Strength, Aggressor);
         }
 
-        public static void AddAfflictionResisted(Character Character, string Identifier, float Strength, Character Aggressor)
+        public static void AddAfflictionResisted(Character Character, string Identifier, float Strength, Character Aggressor = null)
         {
+            if (Aggressor == null) Aggressor = Character;
+
             float PrevStrength = GetAfflictionStrength(Character, Identifier);
             Strength *= 1 - GetResistance(Character, Identifier);
             SetAffliction(Character, Identifier, Strength + PrevStrength, Aggressor, PrevStrength);
@@ -917,8 +927,10 @@ namespace Neurotrauma
         /// <param name="TotalAmount">Total combined strength of applications.</param>
         /// <param name="Duration">Amount of time in seconds over which the application happens.</param>
         /// <param name="Aggressor">Character that's considered the one applying the affliction.</param>
-        public static void ApplyAfflictionOverTime(Character Target, string Identifier, float TotalAmount, float Duration, Character Aggressor)
+        public static void ApplyAfflictionOverTime(Character Target, string Identifier, float TotalAmount, float Duration, Character Aggressor = null)
         {
+            if (Aggressor == null) Aggressor = Target;
+
             int Applications = (int)Duration;
             if (Applications <= 0 || Target == null) return;
 

@@ -12,29 +12,21 @@ namespace Neurotrauma
     /// Our post Human Update Lua syncing system.
     /// Needed since most addons are written in Lua and require the old Lua Human Update.
     /// </summary>
-    public class HumanUpdateLuaSync
+    public static class HumanUpdateLuaSync
     {
 
-        bool ScriptsHaveBeenFetched = false;
+        static bool ScriptsHaveBeenFetched = false;
 
-        Script NTCompatScript = new Script();
-        Script DummyHumanUpdate = new Script();
-        Script HelperFunctions = new Script();
+        static Script NTCompatScript = new Script();
+        static Script DummyHumanUpdate = new Script();
+        static Script HelperFunctions = new Script();
 
 
-        public void FetchLuaScripts()
+        static public void FetchLuaScripts()
         {
         }
 
-        public void Update()
-        {
-
-        }
-
-        /// <summary>
-        /// Syncs our C# human update with our Lua human update, syncs our C# characters with our lua characters
-        /// </summary>
-        public void PreSync()
+        static public void Update()
         {
 
         }
@@ -42,17 +34,25 @@ namespace Neurotrauma
         /// <summary>
         /// Syncs our C# human update with our Lua human update, syncs our C# characters with our lua characters
         /// </summary>
-        public void PostSync()
+        static public void PreSync()
         {
 
         }
 
-        public void SyncLuaAfflictions()
+        /// <summary>
+        /// Syncs our C# human update with our Lua human update, syncs our C# characters with our lua characters
+        /// </summary>
+        static public void PostSync()
+        {
+
+        }
+
+        static public void SyncLuaAfflictions()
         {
             LuaCsSetup.Instance.EventService.PublishEvent<IEventSyncLuaCharacters>(x => x.SyncLuaCharacters());
         }
 
-        public void SyncLuaCharacters()
+        static public void SyncLuaCharacters()
         {
             LuaCsSetup.Instance.EventService.PublishEvent<IEventSyncLuaHumanUpdate>(x => x.SyncLuaHumanUpdate());
         }

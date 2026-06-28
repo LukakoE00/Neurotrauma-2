@@ -191,10 +191,10 @@
 
       <Effect minstrength="0" maxstrength="6" strengthchange="10">
         <StatusEffect target="Character" multiplyafflictionsbymaxvitality="true">
-          <sound file="%ModDir%/Sound/bonebreak4.ogg"  selectionmode="random"/>
-          <sound file="%ModDir%/Sound/bonebreak3.ogg"/>
-          <sound file="%ModDir%/Sound/bonebreak2.ogg"/>
-          <sound file="%ModDir%/Sound/bonebreak1.ogg"/>
+          <sound file="%ModDir%/Sounds/Bones/bonebreak4.ogg"  selectionmode="random"/>
+          <sound file="%ModDir%/Sounds/Bones/bonebreak3.ogg"/>
+          <sound file="%ModDir%/Sounds/Bones/bonebreak2.ogg"/>
+          <sound file="%ModDir%/Sounds/Bones/bonebreak1.ogg"/>
           <Affliction identifier="severepain" amount="1" />
         </StatusEffect>
       </Effect>
@@ -203,7 +203,7 @@
       <PeriodicEffect mininterval="1" maxinterval="1">
         <StatusEffect target="Character" disabledeltatime="true" stackable="false" delay="1" checkconditionalalways="false">
           <Conditional ishuman="false" />
-          <ReduceAffliction identifier="dislocation1" amount="1000"/>
+          <ReduceAffliction identifier="dislocation" amount="1000"/>  <!--- This used to be dislocation1, I uh, changed it to dislocation -->
         </StatusEffect>
       </PeriodicEffect>
 

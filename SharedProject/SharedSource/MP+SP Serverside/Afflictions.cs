@@ -690,6 +690,7 @@ namespace Neurotrauma
             AfflictionsToAdd["increasedheartrate"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanNonLimbAffData AffData) =>
                 {
+
                     // Fibrillation cannot occur without a (beating) heart
                     if (C.GetAffData("cardiacarrest").Strength > 0 || C.GetAffData("heartremoved").Strength > 0)
                     {
@@ -697,6 +698,7 @@ namespace Neurotrauma
                         AffData.Strength = 0;
                         return;
                     }
+
 
                     // Harmless symptom (does not lead to Fibrillation)
                     bool hasSymHarmless =
@@ -709,9 +711,10 @@ namespace Neurotrauma
 
                     AffData.Strength = Math.Max(AffData.Strength, HF.BoolToNum(hasSymHarmless, 2));
 
+
                     // Fibrillation speed calculation
                     double fibrillationSpeed = -0.1
-                        + Math.Clamp(C.GetNonLimbAffData("aorticbleeding").Strength, 0, 2)
+                        + Math.Clamp(C.GetNonLimbAffData("aorticrupture").Strength, 0, 2)
                         + Math.Clamp(C.GetAffData("acidosis").Strength / 200, 0, 0.5)
                         + Math.Clamp(
                             0.9 - ((C.GetAffData("bloodpressure").Strength + Math.Clamp(C.GetAffData("afpressuredrug").Strength * 5, 0, 20)) / 90),
@@ -727,12 +730,14 @@ namespace Neurotrauma
                         fibrillationSpeed /= 2;
                     }
 
+
                     // Apply Fibrillation multipliers only when progressing
                     if (fibrillationSpeed > 0)
                     {
                         fibrillationSpeed *= NTC.GetMultiplier(C, "fibrillation") * NTConfig.Get("NT_fibrillationSpeed", 1);
                     }
-                        
+
+
                     // Progress IncreasedHeartrate or Fibrillation
                     if (C.GetNonLimbAffData("fibrillation").Strength <= 0)
                     {
@@ -749,6 +754,7 @@ namespace Neurotrauma
                         C.GetNonLimbAffData("fibrillation").Strength += fibrillationSpeed * NT.DeltaTime;
                         AffData.Strength = 0;
                     }
+
                 };
 
             // Fibrillation
@@ -1350,28 +1356,6 @@ namespace Neurotrauma
                     // Passive Decrease
                     // Decreases itself by 1 per 2 seconds, removing itself after 4 seconds; originally done in XML
                     AffData.Strength -= 1;
-                };
-
-            // Force Prone
-            // Constant; too complicated otherwise.
-            // Type: Functionality
-            // Effects: Changes the animations of a character to be unable to walk.
-            AfflictionsToAdd["forceprone"] = new("forceprone", 0, 2, 0, AfflictionPriority.HIGH);
-            AfflictionsToAdd["forceprone"].Const = true;
-            AfflictionsToAdd["forceprone"].UpdateAction =
-                (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanNonLimbAffData AffData) =>
-                {
-                    // Application Conditions
-                    AffData.Strength = HF.BoolToNum(
-                        !NTC.HasSymptomFalse(C, "forceprone")
-                        && C.GetSymptomAffData("unconsciousness").Strength <= 0
-                        && !C.Human.IsClimbing
-                        && (
-                            NTC.HasSymptom(C, "forceprone")
-                            || (C.GetBoolStatStrength("lockleftleg") && C.GetBoolStatStrength("lockrightleg") && !C.GetBoolStatStrength("wheelchaired"))
-                        ),
-                        2
-                    );
                 };
 
             // On Wheelchair
@@ -4027,6 +4011,28 @@ namespace Neurotrauma
                             )
                         ),
                         100
+                    );
+                };
+
+            // Force Prone
+            // Constant; too complicated otherwise.
+            // Type: Functionality
+            // Effects: Changes the animations of a character to be unable to walk.
+            SymptomsToAdd["forceprone"] = new("forceprone", 0, 2, 0, AfflictionPriority.HIGH);
+            SymptomsToAdd["forceprone"].Const = true;
+            SymptomsToAdd["forceprone"].UpdateAction =
+                (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanSymptomData AffData) =>
+                {
+                    // Application Conditions
+                    AffData.Strength = HF.BoolToNum(
+                        !NTC.HasSymptomFalse(C, "forceprone")
+                        && C.GetSymptomAffData("unconsciousness").Strength <= 0
+                        && !C.Human.IsClimbing
+                        && (
+                            NTC.HasSymptom(C, "forceprone")
+                            || (C.GetBoolStatStrength("lockleftleg") && C.GetBoolStatStrength("lockrightleg") && !C.GetBoolStatStrength("wheelchaired"))
+                        ),
+                        2
                     );
                 };
 
