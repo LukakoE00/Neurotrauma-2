@@ -83,7 +83,7 @@ namespace Neurotrauma
 
                         if (createdCharacter.CharacterHealth?.GetAffliction("immunity") == null)
                         {
-                            HF.SetAffliction(createdCharacter, "immunity", 100f, null, 0f);
+                            HF.AddAffliction(createdCharacter, "immunity", 100f, null);
                         }
                     }
                 }, 1000);

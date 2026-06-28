@@ -3070,15 +3070,15 @@ namespace Neurotrauma
             // Constant; too complicated otherwise.
             // Type: Vital Mechanic
             // Handles the entire blood pressure system and application of effects.
-            BloodAfflictionsToAdd["bloodpressure"] = new("bloodpressure", 0, 200, 0, AfflictionPriority.HIGH);
+            BloodAfflictionsToAdd["bloodpressure"] = new("bloodpressure", 0, 200, 100, AfflictionPriority.HIGH);
             BloodAfflictionsToAdd["bloodpressure"].Const = true;
             BloodAfflictionsToAdd["bloodpressure"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanBloodAffData AffData) =>
                 {
                     // If a character has no blood pressure, apply it.
-                    if (!HF.HasAffliction(C.Human, "bloodpressure"))
+                    if (!(HF.HasAffliction(C.Human, "bloodpressure")))
                     {
-                        HF.SetAffliction(C.Human, "bloodpressure", 100, null, 0);
+                        AffData.Strength = 100f;
                     }
 
                     // Does not progress in Stasis
@@ -3430,7 +3430,7 @@ namespace Neurotrauma
             // Type: Blood, Mechanic
             // Caused By: Existing.
             // Effects: Increased regeneration for Burns and Wounds.
-            BloodAfflictionsToAdd["immunity"] = new("immunity");
+            BloodAfflictionsToAdd["immunity"] = new("immunity", 0, 100, 100, AfflictionPriority.HIGH);
             BloodAfflictionsToAdd["immunity"].Const = true;
             BloodAfflictionsToAdd["immunity"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanBloodAffData AffData) =>
@@ -3438,7 +3438,9 @@ namespace Neurotrauma
                     if (AffData.Strength == -1)
                     {
                         if (NTBloodTypes.HasBloodType(C.Human))
-                            AffData.Strength = 5;
+                        {
+                            AffData.Strength = 100;
+                        }
                         else
                         {
                             AffData.Strength = 100;
