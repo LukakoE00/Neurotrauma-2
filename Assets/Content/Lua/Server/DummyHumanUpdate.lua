@@ -1,6 +1,18 @@
 -- Basically we have to trick our Lua NT Addons into using this human update.
 
 
+LuaUserData.MakeMethodAccessible(Descriptors["Neurotrauma.HumanUpdateLuaSync"], "PostSync")
+
+Hook.Patch("Neurotrauma.HumanUpdateLuaSync","SyncLuaAfflictions", function (GameSession, ptable)
+
+end, Hook.HookMethodType.After)
+
+
+Hook.Patch("Neurotrauma.HumanUpdateLuaSync","SyncLuaCharacters", function (GameSession, ptable)
+
+end, Hook.HookMethodType.After)
+
+
 -- Neurotrauma human update functions
 -- Hooks Lua event "think" to update and use for applying NT specific character data (its called 'c') with
 -- values/functions defined here in NT.UpdateHuman, NT.LimbAfflictions and NT.Afflictions

@@ -507,6 +507,7 @@ public class HumanUpdate
             LocalAfflictions = new CharacterAfflictions(NewHuman, this);
             LocalTags = new CharacterTags();
             SetSpeed(this,1);
+            SetDefaults(this);
         }
 
         public Character Human; // Our Human Ref
@@ -733,6 +734,16 @@ public class HumanUpdate
 
         // -------------------------------- Start of cursed update stuff -------------------------------- \\
 
+        private void SetDefaults(NTHuman C)
+        {
+            foreach (KeyValuePair<string,NTHumanAffData> Pair in C.LocalAfflictions.ConstantAfflictions)
+            {
+                if (Pair.Key == null || Pair.Value == null) continue;
+                NTAfflictionType AffType = Pair.Value.AffTemplate.Type;
+                SetAfflictionDefaultStrength(AffType, Pair.Key, Pair.Value);
+            }
+        }
+
         public void Update(List<AfflictionPriority> Priorities) // THHHHEEEE UPPPDATTEEEEE
         {
 
@@ -758,6 +769,7 @@ public class HumanUpdate
             UpdatePostHumanHooks();
 
         }
+
 
         private void UpdatePreHumanHooks()
         {
@@ -1004,10 +1016,12 @@ public class HumanUpdate
                     double BloodPrevStrength = BloodAffData.Strength;
 
                     double BloodCurrentStrength = GetAfflictionStrength(Human, BloodID);
+
                     BloodAffData.Strength = BloodCurrentStrength;
                     BloodAffData.PrevStrength = BloodPrevStrength;
 
                     BloodAff.UpdateAction(this, BloodID, LimbType.Torso, BloodAffData);
+
                     ApplyAfflictionChange(Human, BloodID, (float)BloodAffData.Strength, (float)BloodPrevStrength, (float)BloodAffData.AffTemplate.MinStrength, (float)BloodAffData.AffTemplate.MaxStrength);
 
                     break;
@@ -1073,6 +1087,70 @@ public class HumanUpdate
 
                         if (LimbSymData.HumanUpdateStoptime[Limb] <= 0) LimbSym.UpdateAction(this, LimbSymID, LimbType.Torso, LimbSymData);
                         HF.ApplyAfflictionChangeLimb(Human, Limb, LimbSymID, (float)LimbSymData.Strength[Limb], (float)LimbSymPrevStrength, (float)LimbSymData.SymTemplate.MinStrength, (float)LimbSymData.AffTemplate.MaxStrength);
+                    }
+
+                    break;
+            }
+        }
+
+        private void SetAfflictionDefaultStrength(NTAfflictionType AffType, string Key, NTHumanAffData Data)
+        {
+            switch (AffType)
+            {
+                case NTAfflictionType.NONLIMB:
+
+                    // Fetch the data of the affliction
+                    string ID = Key;
+                    NTHumanNonLimbAffData AffData = (NTHumanNonLimbAffData)Data;
+                    NTNonLimbAffliction Aff = AffData.AffTemplate;
+
+                    HF.SetAffliction(Human, ID, (float)Aff.DefaultStrength);
+                    break;
+
+                case NTAfflictionType.LIMB:
+
+                    foreach (LimbType Limb in LimbsToCheck)
+                    {
+                        // Fetch the data of the affliction
+                        string LimbID = Key;
+                        NTHumanLimbAffData LimbAffData = (NTHumanLimbAffData)Data;
+                        NTLimbAffliction LimbAff = LimbAffData.AffTemplate;
+
+                        HF.SetAfflictionLimb(Human, LimbID, Limb, (float)LimbAff.DefaultStrength);
+                    }
+
+                    break;
+
+                case NTAfflictionType.BLOOD:
+
+                    // Fetch the data of the affliction
+                    string BloodID = Key;
+                    NTHumanBloodAffData BloodAffData = (NTHumanBloodAffData)Data;
+                    NTBloodAffliction BloodAff = BloodAffData.AffTemplate;
+
+                    HF.SetAffliction(Human, BloodID, (float)BloodAff.DefaultStrength);
+                    break;
+
+                case NTAfflictionType.SYMPTOM:
+
+                    // Fetch the data of the affliction
+                    string SymID = Key;
+                    NTHumanSymptomData SymData = (NTHumanSymptomData)Data;
+                    NTSymptom Sym = SymData.SymTemplate;
+
+                    HF.SetAffliction(Human, SymID, (float)Sym.DefaultStrength);
+                    break;
+
+                case NTAfflictionType.LIMBSYMPTOM:
+
+                    foreach (LimbType Limb in LimbsToCheck)
+                    {
+                        // Fetch the data of the affliction
+                        string LimbSymID = Key;
+                        NTHumanLimbSymptomData LimbSymData = (NTHumanLimbSymptomData)Data;
+                        NTLimbSymptom LimbSym = LimbSymData.SymTemplate;
+
+                        HF.SetAfflictionLimb(Human, LimbSymID, Limb, (float)LimbSym.DefaultStrength);
                     }
 
                     break;
@@ -1283,8 +1361,7 @@ public class HumanUpdate
             UpdateHumans(priorities);
         }
 
-        LuaCsSetup.Instance.EventService.PublishEvent<IEventSyncLuaHumanUpdate>(x => x.SyncLuaHumanUpdate());
-        LuaCsSetup.Instance.EventService.PublishEvent<IEventSyncLuaCharacters>(x => x.SyncLuaCharacters());
+        HumanUpdateLuaSync.PreSync();
     }
 
     private void UpdateHumans(List<AfflictionPriority> priorities)

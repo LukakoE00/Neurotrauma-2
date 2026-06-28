@@ -4,7 +4,7 @@ using MoonSharp.Interpreter;
 
 namespace Neurotrauma
 {
-    public partial class NeurotraumaInit : IAssemblyPlugin, IEventChangeFallDamage, IEventUpdate, IEventCharacterCreated, IEventCharacterDeath, IEventSyncLuaCharacters, IEventSyncLuaHumanUpdate
+    public partial class NeurotraumaInit : IAssemblyPlugin, IEventChangeFallDamage, IEventUpdate, IEventCharacterCreated, IEventCharacterDeath
     {
         // ---------------------------         Ydrec Shit         --------------------------- \\
 
@@ -53,16 +53,10 @@ namespace Neurotrauma
 
         public void AddPatches()
         {
-            // Add our custom Lua Hooks
-            EventService.RegisterLuaEventAlias<IEventSyncLuaCharacters>("SyncLuaCharacters", nameof(IEventSyncLuaCharacters.SyncLuaCharacters));
-            EventService.RegisterLuaEventAlias<IEventSyncLuaHumanUpdate>("SyncLuaHumanUpdate", nameof(IEventSyncLuaHumanUpdate.SyncLuaHumanUpdate));
-
             //EventService.Subscribe<IEventChangeFallDamage>(this);  //subscribe your plugin
             //EventService.Subscribe<IEventUpdate>(this);  //subscribe your plugin
             EventService.Subscribe<IEventCharacterCreated>(this);  //subscribe your plugin
             EventService.Subscribe<IEventCharacterDeath>(this);  //subscribe your plugin
-            EventService.Subscribe<IEventSyncLuaCharacters>(this);
-            EventService.Subscribe<IEventSyncLuaHumanUpdate>(this);
         }
 
         public void RemovePatches()
@@ -153,16 +147,6 @@ namespace Neurotrauma
         public void OnCharacterDeath(Character character, Affliction causeOfDeathAffliction, CauseOfDeathType causeOfDeathType)
         {
             HU.RemoveCharacterFromUpdate(character);
-        }
-
-        public void SyncLuaHumanUpdate()
-        {
-            HumanUpdateLuaSync.SyncLuaAfflictions();
-        }
-
-        public void SyncLuaCharacters()
-        {
-            HumanUpdateLuaSync.SyncLuaCharacters();
         }
     }
 

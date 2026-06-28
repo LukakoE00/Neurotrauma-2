@@ -36,7 +36,8 @@ namespace Neurotrauma
         /// </summary>
         static public void PreSync()
         {
-
+            SyncLuaAfflictions();
+            SyncLuaCharacters();
         }
 
         /// <summary>
@@ -49,12 +50,10 @@ namespace Neurotrauma
 
         static public void SyncLuaAfflictions()
         {
-            LuaCsSetup.Instance.EventService.PublishEvent<IEventSyncLuaCharacters>(x => x.SyncLuaCharacters());
         }
 
         static public void SyncLuaCharacters()
         {
-            LuaCsSetup.Instance.EventService.PublishEvent<IEventSyncLuaHumanUpdate>(x => x.SyncLuaHumanUpdate());
         }
 
     }
