@@ -2428,6 +2428,8 @@ namespace Neurotrauma
             LimbAfflictionsToAdd["bleeding"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanLimbAffData AffData) =>
                 {
+                    if (!(AffData.Strength[Limb] > 0)) return;
+
                     // Passive Regeneration
                     AffData.Strength[Limb] -= (C.GetDoubleStatStrength("clottingrate") * 0.1
                         + Math.Clamp(C.GetLimbAffStrength("bandaged", Limb), 0, 1) * 0.5
@@ -2444,6 +2446,8 @@ namespace Neurotrauma
             LimbAfflictionsToAdd["stimulatedbonegrowth"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanLimbAffData AffData) =>
                 {
+                    if (!(AffData.Strength[Limb] > 0)) return;
+
                     // Passive Regeneration
                     // Originally had a maxstrength of 100, and reduced by 0.5 per second in XML.
                     // Adjusted, that became 1 per 2 seconds.
@@ -2459,6 +2463,8 @@ namespace Neurotrauma
             LimbAfflictionsToAdd["fracturedextremity"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanLimbAffData AffData) =>
                 {
+                    if (!(AffData.Strength[Limb] > 0)) return;
+
                     bool HasCast = HF.HasAfflictionLimb(C.Human, "plastercast", Limb);
                     bool HasBandage = HF.HasAfflictionLimb(C.Human, "bandaged", Limb) || HF.HasAfflictionLimb(C.Human, "bandageddirty", Limb);
 
@@ -2499,6 +2505,8 @@ namespace Neurotrauma
             LimbAfflictionsToAdd["dislocation"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanLimbAffData AffData) =>
                 {
+                    if (!(AffData.Strength[Limb] > 0)) return;
+
                     // If painlessness is present, don't cause problems
                     if (C.GetBoolStatStrength("sedated")) return;
 
@@ -2517,6 +2525,8 @@ namespace Neurotrauma
             LimbAfflictionsToAdd["tourniqueted"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanLimbAffData AffData) =>
                 {
+                    if (!(AffData.Strength[Limb] > 0)) return;
+
                     // Effects:
                     // Gangrene
                     HF.AddAfflictionLimb(C.Human, "gangrene", Limb, (float)(HF.BoolToNum(HF.Chance(0.1f)) * 0.5 * NTConfig.Get("NT_gangrenespeed", 1) * NT.DeltaTime), null);
@@ -2532,6 +2542,8 @@ namespace Neurotrauma
             LimbAfflictionsToAdd["plastercast"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanLimbAffData AffData) =>
                 {
+                    if (!(AffData.Strength[Limb] > 0)) return;
+
                     // Effects:
                     // Leg slowdown
                     if (Limb == LimbType.LeftLeg || Limb == LimbType.RightLeg)
@@ -2559,6 +2571,8 @@ namespace Neurotrauma
             LimbAfflictionsToAdd["gangrene"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanLimbAffData AffData) =>
                 {
+                    if (!(AffData.Strength[Limb] > 0)) return;
+
                     // Limb must be an extremity
                     if (!HF.LimbIsExtremity(Limb)) return;
 
@@ -2585,6 +2599,8 @@ namespace Neurotrauma
             LimbAfflictionsToAdd["bandaged"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanLimbAffData AffData) =>
                 {
+                    if (!(AffData.Strength[Limb] > 0)) return;
+
                     double WoundDamage = C.GetLimbAffStrength("firstdegreeburn", Limb)
                         + C.GetLimbAffStrength("seconddegreeburn", Limb)
                         + C.GetLimbAffStrength("thirddegreeburn", Limb)
@@ -2597,8 +2613,6 @@ namespace Neurotrauma
                         + Math.Clamp(WoundDamage / 100, 0, 0.4)
                         + C.GetLimbAffStrength("bleeding", Limb) / 20;
 
-                    if (AffData.Strength[Limb] > 0)
-                    {
                         // Dirtify bandage over time
                         AffData.Strength[Limb] -= BandageDirtifySpeed * NT.DeltaTime;
 
@@ -2610,7 +2624,6 @@ namespace Neurotrauma
                         }
 
                         HF.AddAfflictionLimb(C.Human, "bandageddirty", Limb, (float)(BandageDirtifySpeed * NT.DeltaTime), null);
-                    }
 
                     // Effects:
                     // Slowdown
@@ -2638,6 +2651,8 @@ namespace Neurotrauma
             LimbAfflictionsToAdd["bandageddirty"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanLimbAffData AffData) =>
                 {
+                    if (!(AffData.Strength[Limb] > 0)) return;
+
                     double WoundDamage = C.GetLimbAffStrength("firstdegreeburn", Limb)
                         + C.GetLimbAffStrength("seconddegreeburn", Limb)
                         + C.GetLimbAffStrength("thirddegreeburn", Limb)
@@ -2672,6 +2687,8 @@ namespace Neurotrauma
             LimbAfflictionsToAdd["iced"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanLimbAffData AffData) =>
                 {
+                    if (!(AffData.Strength[Limb] > 0)) return;
+
                     // Passive Decrease
                     AffData.Strength[Limb] -= 3.4 * NT.DeltaTime;
 
@@ -2699,6 +2716,8 @@ namespace Neurotrauma
             LimbAfflictionsToAdd["ointmented"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanLimbAffData AffData) =>
                 {
+                    if (!(AffData.Strength[Limb] > 0)) return;
+
                     // Passive Decrease
                     AffData.Strength[Limb] -= 1.2 * NT.DeltaTime;
 
@@ -2719,6 +2738,8 @@ namespace Neurotrauma
             LimbAfflictionsToAdd["infectedwound"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanLimbAffData AffData) =>
                 {
+                    if (!(AffData.Strength[Limb] > 0)) return;
+
                     // Does not progress in Stasis
                     if (C.GetBoolStatStrength("stasis")) return;
 
@@ -2758,6 +2779,8 @@ namespace Neurotrauma
             LimbAfflictionsToAdd["foreignbody"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanLimbAffData AffData) =>
                 {
+                    if (!(AffData.Strength[Limb] > 0)) return;
+
                     // Passive Decrease
                     if (AffData.Strength[Limb] < 15)
                     {
@@ -2818,6 +2841,8 @@ namespace Neurotrauma
             LimbAfflictionsToAdd["burn"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanLimbAffData AffData) =>
                 {
+                    if (!(AffData.Strength[Limb] > 0)) return;
+
                     // Passive Decrease
                     if (AffData.Strength[Limb] < 50)
                     {
@@ -2875,6 +2900,8 @@ namespace Neurotrauma
             LimbAfflictionsToAdd["lacerations"].UpdateAction  =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanLimbAffData AffData) =>
                 {
+                    if (!(AffData.Strength[Limb] > 0)) return;
+
                     // Passive Regeneration
                     if (AffData.Strength[Limb] < 50)
                     {
@@ -2913,6 +2940,8 @@ namespace Neurotrauma
             LimbAfflictionsToAdd["gunshotwound"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanLimbAffData AffData) =>
                 {
+                    if (!(AffData.Strength[Limb] > 0)) return;
+
                     // Passive Regeneration
                     if (AffData.Strength[Limb] < 50)
                     {
@@ -2949,6 +2978,8 @@ namespace Neurotrauma
             LimbAfflictionsToAdd["explosiondamage"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanLimbAffData AffData) =>
                 {
+                    if (!(AffData.Strength[Limb] > 0)) return;
+
                     // Passive Regeneration
                     if (AffData.Strength[Limb] < 50)
                     {
@@ -2985,6 +3016,8 @@ namespace Neurotrauma
             LimbAfflictionsToAdd["bitewounds"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanLimbAffData AffData) =>
                 {
+                    if (!(AffData.Strength[Limb] > 0)) return;
+
                     // Passive Regeneration
                     if (AffData.Strength[Limb] < 100)
                     {
@@ -3021,6 +3054,8 @@ namespace Neurotrauma
             LimbAfflictionsToAdd["blunttrauma"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanLimbAffData AffData) =>
                 {
+                    if (!(AffData.Strength[Limb] > 0)) return;
+
                     // Passive Regeneration
                     if (AffData.Strength[Limb] < 100)
                     {
@@ -3042,6 +3077,8 @@ namespace Neurotrauma
             LimbAfflictionsToAdd["internaldamage"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanLimbAffData AffData) =>
                 {
+                    if (!(AffData.Strength[Limb] > 0)) return;
+
                     // Passive Regeneration
                     if (AffData.Strength[Limb] < 50)
                     {
