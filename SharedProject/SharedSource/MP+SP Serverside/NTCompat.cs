@@ -152,9 +152,10 @@ namespace Neurotrauma
             OnDamagedHooks.Add(Hook);
         }
 
-        public static List<Func<CharacterHealth, AttackResult, Limb, Affliction>> ModifyingOnDamagedHooks = new(); // I Dont't think this one works.
+        // These might work?
+        public static readonly List<Action<CharacterHealth, List<Affliction>, Limb>> ModifyingOnDamagedHooks = new();
 
-        public static void AddModifyingOnDamagedHook(Func<CharacterHealth, AttackResult, Limb, Affliction> Hook) // I Dont't think this one works.
+        public static void AddModifyingOnDamagedHook(Action<CharacterHealth, List<Affliction>, Limb> Hook)
         {
             ModifyingOnDamagedHooks.Add(Hook);
         }
