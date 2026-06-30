@@ -1095,6 +1095,126 @@ Can give blood to: AB+</entitydescription.ab_positivecard>
 <!-- Emergency Suit Equip Warning -->
 <!--<emergencysuitequipconfirmation>Equipping this will cause you to go immobile. Are you sure?</emergencysuitequipconfirmation>-->
 
+<!-- ================================================= AI Voicelines ================================================= -->
+
+<!-- Fractured Neck -->
+<npcdialogsym.fracturedneck_1>I think I broke my neck!</npcdialogsym.fracturedneck_1>
+<npcdialogsym.fracturedneck_2>My neck just made a loud crunching noise!</npcdialogsym.fracturedneck_2>
+
+<!-- Carotid Arterial Bleeding -->
+<npcdialogsym.carotidarterialcut_1>Blood is gushing out of my neck!</npcdialogsym.carotidarterialcut_1>
+<npcdialogsym.carotidarterialcut_2>I'm bleeding heavily from my neck!</npcdialogsym.carotidarterialcut_2>
+
+<!-- Arterial Bleeding -->
+<npcdialogsym.arterialcut_1>Blood is gushing out of one of my limbs!</npcdialogsym.arterialcut_1>
+<npcdialogsym.arterialcut_2>I'm bleeding heavily from one of my limbs!</npcdialogsym.arterialcut_2>
+
+<!-- Vomiting Blood -->
+<npcdialogsym.vomitingblood_1>I'm vomiting blood!</npcdialogsym.vomitingblood_1>
+<npcdialogsym.vomitingblood_2>I just threw up blood!</npcdialogsym.vomitingblood_2>
+<npcdialogsym.vomitingblood_3>My vomit is bloody!</npcdialogsym.vomitingblood_3>
+
+<!-- Pale Skin -->
+<npcdialogsym.paleskin_1>My skin is turning pale!</npcdialogsym.paleskin_1>
+<npcdialogsym.paleskin_2>I feel cold and my skin is discoloring!</npcdialogsym.paleskin_2>
+
+<!-- Confusion -->
+<npcdialogsym.confusion_1>I feel confused..</npcdialogsym.confusion_1>
+<npcdialogsym.confusion_2>I'm so lost.. what's going on?</npcdialogsym.confusion_2>
+<npcdialogsym.confusion_3>I'm zoning out..</npcdialogsym.confusion_3>
+
+<!-- Lightheadedness -->
+<npcdialogsym.lightheadedness_1>I'm feeling lightheaded..</npcdialogsym.lightheadedness_1>
+<npcdialogsym.lightheadedness_2>Everything is spinning around me..</npcdialogsym.lightheadedness_2>
+<npcdialogsym.lightheadedness_3>I feel woozy..</npcdialogsym.lightheadedness_3>
+
+<!-- Abdominal Pain -->
+<npcdialogsym.abdominalpain_1>My stomach hurts badly!</npcdialogsym.abdominalpain_1>
+<npcdialogsym.abdominalpain_2>Something in my abdomen hurts a lot!</npcdialogsym.abdominalpain_2>
+<npcdialogsym.abdominalpain_3>I'm having pain in my abdomen!</npcdialogsym.abdominalpain_3>
+
+<!-- Inflammation -->
+<npcdialogsym.inflammation_1>One of my wounds is really warm!</npcdialogsym.inflammation_1>
+<npcdialogsym.inflammation_2>One of my wounds is swelling up!</npcdialogsym.inflammation_2>
+<npcdialogsym.inflammation_3>One of my wounds is looking very red!</npcdialogsym.inflammation_3>
+
+<!-- Gangrene -->
+<npcdialogsym.gangrene_1>One of my limbs is turning black!</npcdialogsym.gangrene_1>
+<npcdialogsym.gangrene_2>I'm losing feeling in one of my limbs!</npcdialogsym.gangrene_2>
+<npcdialogsym.gangrene_3>I think one of my limbs is rotting!</npcdialogsym.gangrene_3>
+
+<!-- Fever -->
+<npcdialogsym.fever_1>I feel like I'm burning up!</npcdialogsym.fever_1>
+<npcdialogsym.fever_2>I feel feverish!</npcdialogsym.fever_2>
+<npcdialogsym.fever_3>I feel warm, yet I keep shivering!</npcdialogsym.fever_3>
+
+<!-- Headache -->
+<npcdialogsym.headache_1>My head is pounding!</npcdialogsym.headache_1>
+<npcdialogsym.headache_2>My head is killing me!</npcdialogsym.headache_2>
+<npcdialogsym.headache_3>Does anyone have an Ibuprofen? I have a headache.</npcdialogsym.headache_3>
+<npcdialogsym.headache_4>I have a throbbing pain in my head!</npcdialogsym.headache_4>
+
+<!-- Blurred Vision -->
+<npcdialogsym.blurredvision_1>Everything looks blurry!</npcdialogsym.blurredvision_1>
+<npcdialogsym.blurredvision_2>I can't focus on anything!</npcdialogsym.blurredvision_2>
+<npcdialogsym.blurredvision_3>I cannot see properly anymore!</npcdialogsym.blurredvision_3>
+
+<!-- Fractured Ribs -->
+<npcdialogsym.fracturedribs_1>I think I broke a few ribs!</npcdialogsym.fracturedribs_1>
+<npcdialogsym.fracturedribs_2>My chest made a loud cracking noise!</npcdialogsym.fracturedribs_2>
+<npcdialogsym.fracturedribs_3>My ribs hurt when I breathe!</npcdialogsym.fracturedribs_3>
+
+<!-- Fractured Skull -->
+<npcdialogsym.fracturedskull_1>My skull made a loud cracking noise!</npcdialogsym.fracturedskull_1>
+<npcdialogsym.fracturedskull_2>Something is wrong with my head!</npcdialogsym.fracturedskull_2>
+<npcdialogsym.fracturedskull_3>I think I just broke my skull!</npcdialogsym.fracturedskull_3>
+
+<!-- Fractured Extremity -->
+<npcdialogsym.fracturedextremity_1>I think I broke one of my limbs!</npcdialogsym.fracturedextremity_1>
+<npcdialogsym.fracturedextremity_2>One of my limbs just made a loud cracking noise!</npcdialogsym.fracturedextremity_2>
+<npcdialogsym.fracturedextremity_3>I can't move a limb properly!</npcdialogsym.fracturedextremity_3>
+
+<!-- Dislocation -->
+<npcdialogsym.dislocation_1>I think I dislocated one of my limbs!</npcdialogsym.dislocation_1>
+<npcdialogsym.dislocation_2>One of my limbs just popped out of the socket!</npcdialogsym.dislocation_2>
+<npcdialogsym.dislocation_3>I can't move a limb properly!</npcdialogsym.dislocation_3>
+
+<!-- Chest Pain -->
+<npcdialogsym.chestpain_1>My chest hurts!</npcdialogsym.chestpain_1>
+<npcdialogsym.chestpain_2>I feel a painful pressure in my chest!</npcdialogsym.chestpain_2>
+<npcdialogsym.chestpain_3>I have a painful feeling in my chest!</npcdialogsym.chestpain_3>
+
+<!-- Weakness -->
+<npcdialogsym.weakness_1>I feel so weak..</npcdialogsym.weakness_1>
+<npcdialogsym.weakness_2>It feels like my muscles won't work..</npcdialogsym.weakness_2>
+
+<!-- Sweating -->
+<npcdialogsym.sweating_1>I'm sweating profusely!</npcdialogsym.sweating_1>
+<npcdialogsym.sweating_2>I'm soaked in sweat!</npcdialogsym.sweating_2>
+<npcdialogsym.sweating_3>I'm dripping with sweat!</npcdialogsym.sweating_3>
+
+<!-- Shortness of Breath -->
+<npcdialogsym.shortnessofbreath_1>I can't breathe properly!</npcdialogsym.shortnessofbreath_1>
+<npcdialogsym.shortnessofbreath_2>It feels like I can't breathe!</npcdialogsym.shortnessofbreath_2>
+<npcdialogsym.shortnessofbreath_3>Something is wrong with my breathing!</npcdialogsym.shortnessofbreath_3>
+
+<!-- Bloating -->
+<npcdialogsym.bloating_1>My stomach feels bloated!</npcdialogsym.bloating_1>
+<npcdialogsym.bloating_2>My abdomen feels swollen!</npcdialogsym.bloating_2>
+
+<!-- Leg Swelling -->
+<npcdialogsym.legswelling_1>My leg is swelling up!</npcdialogsym.legswelling_1>
+<npcdialogsym.legswelling_2>My leg is way bigger than usual!</npcdialogsym.legswelling_2>
+
+<!-- Craving -->
+<npcdialogsym.craving_1>I really need my fix..</npcdialogsym.craving_1>
+<npcdialogsym.craving_2>I could really use a pick-me-up..</npcdialogsym.craving_2>
+
+<!-- Palpitations -->
+<npcdialogsym.palpitations_1>My heart is racing!</npcdialogsym.palpitations_1>
+<npcdialogsym.palpitations_2>My heart is beating faster than usual!</npcdialogsym.palpitations_2>
+<npcdialogsym.palpitations_3>My heart is pounding!</npcdialogsym.palpitations_3>
+
 <!-- ================================================= Config Options ================================================= -->
 <!-- Pause Menu Button -->
 <ntgui_pausemenubutton_name>Neurotrauma Config</ntgui_pausemenubutton_name>
