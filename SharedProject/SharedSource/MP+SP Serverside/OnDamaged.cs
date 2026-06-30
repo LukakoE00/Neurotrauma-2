@@ -52,26 +52,26 @@ public class OnDamaged
     }
 
     public static void Override_DamageLimb(
-    Character Character,
-    Vector2 WorldPosition,
-    Limb HitLimb,
-    IEnumerable<Affliction> Afflictions,
-    float StunAmount,
-    bool PlaySound,
-    Vector2 AttackImpulse,
-    Character Attacker = null,
-    float DamageMultiplier = 1f,
-    bool AllowStacking = true,
-    float Penetration = 0f,
-    bool ShouldImplode = false,
-    bool IgnoreDamageOverlay = false,
-    bool RecalculateVitality = true)
+    Character __instance,
+    Vector2 worldPosition,
+    Limb hitLimb,
+    IEnumerable<Affliction> afflictions,
+    float stun,
+    bool playSound,
+    Vector2 attackImpulse,
+    Character attacker = null,
+    float damageMultiplier = 1f,
+    bool allowStacking = true,
+    float penetration = 0f,
+    bool shouldImplode = false,
+    bool ignoreDamageOverlay = false,
+    bool recalculateVitality = true)
     {
         // Confirm the attack data is valid.
-        if (Character == null || Character.IsDead || !(Character.IsHuman) ||
-            Afflictions == null ||
-            HitLimb == null || HitLimb.IsSevered ||
-            Attacker == null ||
+        if (__instance == null || __instance.IsDead || !(__instance.IsHuman) ||
+            afflictions == null ||
+            hitLimb == null || hitLimb.IsSevered ||
+            attacker == null ||
             !(NTConfig.Get<bool>("NT_Calculations", true)))
         {
             return;
@@ -83,42 +83,42 @@ public class OnDamaged
         // If one of these critters caused the attack, counteract the additional damage.
         foreach (string Species in CreatureCategory)
         {
-            if (Attacker.SpeciesName == Species)
+            if (attacker.SpeciesName == Species)
             {
-                HF.AddAffliction(Character, "stopcreatureabuse", 2f);
+                HF.AddAffliction(__instance, "stopcreatureabuse", 2f);
                 break;
             }
         }
     }
 
     public static void Override_ApplyDamage(
-    CharacterHealth characterHealth,
-    Limb HitLimb,
-    AttackResult AttackResult,
-    bool AllowStacking = true,
-    bool RecalculateVitality = true)
+        CharacterHealth __instance,
+        Limb hitLimb,
+        AttackResult attackResult,
+        bool allowStacking = true,
+        bool recalculateVitality = true)
     {
         // Confirm the attack data is valid.
-        if (characterHealth == null || characterHealth.Character == null || characterHealth.Character.IsDead || !(characterHealth.Character.IsHuman) ||
-            AttackResult.Afflictions == null || !(AttackResult.Afflictions.Any()) ||
-            HitLimb == null || HitLimb.IsSevered ||
+        if (__instance == null || __instance.Character == null || __instance.Character.IsDead || !(__instance.Character.IsHuman) ||
+            attackResult.Afflictions == null || !(attackResult.Afflictions.Any()) ||
+            hitLimb == null || hitLimb.IsSevered ||
             !NTConfig.Get<bool>("NT_Calculations", true))
         {
             return;
         }
 
         // Check for Luabotomy.
-        if (!HF.HasAffliction(characterHealth.Character, "luabotomy"))
+        if (!HF.HasAffliction(__instance.Character, "luabotomy"))
         {
-            HF.SetAffliction(characterHealth.Character, "luabotomy", 1f);
+            HF.SetAffliction(__instance.Character, "luabotomy", 1f);
         }
 
-        List<Affliction> Afflictions = AttackResult.Afflictions;
+        List<Affliction> Afflictions = attackResult.Afflictions;
 
         // NT Compatibility Modifying OnDamaged Hooks
         foreach (var hook in OnDamaged.ModifyingOnDamagedHooks)
         {
-            Afflictions = hook(characterHealth, Afflictions, HitLimb);
+            Afflictions = hook(__instance, Afflictions, hitLimb);
         }
 
         // Run the method corresponding to the identifier (if it exists)
@@ -128,16 +128,16 @@ public class OnDamaged
 
             if (OnDamaged.OnDamagedMethods.TryGetValue(Identifier, out var method))
             {
-                float Resistance = HF.GetResistance(characterHealth.Character, Identifier, HitLimb.type);
+                float Resistance = HF.GetResistance(__instance.Character, Identifier, hitLimb.type);
                 float Strength = affliction.Strength * (1f - Resistance);
-                method(characterHealth.Character, Strength, HitLimb.type);
+                method(__instance.Character, Strength, hitLimb.type);
             }
         }
 
         // NT Compatibility OnDamaged Hooks
         foreach (var hook in OnDamaged.OnDamagedHooks)
         {
-            hook(characterHealth, AttackResult, HitLimb);
+            hook(__instance, attackResult, hitLimb);
         }
     }
 
