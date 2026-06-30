@@ -18,7 +18,6 @@ namespace Neurotrauma;
 public class HumanUpdate
 {
 
-
     private static int UpdateCooldown = 0;
     private static readonly int UpdateIntervalHigh = (int)AfflictionPriority.HIGH; // 120 = 2s
     private static readonly int UpdateIntervalMedium = (int)AfflictionPriority.MEDIUM; // 240 = 4s
@@ -764,6 +763,8 @@ public class HumanUpdate
 
             UpdateAfflictions(Priorities);
 
+            //SyncAfflictionStrengths(); // This is our version of the late update.
+
             // ----------------------------------------- Clearing ----------------------------------------- \\
 
             UpdatePostHumanHooks();
@@ -952,8 +953,7 @@ public class HumanUpdate
                 }
             }
 
-            LocalAfflictions.LastUpdatedAfflictions = SortedAfflictions;
-            LocalAfflictions.LastUpdatedAfflictions = LocalAfflictions.LastUpdatedAfflictions.Where(aff => { return Human.CharacterHealth.GetAllAfflictions().Contains(aff); }).ToList();
+            LocalAfflictions.LastUpdatedAfflictions = SortedAfflictions.Where(aff => { return Human.CharacterHealth.GetAllAfflictions().Contains(aff); }).ToList();
         }
 
         private void UpdateAffliction(NTAfflictionType AffType, List<AfflictionPriority> Priorities, string Key, NTHumanAffData Data)
@@ -976,6 +976,7 @@ public class HumanUpdate
                     AffData.PrevStrength = PrevStrength;
 
                     Aff.UpdateAction(this, ID, LimbType.Torso, AffData);
+
                     ApplyAfflictionChange(Human, ID, (float)AffData.Strength, (float)PrevStrength, (float)AffData.AffTemplate.MinStrength, (float)AffData.AffTemplate.MaxStrength);
 
                     break;
@@ -991,14 +992,14 @@ public class HumanUpdate
 
                         if (!Priorities.Contains(LimbAff.Priority) || (!LimbAff.IgnoreStasis && GetBoolStatStrength("stasis"))) continue;
 
-                        double LimbPrevStrength = LimbAffData.Strength[Limb];
+                        double LimbPrevStrength = Math.Clamp(LimbAffData.Strength[Limb],LimbAff.MinStrength,LimbAff.MaxStrength);
 
                         double LimbCurrentStrength = GetAfflictionStrengthLimb(Human, Limb, LimbID);
                         LimbAffData.Strength[Limb] = LimbCurrentStrength;
 
                         LimbAffData.PrevStrength[Limb] = LimbPrevStrength;
-
                         LimbAff.UpdateAction(this, LimbID, Limb, LimbAffData);
+
                         ApplyAfflictionChangeLimb(Human, Limb, LimbID, (float)LimbAffData.Strength[Limb], (float)LimbPrevStrength, (float)LimbAffData.AffTemplate.MinStrength, (float)LimbAffData.AffTemplate.MaxStrength);
                     }
 
@@ -1039,12 +1040,11 @@ public class HumanUpdate
                     SymData.Strength = SymCurrentStrength;
                     double SymPrevStrength = SymData.Strength;
 
-                    if (SymData.HumanUpdateTime <= 0)
+                    if (SymData.HumanUpdateTime > 0)
                     {
-                        SymData.Strength = 0;
+                        SymData.Strength = 100;
                         SymData.HumanUpdateTime--;
                     }
-                    else SymData.Strength = 100; SymData.HumanUpdateTime--;
 
                     if (SymData.HumanUpdateStoptime > 0)
                     {
@@ -1071,13 +1071,12 @@ public class HumanUpdate
                         double LimbSymCurrentStrength = GetAfflictionStrengthLimb(Human, Limb, LimbSymID);
                         LimbSymData.Strength[Limb] = LimbSymCurrentStrength;
                         double LimbSymPrevStrength = LimbSymData.Strength[Limb];
-                        if (LimbSymData.HumanUpdateTime[Limb] <= 0)
+
+                        if (LimbSymData.HumanUpdateTime[Limb] > 0)
                         {
-                            LimbSymData.Strength[Limb] = 0;
+                            LimbSymData.Strength[Limb] = 100;
                             LimbSymData.HumanUpdateTime[Limb]--;
                         }
-                        else
-                            LimbSymData.Strength[Limb] = 100; LimbSymData.HumanUpdateTime[Limb]--;
 
                         if (LimbSymData.HumanUpdateStoptime[Limb] > 0)
                         {
@@ -1157,6 +1156,74 @@ public class HumanUpdate
             }
         }
 
+        private void SyncAfflictionStrengths()
+        {
+            foreach (KeyValuePair<string,NTHumanAffData> Pair in LocalAfflictions.UpdatingAfflictions)
+            {
+                NTAfflictionType AffType = Pair.Value.AffTemplate.Type;
+                SyncAfflictionStrength(AffType, Pair.Key, Pair.Value);
+            }
+        }
+
+        private void SyncAfflictionStrength(NTAfflictionType AffType, string ID, NTHumanAffData Data)
+        {
+            switch (AffType)
+            {
+                case NTAfflictionType.NONLIMB:
+
+                    // Fetch the data of the affliction
+
+                    NTHumanNonLimbAffData AffData = (NTHumanNonLimbAffData)Data;
+
+                    HF.SetAffliction(Human, ID, (float)AffData.Strength);
+                    break;
+
+                case NTAfflictionType.LIMB:
+
+                    foreach (LimbType Limb in LimbsToCheck)
+                    {
+                        // Fetch the data of the affliction
+                        string LimbID = ID;
+                        NTHumanLimbAffData LimbAffData = (NTHumanLimbAffData)Data;
+
+                        HF.SetAfflictionLimb(Human, LimbID, Limb, (float)LimbAffData.Strength[Limb]);
+                    }
+
+                    break;
+
+                case NTAfflictionType.BLOOD:
+
+                    // Fetch the data of the affliction
+                    string BloodID = ID;
+                    NTHumanBloodAffData BloodAffData = (NTHumanBloodAffData)Data;
+
+                    HF.SetAffliction(Human, BloodID, (float)BloodAffData.Strength);
+                    break;
+
+                case NTAfflictionType.SYMPTOM:
+
+                    // Fetch the data of the affliction
+                    string SymID = ID;
+                    NTHumanSymptomData SymData = (NTHumanSymptomData)Data;
+
+                    HF.SetAffliction(Human, SymID, (float)SymData.Strength);
+                    break;
+
+                case NTAfflictionType.LIMBSYMPTOM:
+
+                    foreach (LimbType Limb in LimbsToCheck)
+                    {
+                        // Fetch the data of the affliction
+                        string LimbSymID = ID;
+                        NTHumanLimbSymptomData LimbSymData = (NTHumanLimbSymptomData)Data;
+
+                        HF.SetAfflictionLimb(Human, LimbSymID, Limb, (float)LimbSymData.Strength[Limb]);
+                    }
+
+                    break;
+            }
+        }
+
     }
 
     /// <summary>
@@ -1211,7 +1278,7 @@ public class HumanUpdate
         }
     }
 
-    public void RemoveCharacterFromUpdate(Character target)
+    public static void RemoveCharacterFromUpdate(Character target)
     {
         if (target is Character)
         {
@@ -1228,7 +1295,7 @@ public class HumanUpdate
         }
     }
 
-    public void AddHumanToUpdate(Character AddedCharacter)
+    public static void AddHumanToUpdate(Character AddedCharacter)
     {
         if (!UpdatingHumans.ContainsKey(AddedCharacter))
         {
@@ -1237,13 +1304,13 @@ public class HumanUpdate
         }
     }
 
-    public void RemoveHumanFromUpdate(Character RemovingCharacter) // Probably a better way to do this.
+    public static void RemoveHumanFromUpdate(Character RemovingCharacter) // Probably a better way to do this.
     {
         if (UpdatingHumans.ContainsKey(RemovingCharacter)) return;
         UpdatingHumans.Remove(RemovingCharacter);
     }
 
-    public void AddMonsterToUpdate(Character AddedMonster)
+    public static void AddMonsterToUpdate(Character AddedMonster)
     {
         if (!AddedMonster.IsHuman)
         {
@@ -1255,7 +1322,7 @@ public class HumanUpdate
         }
     }
 
-    public void RemoveMonsterFromUpdate(Character RemovingMonster) // Probably a better way to do this.
+    public static void RemoveMonsterFromUpdate(Character RemovingMonster) // Probably a better way to do this.
     {
         NTMonster MonsterToRemove = null; // We store the index of what to remove so we don't remove while iterating.
         foreach (NTMonster Monster in UpdatingMonsters)
@@ -1351,8 +1418,8 @@ public class HumanUpdate
         if (UpdatingMonsters.Count > 0)
         {
             //Task MonsterUpdateTask = new(UpdateMonsters); // We create a new task to run monsters along humans. This should help greatly with mods such as barotraumatic.
-           // MonsterUpdateTask.Start();
-           UpdateMonsters();
+            // MonsterUpdateTask.Start();
+            UpdateMonsters();
             UpdateHumans(priorities);
             //MonsterUpdateTask.Wait();
         }
@@ -1361,7 +1428,8 @@ public class HumanUpdate
             UpdateHumans(priorities);
         }
 
-        HumanUpdateLuaSync.PreSync();
+        HumanUpdateLuaSync.PreSync(UpdatingHumans.Values.ToList());
+        //DebugPrintAllAffStrengths();
     }
 
     private void UpdateHumans(List<AfflictionPriority> priorities)

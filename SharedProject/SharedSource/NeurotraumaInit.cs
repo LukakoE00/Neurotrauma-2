@@ -4,7 +4,7 @@ using MoonSharp.Interpreter;
 
 namespace Neurotrauma
 {
-    public partial class NeurotraumaInit : IAssemblyPlugin, IEventChangeFallDamage, IEventUpdate, IEventCharacterCreated, IEventCharacterDeath
+    public partial class NeurotraumaInit : IAssemblyPlugin, IEventChangeFallDamage, IEventUpdate, IEventCharacterCreated
     {
         // ---------------------------         Ydrec Shit         --------------------------- \\
 
@@ -56,7 +56,7 @@ namespace Neurotrauma
             //EventService.Subscribe<IEventChangeFallDamage>(this);  //subscribe your plugin
             //EventService.Subscribe<IEventUpdate>(this);  //subscribe your plugin
             EventService.Subscribe<IEventCharacterCreated>(this);  //subscribe your plugin
-            EventService.Subscribe<IEventCharacterDeath>(this);  //subscribe your plugin
+            //EventService.Subscribe<IEventCharacterDeath>(this);  //subscribe your plugin
         }
 
         public void RemovePatches()
@@ -64,7 +64,7 @@ namespace Neurotrauma
             //EventService.Unsubscribe<IEventChangeFallDamage>(this); //remove your plugin
             //EventService.Unsubscribe<IEventUpdate>(this);  //remove your plugin
             EventService.Unsubscribe<IEventCharacterCreated>(this);  //remove your plugin
-            EventService.Unsubscribe<IEventCharacterDeath>(this);  //remove your plugin
+            //EventService.Unsubscribe<IEventCharacterDeath>(this);  //remove your plugin
         }
 
         // After all plugins have loaded
@@ -144,10 +144,10 @@ namespace Neurotrauma
             HU.AddCharacterToUpdate(character);
         }
 
-        public void OnCharacterDeath(Character character, Affliction causeOfDeathAffliction, CauseOfDeathType causeOfDeathType)
-        {
-            HU.RemoveCharacterFromUpdate(character);
-        }
+        //public void OnCharacterDeath(Character character, Affliction causeOfDeathAffliction, CauseOfDeathType causeOfDeathType)
+        //{
+            //HU.RemoveCharacterFromUpdate(character);
+        //}
     }
 
     // Stores our random shit.

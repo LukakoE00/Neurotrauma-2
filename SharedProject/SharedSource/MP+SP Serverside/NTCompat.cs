@@ -13,12 +13,10 @@ namespace Neurotrauma
         /// <param name="Duration"> The duration of human updates the symptom should be true for.</param>
         public static void SetSymptomTrue(HumanUpdate.NTHuman Human, string SymptomIdentifier, int Duration = 2)
         {
-            // FORCE SYMPTOM ACTIVE!!!!!!!! FUCK MY LIFEEEEEEEEEEE
-            HF.SetAffliction(Human.Human, SymptomIdentifier, 100f, null, 0f);
-
             Dictionary<string, HumanUpdate.NTHumanSymptomData> Afflictions = Human.LocalAfflictions.UpdatingSymptoms;
             HumanUpdate.NTHumanSymptomData Sym = Afflictions[SymptomIdentifier];
             Sym.HumanUpdateTime = Duration;
+            Sym.Strength = 100;
         }
 
         /// <summary>
@@ -33,6 +31,7 @@ namespace Neurotrauma
             Dictionary<string, HumanUpdate.NTHumanLimbSymptomData> Afflictions = Human.LocalAfflictions.UpdatingLimbSymptoms;
             HumanUpdate.NTHumanLimbSymptomData Sym = Afflictions[SymptomIdentifier];
             Sym.HumanUpdateTime[Limb] = Duration;
+            Sym.Strength[Limb] = 100;
         }
 
         /// <summary>
@@ -46,6 +45,7 @@ namespace Neurotrauma
             Dictionary<string, HumanUpdate.NTHumanSymptomData> Afflictions = Human.LocalAfflictions.UpdatingSymptoms;
             HumanUpdate.NTHumanSymptomData Sym = Afflictions[SymptomIdentifier];
             Sym.HumanUpdateStoptime = Duration;
+            Sym.Strength = 0;
         }
 
         /// <summary>
@@ -60,6 +60,7 @@ namespace Neurotrauma
             Dictionary<string, HumanUpdate.NTHumanLimbSymptomData> Afflictions = Human.LocalAfflictions.UpdatingLimbSymptoms;
             HumanUpdate.NTHumanLimbSymptomData Sym = Afflictions[SymptomIdentifier];
             Sym.HumanUpdateStoptime[Limb] = Duration;
+            Sym.Strength[Limb] = 0;
         }
 
         public static void DebugPrintAllData() // UNFINISHED
@@ -74,6 +75,52 @@ namespace Neurotrauma
             }
 
             HF.Print(Res); // Not 1:1 with OG NT
+        }
+
+        public static void DebugPrintAllAffStrengths()
+        {
+            string Res = "Neurotrauma Affliction Strength Data:\n";
+            foreach (KeyValuePair<Character, HumanUpdate.NTHuman> Pair in NeurotraumaInit.HU.GetUpdatingCharacters())
+            {
+                Character Char = Pair.Key;
+                HumanUpdate.NTHuman NTHum = Pair.Value;
+                Res += "-------------------------------------";
+                Res += "\n\n" + Char.Name;
+                Res += "\n" + "Afflictions";
+                foreach (KeyValuePair<string,HumanUpdate.NTHumanNonLimbAffData> Pair2 in NTHum.LocalAfflictions.UpdatingNonLimbAfflictions)
+                {
+                    if (Pair2.Value.Strength > 0)
+                    {
+                        Res += "\n- " + Pair2.Key + ": " + Pair2.Value.Strength.ToString() + "%";
+                    }
+                }
+                foreach (KeyValuePair<string, HumanUpdate.NTHumanLimbAffData> Pair2 in NTHum.LocalAfflictions.UpdatingLimbAfflictions)
+                {
+                    foreach (KeyValuePair<LimbType, double> Pair3 in Pair2.Value.Strength)
+                    {
+                        if (Pair3.Value > 0)
+                        {
+                            Res += "\n- " + Pair2.Key + ": " + Pair3.Value.ToString() + "%";
+                        }
+                    }
+                }
+                foreach (KeyValuePair<string, HumanUpdate.NTHumanBloodAffData> Pair2 in NTHum.LocalAfflictions.UpdatingBloodAfflictions)
+                {
+                    if (Pair2.Value.Strength > 0)
+                    {
+                        Res += "\n- " + Pair2.Key + ": " + Pair2.Value.Strength.ToString() + "%";
+                    }
+                }
+                foreach (KeyValuePair<string, HumanUpdate.NTHumanSymptomData> Pair2 in NTHum.LocalAfflictions.UpdatingSymptoms)
+                {
+                    if (Pair2.Value.Strength > 0)
+                    {
+                        Res += "\n- " + Pair2.Key + ": " + Pair2.Value.Strength.ToString() + "%";
+                    }
+                }
+            }
+
+            HF.PrintUtility(Res); // Not 1:1 with OG NT
         }
 
         public static List<Action<HumanUpdate.NTHuman>> PreHumanUpdateHooks = new(); // Store our functions to call in here.

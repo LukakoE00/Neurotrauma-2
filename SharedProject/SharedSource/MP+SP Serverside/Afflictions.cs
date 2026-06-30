@@ -373,6 +373,8 @@ namespace Neurotrauma
 
         private void AddAfflictions()
         {
+            AfflictionsToAdd["oxygenlow"] = new("oxygenlow", 0, 200, 0, AfflictionPriority.MEDIUM);
+
             // Drunk
             // Not constant; gets applied by other sources.
             // Type: Non-Limb Specific, Vanilla Override
@@ -1868,6 +1870,7 @@ namespace Neurotrauma
             AfflictionsToAdd["neurotrauma"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanNonLimbAffData AffData) =>
                 {
+
                     // Does not progress in Stasis
                     if (C.GetBoolStatStrength("stasis")) return;
 
@@ -2817,7 +2820,7 @@ namespace Neurotrauma
                     {
                         AffData.Strength[Limb] -= (C.GetBloodAffData("immunity").PrevStrength / 3000
                             + Math.Clamp(C.GetLimbAffStrength("bandaged", Limb), 0, 1) * 0.1
-                            + Math.Clamp(C.GetLimbAffStrength("skinointmented", Limb), 0, 1) * 0.12) 
+                            + Math.Clamp(C.GetLimbAffStrength("ointmented", Limb), 0, 1) * 0.12) 
                         * C.GetDoubleStatStrength("healingrate") * NT.DeltaTime;
                     }
                         
@@ -2875,7 +2878,7 @@ namespace Neurotrauma
                         AffData.Strength[Limb] -= (
                                 C.GetBloodAffData("immunity").PrevStrength / 3000
                                 + Math.Clamp(C.GetLimbAffStrength("bandaged", Limb), 0, 1) * .1
-                                + Math.Clamp(C.GetLimbAffStrength("skinointmented", Limb), 0, 1) * .12
+                                + Math.Clamp(C.GetLimbAffStrength("ointmented", Limb), 0, 1) * .12
                                 )
                                 * C.GetDoubleStatStrength("healingrate")
                                 * NT.DeltaTime;
@@ -2913,7 +2916,7 @@ namespace Neurotrauma
                         AffData.Strength[Limb] -= (
                             C.GetBloodAffData("immunity").PrevStrength / 3000
                             + Math.Clamp(C.GetLimbAffStrength("bandaged", Limb), 0, 1) * 0.1
-                            + Math.Clamp(C.GetLimbAffStrength("skinointmented", Limb), 0, 1) * 0.12
+                            + Math.Clamp(C.GetLimbAffStrength("ointmented", Limb), 0, 1) * 0.12
                         ) * C.GetDoubleStatStrength("healingrate") * NT.DeltaTime;
                     }
 
@@ -2949,7 +2952,7 @@ namespace Neurotrauma
                         AffData.Strength[Limb] -= (
                             C.GetBloodAffData("immunity").PrevStrength / 3000
                             + Math.Clamp(C.GetLimbAffStrength("bandaged", Limb), 0, 1) * 0.1
-                            + Math.Clamp(C.GetLimbAffStrength("skinointmented", Limb), 0, 1) * 0.12
+                            + Math.Clamp(C.GetLimbAffStrength("ointmented", Limb), 0, 1) * 0.12
                         ) * C.GetDoubleStatStrength("healingrate") * NT.DeltaTime;
                     }
 
@@ -2985,7 +2988,7 @@ namespace Neurotrauma
                         AffData.Strength[Limb] -= (
                             C.GetBloodAffData("immunity").PrevStrength / 3000
                             + Math.Clamp(C.GetLimbAffStrength("bandaged", Limb), 0, 1) * 0.1
-                            + Math.Clamp(C.GetLimbAffStrength("skinointmented", Limb), 0, 1) * 0.12
+                            + Math.Clamp(C.GetLimbAffStrength("ointmented", Limb), 0, 1) * 0.12
                         ) * C.GetDoubleStatStrength("healingrate") * NT.DeltaTime;
                     }
 
@@ -3022,7 +3025,7 @@ namespace Neurotrauma
                             C.GetBloodAffData("immunity").PrevStrength / 8000
                             + Math.Clamp(C.GetLimbAffStrength("bandaged", Limb), 0, 1) * 0.1
                             + Math.Clamp(C.GetLimbAffStrength("iced", Limb), 0, 1) * 0.3
-                            + Math.Clamp(C.GetLimbAffStrength("skinointmented", Limb), 0, 1) * 0.12
+                            + Math.Clamp(C.GetLimbAffStrength("ointmented", Limb), 0, 1) * 0.12
                         ) * C.GetDoubleStatStrength("healingrate") * NT.DeltaTime;
                     }
                 };
@@ -3041,12 +3044,6 @@ namespace Neurotrauma
                     {
                         AffData.Strength[Limb] -= 0.05f * (float)C.GetDoubleStatStrength("healingrate") * (float)NT.DeltaTime;
                     }
-                };
-
-            LimbAfflictionsToAdd["skinointmented"] = new("skinointmented", 0, 200, 0, AfflictionPriority.HIGH);
-            LimbAfflictionsToAdd["skinointmented"].UpdateAction =
-                (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanLimbAffData AffData) =>
-                {
                 };
 
             foreach (KeyValuePair<string, NTLimbAffliction> Pair in LimbAfflictionsToAdd)
@@ -3964,15 +3961,16 @@ namespace Neurotrauma
             SymptomsToAdd["chestpain"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanSymptomData AffData) =>
                 {
+
                     AffData.Strength = HF.BoolToNum(
                         // Symptom must not be forced false.
-                        !NTC.HasSymptomFalse(C, ID)
+                        (!NTC.HasSymptomFalse(C, ID))
 
                         // Mental; must be awake.
                         && C.GetSymptomAffData("unconsciousness").Strength <= 0
 
                         // Pain; can be suppressed.
-                        && !C.GetBoolStatStrength("sedated")
+                        && (!C.GetBoolStatStrength("sedated"))
 
                         // Conditions:
                         && (
@@ -3983,6 +3981,7 @@ namespace Neurotrauma
                         ),
                         100
                     );
+
                 };
 
             // Abdominal Pain
@@ -4071,11 +4070,13 @@ namespace Neurotrauma
 
             // Ponder later
             SymptomsToAdd["lockleftarm"] = new("lockleftarm", 0, 100, 0, AfflictionPriority.HIGH);
-            SymptomsToAdd["lockrightarm"] = new("lockleftarm", 0, 100, 0, AfflictionPriority.HIGH);
-            SymptomsToAdd["lockleftleg"] = new("lockleftarm", 0, 100, 0, AfflictionPriority.HIGH);
-            SymptomsToAdd["lockrightleg"] = new("lockleftarm", 0, 100, 0, AfflictionPriority.HIGH);
+            SymptomsToAdd["lockrightarm"] = new("lockrightarm", 0, 100, 0, AfflictionPriority.HIGH);
+            SymptomsToAdd["lockleftleg"] = new("lockleftleg", 0, 100, 0, AfflictionPriority.HIGH);
+            SymptomsToAdd["lockrightleg"] = new("lockrightleg", 0, 100, 0, AfflictionPriority.HIGH);
 
             SymptomsToAdd["triggersym_respiratoryarrest"] = new("triggersym_respiratoryarrest", 0, 100, 0, AfflictionPriority.HIGH);
+            SymptomsToAdd["triggersym_seizure"] = new("triggersym_seizure", 0, 100, 0, AfflictionPriority.HIGH);
+            SymptomsToAdd["triggersym_stroke"] = new("triggersym_stroke", 0, 100, 0, AfflictionPriority.HIGH);
 
             foreach (KeyValuePair<string, NTSymptom> Pair in SymptomsToAdd)
             {

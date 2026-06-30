@@ -773,15 +773,17 @@ namespace Neurotrauma
             return aff.Strength;
         }
 
-        public static float GetAfflictionStrengthLimb(Character Character, LimbType GivenLimbType = LimbType.Torso, String Identifier = "", float DefaultValue = 0)
+        // Previous iteration was broken - Greabb
+        public static float GetAfflictionStrengthLimb(Character Character, LimbType GivenLimbType = LimbType.Torso, string Identifier = "", float DefaultValue = 0)
         {
-            if (Identifier != "")  // Verify we have the info needed.
+            Affliction aff = GetAfflictionLimb(Character, Identifier, GivenLimbType);
+
+            if (aff == null)
             {
-                if (!HasAfflictionLimb(Character, Identifier, GivenLimbType)) { return DefaultValue; }
-                float Strength = Character.CharacterHealth.GetAfflictionStrength(Identifier, GetCharacterLimb(Character, GivenLimbType), false);
-                return Strength;
+                return DefaultValue;
             }
-            return DefaultValue;
+
+            return aff.Strength;
         }
 
         public static void SetAffliction(Character Character, string Identifier, float Strength, Character Aggressor = null, float PreviousStrength = 0)
@@ -797,8 +799,8 @@ namespace Neurotrauma
 
             if (Character == null) return;
 
-            dynamic Check = AfflictionPrefab.Prefabs.TryGet(Identifier, out AfflictionPrefab Result); // Most likely a better way to acheive this but basically I don't know what this will return.
-            if (Result == null) { return; }
+            bool Check = AfflictionPrefab.Prefabs.TryGet(Identifier, out AfflictionPrefab Result); // Most likely a better way to acheive this but basically I don't know what this will return.
+            if (Result == null || Check == false) { return; }
             AfflictionPrefab Prefab = Result;
 
             float Resistance = Character.CharacterHealth.GetResistance(Prefab, GivenLimbType);

@@ -34,10 +34,10 @@ namespace Neurotrauma
         /// <summary>
         /// Syncs our C# human update with our Lua human update, syncs our C# characters with our lua characters
         /// </summary>
-        static public void PreSync()
+        static public void PreSync(List<HumanUpdate.NTHuman> CharacterList)
         {
-            SyncLuaAfflictions();
-            SyncLuaCharacters();
+            SyncLuaAfflictions(CharacterList);
+            SyncLuaCharacters(CharacterList);
         }
 
         /// <summary>
@@ -48,57 +48,13 @@ namespace Neurotrauma
 
         }
 
-        static public void SyncLuaAfflictions()
+        static public void SyncLuaAfflictions(List<HumanUpdate.NTHuman> CharacterList)
         {
         }
 
-        static public void SyncLuaCharacters()
+        static public void SyncLuaCharacters(List<HumanUpdate.NTHuman> CharacterList)
         {
         }
 
-    }
-}
-
-// Add our custom Lua Hooks
-namespace Barotrauma.LuaCs.Events
-{
-    internal interface IEventSyncLuaCharacters : IEvent<IEventSyncLuaCharacters>
-    {
-        void SyncLuaCharacters();
-
-        static IEventSyncLuaCharacters IEvent<IEventSyncLuaCharacters>.GetLuaRunner(
-            IDictionary<string, LuaCsFunc> luaFunc) => new LuaWrapper(luaFunc);
-
-        public sealed class LuaWrapper : LuaWrapperBase, IEventSyncLuaCharacters
-        {
-            public LuaWrapper(IDictionary<string, LuaCsFunc> luaFuncs) : base(luaFuncs)
-            {
-            }
-
-            public void SyncLuaCharacters()
-            {
-                LuaFuncs[nameof(SyncLuaCharacters)]();
-            }
-        }
-    }
-
-    internal interface IEventSyncLuaHumanUpdate : IEvent<IEventSyncLuaHumanUpdate>
-    {
-        void SyncLuaHumanUpdate();
-
-        static IEventSyncLuaHumanUpdate IEvent<IEventSyncLuaHumanUpdate>.GetLuaRunner(
-            IDictionary<string, LuaCsFunc> luaFunc) => new LuaWrapper(luaFunc);
-
-        public sealed class LuaWrapper : LuaWrapperBase, IEventSyncLuaHumanUpdate
-        {
-            public LuaWrapper(IDictionary<string, LuaCsFunc> luaFuncs) : base(luaFuncs)
-            {
-            }
-
-            public void SyncLuaHumanUpdate()
-            {
-                LuaFuncs[nameof(SyncLuaHumanUpdate)]();
-            }
-        }
     }
 }
