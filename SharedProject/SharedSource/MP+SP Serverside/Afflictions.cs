@@ -2613,18 +2613,23 @@ namespace Neurotrauma
                         + Math.Clamp(WoundDamage / 100, 0, 0.4)
                         + C.GetLimbAffStrength("bleeding", Limb) / 20;
 
-                        // Dirtify bandage over time
-                        AffData.Strength[Limb] -= BandageDirtifySpeed * NT.DeltaTime;
+                    // Dirtify bandage over time
+                    AffData.Strength[Limb] -= BandageDirtifySpeed * NT.DeltaTime;
 
-                        // Transition to dirty bandage
-                        if (AffData.Strength[Limb] <= 0)
-                        {
-                            AffData.Strength[Limb] = 0;
-                            HF.AddAfflictionLimb(C.Human, "bandageddirty", Limb, (float)Math.Max(C.GetLimbAffStrength("bandageddirty", Limb), 1), null);
-                        }
+                    float DirtyBandageStrength = (float)C.GetLimbAffStrength("bandageddirty", Limb);
 
+                    // Transition to dirty bandage
+                    if (AffData.Strength[Limb] <= 0.5f)
+                    {
+                        HF.SetAfflictionLimb(C.Human, "bandageddirty", Limb, (float)Math.Max(DirtyBandageStrength, 1), null);
+                        AffData.Strength[Limb] = 0f;
+                    }
+
+                    if (DirtyBandageStrength > 0)
+                    {
                         HF.AddAfflictionLimb(C.Human, "bandageddirty", Limb, (float)(BandageDirtifySpeed * NT.DeltaTime), null);
-
+                    }
+                        
                     // Effects:
                     // Slowdown
                     C.SetDoubleStatStrength("speedmultiplier", C.GetDoubleStatStrength("speedmultiplier") * 0.9);
@@ -2652,6 +2657,12 @@ namespace Neurotrauma
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanLimbAffData AffData) =>
                 {
                     if (!(AffData.Strength[Limb] > 0)) return;
+
+                    float BandagedStrength = (float)C.GetLimbAffStrength("bandaged", Limb);
+                    if (BandagedStrength > 0)
+                    {
+                        HF.SetAfflictionLimb(C.Human, "bandaged", Limb, 0);
+                    }
 
                     double WoundDamage = C.GetLimbAffStrength("firstdegreeburn", Limb)
                         + C.GetLimbAffStrength("seconddegreeburn", Limb)
