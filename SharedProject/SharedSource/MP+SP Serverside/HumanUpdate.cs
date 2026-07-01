@@ -1340,7 +1340,7 @@ public class HumanUpdate
 
     public static void RemoveHumanFromUpdate(Character RemovingCharacter) // Probably a better way to do this.
     {
-        if (UpdatingHumans.ContainsKey(RemovingCharacter)) return;
+        if (!UpdatingHumans.ContainsKey(RemovingCharacter)) return;
         UpdatingHumans.Remove(RemovingCharacter);
     }
 
@@ -1463,23 +1463,51 @@ public class HumanUpdate
         }
 
         HumanUpdateLuaSync.PreSync(UpdatingHumans.Values.ToList());
-        //DebugPrintAllAffStrengths();
     }
 
     private void UpdateHumans(List<AfflictionPriority> priorities)
     {
-        foreach (KeyValuePair<Character,NTHuman> Pair in UpdatingHumans)
+        List<Character> QueuedCharacters = new();
+
+        foreach (KeyValuePair<Character, NTHuman> Pair in UpdatingHumans)
         {
+
+            if (Pair.Key?.IsDead == true || Pair.Key == null || Pair.Value == null || Pair.Key.IdFreed)
+            {
+                QueuedCharacters.Add(Pair.Key);
+                continue;
+            }
+
             Pair.Value.Update(priorities);
+        }
+
+        foreach (Character character in QueuedCharacters)
+        {
+            RemoveHumanFromUpdate(character);
         }
     }
 
     private static void UpdateMonsters()
     {
+        List<NTMonster> QueuedCharacters = new();
+
         foreach (NTMonster Monster in UpdatingMonsters)
         {
+
+            if (Monster.Monster?.IsDead == true || Monster == null || Monster.Monster == null || Monster.Monster.IdFreed)
+            {
+                QueuedCharacters.Add(Monster);
+                continue;
+            }
+
             Monster.Update();
         }
+
+        foreach (NTMonster character in QueuedCharacters)
+        {
+            RemoveMonsterFromUpdate(character.Monster);
+        }
+
         return;
     }
 

@@ -1061,70 +1061,7 @@ namespace Neurotrauma
             // Caused By: Organ Removal Scalpel action 1x.
             // Effects: None.
             AfflictionsToAdd["liverswap"] = new("liverswap", 0, 100, 0);
-
-            // Hyperventilation
-            // Not constant; gets applied by other sources, removes itself however.
-            // Type: Non-Limb Specific
-            // Caused By: Hypotension, Hypoxemia, Pneumothorax, Sepsis, Adrenaline
-            // Effects: Alkalosis.
-            AfflictionsToAdd["hyperventilation"] = new("hyperventilation", 0, 100, 0, AfflictionPriority.HIGH);
-            AfflictionsToAdd["hyperventilation"].UpdateAction =
-                (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanNonLimbAffData AffData) =>
-                {
-                    // Removal Conditions
-                    AffData.Strength = HF.BoolToNum(C.GetAffData("respiratoryarrest").Strength < 1 && !(NTC.HasSymptomFalse(C, "hyperventilation")) &&
-                        (
-                            NTC.HasSymptom(C, "hyperventilation") ||
-                            C.GetAffData("hypoxemia").Strength > 10 ||
-                            C.GetAffData("bloodpressure").Strength < 80 ||
-                            C.GetAffData("afadrenaline").Strength > 1 ||
-                            C.GetAffData("pneumothorax").Strength > 15 ||
-                            C.GetAffData("sepsis").Strength > 15
-                        ),
-                        100
-                    );
-
-                    // Effects:
-                    // Alkalosis
-                    HF.AddAffliction(C.Human, "alkalosis", (float)(Math.Clamp(AffData.Strength, 0, 1) * 0.09 * NT.DeltaTime), null);
-                };
-
-            // Hypoventilation
-            // Not constant; gets applied by other sources, removes itself however.
-            // Type: Non-Limb Specific
-            // Caused By: Opiate Overdose, Opiods, Anesthesia
-            // Effects: Acidosis.
-            AfflictionsToAdd["hypoventilation"] = new("hypoventilation", 0, 100, 0, AfflictionPriority.HIGH);
-            AfflictionsToAdd["hypoventilation"].UpdateAction =
-                (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanNonLimbAffData AffData) =>
-                {
-                    // Removal Conditions
-                    AffData.Strength = HF.BoolToNum(C.GetAffData("respiratoryarrest").Strength < 1 && 
-                        (
-                            C.GetAffData("afopioid").Strength > 1 || 
-                            C.GetAffData("afanaesthetic").Strength > 1 || 
-                            C.GetAffData("opiateoverdose").Strength > 30
-                        ),
-                        100
-                    );
-
-                    // Counteracting with Hyperventilation
-                    if (C.GetNonLimbAffData("hyperventilation").Strength > 0 && AffData.Strength > 0)
-                    {
-                        C.GetNonLimbAffData("hyperventilation").Strength = 0;
-                        AffData.Strength = 0;
-                    }
-
-                    // Effects:
-                    // Acidosis
-                    if (AffData.Strength > 0 && C.GetAffData("artificialventilation").Strength <= 0.1)
-                    { 
-                        HF.AddAffliction(C.Human, "acidosis", (float)(0.09 * NT.DeltaTime), null);
-                    }
-
-                        
-                };
-
+       
             // Pneumothorax
             // Type: Non-Limb Specific
             // Not constant; gets applied by other sources.
@@ -4117,6 +4054,69 @@ namespace Neurotrauma
                         ),
                         2
                     );
+                };
+
+            // Hyperventilation
+            // Not constant; gets applied by other sources, removes itself however.
+            // Type: Non-Limb Specific
+            // Caused By: Hypotension, Hypoxemia, Pneumothorax, Sepsis, Adrenaline
+            // Effects: Alkalosis.
+            SymptomsToAdd["hyperventilation"] = new("hyperventilation", 0, 100, 0, AfflictionPriority.HIGH);
+            SymptomsToAdd["hyperventilation"].UpdateAction =
+                (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanSymptomData AffData) =>
+                {
+                    // Removal Conditions
+                    AffData.Strength = HF.BoolToNum(C.GetAffData("respiratoryarrest").Strength < 1 && !(NTC.HasSymptomFalse(C, "hyperventilation")) &&
+                        (
+                            NTC.HasSymptom(C, "hyperventilation") ||
+                            C.GetAffData("hypoxemia").Strength > 10 ||
+                            C.GetAffData("bloodpressure").Strength < 80 ||
+                            C.GetAffData("afadrenaline").Strength > 1 ||
+                            C.GetAffData("pneumothorax").Strength > 15 ||
+                            C.GetAffData("sepsis").Strength > 15
+                        ),
+                        100
+                    );
+
+                    // Effects:
+                    // Alkalosis
+                    HF.AddAffliction(C.Human, "alkalosis", (float)(Math.Clamp(AffData.Strength, 0, 1) * 0.09 * NT.DeltaTime), null);
+                };
+
+            // Hypoventilation
+            // Not constant; gets applied by other sources, removes itself however.
+            // Type: Non-Limb Specific
+            // Caused By: Opiate Overdose, Opiods, Anesthesia
+            // Effects: Acidosis.
+            SymptomsToAdd["hypoventilation"] = new("hypoventilation", 0, 100, 0, AfflictionPriority.HIGH);
+            SymptomsToAdd["hypoventilation"].UpdateAction =
+                (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanSymptomData AffData) =>
+                {
+                    // Removal Conditions
+                    AffData.Strength = HF.BoolToNum(C.GetAffData("respiratoryarrest").Strength < 1 &&
+                        (
+                            C.GetAffData("afopioid").Strength > 1 ||
+                            C.GetAffData("afanaesthetic").Strength > 1 ||
+                            C.GetAffData("opiateoverdose").Strength > 30
+                        ),
+                        100
+                    );
+
+                    // Counteracting with Hyperventilation
+                    if (C.GetNonLimbAffData("hyperventilation").Strength > 0 && AffData.Strength > 0)
+                    {
+                        C.GetNonLimbAffData("hyperventilation").Strength = 0;
+                        AffData.Strength = 0;
+                    }
+
+                    // Effects:
+                    // Acidosis
+                    if (AffData.Strength > 0 && C.GetAffData("artificialventilation").Strength <= 0.1)
+                    {
+                        HF.AddAffliction(C.Human, "acidosis", (float)(0.09 * NT.DeltaTime), null);
+                    }
+
+
                 };
 
             // Ponder later
