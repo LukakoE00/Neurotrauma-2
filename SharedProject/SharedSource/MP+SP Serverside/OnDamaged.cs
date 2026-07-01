@@ -260,7 +260,7 @@ public class OnDamaged
         LimbType = HF.NormalizeLimbType(LimbType);
 
         // Deal with Multipliers
-        var NTCharacter = HumanUpdate.CharacterToNTHuman(Character);
+        HumanUpdate.NTHuman NTCharacter = HumanUpdate.CharacterToNTHuman(Character);
 
         // Possible Foreign Bodies
         if (HF.Chance(0.75f))

@@ -200,6 +200,7 @@ namespace Neurotrauma
 
         public static void MultiplySpeed(HumanUpdate.NTHuman Character, double Multiplier) // Im not gonna lie, I have no clue where this is used at.
         {
+            if (Character == null) return;
             if (CharacterSpeedMultipliers.ContainsKey(Character))
             {
                 CharacterSpeedMultipliers[Character] *= Multiplier;
@@ -210,6 +211,7 @@ namespace Neurotrauma
 
         public static void MultiplySpeed(Character Char, double Multiplier) // Im not gonna lie, I have no clue where this is used at.
         {
+            if (Char == null) return;
             HumanUpdate.NTHuman Human = HumanUpdate.CharacterToNTHuman(Char);
             if (CharacterSpeedMultipliers.ContainsKey(Human))
             {
@@ -221,6 +223,7 @@ namespace Neurotrauma
 
         public static void DivideSpeed(HumanUpdate.NTHuman Character, double Multiplier)
         {
+            if (Character == null) return;
             if (CharacterSpeedMultipliers.ContainsKey(Character))
             {
                 CharacterSpeedMultipliers[Character] /= Multiplier;
@@ -231,6 +234,7 @@ namespace Neurotrauma
 
         public static void DivideSpeed(Character Char, double Multiplier)
         {
+            if (Char == null) return;
             HumanUpdate.NTHuman Human = HumanUpdate.CharacterToNTHuman(Char);
             if (CharacterSpeedMultipliers.ContainsKey(Human))
             {
@@ -242,22 +246,26 @@ namespace Neurotrauma
 
         public static double GetSpeed(HumanUpdate.NTHuman Character)
         {
+            if (Character == null) return 1;
             return (CharacterSpeedMultipliers.ContainsKey(Character)) ? CharacterSpeedMultipliers[Character]: 1 ; // W C# moment
         }
 
         public static double GetSpeed(Character Char)
         {
+            if (Char == null) return 1;
             HumanUpdate.NTHuman Human = HumanUpdate.CharacterToNTHuman(Char);
             return (CharacterSpeedMultipliers.ContainsKey(Human)) ? CharacterSpeedMultipliers[Human] : 1; // W C# moment
         }
 
         public static void SetSpeed(HumanUpdate.NTHuman Character, double Amount)
         {
+            if (Character == null) return;
             CharacterSpeedMultipliers[Character] = Amount;
         }
 
         public static void SetSpeed(Character Char, double Amount)
         {
+            if (Char == null) return;
             HumanUpdate.NTHuman Human = HumanUpdate.CharacterToNTHuman(Char);
             CharacterSpeedMultipliers[Human] = Amount;
         }
@@ -378,6 +386,7 @@ namespace Neurotrauma
 
         public static void SetMultiplier(HumanUpdate.NTHuman Character, string MultiplierIdentifier, double Multiplier)
         {
+            if (Character == null) return;
             HumanUpdate.CharacterTags Tags = Character.GetTags();
             double CurrentMultiplier = GetMultiplier(Character, MultiplierIdentifier);
             Tags.SetTag("mult", MultiplierIdentifier, CurrentMultiplier * Multiplier);
@@ -385,6 +394,7 @@ namespace Neurotrauma
 
         public static void SetMultiplier(Character Char, string MultiplierIdentifier, double Multiplier)
         {
+            if (Char == null) return;
             HumanUpdate.NTHuman Human = HumanUpdate.CharacterToNTHuman(Char);
             HumanUpdate.CharacterTags Tags = Human.GetTags();
             double CurrentMultiplier = GetMultiplier(Human, MultiplierIdentifier);
@@ -393,6 +403,7 @@ namespace Neurotrauma
 
         public static double GetMultiplier(HumanUpdate.NTHuman Character, string MultiplierIdentifier)
         {
+            if (Character == null) return 1;
             HumanUpdate.CharacterTags Tags = Character.GetTags();
             if (!Tags.HasTag("mult", MultiplierIdentifier)) return 1;
             return Tags.GetTag("mult", MultiplierIdentifier);
@@ -400,6 +411,7 @@ namespace Neurotrauma
 
         public static double GetMultiplier(Character Char, string MultiplierIdentifier)
         {
+            if (Char == null) return 1;
             HumanUpdate.NTHuman Human = HumanUpdate.CharacterToNTHuman(Char);
             HumanUpdate.CharacterTags Tags = Human.GetTags();
             if (!Tags.HasTag("mult", MultiplierIdentifier)) return 1;
@@ -408,17 +420,20 @@ namespace Neurotrauma
 
         public static void SetTag(HumanUpdate.NTHuman Character, string TagIdentifier)
         {
+            if (Character == null) return;
             Character.GetTags().SetTag("tag", TagIdentifier);
         }
 
         public static void SetTag(Character Char, string TagIdentifier)
         {
+            if (Char == null) return;
             HumanUpdate.NTHuman Human = HumanUpdate.CharacterToNTHuman(Char);
             Human.GetTags().SetTag("tag", TagIdentifier);
         }
 
         public static bool HasTag(HumanUpdate.NTHuman Character, string TagIdentifier)
         {
+            if (Character == null) return false;
             return Character.GetTags().HasTag("tag",TagIdentifier);
         }
 
