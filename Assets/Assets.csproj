@@ -10,7 +10,11 @@
         <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
     </PropertyGroup>
 
-    <Import Project="../Build.props"/>
+    <ItemGroup>
+      <Folder Include="Content\Lua\Scripts\Client\" />
+    </ItemGroup>
+
+    <Import Project="../Build.props" />
 
     <Target Name="CopyFiles" AfterTargets="Build">
         <ItemGroup>

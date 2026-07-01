@@ -1,9 +1,4 @@
 print("[NT2] This is the SharedExample init print!")
 
-Hook.Add("SyncLuaCharacters", "NTCS.SyncCharacters", function()
-   print("Sync Characters!")
-end)
-
-Hook.Add("SyncLuaHumanUpdate", "NTCS.SyncHumanUpdate", function()
-   print("Sync!")
-end)
+dofile(NT.Path .. "/Lua/Scripts/Shared/ConfigData.lua") 		
+dofile(NT.Path .. "/Lua/Scripts/Shared/HelperFunctions.lua") 		

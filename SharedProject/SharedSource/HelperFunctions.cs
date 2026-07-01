@@ -53,11 +53,22 @@ namespace Neurotrauma
             { LimbType.LeftLeg, 0 }, { LimbType.RightLeg, 0 } 
         };
 
+        /// <summary>
+        /// Returns the limb of a character given the LimbType.
+        /// </summary>
+        /// <param name="Character"></param>
+        /// <param name="GivenLimbType"></param>
+        /// <returns></returns>
         public static Limb GetCharacterLimb(Character Character, LimbType GivenLimbType)
         {
             return Character.AnimController.GetLimb(GivenLimbType);
         }
 
+        /// <summary>
+        /// Converts a limbtype into it's more common type. I.E LeftHand becomes LeftArm and RightFoot becomes RightArm. So on so forth.
+        /// </summary>
+        /// <param name="GivenLimbType"></param>
+        /// <returns></returns>
         public static LimbType NormalizeLimbType(LimbType GivenLimbType) // Our beloved one and only normalize limb type.
         {
             if (LimbsToCheck.Contains(GivenLimbType)) { return GivenLimbType; }
@@ -90,6 +101,11 @@ namespace Neurotrauma
             return GivenLimbType;
         }
 
+        /// <summary>
+        /// Converts our limbtype into a string.
+        /// </summary>
+        /// <param name="GivenLimbType"></param>
+        /// <returns></returns>
         public static string LimbToString(LimbType GivenLimbType)
         {
             LimbType NormalizedLimb = NormalizeLimbType(GivenLimbType);
@@ -97,6 +113,12 @@ namespace Neurotrauma
             return Value;
         }
 
+        /// <summary>
+        /// Converts our affliction ID into an affliction with our limb prefix.
+        /// </summary>
+        /// <param name="limbType"></param>
+        /// <param name="identifier"></param>
+        /// <returns></returns>
         public static string CreateLimbAfflictionID(LimbType limbType, string identifier)
         {
             limbType = NormalizeLimbType(limbType);
@@ -107,11 +129,21 @@ namespace Neurotrauma
             return $"{value}_{identifier}";
         }
 
+        /// <summary>
+        /// Checks our limb to see if it's an extremity.
+        /// </summary>
+        /// <param name="GivenLimbType"></param>
+        /// <returns></returns>
         public static bool LimbIsExtremity(LimbType GivenLimbType)
         {
             return GivenLimbType != LimbType.Torso && GivenLimbType != LimbType.Head;
         }
 
+        /// <summary>
+        /// Forces our arm to lock.
+        /// </summary>
+        /// <param name="Character"></param>
+        /// <param name="Identifier"></param>
         public static void ForceArmLock(Character Character, string Identifier) // This took me an hour to translate btw lol
         {
             // HostSide Only
@@ -154,12 +186,25 @@ namespace Neurotrauma
 
         // ---------------------------------------- Utility Related Helper Functions -------------------------------------------------- \\
 
+        /// <summary>
+        /// Returns the health resistance to an affliction.
+        /// </summary>
+        /// <param name="Character"></param>
+        /// <param name="Identifier"></param>
+        /// <param name="GivenLimbType"></param>
+        /// <returns></returns>
         public static float GetResistance(Character Character, string Identifier, LimbType GivenLimbType = LimbType.Torso) // Only returns health Resistance
         {
             AfflictionPrefab Prefab = AfflictionPrefab.Prefabs[Identifier];
             return Character.CharacterHealth.GetResistance(Prefab, GivenLimbType);
         }
 
+        /// <summary>
+        /// Returns the physical resistance to an affliction.
+        /// </summary>
+        /// <param name="Item"></param>
+        /// <param name="ResistanceID"></param>
+        /// <returns></returns>
         public static float GetItemAfflictionResistance(Barotrauma.Item Item, string ResistanceID) // I thought this was a useful helper function. Credit to Antinous for the original method.
         {
             IEnumerable<ContentXElement> ItemElements = Item.Prefab.ConfigElement.Elements();
@@ -183,6 +228,11 @@ namespace Neurotrauma
             return 1; // Womp Womp
         }
 
+        /// <summary>
+        /// Returns the depth of an item.
+        /// </summary>
+        /// <param name="Item"></param>
+        /// <returns></returns>
         public static float FindDepth(Barotrauma.Item Item) // I butchered this function lol
         {
             return Item.WorldPosition.Y * Physics.DisplayToRealWorldRatio;
@@ -275,6 +325,11 @@ namespace Neurotrauma
             );
         }
 
+        /// <summary>
+        /// Returns the magnitude of a vector 2.
+        /// </summary>
+        /// <param name="Vector"></param>
+        /// <returns></returns>
         public static double Magnitude(Vector2 Vector)
         {
             return Math.Pow((Math.Pow(Vector.X, 2) + Math.Pow(Vector.Y, 2)), .5);
@@ -304,6 +359,12 @@ namespace Neurotrauma
 			return Random.NextDouble() < Chance;
 		}
 
+        /// <summary>
+        /// Converts a boolean into the Out parameter if true, else 0.
+        /// </summary>
+        /// <param name="Value"></param>
+        /// <param name="Out"></param>
+        /// <returns></returns>
 		public static float BoolToNum(bool Value, float Out = 1)
         {
             if (Value) { return Out; }
@@ -383,6 +444,15 @@ namespace Neurotrauma
             GiveItem(Character, ItemIdentifier, Condition);
         }
 
+        /// <summary>
+        /// Spawns an item with a function on spawn.
+        /// </summary>
+        /// <param name="ItemIdentifier"></param>
+        /// <param name="Inventory"></param>
+        /// <param name="Slot"></param>
+        /// <param name="Position"></param>
+        /// <param name="Function"></param>
+        /// <param name="Parameters"></param>
         public static void SpawnItemPlusFunction(string ItemIdentifier, Inventory Inventory, InvSlotType Slot, Vector2 Position, LuaCsAction Function, params object[] Parameters)
         {
             #if CLIENT
@@ -616,6 +686,10 @@ namespace Neurotrauma
 #endif
         }
 
+        /// <summary>
+        /// Shorthand for LuaCsLogger
+        /// </summary>
+        /// <param name="Message"></param>
         public static void Print(string Message) // Yes I'm lazy
         {
             LuaCsLogger.Log("[Neurotrauma C#] " + Message);
