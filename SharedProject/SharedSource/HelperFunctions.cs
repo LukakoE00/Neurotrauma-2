@@ -114,6 +114,16 @@ namespace Neurotrauma
         }
 
         /// <summary>
+        /// Validates if a string is valid for a search.
+        /// </summary>
+        /// <param name="Identifier"></param>
+        /// <returns></returns>
+        public static bool IsValidIdentifier(string Identifier)
+        {
+            return !(Identifier == null || Identifier == "");
+        }
+
+        /// <summary>
         /// Converts our affliction ID into an affliction with our limb prefix.
         /// </summary>
         /// <param name="limbType"></param>
@@ -490,7 +500,13 @@ namespace Neurotrauma
             }, 35);
         }
 
-
+        /// <summary>
+        /// Gives an item to a specified character, and takes a function to run on spawn.
+        /// </summary>
+        /// <param name="ItemIdentifier"></param>
+        /// <param name="Character"></param>
+        /// <param name="Function"></param>
+        /// <param name="Parameters"></param>
         public static void GiveItemPlusFunction(string ItemIdentifier, Character Character, LuaCsAction Function, params object[] Parameters)
         {
             #if CLIENT
@@ -528,6 +544,11 @@ namespace Neurotrauma
             }, 35);
         }
 
+        /// <summary>
+        /// Spawns an item at a given position.
+        /// </summary>
+        /// <param name="ItemIdentifier"></param>
+        /// <param name="Position"></param>
         public static void SpawnItemAt(string ItemIdentifier, Vector2 Position)
         {
             #if CLIENT
@@ -552,6 +573,10 @@ namespace Neurotrauma
             }, 35);
         }
 
+        /// <summary>
+        /// Removes an item from the session.
+        /// </summary>
+        /// <param name="item"></param>
         public static void RemoveItem(Item item)
         {
             #if CLIENT
@@ -573,11 +598,23 @@ namespace Neurotrauma
             Entity.Spawner.AddEntityToRemoveQueue(item);
         }
 
+        /// <summary>
+        /// Checks an item to see if it has a specified tag.
+        /// </summary>
+        /// <param name="Item"></param>
+        /// <param name="Tag"></param>
+        /// <returns></returns>
         public static bool ItemHasTag(Item Item, string Tag)
         {
             return Item.HasTag(Tag);
         }
 
+        /// <summary>
+        /// Moves an item into a specified container.
+        /// </summary>
+        /// <param name="Container"></param>
+        /// <param name="Identifier"></param>
+        /// <param name="Index"></param>
         public static void PutItemInContainer(Item Container, string Identifier, int Index = 0)
         {
             #if CLIENT
@@ -617,6 +654,10 @@ namespace Neurotrauma
             }, 35);
         }
 
+        /// <summary>
+        /// Removes a character from the session.
+        /// </summary>
+        /// <param name="Character"></param>
         public static void RemoveCharacter(Character Character)
         {
 #if SHARED
@@ -638,6 +679,11 @@ namespace Neurotrauma
 #endif
         }
 
+        /// <summary>
+        /// Converts our cause of death to a string.
+        /// </summary>
+        /// <param name="COD"></param>
+        /// <returns></returns>
         public static string CauseOfDeathToString(CauseOfDeath COD) // COD Zombies?????
         {
             string Res;
@@ -653,17 +699,38 @@ namespace Neurotrauma
             return Res ?? "";
         }
 
+        /// <summary>
+        /// Explodes a person into itty bitty pieces.
+        /// </summary>
+        /// <param name="GivenEntity"></param>
+        /// <param name="Range"></param>
+        /// <param name="Force"></param>
+        /// <param name="Damage"></param>
+        /// <param name="StructureDamage"></param>
+        /// <param name="ItemDamage"></param>
+        /// <param name="EmpStrength"></param>
+        /// <param name="BallastFloraStrength"></param>
         public static void Explode(Entity GivenEntity, float Range = 0, float Force = 0, float Damage = 0, float StructureDamage = 0, float ItemDamage = 0, float EmpStrength = 0, float BallastFloraStrength = 0)
         {
             LuaGame.Explode(GivenEntity.WorldPosition, Range, Force, Damage, StructureDamage, ItemDamage, EmpStrength, BallastFloraStrength);
         }
 
+        /// <summary>
+        /// Converts an Identifier type into localized text.
+        /// </summary>
+        /// <param name="Identifier"></param>
+        /// <returns></returns>
         public static string GetText(Identifier Identifier)
         {
             LocalizedString Text = TextManager.Get(Identifier);
             return Convert.ToString(Text) ?? "";
         }
 
+        /// <summary>
+        /// Returns the count of people using a certain type of job.
+        /// </summary>
+        /// <param name="JobIdentifier"></param>
+        /// <returns></returns>
         public static int JobMemberCount(string JobIdentifier)
         {
             int Res = 0;
@@ -677,6 +744,12 @@ namespace Neurotrauma
             return Res;
         }
 
+        /// <summary>
+        /// Sends a message to a client in the radio/chat box.
+        /// </summary>
+        /// <param name="Header"></param>
+        /// <param name="Msg"></param>
+        /// <param name="CharacterClient"></param>
         public static void SendTextBox(string Header, string Msg, Client CharacterClient)
         {
 #if SERVER

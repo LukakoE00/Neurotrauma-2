@@ -314,6 +314,8 @@ namespace Neurotrauma
                                 new Dictionary<string, Action<HumanUpdate.NTHuman, string, LimbType>>();
         Dictionary<string, Action<HumanUpdate.NTHuman, string, LimbType>> SymptomsToAdd =
                                 new Dictionary<string, Action<HumanUpdate.NTHuman, string, LimbType>>();
+        Dictionary<string, Action<HumanUpdate.NTHuman, string, LimbType>> LimbSymptomsToAdd =
+                                new Dictionary<string, Action<HumanUpdate.NTHuman, string, LimbType>>();
 
         private void AddAfflictions() // Create your afflictions in here.
         {
@@ -349,7 +351,7 @@ namespace Neurotrauma
         // Param 1: NTHuman (The character we updating) [C]
         // Param 2: String (The affliction Identifier) [I]
         // Param 3: LimbType (The limb the aff is on) [L]
-        // Param 4: AfflictionData
+        // Param 4: AfflictionData (the affliction data of the aff) [AffData]
 
         Dictionary<string, NTNonLimbAffliction> AfflictionsToAdd =
                                 new Dictionary<string, NTNonLimbAffliction>();
@@ -2450,6 +2452,10 @@ namespace Neurotrauma
                     if (C.GetLimbAffStrength("plastercast", Limb) <= 0 && C.GetLimbAffStrength("bandaged", Limb) <= 0 && C.GetLimbAffStrength("bandageddirty", Limb) <= 0)
                     {
                         HF.AddAfflictionLimb(C.Human, "internaldamage", Limb, (float)(0.1 * NT.DeltaTime), null);
+                        if (Limb == LimbType.LeftLeg || Limb == LimbType.RightLeg)
+                        {
+                            C.SetDoubleStatStrength("speedmultiplier", C.GetDoubleStatStrength("speedmultiplier") * 0.8); // slow the character down.
+                        }
                     }
                 };
 

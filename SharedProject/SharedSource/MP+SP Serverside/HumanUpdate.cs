@@ -376,6 +376,10 @@ public class HumanUpdate
             {
                 return "NTSymptom";
             }
+            else if (Aff is NTLimbSymptom)
+            {
+                return "NTLimbSymptom";
+            }
             else if (Aff is NTNonLimbAffliction)
             {
                 return "NTNonLimbAffliction";
@@ -1263,7 +1267,7 @@ public class HumanUpdate
     /// <summary>
     /// The Neurotrauma version of a Monster Character.
     /// </summary>
-    public class NTMonster(Character Monster) // To Do
+    public class NTMonster(Character Monster)
     {
         public Character Monster = Monster; // Our Monster Ref
         
@@ -1312,7 +1316,7 @@ public class HumanUpdate
         }
     }
 
-    public static void RemoveCharacterFromUpdate(Character target)
+    public void RemoveCharacterFromUpdate(Character target)
     {
         if (target is Character)
         {
@@ -1329,7 +1333,7 @@ public class HumanUpdate
         }
     }
 
-    public static void AddHumanToUpdate(Character AddedCharacter)
+    public void AddHumanToUpdate(Character AddedCharacter)
     {
         if (!UpdatingHumans.ContainsKey(AddedCharacter))
         {
@@ -1338,13 +1342,13 @@ public class HumanUpdate
         }
     }
 
-    public static void RemoveHumanFromUpdate(Character RemovingCharacter) // Probably a better way to do this.
+    public void RemoveHumanFromUpdate(Character RemovingCharacter) // Probably a better way to do this.
     {
         if (!UpdatingHumans.ContainsKey(RemovingCharacter)) return;
         UpdatingHumans.Remove(RemovingCharacter);
     }
 
-    public static void AddMonsterToUpdate(Character AddedMonster)
+    public void AddMonsterToUpdate(Character AddedMonster)
     {
         if (!AddedMonster.IsHuman)
         {
@@ -1356,7 +1360,7 @@ public class HumanUpdate
         }
     }
 
-    public static void RemoveMonsterFromUpdate(Character RemovingMonster) // Probably a better way to do this.
+    public void RemoveMonsterFromUpdate(Character RemovingMonster) // Probably a better way to do this.
     {
         NTMonster MonsterToRemove = null; // We store the index of what to remove so we don't remove while iterating.
         foreach (NTMonster Monster in UpdatingMonsters)
@@ -1487,7 +1491,7 @@ public class HumanUpdate
         }
     }
 
-    private static void UpdateMonsters()
+    private void UpdateMonsters()
     {
         List<NTMonster> QueuedCharacters = new();
 

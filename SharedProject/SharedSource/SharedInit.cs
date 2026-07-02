@@ -45,9 +45,14 @@ namespace Neurotrauma
             harmony.Patch(originalUse, prefix: new HarmonyMethod(typeof(NTItemMethods), nameof(NTItemMethods.Override_Use)));
             harmony.Patch(originalApplyTreatment, prefix: new HarmonyMethod(typeof(NTItemMethods), nameof(NTItemMethods.Override_ApplyTreatment)));
 
-            var characterDeath = AccessTools.Method(typeof(Character), "RecordKill",
-                [typeof(Character)]);
-            harmony.Patch(characterDeath, prefix: new HarmonyMethod(typeof(HumanUpdate), nameof(HumanUpdate.RemoveCharacterFromUpdate))); // The Character died hook.
+            // Character Patches ----------------------------------------------------------------------------------------------------------------------------------------- \\
+
+            //var characterCreation = AccessTools.Constructor(typeof(CharacterHealth), 
+                //[typeof(ContentXElement), typeof(Character), typeof(ContentXElement)]);
+            //harmony.Patch(characterCreation, postfix: new HarmonyMethod(typeof(HumanUpdate), nameof(HumanUpdate.AddCharacterToUpdate))); // The Character Created hook.
+            //var characterDeath = AccessTools.Method(typeof(Character), "RecordKill",
+            //[typeof(Character)]);
+            //harmony.Patch(characterDeath, prefix: new HarmonyMethod(typeof(HumanUpdate), nameof(HumanUpdate.RemoveCharacterFromUpdate))); // The Character died hook.
         }
 
         public void DisposeServer()
@@ -72,6 +77,16 @@ namespace Neurotrauma
             { // Start of our Function
 
                 NTFallDamage.OnChangeFallDamage((float)_[0], (Character)_[1], (Vector2)_[2], (Vector2)_[3]);
+                return 0;
+            }); // End of our Function
+
+            LuaCsSetup.Instance.Hook.Add("character.created", "NTCS.CharacterCreate", (params object[] _) => // Our pointless hook thats needed to fill the empty hole in our plugins heart
+            { // Start of our Function
+                return 0;
+            }); // End of our Function
+
+            LuaCsSetup.Instance.Hook.Add("character.death", "NTCS.CharacterDeath", (params object[] _) => // Our pointless hook thats needed to fill the empty hole in our plugins heart
+            { // Start of our Function
                 return 0;
             }); // End of our Function
 
