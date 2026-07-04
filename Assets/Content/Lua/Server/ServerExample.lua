@@ -15,3 +15,13 @@ LuaUserData.RegisterType("Neurotrauma.NeurotraumaInit")
 LuaUserData.RegisterType("Neurotrauma.NT")
 LuaUserData.RegisterType("Neurotrauma.HumanUpdate")
 LuaUserData.RegisterType("Neurotrauma.HumanUpdate+NTHuman")
+
+LuaUserData.RegisterType("Neurotrauma.HumanUpdate+NTHumanAffData")
+LuaUserData.RegisterType("Neurotrauma.HumanUpdate+NTHumanNonLimbAffData")
+LuaUserData.RegisterType("Neurotrauma.HumanUpdate+NTHumanLimbAffData")
+LuaUserData.RegisterType("Neurotrauma.HumanUpdate+NTHumanBloodAffData")
+LuaUserData.RegisterType("Neurotrauma.HumanUpdate+NTHumanSymptomData")
+LuaUserData.RegisterType("Neurotrauma.HumanUpdate+NTHumanLimbSymptomData")
+
+LuaUserData.RegisterType("Neurotrauma.HumanUpdate+CharacterStats+NTHumanStatDoubleData")
+LuaUserData.RegisterType("Neurotrauma.HumanUpdate+CharacterStats+NTHumanStatBoolData")

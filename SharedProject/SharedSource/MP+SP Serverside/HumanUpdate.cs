@@ -8,7 +8,7 @@ using MoonSharp.Interpreter;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using static Barotrauma.LuaCs.NetworkingService;
-using static Barotrauma.Networking.MessageFragment;
+using static Barotrauma.Networking.MessageFragment; 
 using static Microsoft.Xna.Framework.Graphics.VertexDeclaration;
 using static Neurotrauma.HF;
 using static Neurotrauma.NTC;
@@ -79,6 +79,18 @@ public class HumanUpdate
             base.AffTemplate = NewAff;
             Strength = NewStrength;
             ID = NewID;
+        }
+
+        public double GetLimbPrevStrength(LimbType Type) // Lua compat
+        {
+            if (!PrevStrength.ContainsKey(Type)) return 0;
+            return PrevStrength[Type];
+        }
+
+        public double GetLimbStrength(LimbType Type) // Lua compat
+        {
+            if (!Strength.ContainsKey(Type)) return 0;
+            return Strength[Type];
         }
     }
 
@@ -432,12 +444,14 @@ public class HumanUpdate
         {
             public NTStatDouble StatRef = Stat; // Stores our template.
             public double Strength = 0;
+            public string ID = Stat.ID;
         }
 
         public class NTHumanStatBoolData(NTStatBool Stat, NTHuman C) // Stores our characters Stat Data
         {
             public NTStatBool StatRef = Stat; // Stores our template.
             public bool Strength = false;
+            public string ID = Stat.ID;
         }
 
         public Dictionary<string, NTHumanStatDoubleData> DoubleStats = new();

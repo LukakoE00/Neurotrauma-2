@@ -1,5 +1,14 @@
 -- Basically we have to trick our Lua NT Addons into using this human update.
 
+local limbtypes = {
+	LimbType.Torso,
+	LimbType.Head,
+	LimbType.LeftArm,
+	LimbType.RightArm,
+	LimbType.LeftLeg,
+	LimbType.RightLeg,
+}
+
 local CSHumanUpdate = nil -- stores our class ref
 
 NT.NonLimbAfflictionTranslations = 
@@ -84,21 +93,65 @@ NT.ConvertToLegacy = function (Identifier)
 	return Identifier
 end
 
+NT.CreateLimbTables = function (CharData)
+	for limb in limbtypes do
+				local keystring = tostring(limb) .. "afflictions"
+				CharData[keystring] = {}
+		end
+end
 
-Hook.Patch("Neurotrauma.HumanUpdateLuaSync","SyncLuaAfflictions", function (GameSession, ptable)
+Hook.Patch("Neurotrauma.HumanUpdateLuaSync","FetchHumanUpdate", function(GameSession, ptable)
+	if #NTC.RegisteredExpansions == 0 then return end
+	CSHumanUpdate = ptable["HU"]
+end,  Hook.HookMethodType.After)
 
-end, Hook.HookMethodType.After)
+Hook.Patch("Neurotrauma.HumanUpdateLuaSync","SyncLuaAfflictions", function(GameSession, ptable)
+	if #NTC.RegisteredExpansions == 0 then return end
+	for NTHuman in ptable["CharacterList"] do
+		local CharData = { character = NTHuman.Human, afflictions = {}, stats = {} }
 
-Hook.Patch("Neurotrauma.HumanUpdateLuaSync","SyncLuaCharacters", function (GameSession, ptable)
+		for AffData in NTHuman.LocalAfflictions.UpdatingNonLimbAfflictions do
+			CharData.afflictions[NT.ConvertToLegacy(AffData.ID)] = { prev = AffData.PrevStrength, strength = AffData.Strength }
+		end
+
+		for AffData in NTHuman.LocalAfflictions.UpdatingBloodAfflictions do
+			CharData.afflictions[NT.ConvertToLegacy(AffData.ID)] = { prev = AffData.PrevStrength, strength = AffData.Strength }
+		end
+
+		for AffData in NTHuman.LocalAfflictions.UpdatingSymptoms do
+			CharData.afflictions[NT.ConvertToLegacy(AffData.ID)] = { prev = AffData.PrevStrength, strength = AffData.Strength }
+		end
+
+		for AffData in NTHuman.LocalAfflictions.UpdatingLimbSymptoms do
+			CharData.afflictions[NT.ConvertToLegacy(AffData.ID)] = { prev = AffData.PrevStrength, strength = AffData.Strength }
+		end
+
+		NT.CreateLimbTables(CharData)
+		for AffData in NTHuman.LocalAfflictions.UpdatingLimbAfflictions do
+			for limb in limbtypes do
+				local keystring = tostring(limb) .. "afflictions"
+				CharData[keystring][NT.ConvertToLegacy(AffData.ID)] = { prev = AffData.GetLimbPrevStrength(limb), strength = AffData.GetLimbStrength(limb) }
+			end
+		end
+
+		for StatData in NTHuman.LocalStats.DoubleStats do
+			CharData.stats[StatData.ID] = StatData.Strength
+		end
+
+		for StatData in NTHuman.LocalStats.BoolStats do
+			CharData.stats[StatData.ID] = StatData.Strength
+		end
+
+		NT.UpdateHuman(NTHuman.Human,CharData)
+	end
+end,  Hook.HookMethodType.After)
+
+Hook.Patch("Neurotrauma.HumanUpdateLuaSync","SyncLuaCharacters", function(GameSession, ptable)
+	if #NTC.RegisteredExpansions == 0 then return end
 	for NTHuman in ptable["CharacterList"] do
 		NTC.AddEmptyCharacterData(NTHuman.Human)
 	end
-end, Hook.HookMethodType.After)
-
-Hook.Patch("Neurotrauma.HumanUpdateLuaSync","FetchHumanUpdate", function (GameSession, ptable)
-	CSHumanUpdate = ptable["HU"]
-end, Hook.HookMethodType.After)
-
+end,  Hook.HookMethodType.After)
 
 -- Neurotrauma human update functions
 -- Hooks Lua event "think" to update and use for applying NT specific character data (its called 'c') with
@@ -442,3 +495,144 @@ NT.LegacyCharStats = {
 
 NT.CharStats = {
 }
+
+
+function NT.UpdateHuman(character, currentCharData)
+	-- Doing this additional check here enables NT updates for 'important' people like players, crew and AI opponents from the get-go
+	-- instead of waiting on other interactions before updates start. - Lukako
+	if character.IsHuman and character.TeamID == 1 or character.TeamID == 2 and not character.IsDead then
+	else
+		-- Original check
+		if not HF.HasAffliction(character, "luabotomy") then return end
+	end
+
+	-- pre humanupdate hooks
+	for key, val in pairs(NTC.PreHumanUpdateHooks) do
+		val(character)
+	end
+
+	local charData = currentCharData
+
+	-- fetch all the current affliction data
+	for identifier, data in pairs(NT.Afflictions) do
+		if NT.LegacyAfflictions[identifier] == nil then
+			local strength = HF.GetAfflictionStrength(character, identifier, data.default or 0)
+			charData.afflictions[identifier] = { prev = strength, strength = strength }
+		end
+	end
+	-- fetch and calculate all the current stats
+	for identifier, data in pairs(NT.CharStats) do
+		if NT.LegacyCharStats[identifier] == nil then
+			if data.getter ~= nil then
+				charData.stats[identifier] = data.getter(charData)
+			else
+				charData.stats[identifier] = data.default or 1
+			end
+		end
+	end
+	-- update non-limb-specific afflictions
+	for identifier, data in pairs(NT.Afflictions) do
+		if NT.LegacyAfflictions[identifier] == nil then
+			if data.update ~= nil then data.update(charData, identifier) end
+		end
+	end
+
+	-- update and apply limb specific stuff
+	local function FetchLimbData(type)
+		local keystring = tostring(type) .. "afflictions"
+		charData[keystring] = {}
+		for identifier, data in pairs(NT.LimbAfflictions) do
+			if NT.LegacyLimbAfflictions[identifier] == nil then
+				local strength = HF.GetAfflictionStrengthLimb(character, type, identifier, data.default or 0)
+				charData[keystring][identifier] = { prev = strength, strength = strength }
+			end
+		end
+	end
+	local function UpdateLimb(type, stasisflag)
+		local keystring = tostring(type) .. "afflictions"
+		for identifier, data in pairs(NT.LimbAfflictions) do
+			if NT.LegacyLimbAfflictions[identifier] == nil then
+				if
+					data.update ~= nil
+					and (
+						not stasisflag
+						or (
+							NT.LimbAfflictions[identifier].ignorestasis ~= nil
+							and NT.LimbAfflictions[identifier].ignorestasis == true
+						)
+					)
+				then
+					data.update(charData, charData[keystring], identifier, type)
+				end
+			end
+		end
+	end
+	local function ApplyLimb(type, stasisflag)
+		local keystring = tostring(type) .. "afflictions"
+		for identifier, data in pairs(charData[keystring]) do
+			if NT.LegacyLimbAfflictions[identifier] == nil then
+				local newval = HF.Clamp(
+					data.strength,
+					NT.LimbAfflictions[identifier].min or 0,
+					NT.LimbAfflictions[identifier].max or 100
+				)
+				if
+					newval ~= data.prev
+					and (
+						not stasisflag
+						or (
+							NT.LimbAfflictions[identifier].ignorestasis ~= nil
+							and NT.LimbAfflictions[identifier].ignorestasis == true
+						)
+					)
+				then
+					if NT.LimbAfflictions[identifier].apply == nil then
+						HF.SetAfflictionLimb(character, identifier, type, newval)
+					else
+						NT.LimbAfflictions[identifier].apply(charData, identifier, type, newval)
+					end
+				end
+			end
+		end
+	end
+
+	-- stasis completely halts activity in limbs
+	for type in limbtypes do
+		FetchLimbData(type)
+	end
+	for type in limbtypes do
+		UpdateLimb(type, charData.stats.stasis)
+	end
+	for type in limbtypes do
+		ApplyLimb(type, charData.stats.stasis)
+	end
+
+	-- non-limb-specific late update (useful for things that use stats that are altered by limb specifics)
+	for identifier, data in pairs(NT.Afflictions) do
+		if data.lateupdate ~= nil then data.lateupdate(charData, identifier) end
+	end
+
+	-- apply non-limb-specific changes
+	for identifier, data in pairs(charData.afflictions) do
+		if NT.LegacyAfflictions[identifier] == nil and NT.Afflictions[identifier] ~= nil then
+			local newval =
+				HF.Clamp(data.strength, NT.Afflictions[identifier].min or 0, NT.Afflictions[identifier].max or 100)
+			if newval ~= data.prev then
+				if NT.Afflictions[identifier].apply == nil then
+					HF.SetAffliction(character, identifier, newval)
+				else
+					NT.Afflictions[identifier].apply(charData, identifier, newval)
+				end
+			end
+		end
+	end
+
+	-- compatibility
+	NTC.TickCharacter(character)
+	-- humanupdate hooks
+	for key, val in pairs(NTC.HumanUpdateHooks) do
+		val(character)
+	end
+
+	NTC.CharacterSpeedMultipliers[character] = nil
+end

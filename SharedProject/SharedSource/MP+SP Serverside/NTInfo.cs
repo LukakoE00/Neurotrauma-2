@@ -4,7 +4,7 @@ namespace Neurotrauma
     // Addons should add their own file like this which then gets used to do the old print-in-console thing
     public static class NTInfo
     {
-        public const string Name = "Neurotrauma";
+        public const string Name = "Neurotrauma C#";
         public const string Version = "A2.0.0";
         public const int VersionNum = 02000000;
 
@@ -43,7 +43,7 @@ namespace Neurotrauma
             }
 
             consolePrint += "\n";
-            if (!hasAddons) consolePrint += "- Not running any expansions\n";
+            if (!hasAddons) consolePrint += "- Not running any C# expansions\n";
 
             HF.Print(consolePrint);
         }
