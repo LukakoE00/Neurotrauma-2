@@ -674,6 +674,7 @@
       name=""
       description=""
       identifier="artificialventilation"
+      aliases="alv"
       
       healableinmedicalclinic="false"
       targets="human"

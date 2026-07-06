@@ -43,6 +43,7 @@
       name=""
       description=""
       identifier="fracturedextremity"
+      aliases="la_fracture,ra_fracture,ll_fracture,rl_fracture"
 
       healableinmedicalclinic="true"
       basehealcost="130"
@@ -62,6 +63,7 @@
       name=""
       description=""
       identifier="fracturedribs"
+      aliases="t_fracture"
     
       healableinmedicalclinic="false"
       targets="human"
@@ -101,6 +103,7 @@
       name=""
       description=""
       identifier="fracturedneck"
+      aliases="n_fracture"
 
       healableinmedicalclinic="false"
       targets="human"
@@ -148,6 +151,7 @@
       name=""
       description=""
       identifier="fracturedskull"
+      aliases="h_fracture"
       
       healableinmedicalclinic="false"
       targets="human"

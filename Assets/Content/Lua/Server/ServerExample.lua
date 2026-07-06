@@ -6,11 +6,6 @@ NT.Version = "1.0.0h0"
 NT.VersionNum = 000000001
 NT.Path = table.pack(...)[1]
 
-dofile(NT.Path .. "/Lua/Scripts/Server/DummyHumanUpdate.lua") 	
-dofile(NT.Path .. "/Lua/Scripts/Server/NTCompat.lua") 		
-
--- Register our needed classes
-
 LuaUserData.RegisterType("Neurotrauma.NeurotraumaInit")
 LuaUserData.RegisterType("Neurotrauma.NT")
 LuaUserData.RegisterType("Neurotrauma.HumanUpdate")
@@ -25,3 +20,7 @@ LuaUserData.RegisterType("Neurotrauma.HumanUpdate+NTHumanLimbSymptomData")
 
 LuaUserData.RegisterType("Neurotrauma.HumanUpdate+CharacterStats+NTHumanStatDoubleData")
 LuaUserData.RegisterType("Neurotrauma.HumanUpdate+CharacterStats+NTHumanStatBoolData")
+
+dofile(NT.Path .. "/Lua/Scripts/Server/DummyHumanUpdate.lua") 	
+dofile(NT.Path .. "/Lua/Scripts/Server/LegacyAfflictions.lua") 	
+dofile(NT.Path .. "/Lua/Scripts/Server/NTCompat.lua") 		

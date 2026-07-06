@@ -6,6 +6,7 @@
       name=""
       description=""
       identifier="aorticrupture"
+      aliases="t_arterialcut"
       
       healableinmedicalclinic="false"
       targets="human"

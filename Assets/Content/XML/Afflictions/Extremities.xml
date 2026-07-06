@@ -6,6 +6,7 @@
       name=""
       description=""
       identifier="tourniqueted"
+      aliases="clampedarteries"
 
       healableinmedicalclinic="false"
       targets="human"
