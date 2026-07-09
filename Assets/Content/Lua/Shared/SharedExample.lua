@@ -5,6 +5,7 @@ NT.Name = "Neurotrauma"
 NT.Version = "1.0.0h0"
 NT.VersionNum = 000000001
 NT.Path = table.pack(...)[1]
+NT.SymsForNPC = {}
 
 LuaUserData.RegisterType("Neurotrauma.NTConfig")
 

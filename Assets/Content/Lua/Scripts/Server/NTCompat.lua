@@ -16,11 +16,15 @@ NTC = {} -- a class containing compatibility functions for other mods to make us
 -- MyExp.MinNTVersionNum = 01070100 -- 01.07.01.00 -> A1.7.1h0
 -- Timer.Wait(function() if NT ~= nil then NTC.RegisterExpansion(MyExp) end end,1)
 
+local NTInfo = LuaUserData.CreateStatic("Neurotrauma.NTInfo",false)
+local CSNTCompat = LuaUserData.CreateStatic("Neurotrauma.NTC",false)
+
 NTC.RegisteredExpansions = {}
 -- The function to add your addon to NT, see above for more info.
 ---@param expansionMainObject table The table of the addon.
 function NTC.RegisterExpansion(expansionMainObject)
 	table.insert(NTC.RegisteredExpansions, expansionMainObject)
+	NTInfo.RegisterAddon(expansionMainObject)
 end
 
 -- a table of tables, each character that has some custom data has an entry
@@ -32,13 +36,7 @@ NTC.CharacterData = {}
 ---@param symptomidentifer string The identifier of the symptom.
 ---@param duration integer The number of human updates it lasts for.
 function NTC.SetSymptomTrue(character, symptomidentifer, duration)
-	if duration == nil then duration = 2 end
-
-	NTC.AddEmptyCharacterData(character)
-	local data = NTC.GetCharacterData(character)
-	data[symptomidentifer] = duration
-
-	NTC.CharacterData[character.ID] = data
+	CSNTCompat.SetSymptomTrue(character,symptomidentifer,duration)
 end
 
 -- use this function to suppress symptoms temporarily. this takes precedence over NTC.SetSymptomTrue.
@@ -47,13 +45,7 @@ end
 ---@param symptomidentifer string The identifier of the symptom.
 ---@param duration integer The number of human updates it lasts for.
 function NTC.SetSymptomFalse(character, symptomidentifer, duration)
-	if duration == nil then duration = 2 end
-
-	NTC.AddEmptyCharacterData(character)
-	local data = NTC.GetCharacterData(character)
-	data["!" .. symptomidentifer] = duration
-
-	NTC.CharacterData[character.ID] = data
+	CSNTCompat.SetSymptomFalse(character,symptomidentifer,duration)
 end
 
 -- usage example: anywhere in your lua code, cause 4 seconds (2 humanupdates) of pale skin with this:
@@ -135,7 +127,7 @@ NTC.OnDamagedHooks = {}
 -- with a characterhealth, attack result and limb parameter
 ---@param func function The actual function to be called on damaged.
 function NTC.AddOnDamagedHook(func)
-	NTC.OnDamagedHooks[#NTC.OnDamagedHooks + 1] = func
+	CSNTCompat.AddOnDamagedHook(func)
 end
 
 NTC.ModifyingOnDamagedHooks = {}
@@ -143,7 +135,7 @@ NTC.ModifyingOnDamagedHooks = {}
 -- with a characterhealth, afflictions and limb parameter, and afflictions return type
 ---@param func function The actual function to be called on damaged. Modifying.
 function NTC.AddModifyingOnDamagedHook(func)
-	NTC.ModifyingOnDamagedHooks[#NTC.ModifyingOnDamagedHooks + 1] = func
+	CSNTCompat.AddModifyingOnDamagedHook(func)
 end
 
 NTC.CharacterSpeedMultipliers = {}

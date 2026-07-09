@@ -188,12 +188,20 @@ namespace Neurotrauma
             OnDamagedHooks.Add(Hook);
         }
 
+        public static void AddOnDamagedHook(LuaCsAction Hook)
+        {
+        }
+
         // These might work?
         public static readonly List<Action<CharacterHealth, List<Affliction>, Limb>> ModifyingOnDamagedHooks = new();
 
         public static void AddModifyingOnDamagedHook(Action<CharacterHealth, List<Affliction>, Limb> Hook)
         {
             ModifyingOnDamagedHooks.Add(Hook);
+        }
+
+        public static void AddModifyingOnDamagedHook(LuaCsAction Hook)
+        {
         }
 
         public static Dictionary<HumanUpdate.NTHuman, double> CharacterSpeedMultipliers = new();

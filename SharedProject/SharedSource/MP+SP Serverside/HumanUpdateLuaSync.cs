@@ -3,6 +3,8 @@ using Barotrauma;
 using Barotrauma.LuaCs.Events;
 using FarseerPhysics.Dynamics;
 using MoonSharp.Interpreter;
+using MoonSharp.Interpreter.Loaders;
+using static Barotrauma.DebugConsole;
 using static Neurotrauma.HF;
 using static Neurotrauma.NTC;
 

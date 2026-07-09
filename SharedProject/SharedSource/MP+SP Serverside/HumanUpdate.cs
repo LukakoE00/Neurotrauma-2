@@ -3,8 +3,10 @@ using Barotrauma.LuaCs.Compatibility;
 using Barotrauma.LuaCs.Events;
 using FarseerPhysics.Collision;
 using LightInject;
+using Microsoft.Xna.Framework.Input;
 using MonoMod.RuntimeDetour;
 using MoonSharp.Interpreter;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using static Barotrauma.LuaCs.NetworkingService;
@@ -1484,6 +1486,7 @@ public static class HumanUpdate
     private static void UpdateHumans(List<AfflictionPriority> priorities)
     {
         List<Character> QueuedCharacters = new();
+        int index = 1; // thanks lua
 
         foreach (KeyValuePair<Character, NTHuman> Pair in UpdatingHumans)
         {
@@ -1494,7 +1497,13 @@ public static class HumanUpdate
                 continue;
             }
 
-            Pair.Value.Update(priorities);
+            double Delay = (((index + 1) / UpdatingHumans.Count) * NT.DeltaTime * 1000); // Delay our update to prevent sutters.
+
+            LuaCsSetup.Instance.Timer.Wait((params object[] _) => {
+                Pair.Value.Update(priorities);
+            }, (int)Delay);
+
+            index++;
         }
 
         foreach (Character character in QueuedCharacters)
@@ -1506,6 +1515,7 @@ public static class HumanUpdate
     private static void UpdateMonsters()
     {
         List<NTMonster> QueuedCharacters = new();
+        int index = 1; // thanks lua
 
         foreach (NTMonster Monster in UpdatingMonsters)
         {
@@ -1516,7 +1526,13 @@ public static class HumanUpdate
                 continue;
             }
 
-            Monster.Update();
+            double Delay = (((index + 1) / UpdatingMonsters.Count) * NT.DeltaTime * 1000); // Delay our update to prevent sutters.
+
+            LuaCsSetup.Instance.Timer.Wait((params object[] _) => {
+                Monster.Update();
+            }, (int)Delay);
+
+            index++;
         }
 
         foreach (NTMonster character in QueuedCharacters)
