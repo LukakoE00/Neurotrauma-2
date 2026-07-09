@@ -22,4 +22,5 @@ LuaUserData.RegisterType("Neurotrauma.HumanUpdate+CharacterStats+NTHumanStatBool
 
 dofile(NTServer.Path .. "/Lua/Scripts/Server/DummyHumanUpdate.lua") 	
 dofile(NTServer.Path .. "/Lua/Scripts/Server/LegacyAfflictions.lua") 	
-dofile(NTServer.Path .. "/Lua/Scripts/Server/NTCompat.lua") 		
+dofile(NTServer.Path .. "/Lua/Scripts/Server/NTCompat.lua") 	
+dofile(NTServer.Path .. "/Lua/Scripts/Server/Items.lua") 		

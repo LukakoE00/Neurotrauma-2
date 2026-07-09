@@ -411,7 +411,7 @@ namespace Neurotrauma
         /// <returns>RGB color value.</returns>
         public static Color GetColorFromConfigEntry(string ConfigEntry)
         {
-            var rgbList = NTConfig.Get<List<string>>(ConfigEntry, null);
+            List<string> rgbList = NTConfig.Get(ConfigEntry, []);
             if (rgbList == null || rgbList.Count == 0) return new Color(127, 255, 255);
 
             var rgbString = rgbList[0];

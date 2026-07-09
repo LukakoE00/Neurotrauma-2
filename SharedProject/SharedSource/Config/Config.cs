@@ -74,7 +74,7 @@ namespace Neurotrauma
                 IEnumerable<DynValue> Values = SubInfo.Values;
                 entry.Value = entry.Default;
 
-                foreach (DynValue Value in Values)
+                foreach (DynValue Value in Values) // Set the values.
                 {
                     string ValueKey = Value.CastToString();
                     if (ValueKey == "type") continue;
@@ -83,16 +83,12 @@ namespace Neurotrauma
 
                 entry.Type = StringToConfigEntry(SubInfo.Get("type").ToString());
                 entry.Expansion = Expansion.Get("Name").ToString();
-                entry.Name = SubInfo.Get("name").ToString();
-                //HF.Print(SubInfo.Get("page").ToString());
-                if (SubInfo.Get("page") != null)
+                if (!SubInfo.Get("page").IsNil())
                 {
                     entry.Page = SubInfo.Get("page").ToString();
                 }
                 else
                 {
-                    //HF.Print("Expansion");
-                    //HF.Print(Expansion.Get("Name").ToString());
                     entry.Page = Expansion.Get("Name").ToString();
                 }
                 Entries[kvp.Key.ToString()] = entry;
@@ -203,24 +199,95 @@ namespace Neurotrauma
             }
         }
 
-        public static T Get<T>(string key, T defaultValue)
+        //public static T Get<T>(string key, T defaultValue)
+        //{
+            //HF.Print(key);
+            //HF.Print($"{defaultValue}");
+            //if (Entries.TryGetValue(key, out ConfigEntry entry))
+            //{
+                //if (entry.Value == null) return defaultValue;
+
+                //if (entry.Value is T directMatch) return directMatch;
+
+                //try
+                //{
+                    //return (T)Convert.ChangeType(entry.Value, typeof(T));
+                //}
+                //catch
+                //{
+                    //return defaultValue;
+               // }
+            //}
+            ///return defaultValue;
+        //}
+
+        public static bool Get(string key, bool defaultValue)
         {
             if (Entries.TryGetValue(key, out ConfigEntry entry))
             {
                 if (entry.Value == null) return defaultValue;
-
-                if (entry.Value is T directMatch) return directMatch;
-
-                try
-                {
-                    return (T)Convert.ChangeType(entry.Value, typeof(T));
-                }
-                catch
-                {
-                    return defaultValue;
-                }
+                if (entry.Value is bool) return (bool)entry.Value;
             }
             return defaultValue;
+        }
+
+        public static float Get(string key, float defaultValue)
+        {
+            if (Entries.TryGetValue(key, out ConfigEntry entry))
+            {
+                if (entry.Value == null) return defaultValue;
+                if (entry.Value is float) return (float)entry.Value;
+            }
+            return defaultValue;
+        }
+
+        public static string Get(string key, string defaultValue)
+        {
+            if (Entries.TryGetValue(key, out ConfigEntry entry))
+            {
+                if (entry.Value == null) return defaultValue;
+                if (entry.Value is string) return (string)entry.Value;
+            }
+            return defaultValue;
+        }
+
+        public static double Get(string key, double defaultValue)
+        {
+            if (Entries.TryGetValue(key, out ConfigEntry entry))
+            {
+                if (entry.Value == null) return defaultValue;
+                if (entry.Value is double) return (double)entry.Value;
+            }
+            return defaultValue;
+        }
+
+        public static List<string> Get(string key, List<string> defaultValue)
+        {
+            if (Entries.TryGetValue(key, out ConfigEntry entry))
+            {
+                if (entry.Value == null) return defaultValue;
+                if (entry.Value is List<string>) return (List<string>)entry.Value;
+            }
+            return defaultValue;
+        }
+
+        public static IEnumerable<string> Get(string key, IEnumerable<string> defaultValue)
+        {
+            if (Entries.TryGetValue(key, out ConfigEntry entry))
+            {
+                if (entry.Value == null) return defaultValue;
+                if (entry.Value is IEnumerable<string>) return (IEnumerable<string>)entry.Value;
+            }
+            return defaultValue;
+        }
+        public static object Get(string key)
+        {
+            if (Entries.TryGetValue(key, out ConfigEntry entry))
+            {
+                if (entry.Value == null) return null;
+                if (entry.Value is object) return (object)entry.Value;
+            }
+            return null;
         }
 
         public static void Set(string key, object value)

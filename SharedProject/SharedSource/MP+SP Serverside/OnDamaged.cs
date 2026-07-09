@@ -72,13 +72,13 @@ public class OnDamaged
             afflictions == null ||
             hitLimb == null || hitLimb.IsSevered ||
             attacker == null ||
-            !(NTConfig.Get<bool>("NT_Calculations", true)))
+            !(NTConfig.Get("NT_Calculations", true)))
         {
             return;
         }
 
         // Pull the Evil Falldamage abusing creatures from config.
-        var CreatureCategory = NTConfig.Get<IEnumerable<string>>("NT_creatureNoFallDamage", Enumerable.Empty<string>());
+        var CreatureCategory = NTConfig.Get("NT_creatureNoFallDamage", Enumerable.Empty<string>());
 
         // If one of these critters caused the attack, counteract the additional damage.
         foreach (string Species in CreatureCategory)
@@ -102,7 +102,7 @@ public class OnDamaged
         if (__instance == null || __instance.Character == null || __instance.Character.IsDead || !(__instance.Character.IsHuman) ||
             attackResult.Afflictions == null || !(attackResult.Afflictions.Any()) ||
             hitLimb == null || hitLimb.IsSevered ||
-            !NTConfig.Get<bool>("NT_Calculations", true))
+            !NTConfig.Get("NT_Calculations", true))
         {
             return;
         }

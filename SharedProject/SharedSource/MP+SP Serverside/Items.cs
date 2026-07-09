@@ -395,14 +395,14 @@ public class NTItemMethods
             Color customColor = useColoredScanner ? HF.GetColorFromConfigEntry("NTSCAN_customcolor") : new Color(127, 255, 255);
 
             // Floats
-            float lowMedThreshold = NTConfig.Get<float>("NTSCAN_lowmedThreshold", 1);
-            float medHighThreshold = NTConfig.Get<float>("NT_medhighThreshold", 1);
+            float lowMedThreshold = NTConfig.Get("NTSCAN_lowmedThreshold", 1);
+            float medHighThreshold = NTConfig.Get("NT_medhighThreshold", 1);
 
             // Strings
-            List<string> vitalCategory = NTConfig.Get<List<string>>("NTSCAN_VitalCategory", []);
-            List<string> removalCategory = NTConfig.Get<List<string>>("NTSCAN_RemovalCategory", []);
-            List<string> customCategory = NTConfig.Get<List<string>>("NTSCAN_CustomCategory", []);
-            List<string> ignoredCategory = NTConfig.Get<List<string>>("NTSCAN_IgnoredCategory", []);
+            List<string> vitalCategory = NTConfig.Get("NTSCAN_VitalCategory", []);
+            List<string> removalCategory = NTConfig.Get("NTSCAN_RemovalCategory", []);
+            List<string> customCategory = NTConfig.Get("NTSCAN_CustomCategory", []);
+            List<string> ignoredCategory = NTConfig.Get("NTSCAN_IgnoredCategory", []);
 
             // Not changeable
             List<string> pressureCategory = ["bloodpressure"];
@@ -1141,14 +1141,14 @@ public class NTItemMethods
             Color customColor = useColoredScanner ? HF.GetColorFromConfigEntry("NTSCAN_customcolor") : new Color(127, 255, 255);
 
             // Floats
-            float lowMedThreshold = NTConfig.Get<float>("NTSCAN_lowmedThreshold", 1);
-            float medHighThreshold = NTConfig.Get<float>("NT_medhighThreshold", 1);
+            float lowMedThreshold = NTConfig.Get("NTSCAN_lowmedThreshold", 1);
+            float medHighThreshold = NTConfig.Get("NT_medhighThreshold", 1);
 
             // Strings
-            List<string> vitalCategory = NTConfig.Get<List<string>>("NTSCAN_VitalCategory", new List<string>());
-            List<string> removalCategory = NTConfig.Get<List<string>>("NTSCAN_RemovalCategory", new List<string>());
-            List<string> customCategory = NTConfig.Get<List<string>>("NTSCAN_CustomCategory", new List<string>());
-            List<string> ignoredCategory = NTConfig.Get<List<string>>("NTSCAN_IgnoredCategory", new List<string>());
+            List<string> vitalCategory = NTConfig.Get("NTSCAN_VitalCategory", new List<string>());
+            List<string> removalCategory = NTConfig.Get("NTSCAN_RemovalCategory", new List<string>());
+            List<string> customCategory = NTConfig.Get("NTSCAN_CustomCategory", new List<string>());
+            List<string> ignoredCategory = NTConfig.Get("NTSCAN_IgnoredCategory", new List<string>());
 
             // Not changeable
             List<string> pressureCategory = new() { "bloodpressure" };
@@ -1473,7 +1473,7 @@ public class NTItemMethods
 
         SutureAfflictions["aorticrupture"] = new ItemsAfflictionInfos("aorticrupture", 3, infos => {
 
-            if (!NTConfig.Get<bool>("NT_HardmodeAorticRupture", false)) return false;
+            if (!NTConfig.Get("NT_HardmodeAorticRupture", false)) return false;
 
             return HF.HasAfflictionLimb(infos.target, "retractedskin", infos.targetLimb.type, 95);
         });
@@ -1482,7 +1482,7 @@ public class NTItemMethods
 
         SutureAfflictions["tamponade"] = new ItemsAfflictionInfos("tamponade", 3, infos => {
 
-            if (NTConfig.Get<bool>("NT_OpenCloseTamponade", false)) return false;
+            if (NTConfig.Get("NT_OpenCloseTamponade", false)) return false;
 
             return HF.HasAfflictionLimb(infos.target, "retractedskin", infos.targetLimb.type, 95);
         });
@@ -1606,7 +1606,7 @@ public class NTItemMethods
         {
             bool retractedSkin = HF.HasAfflictionLimb(infos.target, "retractedskin", LimbType.Torso, 95);
 
-            if (NTConfig.Get<bool>("NT_OpenCloseTamponade", false)) return false;
+            if (NTConfig.Get("NT_OpenCloseTamponade", false)) return false;
 
             return retractedSkin;
         });
