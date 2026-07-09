@@ -291,11 +291,27 @@ namespace Neurotrauma
             }
         }
 
+        public static void AddSuturableAffliction(string Identifier, int SurgerySkillGain, string RequiredAfflictionID, LuaCsAction Func)
+        {
+            if (!NTItemMethods.SutureAfflictions.ContainsKey(Identifier))
+            {
+                //NTItemMethods.SutureAfflictions[Identifier] = new(Identifier, SurgerySkillGain, Func, RequiredAfflictionID);
+            }
+        }
+
         public static void AddDrainageAffliction(string Identifier, int SurgerySkillGain, string RequiredAfflictionID, Func<NTItemMethods.ItemUpdateFunctionInfos, bool> Func)
         {
             if (!NTItemMethods.DrainageAfflictions.ContainsKey(Identifier))
             {
                 NTItemMethods.DrainageAfflictions[Identifier] = new(Identifier, SurgerySkillGain, Func, RequiredAfflictionID);
+            }
+        }
+
+        public static void AddDrainageAffliction(string Identifier, int SurgerySkillGain, string RequiredAfflictionID, LuaCsAction Func)
+        {
+            if (!NTItemMethods.DrainageAfflictions.ContainsKey(Identifier))
+            {
+                //NTItemMethods.DrainageAfflictions[Identifier] = new(Identifier, SurgerySkillGain, Func, RequiredAfflictionID);
             }
         }
 

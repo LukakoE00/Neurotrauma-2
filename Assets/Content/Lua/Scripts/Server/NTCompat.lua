@@ -144,21 +144,13 @@ NTC.CharacterSpeedMultipliers = {}
 ---@param character Character The character to set the speed multiplier to.
 ---@param multiplier number The value of the multiplier.
 function NTC.MultiplySpeed(character, multiplier)
-	if NTC.CharacterSpeedMultipliers[character] == nil then
-		NTC.CharacterSpeedMultipliers[character] = multiplier
-	else
-		NTC.CharacterSpeedMultipliers[character] = NTC.CharacterSpeedMultipliers[character] * multiplier
-	end
+	CSNTCompat.MultiplySpeed(character,multiplier)
 end
 
 -- use this function to register an affliction to be detected by the hematology analyzer
 ---@param identifier string The identifier of the affliction to be visible on hematology.
 function NTC.AddHematologyAffliction(identifier)
-	Timer.Wait(function()
-		if not HF.TableContains(NT.HematologyDetectable, identifier) then
-			table.insert(NT.HematologyDetectable, identifier)
-		end
-	end, 1)
+	CSNTCompat.AddHematologyAffliction(identifier)
 end
 
 -- use this function to register an affliction to be healed by sutures
@@ -172,25 +164,13 @@ end
 ---@param requiredaffliction string The identifier of the requiredaffliction (Might need more documentation!)
 ---@param func function The function to be called when the affliction is cured with sutures.
 function NTC.AddSuturedAffliction(identifier, surgeryskillgain, requiredaffliction, func)
-	Timer.Wait(function()
-		if not HF.TableContains(NT.SutureAfflictions, identifier) then
-			NT.SutureAfflictions[identifier] = {
-				xpgain = surgeryskillgain,
-				case = requiredaffliction,
-				func = func,
-			}
-		end
-	end, 1)
+	CSNTCompat.AddSuturableAffliction(identifier, surgeryskillgain, requiredaffliction, func)
 end
 
 -- use this function to register an affliction to be healed by drainage
 ---@param identifier string The identifier of the affliction to be healed.
 function NTC.AddDrainageAffliction(identifier)
-	Timer.Wait(function()
-		if not HF.TableContains(NT.DrainageAfflictions, identifier) then
-			table.insert(NT.DrainageAfflictions, identifier)
-		end
-	end, 1)
+	CSNTCompat.AddDrainageAffliction(identifier)
 end
 
 NTC.AfflictionsAffectingVitality = {
@@ -216,7 +196,7 @@ NTC.AfflictionsAffectingVitality = {
 -- use this function to register an affliction that will cause vitality damage. (Might need more documentation!)
 ---@param identifier string The identifier of the affliction to cause damage.
 function NTC.AddAfflictionAffectingVitality(identifier)
-	NTC.AfflictionsAffectingVitality[identifier] = true
+	CSNTCompat.AddAfflictionAffectingVitality(identifier)
 end
 
 -- these functions are used by neurotrauma to check for symptom overrides
@@ -224,28 +204,14 @@ end
 ---@param symptomidentifer string The identifier of the symptom.
 ---@return boolean
 function NTC.GetSymptom(character, symptomidentifer)
-	local chardata = NTC.GetCharacterData(character)
-	if chardata == nil then return false end
-
-	local durationleft = chardata[symptomidentifer]
-
-	if durationleft == nil then return false end
-
-	return true
+	return CSNTCompat.HasSymptom(character, symptomidentifer)
 end
 
 ---@param character Character The character to check the symptom false on.
 ---@param symptomidentifer string The identifier of the symptom false.
 ---@return boolean
 function NTC.GetSymptomFalse(character, symptomidentifer)
-	local chardata = NTC.GetCharacterData(character)
-	if chardata == nil then return false end
-
-	local durationleft = chardata["!" .. symptomidentifer]
-
-	if durationleft == nil then return false end
-
-	return true
+	return CSNTCompat.HasSymptomFalse(character, symptomidentifer)
 end
 
 -- sets multiplier data for one humanupdate, should be called from within a humanupdate hook

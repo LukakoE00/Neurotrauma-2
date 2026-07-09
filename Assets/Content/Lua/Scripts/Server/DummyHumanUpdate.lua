@@ -10,6 +10,7 @@ local limbtypes = {
 }
 
 local CSHumanUpdate = LuaUserData.CreateStatic("Neurotrauma.HumanUpdate",false)-- stores our class ref
+local Init = LuaUserData.CreateStatic("Neurotrauma.NT",false)-- stores our class ref
 
 NT.UsingAddons = function ()
 	return #NTC.RegisteredExpansions == 0
@@ -106,6 +107,7 @@ end
 
 Hook.Patch("Neurotrauma.HumanUpdateLuaSync","SyncLuaAfflictions", function(GameSession, ptable)
 	if not NT.UsingAddons()  then return end
+	NT.Deltatime = Init.DeltaTime
 	for NTHuman in ptable["CharacterList"] do
 		local CharData = { character = NTHuman.Human, afflictions = {}, stats = {} }
 

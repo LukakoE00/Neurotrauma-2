@@ -67,9 +67,6 @@ namespace Neurotrauma
 
         public static void AddConfigOptions(Table Expansion)
         {
-            //if (Expansions.Any(e => e.Name == expansion.RawGet("name")) return;
-
-            //Expansions.Add(expansion);
             foreach (TablePair kvp in Expansion.Get("ConfigData").Table.Pairs)
             {
                 ConfigEntry entry = new();
@@ -80,27 +77,38 @@ namespace Neurotrauma
                 foreach (DynValue Value in Values)
                 {
                     string ValueKey = Value.CastToString();
-                    HF.Print(ValueKey);
                     if (ValueKey == "type") continue;
                     
                 }
 
                 entry.Type = StringToConfigEntry(SubInfo.Get("type").ToString());
-                entry.Expansion = Expansion.Get("name").ToString();
+                entry.Expansion = Expansion.Get("Name").ToString();
+                entry.Name = SubInfo.Get("name").ToString();
+                //HF.Print(SubInfo.Get("page").ToString());
+                if (SubInfo.Get("page") != null)
+                {
+                    entry.Page = SubInfo.Get("page").ToString();
+                }
+                else
+                {
+                    //HF.Print("Expansion");
+                    //HF.Print(Expansion.Get("Name").ToString());
+                    entry.Page = Expansion.Get("Name").ToString();
+                }
                 Entries[kvp.Key.ToString()] = entry;
             }
         }
 
-        public static void AddConfigOptions(ConfigExpansion expansion)
+        public static void AddConfigOptions(ConfigExpansion Expansion)
         {
-            if (Expansions.Any(e => e.Name == expansion.Name)) return;
+            if (Expansions.Any(e => e.Name == Expansion.Name)) return;
 
-            Expansions.Add(expansion);
-            foreach (KeyValuePair<string, ConfigEntry> kvp in expansion.ConfigData)
+            Expansions.Add(Expansion);
+            foreach (KeyValuePair<string, ConfigEntry> kvp in Expansion.ConfigData)
             {
                 ConfigEntry entry = kvp.Value;
                 entry.Value = entry.Default;
-                entry.Expansion = expansion.Name;
+                entry.Expansion = Expansion.Name;
                 Entries[kvp.Key] = entry;
             }
         }

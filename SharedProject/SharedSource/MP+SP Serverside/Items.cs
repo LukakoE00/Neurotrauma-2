@@ -31,6 +31,7 @@ public class NTItemMethods
         /// </example>
         public string Case { get; } = "";
         public Func<ItemUpdateFunctionInfos, bool> Conditions { get; }
+        public LuaCsAction LuaConditions { get; }
 
         public ItemsAfflictionInfos(string affID, int xpGain, Func<ItemUpdateFunctionInfos, bool> conditions, string newCase = "") 
         { 
