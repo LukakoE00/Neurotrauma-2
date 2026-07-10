@@ -810,6 +810,9 @@ public static class HumanUpdate
             }
 
             HF.SetAffliction(Human,"slowdown", Math.Clamp(100 * (1 - (float)GetDoubleStatStrength("speedmultiplier")), 0, 100));
+
+            if (UsingLuaAddons()) HumanUpdateLuaSync.SyncLuaCharacterSpeed(Human, GetDoubleStatStrength("speedmultiplier")); // If we have lua addons sync our character speed.
+
             SetDoubleStatStrength("speedmultiplier", 1);
             CharacterSpeedMultipliers.Remove(this);
         }
@@ -1072,6 +1075,10 @@ public static class HumanUpdate
 
                     if (SymPrevStrength == 0 && SymCurrentStrength == 0) return;
 
+                    Sym.UpdateAction(this, SymID, LimbType.Torso, SymData);
+
+                    ApplyAfflictionChange(Human, SymID, (float)SymData.Strength, (float)SymPrevStrength, (float)Sym.MinStrength, (float)Sym.MaxStrength);
+
                     if (SymData.HumanUpdateTime > 0)
                     {
                         SymData.Strength = 100;
@@ -1083,13 +1090,6 @@ public static class HumanUpdate
                         SymData.Strength = 0;
                         SymData.HumanUpdateStoptime--;
                     }
-
-                    if (SymData.HumanUpdateStoptime <= 0)
-                    {
-                        Sym.UpdateAction(this, SymID, LimbType.Torso, SymData);
-                    }
-
-                    ApplyAfflictionChange(Human, SymID, (float)SymData.Strength, (float)SymPrevStrength, (float)Sym.MinStrength, (float)Sym.MaxStrength);
 
                     break;
 
@@ -1112,6 +1112,10 @@ public static class HumanUpdate
 
                         if (LimbSymPrevStrength == 0 && LimbSymCurrentStrength == 0) continue;
 
+                        LimbSym.UpdateAction(this, LimbSymID, Limb, LimbSymData);
+
+                        HF.ApplyAfflictionChangeLimb(Human, Limb, LimbSymID, (float)LimbSymData.Strength[Limb], (float)LimbSymPrevStrength, (float)LimbSym.MinStrength, (float)LimbSym.MaxStrength);
+
                         if (LimbSymData.HumanUpdateTime[Limb] > 0)
                         {
                             LimbSymData.Strength[Limb] = 100;
@@ -1123,13 +1127,6 @@ public static class HumanUpdate
                             LimbSymData.Strength[Limb] = 0;
                             LimbSymData.HumanUpdateStoptime[Limb]--;
                         }
-
-                        if (LimbSymData.HumanUpdateStoptime[Limb] <= 0)
-                        {
-                            LimbSym.UpdateAction(this, LimbSymID, Limb, LimbSymData);
-                        }
-
-                        HF.ApplyAfflictionChangeLimb(Human, Limb, LimbSymID, (float)LimbSymData.Strength[Limb], (float)LimbSymPrevStrength, (float)LimbSym.MinStrength, (float)LimbSym.MaxStrength);
                     }
 
                     break;
@@ -1480,7 +1477,7 @@ public static class HumanUpdate
             UpdateHumans(priorities);
         }
 
-        HumanUpdateLuaSync.PreSync(UpdatingHumans.Values.ToList());
+        if (UsingLuaAddons()) HumanUpdateLuaSync.PreSync(UpdatingHumans.Values.ToList());
     }
 
     private static void UpdateHumans(List<AfflictionPriority> priorities)

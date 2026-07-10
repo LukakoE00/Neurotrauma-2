@@ -2637,7 +2637,7 @@ namespace Neurotrauma
             // Type: Limb Specific
             // Caused By: Gel Coolant Pack.
             // Effects: Amplifies healing, slows character.
-            LimbAfflictionsToAdd["iced"] = new("iced", 0, 100, 0, AfflictionPriority.MEDIUM);
+            LimbAfflictionsToAdd["iced"] = new("iced", 0, 100, 0, AfflictionPriority.HIGH);
             LimbAfflictionsToAdd["iced"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanLimbAffData AffData) =>
                 {
@@ -3464,7 +3464,7 @@ namespace Neurotrauma
                 {
                     AffData.Strength = HF.BoolToNum(
                         // Symptom must not be forced false.
-                        !NTC.HasSymptomFalse(C, ID)
+                        (!NTC.HasSymptomFalse(C, ID))
 
                         // Mental; must be awake.
                         && C.GetAffData("unconsciousness").Strength <= 0
@@ -3492,7 +3492,7 @@ namespace Neurotrauma
                 {
                     AffData.Strength = HF.BoolToNum(
                         // Symptom must not be forced false.
-                        !NTC.HasSymptomFalse(C, ID)
+                        (!NTC.HasSymptomFalse(C, ID))
 
                         // Conditions:
                         && (
@@ -3513,7 +3513,7 @@ namespace Neurotrauma
                 {
                     AffData.Strength = HF.BoolToNum(
                         // Symptom must not be forced false.
-                        !NTC.HasSymptomFalse(C, ID)
+                        (!NTC.HasSymptomFalse(C, ID))
 
                         // Mental; must be awake.
                         && C.GetAffData("unconsciousness").Strength <= 0
@@ -3536,7 +3536,7 @@ namespace Neurotrauma
                 {
                     AffData.Strength = HF.BoolToNum(
                         // Symptom must not be forced false.
-                        !NTC.HasSymptomFalse(C, ID)
+                        (!NTC.HasSymptomFalse(C, ID))
 
                         // Mental; must be awake.
                         && C.GetAffData("unconsciousness").Strength <= 0
@@ -3559,7 +3559,7 @@ namespace Neurotrauma
                 {
                     AffData.Strength = HF.BoolToNum(
                         // Symptom must not be forced false.
-                        !NTC.HasSymptomFalse(C, ID)
+                        (!NTC.HasSymptomFalse(C, ID))
 
                         // Mental; must be awake.
                         && C.GetAffData("unconsciousness").Strength <= 0
@@ -3586,7 +3586,7 @@ namespace Neurotrauma
                 {
                     AffData.Strength = HF.BoolToNum(
                         // Symptom must not be forced false.
-                        !NTC.HasSymptomFalse(C, ID)
+                        (!NTC.HasSymptomFalse(C, ID))
 
                         // Mental; must be awake.
                         && C.GetAffData("unconsciousness").Strength <= 0
@@ -3618,7 +3618,7 @@ namespace Neurotrauma
                 {
                     AffData.Strength = HF.BoolToNum(
                         // Symptom must not be forced false.
-                        !NTC.HasSymptomFalse(C, ID)
+                        (!NTC.HasSymptomFalse(C, ID))
 
                         // Organic; must not be Cybernetic.
                         && HF.GetAfflictionStrength(C.Human, "rl_cyber", 0) < 0.1
@@ -3643,7 +3643,7 @@ namespace Neurotrauma
                 {
                     AffData.Strength = HF.BoolToNum(
                         // Symptom must not be forced false.
-                        !NTC.HasSymptomFalse(C, ID)
+                        (!NTC.HasSymptomFalse(C, ID))
 
                         // Conditions:
                         && (
@@ -3665,7 +3665,7 @@ namespace Neurotrauma
                 {
                     AffData.Strength = HF.BoolToNum(
                         // Symptom must not be forced false.
-                        !NTC.HasSymptomFalse(C, ID)
+                        (!NTC.HasSymptomFalse(C, ID))
 
                         // Must be breathing.
                         && C.GetAffData("respiratoryarrest").Strength <= 0
@@ -3690,7 +3690,7 @@ namespace Neurotrauma
                 {
                     AffData.Strength = HF.BoolToNum(
                         // Symptom must not be forced false.
-                        !NTC.HasSymptomFalse(C, ID)
+                        (!NTC.HasSymptomFalse(C, ID))
 
                         // Conditions:
                         && (
@@ -3721,7 +3721,7 @@ namespace Neurotrauma
                 {
                     AffData.Strength = HF.BoolToNum(
                         // Symptom must not be forced false.
-                        !NTC.HasSymptomFalse(C, ID)
+                        (!NTC.HasSymptomFalse(C, ID))
 
                         // Conditions:
                         && (
@@ -3741,7 +3741,7 @@ namespace Neurotrauma
                 {
                     AffData.Strength = HF.BoolToNum(
                         // Symptom must not be forced false.
-                        !NTC.HasSymptomFalse(C, ID)
+                        (!NTC.HasSymptomFalse(C, ID))
 
                         // Conditions:
                         && (
@@ -3763,7 +3763,7 @@ namespace Neurotrauma
                 {
                     AffData.Strength = HF.BoolToNum(
                         // Symptom must not be forced false.
-                        !NTC.HasSymptomFalse(C, ID)
+                        (!NTC.HasSymptomFalse(C, ID))
 
                         // Mental; must be awake.
                         && C.GetAffData("unconsciousness").Strength <= 0
@@ -3787,7 +3787,7 @@ namespace Neurotrauma
                 {
                     AffData.Strength = HF.BoolToNum(
                         // Symptom must not be forced false.
-                        !NTC.HasSymptomFalse(C, ID)
+                        (!NTC.HasSymptomFalse(C, ID))
 
                         // Conditions:
                         && (
@@ -3807,7 +3807,7 @@ namespace Neurotrauma
                 {
                     AffData.Strength = HF.BoolToNum(
                         // Symptom must not be forced false.
-                        !NTC.HasSymptomFalse(C, ID)
+                        (!NTC.HasSymptomFalse(C, ID))
 
                         // Conditions:
                         && (
@@ -3827,7 +3827,7 @@ namespace Neurotrauma
                 {
                     AffData.Strength = HF.BoolToNum(
                         // Symptom must not be forced false.
-                        !NTC.HasSymptomFalse(C, ID)
+                        (!NTC.HasSymptomFalse(C, ID))
 
                         // Conditions:
                         && (
@@ -3848,7 +3848,7 @@ namespace Neurotrauma
                 {
                     AffData.Strength = HF.BoolToNum(
                         // Symptom must not be forced false.
-                        !NTC.HasSymptomFalse(C, ID)
+                        (!NTC.HasSymptomFalse(C, ID))
 
                         // Heart must be beating.
                         && C.GetAffData("cardiacarrest").Strength <= 0
@@ -3871,7 +3871,7 @@ namespace Neurotrauma
                 {
                     AffData.Strength = HF.BoolToNum(
                         // Symptom must not be forced false.
-                        !NTC.HasSymptomFalse(C, ID)
+                        (!NTC.HasSymptomFalse(C, ID))
 
                         // Cannot stay conscious permanently.
                         && !C.Human.HasAbilityFlag(AbilityFlags.AlwaysStayConscious)
@@ -3902,7 +3902,7 @@ namespace Neurotrauma
                 {
                     AffData.Strength = HF.BoolToNum(
                         // Symptom must not be forced false.
-                        !NTC.HasSymptomFalse(C, ID)
+                        (!NTC.HasSymptomFalse(C, ID))
 
                         // Mental; must be awake.
                         && C.GetAffData("unconsciousness").Strength <= 0
@@ -3926,7 +3926,7 @@ namespace Neurotrauma
                 {
                     AffData.Strength = HF.BoolToNum(
                         // Symptom must not be forced false.
-                        !NTC.HasSymptomFalse(C, ID)
+                        (!NTC.HasSymptomFalse(C, ID))
 
                         // Conditions:
                         && (
@@ -3987,7 +3987,7 @@ namespace Neurotrauma
                 {
                     AffData.Strength = HF.BoolToNum(
                         // Symptom must not be forced false.
-                        !NTC.HasSymptomFalse(C, ID)
+                        (!NTC.HasSymptomFalse(C, ID))
 
                         // Mental; must be awake.
                         && C.GetSymptomAffData("unconsciousness").Strength <= 0
@@ -4019,7 +4019,7 @@ namespace Neurotrauma
                 {
                     AffData.Strength = HF.BoolToNum(
                         // Symptom must not be forced false.
-                        !NTC.HasSymptomFalse(C, ID)
+                        (!NTC.HasSymptomFalse(C, ID))
 
                         // Must be breathing.
                         && C.GetAffData("respiratoryarrest").Strength <= 0
@@ -4051,7 +4051,7 @@ namespace Neurotrauma
                 {
                     // Application Conditions
                     AffData.Strength = HF.BoolToNum(
-                        !NTC.HasSymptomFalse(C, "forceprone")
+                        (!NTC.HasSymptomFalse(C, "forceprone"))
                         && C.GetSymptomAffData("unconsciousness").Strength <= 0
                         && !C.Human.IsClimbing
                         && (

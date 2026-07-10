@@ -209,7 +209,6 @@ NT.PostSync = function (CharData)
 end
 
 Hook.Patch("Neurotrauma.HumanUpdateLuaSync","SyncLuaAfflictions", function(GameSession, ptable)
-	if not NT.UsingAddons()  then return end
 
 	NT.Deltatime = Init.DeltaTime
 	for NTHuman in ptable["CharacterList"] do
@@ -253,10 +252,13 @@ Hook.Patch("Neurotrauma.HumanUpdateLuaSync","SyncLuaAfflictions", function(GameS
 end,  Hook.HookMethodType.After)
 
 Hook.Patch("Neurotrauma.HumanUpdateLuaSync","SyncLuaCharacters", function(GameSession, ptable)
-	if not NT.UsingAddons() then return end
 	for NTHuman in ptable["CharacterList"] do
 		NTC.AddEmptyCharacterData(NTHuman.Human)
 	end
+end,  Hook.HookMethodType.After)
+
+Hook.Patch("Neurotrauma.HumanUpdateLuaSync","SyncLuaCharacterSpeed", function(GameSession, ptable)
+	NTC.CharacterSpeedMultipliers[ptable["Human"]] = ptable["Speed"]
 end,  Hook.HookMethodType.After)
 
 -- Neurotrauma human update functions

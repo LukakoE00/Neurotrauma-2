@@ -1006,6 +1006,20 @@ namespace Neurotrauma
             return UpperFirst + LowerLast;
         }
 
+        public static bool UsingAddons()
+        {
+            return UsingLuaAddons() || UsingCSAddons();
+        }
+
+        public static bool UsingLuaAddons()
+        {
+            return NTInfo.LuaRegisteredAddons.Count > 0;
+        }
+
+        public static bool UsingCSAddons()
+        {
+            return NTInfo.RegisteredAddons.Count > 0;
+        }
 
         // ---------------------------------------- Affliction Related Helper Functions -------------------------------------------------- \\
         public static bool HasAffliction(Character Character, string Identifier = "", float MinAmount = 0)

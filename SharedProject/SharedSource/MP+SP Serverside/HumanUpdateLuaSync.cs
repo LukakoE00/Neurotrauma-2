@@ -34,5 +34,8 @@ namespace Neurotrauma
         {
         }
 
+        static public void SyncLuaCharacterSpeed(Character Human, double Speed)
+        {
+        }
     }
 }
