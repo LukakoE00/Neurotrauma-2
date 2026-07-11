@@ -1,11 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Style>
   <Override>
-    <MainMenuBackground color="255,255,255,255">
-      <Sprite texture="%ModDir%/Style/carot.png" sourcerect="0,0,0,0" origin="0.5,0.5" premultiplyalpha="false" />
-    </MainMenuBackground>
-    <MainMenuVignette color="255,255,255,255">
-      <Sprite texture="%ModDir%/Style/hmm.png" sourcerect="0,0,524,478" origin="0.5,0.5" premultiplyalpha="false" />
-    </MainMenuVignette>
+    <!-- Barotrauma Logo Override -->
+    <!-- Made by EvilGreenBean -->
+    <TitleText color="255,255,255,255" hovercolor="255,255,255,255" selectedcolor="255,255,255,255" pressedcolor="255,255,255,255">
+      <Sprite texture="%ModDir%/Style/NeurotraumaHeader.png" sourcerect="0,0,512,186" tile="false" maintainaspectratio="true" />
+    </TitleText>
   </Override>
 </Style>
