@@ -52,6 +52,16 @@ namespace Neurotrauma
             { LimbType.RightLeg, 0 }
         };
 
+        public static readonly Dictionary<LimbType, int> DefaultLimbSymUpdateTime = new Dictionary<LimbType, int>()
+        {
+            { LimbType.Head, 0 },
+            { LimbType.Torso, 0 },
+            { LimbType.LeftArm, 0 },
+            { LimbType.RightArm, 0 },
+            { LimbType.LeftLeg, 0 },
+            { LimbType.RightLeg, 0 }
+        };
+
         /// <summary>
         /// Returns the limb of a character given the LimbType.
         /// </summary>

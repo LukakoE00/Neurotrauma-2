@@ -80,6 +80,7 @@ public static class HumanUpdate
             AffTemplate = NewAff; // Stores our template. The reason we aren't just creating a new affliction for each character is performance. I'm pretty sure it's more peformance efficent to just reference our affliction.
             base.AffTemplate = NewAff;
             Strength = NewStrength;
+            PrevStrength = NewStrength;
             ID = NewID;
         }
 
@@ -141,12 +142,28 @@ public static class HumanUpdate
         public Dictionary<LimbType, int> HumanUpdateTime = new();
         public Dictionary<LimbType, int> HumanUpdateStoptime = new();
 
-        public NTHumanLimbSymptomData(NTLimbSymptom NewAff, string NewID)
+        public NTHumanLimbSymptomData(NTLimbSymptom NewAff, string NewID, Dictionary<LimbType, double> NewStrength, Dictionary<LimbType, int> NewUpdateTime)
         {
             AffTemplate = NewAff; // Failsafe, don't reference this when using NTSymptom.
             base.AffTemplate = NewAff;
             SymTemplate = NewAff; // Stores our template. The reason we aren't just creating a new affliction for each character is performance. I'm pretty sure it's more peformance efficent to just reference our affliction.
             ID = NewID;
+            PrevStrength = NewStrength;
+            Strength = NewStrength;
+            HumanUpdateTime = NewUpdateTime;
+            HumanUpdateStoptime = NewUpdateTime;
+        }
+
+        public double GetLimbPrevStrength(LimbType Type) // Lua compat
+        {
+            if (!PrevStrength.ContainsKey(Type)) return 0;
+            return PrevStrength[Type];
+        }
+
+        public double GetLimbStrength(LimbType Type) // Lua compat
+        {
+            if (!Strength.ContainsKey(Type)) return 0;
+            return Strength[Type];
         }
     }
 
@@ -187,7 +204,7 @@ public static class HumanUpdate
                 }
                 else if (Aff is NTLimbSymptom)
                 {
-                    RegisterLimbSymptom(ID, (NTLimbSymptom)Aff);
+                    RegisterLimbSymptom(ID, (NTLimbSymptom)Aff, new Dictionary<LimbType, double>(DefaultLimbAffStrengths), new Dictionary<LimbType, int>(DefaultLimbSymUpdateTime));
                 }
                 else if (Aff is NTNonLimbAffliction)
                 {
@@ -262,12 +279,12 @@ public static class HumanUpdate
             }
         }
 
-        public void RegisterLimbSymptom(string ID, NTLimbSymptom Sym)
+        public void RegisterLimbSymptom(string ID, NTLimbSymptom Sym, Dictionary<LimbType,double> Strength, Dictionary<LimbType, int> UpdateTime)
         {
             if (CharacterNT == null) return;
-            if (NTAfflictions.HasAffliction(ID) && !UpdatingSymptoms.ContainsKey(ID))
+            if (NTAfflictions.HasAffliction(ID) && !UpdatingLimbSymptoms.ContainsKey(ID))
             {
-                UpdatingLimbSymptoms[ID] = new NTHumanLimbSymptomData(Sym, ID);
+                UpdatingLimbSymptoms[ID] = new NTHumanLimbSymptomData(Sym, ID, new Dictionary<LimbType, double>(Strength), new Dictionary<LimbType, int>(UpdateTime));
                 UpdatingAfflictions[ID] = UpdatingLimbSymptoms[ID];
                 if (UpdatingLimbSymptoms[ID].AffTemplate.Const)
                 {
@@ -1086,12 +1103,22 @@ public static class HumanUpdate
                     {
                         SymData.Strength = 100;
                         SymData.HumanUpdateTime--;
+
+                        if (SymData.HumanUpdateTime <= 0)
+                        {
+                            SymData.Strength = 0;
+                        }
                     }
 
                     if (SymData.HumanUpdateStoptime > 0)
                     {
                         SymData.Strength = 0;
                         SymData.HumanUpdateStoptime--;
+
+                        if (SymData.HumanUpdateStoptime <= 0)
+                        {
+                            SymData.Strength = 0;
+                        }
                     }
 
                     break;
@@ -1106,6 +1133,8 @@ public static class HumanUpdate
                         NTLimbSymptom LimbSym = LimbSymData.SymTemplate;
 
                         if (!Priorities.Contains(LimbSym.Priority)) continue;
+
+                        if (LimbSymData.Strength[Limb] > 0) LimbSymData.Strength[Limb] = 100; // Compat for old addons
 
                         double LimbSymPrevStrength = LimbSymData.Strength[Limb];
                         double LimbSymCurrentStrength = GetAfflictionStrengthLimb(Human, Limb, LimbSymID);
@@ -1123,12 +1152,24 @@ public static class HumanUpdate
                         {
                             LimbSymData.Strength[Limb] = 100;
                             LimbSymData.HumanUpdateTime[Limb]--;
+
+                            if (LimbSymData.HumanUpdateTime[Limb] <= 0)
+                            {
+                                LimbSymData.Strength[Limb] = 0;
+                                HF.SetAfflictionLimb(Human, LimbSymID, Limb, 0);
+                            }
                         }
 
                         if (LimbSymData.HumanUpdateStoptime[Limb] > 0)
                         {
                             LimbSymData.Strength[Limb] = 0;
                             LimbSymData.HumanUpdateStoptime[Limb]--;
+
+                            if (LimbSymData.HumanUpdateStoptime[Limb] <= 0)
+                            {
+                                LimbSymData.Strength[Limb] = 0;
+                                HF.SetAfflictionLimb(Human, LimbSymID, Limb, 0);
+                            }
                         }
                     }
 
@@ -1211,6 +1252,7 @@ public static class HumanUpdate
 
         private void SyncAfflictionStrength(NTAfflictionType AffType, string ID, NTHumanAffData Data)
         {
+
             switch (AffType)
             {
                 case NTAfflictionType.NONLIMB:

@@ -139,6 +139,12 @@ NT.LimbAfflictionTranslations =
 	["arterialbleeding"] = {[LimbType.LeftLeg] = "ll_arterialcut",[LimbType.RightLeg] = "rl_arterialcut",[LimbType.LeftArm] = "la_arterialcut",[LimbType.RightArm] = "ra_arterialcut"},
 }
 
+NT.LimbSymptoms = 
+{
+	["inflammation"] = true,
+	["spasm"] = true
+}
+
 NT.ConvertToLimbLegacy = function (Identifier, Limb)
 	if NT.LimbAfflictionTranslations[Identifier] ~= nil then
 		
@@ -190,10 +196,12 @@ NT.CreateLimbTables = function (CharData)
 end
 
 NT.PostSync = function (CharData)
-
+	
 	for _, Data in pairs(CharData.afflictions) do -- Sync non limb afflictions
 		if AfflictionPrefab.Prefabs.ContainsKey(_) then
-			HF.SetAffliction(CharData.character,NT.ConvertToModern(_),Data.strength,CharData.character,Data.prev)
+			if Data.strength ~= 0 and Data.strength ~= Data.prev  then
+				HF.SetAffliction(CharData.character,NT.ConvertToModern(_),Data.strength,CharData.character,Data.prev)
+			end
 		end
 	end
 
@@ -201,7 +209,14 @@ NT.PostSync = function (CharData)
 		local keystring = tostring(limb) .. "afflictions"
 		for _, Data in pairs(CharData[keystring]) do
 			if AfflictionPrefab.Prefabs.ContainsKey(_) then
-				HF.SetAfflictionLimb(CharData.character,NT.ConvertToModern(_),limb,Data.strength,CharData.character,Data.prev)
+				local ModernID = NT.ConvertToModern(_)
+				if Data.strength ~= 0 and Data.strength ~= Data.prev then
+					if NT.LimbSymptoms[ModernID] then
+						CSNTCompat.SetLimbSymptomTrue(CharData.character, ModernID, limb, 1)
+					else
+						HF.SetAfflictionLimb(CharData.character,ModernID,limb,Data.strength,CharData.character,Data.prev)
+					end
+				end
 			end
 		end
 	end
@@ -226,12 +241,15 @@ Hook.Patch("Neurotrauma.HumanUpdateLuaSync","SyncLuaAfflictions", function(GameS
 			CharData.afflictions[NT.ConvertToLegacy(AffData.ID)] = { prev = AffData.PrevStrength, strength = AffData.Strength }
 		end
 
-		for AffData in NTHuman.LocalAfflictions.UpdatingLimbSymptoms do
-			CharData.afflictions[NT.ConvertToLegacy(AffData.ID)] = { prev = AffData.PrevStrength, strength = AffData.Strength }
-		end
-
 		NT.CreateLimbTables(CharData)
 		for AffData in NTHuman.LocalAfflictions.UpdatingLimbAfflictions do
+			for limb in limbtypes do
+				local keystring = tostring(limb) .. "afflictions"
+				CharData[keystring][NT.ConvertToLegacy(AffData.ID)] = { prev = AffData.GetLimbPrevStrength(limb), strength = AffData.GetLimbStrength(limb) }
+			end
+		end
+
+		for AffData in NTHuman.LocalAfflictions.UpdatingLimbSymptoms do
 			for limb in limbtypes do
 				local keystring = tostring(limb) .. "afflictions"
 				CharData[keystring][NT.ConvertToLegacy(AffData.ID)] = { prev = AffData.GetLimbPrevStrength(limb), strength = AffData.GetLimbStrength(limb) }
@@ -247,7 +265,8 @@ Hook.Patch("Neurotrauma.HumanUpdateLuaSync","SyncLuaAfflictions", function(GameS
 		end
 
 		NT.UpdateHuman(NTHuman.Human,CharData)
-		--NT.PostSync(CharData)
+		NT.PostSync(CharData)
+
 	end
 end,  Hook.HookMethodType.After)
 
@@ -406,7 +425,6 @@ function NT.UpdateHuman(character, currentCharData)
 		end
 	end
 
-	-- compatibility
 	NTC.TickCharacter(character)
 	-- humanupdate hooks
 	for key, val in pairs(NTC.HumanUpdateHooks) do

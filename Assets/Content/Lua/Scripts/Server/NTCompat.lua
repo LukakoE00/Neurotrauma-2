@@ -16,9 +16,9 @@ NTC = {} -- a class containing compatibility functions for other mods to make us
 -- MyExp.MinNTVersionNum = 01070100 -- 01.07.01.00 -> A1.7.1h0
 -- Timer.Wait(function() if NT ~= nil then NTC.RegisterExpansion(MyExp) end end,1)
 
-local NTInfo = LuaUserData.CreateStatic("Neurotrauma.NTInfo",false)
-local CSNTCompat = LuaUserData.CreateStatic("Neurotrauma.NTC",false)
-local NTCSAfflictions = LuaUserData.CreateStatic("Neurotrauma.NTAfflictions",false)
+NTInfo = LuaUserData.CreateStatic("Neurotrauma.NTInfo",false)
+CSNTCompat = LuaUserData.CreateStatic("Neurotrauma.NTC",false)
+NTCSAfflictions = LuaUserData.CreateStatic("Neurotrauma.NTAfflictions",false)
 
 NTC.RegisteredExpansions = {}
 -- The function to add your addon to NT, see above for more info.
@@ -37,16 +37,18 @@ NTC.CharacterData = {}
 ---@param symptomidentifer string The identifier of the symptom.
 ---@param duration integer The number of human updates it lasts for.
 function NTC.SetSymptomTrue(character, symptomidentifer, duration)
+
+	local ModernSymID = NT.ConvertToModern(symptomidentifer)
+	if NTCSAfflictions.HasAffliction(ModernSymID) then -- Is this a C# symptom we need to sync?
+		CSNTCompat.SetSymptomTrue(character, ModernSymID, duration)
+		return
+	end
+
 	if duration == nil then duration = 2 end
 
 	NTC.AddEmptyCharacterData(character)
 	local data = NTC.GetCharacterData(character)
 	data[symptomidentifer] = duration
-
-	local ModernSymID = NT.ConvertToModern(symptomidentifer)
-	if NTCSAfflictions.HasAffliction(ModernSymID) then -- Is this a C# symptom we need to sync?
-		CSNTCompat.SetSymptomTrue(character, ModernSymID, duration)
-	end
 
 	NTC.CharacterData[character.ID] = data
 end
@@ -57,16 +59,18 @@ end
 ---@param symptomidentifer string The identifier of the symptom.
 ---@param duration integer The number of human updates it lasts for.
 function NTC.SetSymptomFalse(character, symptomidentifer, duration)
+
+	local ModernSymID = NT.ConvertToModern(symptomidentifer)
+	if NTCSAfflictions.HasAffliction(ModernSymID) then -- Is this a C# symptom we need to sync?
+		CSNTCompat.SetSymptomFalse(character, ModernSymID, duration)
+		return
+	end
+
 	if duration == nil then duration = 2 end
 
 	NTC.AddEmptyCharacterData(character)
 	local data = NTC.GetCharacterData(character)
 	data["!" .. symptomidentifer] = duration
-
-	local ModernSymID = NT.ConvertToModern(symptomidentifer)
-	if NTCSAfflictions.HasAffliction(ModernSymID) then -- Is this a C# symptom we need to sync?
-		CSNTCompat.SetSymptomFalse(character, ModernSymID, duration)
-	end
 
 	NTC.CharacterData[character.ID] = data
 end

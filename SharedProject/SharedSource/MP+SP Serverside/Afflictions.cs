@@ -361,8 +361,8 @@ namespace Neurotrauma
                                 new Dictionary<string, NTBloodAffliction>();
         Dictionary<string, NTSymptom> SymptomsToAdd =
                                 new Dictionary<string, NTSymptom>();
-        Dictionary<string, NTSymptom> LimbSymptomsToAdd =
-                                new Dictionary<string, NTSymptom>();
+        Dictionary<string, NTLimbSymptom> LimbSymptomsToAdd =
+                                new Dictionary<string, NTLimbSymptom>();
 
         public NTAfflictionsToAdd() // Initalize the afflictions.
         {
@@ -4134,8 +4134,23 @@ namespace Neurotrauma
             SymptomsToAdd["lockrightleg"] = new("lockrightleg", 0, 100, 0, AfflictionPriority.HIGH);
 
             SymptomsToAdd["triggersym_respiratoryarrest"] = new("triggersym_respiratoryarrest", 0, 100, 0, AfflictionPriority.HIGH);
+            SymptomsToAdd["triggersym_respiratoryarrest"].UpdateAction =
+                (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanSymptomData AffData) =>
+                {
+                    HF.SetAffliction(C.Human, "respiratoryarrest", 100);
+                };
             SymptomsToAdd["triggersym_seizure"] = new("triggersym_seizure", 0, 100, 0, AfflictionPriority.HIGH);
+            SymptomsToAdd["triggersym_seizure"].UpdateAction =
+                (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanSymptomData AffData) =>
+                {
+                    HF.SetAffliction(C.Human, "seizure", 100);
+                };
             SymptomsToAdd["triggersym_stroke"] = new("triggersym_stroke", 0, 100, 0, AfflictionPriority.HIGH);
+            SymptomsToAdd["triggersym_stroke"].UpdateAction =
+                (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanSymptomData AffData) =>
+                {
+                    HF.SetAffliction(C.Human, "stroke", 100);
+                };
 
             foreach (KeyValuePair<string, NTSymptom> Pair in SymptomsToAdd)
             {
@@ -4149,9 +4164,9 @@ namespace Neurotrauma
             // Type: Limb-specific
             // Caused by: Foreign Bodies, Infected Wounds
             // Effects: Fever
-            LimbAfflictionsToAdd["inflammation"] = new("inflammation", 0, 100, 0, AfflictionPriority.HIGH);
-            LimbAfflictionsToAdd["inflammation"].UpdateAction =
-                (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanLimbAffData AffData) =>
+            LimbSymptomsToAdd["inflammation"] = new("inflammation", 0, 100, 0, AfflictionPriority.HIGH);
+            LimbSymptomsToAdd["inflammation"].UpdateAction =
+                (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanLimbSymptomData AffData) =>
                 {
                     // Passive Decrease
                     AffData.Strength[Limb] -= 0.1 * NT.DeltaTime;
@@ -4162,8 +4177,14 @@ namespace Neurotrauma
             // Caused By: Seizure
             // Effects: Makes character twitch on the ground via XML.
             LimbSymptomsToAdd["spasm"] = new("spasm", 0, 100, 0);
+            LimbSymptomsToAdd["spasm"].UpdateAction =
+                (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanLimbSymptomData AffData) =>
+                {
+                    // Passive Decrease
+                    AffData.Strength[Limb] -= 100;
+                };
 
-            foreach (KeyValuePair<string, NTSymptom> Pair in LimbSymptomsToAdd)
+            foreach (KeyValuePair<string, NTLimbSymptom> Pair in LimbSymptomsToAdd)
             {
                 NTAfflictions.RegisterAffliction(Pair.Key, Pair.Value);
             }
