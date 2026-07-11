@@ -809,6 +809,8 @@ public static class HumanUpdate
                 Hook.Invoke(this);
             }
 
+
+            HF.Print($"Final speed check: {GetDoubleStatStrength("speedmultiplier")}");
             HF.SetAffliction(Human,"slowdown", Math.Clamp(100 * (1 - (float)GetDoubleStatStrength("speedmultiplier")), 0, 100));
 
             if (UsingLuaAddons()) HumanUpdateLuaSync.SyncLuaCharacterSpeed(Human, GetDoubleStatStrength("speedmultiplier")); // If we have lua addons sync our character speed.
@@ -951,6 +953,7 @@ public static class HumanUpdate
                             ).ToList();
 
             SortedAfflictions = SortedAfflictions.Union(LocalAfflictions.LastUpdatedAfflictions).ToList(); // We merge our last updated afflictions with our new afflictions.
+            List<string> UpdatedAfflictions = new List<string>(); // We store this so we don't update a duplicate.
 
             if (SortedAfflictions != null && SortedAfflictions.Count() > 0)
             {
@@ -958,11 +961,13 @@ public static class HumanUpdate
                 foreach (Affliction RealAff in SortedAfflictions)
                 {
                     if (RealAff == null) continue;
+                    if (UpdatedAfflictions.Contains(RealAff.Identifier.ToString())) continue;
                     if (!LocalAfflictions.UpdatingAfflictions.ContainsKey(RealAff.Identifier.ToString())) continue;
                     NTHumanAffData Data = LocalAfflictions.UpdatingAfflictions[RealAff.Identifier.ToString()];
                     if (Data.AffTemplate.Const) continue;
                     NTAfflictionType AffType = Data.AffTemplate.Type;
                     UpdateAffliction(AffType, Priorities, RealAff.Identifier.ToString(), Data);
+                    UpdatedAfflictions.Add(RealAff.Identifier.ToString());
                 }
             }
 
@@ -1018,7 +1023,7 @@ public static class HumanUpdate
                         NTHumanLimbAffData LimbAffData = (NTHumanLimbAffData)Data;
                         NTLimbAffliction LimbAff = LimbAffData.AffTemplate;
 
-                        if (!Priorities.Contains(LimbAff.Priority) || (!LimbAff.IgnoreStasis && GetBoolStatStrength("stasis"))) continue;
+                        if (!Priorities.Contains(LimbAff.Priority) || ((!LimbAff.IgnoreStasis) && GetBoolStatStrength("stasis"))) continue;
 
                         double LimbPrevStrength = Math.Clamp(LimbAffData.Strength[Limb], LimbAff.MinStrength, LimbAff.MaxStrength);
                         double LimbCurrentStrength = GetAfflictionStrengthLimb(Human, Limb, LimbID);

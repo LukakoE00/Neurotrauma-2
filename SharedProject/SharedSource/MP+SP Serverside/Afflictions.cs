@@ -2644,10 +2644,14 @@ namespace Neurotrauma
                     if (!(AffData.Strength[Limb] > 0)) return;
 
                     // Passive Decrease
-                    AffData.Strength[Limb] -= 3.4 * NT.DeltaTime;
+                    AffData.Strength[Limb] -= 1.7 * NT.DeltaTime;
 
                     // Effects:
                     // Slowdown (5% per limb)
+                    HF.Print($"Speed Check of {Limb}");
+                    HF.Print($"Limb Strength {AffData.Strength[Limb]}");
+                    HF.Print($"{C.GetDoubleStatStrength("speedmultiplier")}");
+                    HF.Print($"{C.GetDoubleStatStrength("speedmultiplier") * 0.95}");
                     C.SetDoubleStatStrength("speedmultiplier", C.GetDoubleStatStrength("speedmultiplier") * 0.95);
 
                     // Effects:
