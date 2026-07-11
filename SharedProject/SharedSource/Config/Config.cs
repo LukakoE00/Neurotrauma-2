@@ -179,11 +179,13 @@ namespace Neurotrauma
 
         public static void SaveConfig()
         {
-            if (GameMain.NetworkMember != null &&
-                GameMain.NetworkMember.IsClient)
+            // Prevent both owner client and server saving config at the same time and potentially erroring from file access
+#if CLIENT
+            if (HF.GameIsMultiplayer() && GameMain.Client.IsServerOwner)
             {
                 return;
             }
+#endif
 
             Dictionary<string, object> tableToSave = new Dictionary<string, object>();
             foreach (KeyValuePair<string, ConfigEntry> kvp in Entries)
@@ -196,7 +198,11 @@ namespace Neurotrauma
 
             try
             {
-                if (!Directory.Exists(ConfigDirectoryPath)) Directory.CreateDirectory(ConfigDirectoryPath);
+                if (!Directory.Exists(ConfigDirectoryPath))
+                {
+                    Directory.CreateDirectory(ConfigDirectoryPath);
+                }
+                
                 string json = JsonSerializer.Serialize(tableToSave, new JsonSerializerOptions { WriteIndented = true });
                 File.WriteAllText(ConfigFilePath, json);
             }
@@ -208,13 +214,19 @@ namespace Neurotrauma
 
         public static void LoadConfig()
         {
-            if (!File.Exists(ConfigFilePath)) return;
+            if (!File.Exists(ConfigFilePath))
+            {
+                return;
+            }
 
             try
             {
                 string jsonContent = File.ReadAllText(ConfigFilePath);
                 var readConfig = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(jsonContent);
-                if (readConfig == null) return;
+                if (readConfig == null)
+                {
+                    return;
+                }
 
                 foreach (KeyValuePair<string, JsonElement> kvp in readConfig)
                 {
@@ -251,7 +263,6 @@ namespace Neurotrauma
             {
                 LuaCsLogger.LogError("[NT] Error loading config: " + ex.Message);
             }
-            HF.Print("Config has been loaded!");
         }
 
         public static void ResetConfig()
@@ -261,8 +272,10 @@ namespace Neurotrauma
                 ConfigEntry entry = kvp.Value;
 
                 if (entry.Type == ConfigEntryType.Category)
+                {
                     continue;
-
+                }
+                    
                 entry.Value = entry.Default;
             }
         }
@@ -368,8 +381,7 @@ namespace Neurotrauma
 
         public static void SendConfig()
         {
-            Dictionary<string, object> tableToSend =
-                new Dictionary<string, object>();
+            Dictionary<string, object> tableToSend = new Dictionary<string, object>();
 
             foreach (var kvp in Entries)
             {
@@ -379,8 +391,7 @@ namespace Neurotrauma
                 }
             }
 
-            IWriteMessage msg =
-                LuaCsSetup.Instance.Networking.Start("NT.ConfigUpdate");
+            IWriteMessage msg = LuaCsSetup.Instance.Networking.Start("NT.ConfigUpdate");
 
             msg.WriteString(JsonSerializer.Serialize(tableToSend));
 

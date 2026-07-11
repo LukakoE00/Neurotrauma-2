@@ -619,20 +619,16 @@ namespace Neurotrauma
             var save = new GUIButton(new RectTransform(new Vector2(0.32f, 1f), parent.RectTransform), TextManager.Get("ntgui_configmenubutton_saveexit"));
             save.OnClicked = (_, _) =>
             {
-                HF.Print("Click");
                 if (GameMain.NetworkMember != null && GameMain.NetworkMember.IsClient)
                 {
-                    HF.Print("Attempt Send Config");
                     Client client = GameMain.Client?.MyClient;
                     if (client != null && client.HasPermission(ClientPermissions.ManageSettings))
                     {
                         NTConfig.SendConfig();
-                        HF.Print("Send Config");
                     }
                 }
                 else
                 {
-                    HF.Print("Save Config");
                     NTConfig.SaveConfig();
                 }
 
