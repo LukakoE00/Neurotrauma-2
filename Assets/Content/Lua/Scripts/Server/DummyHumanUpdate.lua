@@ -113,7 +113,7 @@ NT.NonLimbAfflictionTranslationsModern =
 	-- Mechanics
 	["artificialventilation"] = "alv",
 
-	["dirtybandage"] = "dirtybandage",
+	["dirtybandage"] = "bandageddirty",
 	["burn_deg1"] = "firstdegreeburn",
 	["burn_deg2"] = "seconddegreeburn",
 	["burn_deg3"] = "thirddegreeburn",

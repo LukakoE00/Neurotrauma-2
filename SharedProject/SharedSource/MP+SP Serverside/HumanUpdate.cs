@@ -809,8 +809,6 @@ public static class HumanUpdate
                 Hook.Invoke(this);
             }
 
-
-            HF.Print($"Final speed check: {GetDoubleStatStrength("speedmultiplier")}");
             HF.SetAffliction(Human,"slowdown", Math.Clamp(100 * (1 - (float)GetDoubleStatStrength("speedmultiplier")), 0, 100));
 
             if (UsingLuaAddons()) HumanUpdateLuaSync.SyncLuaCharacterSpeed(Human, GetDoubleStatStrength("speedmultiplier")); // If we have lua addons sync our character speed.

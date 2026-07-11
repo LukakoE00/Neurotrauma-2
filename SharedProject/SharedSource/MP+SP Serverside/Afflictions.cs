@@ -2648,10 +2648,6 @@ namespace Neurotrauma
 
                     // Effects:
                     // Slowdown (5% per limb)
-                    HF.Print($"Speed Check of {Limb}");
-                    HF.Print($"Limb Strength {AffData.Strength[Limb]}");
-                    HF.Print($"{C.GetDoubleStatStrength("speedmultiplier")}");
-                    HF.Print($"{C.GetDoubleStatStrength("speedmultiplier") * 0.95}");
                     C.SetDoubleStatStrength("speedmultiplier", C.GetDoubleStatStrength("speedmultiplier") * 0.95);
 
                     // Effects:
