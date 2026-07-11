@@ -375,6 +375,11 @@ namespace Neurotrauma
 
         private void AddAfflictions()
         {
+            // Oxygen Low
+            // Not constant; gets applied by other sources
+            // Type: Non-Limb Specific, Vanilla Override
+            // Caused By: Lack of Oxygen, Respiratory Arrest
+            // Effects: Hypoxemia
             AfflictionsToAdd["oxygenlow"] = new("oxygenlow", 0, 200, 0, AfflictionPriority.MEDIUM);
 
             // Drunk
@@ -1174,13 +1179,12 @@ namespace Neurotrauma
             // Type: Functionality
             // Effects: None.
             // Used to determine whether or not someone should be updated.
-            AfflictionsToAdd["luabotomy"] = new("luabotomy", 0, 15, 0, AfflictionPriority.HIGH);
+            AfflictionsToAdd["luabotomy"] = new("luabotomy", 0, 15, 0, AfflictionPriority.LOW);
             AfflictionsToAdd["luabotomy"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanNonLimbAffData AffData) =>
                 {
-                    // Passive Increase
-                    // Increase by 2 every 2 seconds; originally in XML
-                    AffData.Strength += 2;
+                    // Keep it low if everything works properly. Else, increase until it shows on the UI.
+                    AffData.Strength = 0.1f;
                 };
 
             // Luabotomy Purger
@@ -4121,8 +4125,6 @@ namespace Neurotrauma
                     {
                         HF.AddAffliction(C.Human, "acidosis", (float)(0.09 * NT.DeltaTime), null);
                     }
-
-
                 };
 
             // Ponder later
