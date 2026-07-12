@@ -405,7 +405,8 @@ namespace Neurotrauma
 #if SERVER
             if (Client == null) return;
 
-            LuaGame.SendMessage(chatMessage.Text, ChatMessageType.Server, null);
+            LuaGame.SendDirectChatMessage(chatMessage, Client);
+
 #else
             if (GameMain.GameSession?.CrewManager != null)
             {
