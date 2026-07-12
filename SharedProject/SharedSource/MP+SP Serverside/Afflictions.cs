@@ -138,6 +138,11 @@ namespace Neurotrauma
         public bool Const = false;
 
         /// <summary>
+        /// Does this affliction actually have an XML prefab? If true, gets/sets the affliction prefab, else uses the custom strength only.
+        /// </summary>
+        public bool Real = true;
+
+        /// <summary>
         /// The minimum strength the affliction can have.
         /// </summary>
         public double MinStrength { get; set; }
@@ -1854,7 +1859,7 @@ namespace Neurotrauma
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanNonLimbAffData AffData) =>
                 {
                     // Passive Regeneration:
-                    AffData.Strength -= 2f;
+                    AffData.Strength -= NT.DeltaTime;
 
                     // Effects:
                     // Spasms
@@ -1864,7 +1869,7 @@ namespace Neurotrauma
 
                         foreach (LimbType type in Enum.GetValues<LimbType>())
                         {
-                            HF.AddAfflictionLimb(C.Human, "spasm", type, 100, null);
+                            HF.AddAfflictionLimb(C.Human, "spasm", type, 10, null);
                         }
                     }
                 };
@@ -3879,7 +3884,7 @@ namespace Neurotrauma
                         (!NTC.HasSymptomFalse(C, ID))
 
                         // Cannot stay conscious permanently.
-                        && !C.Human.HasAbilityFlag(AbilityFlags.AlwaysStayConscious)
+                        && (!C.Human.HasAbilityFlag(AbilityFlags.AlwaysStayConscious))
 
                         // Conditions:
                         && (
@@ -4135,33 +4140,48 @@ namespace Neurotrauma
             SymptomsToAdd["lockrightleg"] = new("lockrightleg", 0, 100, 0, AfflictionPriority.HIGH);
 
             SymptomsToAdd["triggersym_respiratoryarrest"] = new("triggersym_respiratoryarrest", 0, 100, 0, AfflictionPriority.HIGH);
+            SymptomsToAdd["triggersym_respiratoryarrest"].Real = false;
+            SymptomsToAdd["triggersym_respiratoryarrest"].Const = true;
             SymptomsToAdd["triggersym_respiratoryarrest"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanSymptomData AffData) =>
                 {
+                    if (AffData.Strength <= 0) return;
                     HF.SetAffliction(C.Human, "respiratoryarrest", 100);
                 };
             SymptomsToAdd["triggersym_seizure"] = new("triggersym_seizure", 0, 100, 0, AfflictionPriority.HIGH);
+            SymptomsToAdd["triggersym_seizure"].Real = false;
+            SymptomsToAdd["triggersym_seizure"].Const = true;
             SymptomsToAdd["triggersym_seizure"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanSymptomData AffData) =>
                 {
+                    if (AffData.Strength <= 0) return;
                     HF.SetAffliction(C.Human, "seizure", 100);
                 };
             SymptomsToAdd["triggersym_stroke"] = new("triggersym_stroke", 0, 100, 0, AfflictionPriority.HIGH);
+            SymptomsToAdd["triggersym_stroke"].Real = false;
+            SymptomsToAdd["triggersym_stroke"].Const = true;
             SymptomsToAdd["triggersym_stroke"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanSymptomData AffData) =>
                 {
+                    if (AffData.Strength <= 0) return;
                     HF.SetAffliction(C.Human, "stroke", 100);
                 };
             SymptomsToAdd["triggersym_coma"] = new("triggersym_coma", 0, 100, 0, AfflictionPriority.HIGH);
+            SymptomsToAdd["triggersym_coma"].Real = false;
+            SymptomsToAdd["triggersym_coma"].Const = true;
             SymptomsToAdd["triggersym_coma"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanSymptomData AffData) =>
                 {
+                    if (AffData.Strength <= 0) return;
                     HF.SetAffliction(C.Human, "coma", 100);
                 };
             SymptomsToAdd["triggersym_cardiacarrest"] = new("triggersym_cardiacarrest", 0, 100, 0, AfflictionPriority.HIGH);
+            SymptomsToAdd["triggersym_cardiacarrest"].Real = false;
+            SymptomsToAdd["triggersym_cardiacarrest"].Const = true;
             SymptomsToAdd["triggersym_cardiacarrest"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanSymptomData AffData) =>
                 {
+                    if (AffData.Strength <= 0) return;
                     HF.SetAffliction(C.Human, "cardiacarrest", 100);
                 };
 
@@ -4194,6 +4214,8 @@ namespace Neurotrauma
             LimbSymptomsToAdd["spasm"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanLimbSymptomData AffData) =>
                 {
+                    // Passive Decrease
+                    AffData.Strength[Limb] -= 100f;
                 };
 
             foreach (KeyValuePair<string, NTLimbSymptom> Pair in LimbSymptomsToAdd)

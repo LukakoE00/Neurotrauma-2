@@ -1042,6 +1042,31 @@ namespace Neurotrauma
             return NTInfo.RegisteredAddons.ContainsKey(ModName);
         }
 
+        public static double AffClamp(double Value, NTNonLimbAffliction Aff)
+        {
+            return Math.Clamp(Value,Aff.MinStrength,Aff.MaxStrength);
+        }
+
+        public static double AffClamp(double Value, NTLimbAffliction Aff)
+        {
+            return Math.Clamp(Value, Aff.MinStrength, Aff.MaxStrength);
+        }
+
+        public static double AffClamp(double Value, NTBloodAffliction Aff)
+        {
+            return Math.Clamp(Value, Aff.MinStrength, Aff.MaxStrength);
+        }
+
+        public static double AffClamp(double Value, NTSymptom Aff)
+        {
+            return Math.Clamp(Value, Aff.MinStrength, Aff.MaxStrength);
+        }
+
+        public static double AffClamp(double Value, NTLimbSymptom Aff)
+        {
+            return Math.Clamp(Value, Aff.MinStrength, Aff.MaxStrength);
+        }
+
         // ---------------------------------------- Affliction Related Helper Functions -------------------------------------------------- \\
         public static bool HasAffliction(Character Character, string Identifier = "", float MinAmount = 0)
         {
