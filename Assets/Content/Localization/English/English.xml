@@ -2,20 +2,20 @@
 <infotexts language="English" nowhitespace="false" translatedname="English">
 <!-- ================================================= ORIGINAL SKELETON ================================================= -->
 
-<!-- Sample Client Setting -->
+<!-- Sample Client Setting --><!--
 <MyModName.SampleSettingClient.DisplayName>Sample Client Setting</MyModName.SampleSettingClient.DisplayName>
 <MyModName.SampleSettingClient.DisplayCategory>Sample</MyModName.SampleSettingClient.DisplayCategory>
 <MyModName.SampleSettingClient.Tooltip>Sample tooltip!</MyModName.SampleSettingClient.Tooltip>
 
-<!-- Sample Server Setting -->
+--><!-- Sample Server Setting --><!--
 <MyModName.SampleSettingServer.DisplayName>Sample Server Setting</MyModName.SampleSettingServer.DisplayName>
 <MyModName.SampleSettingServer.DisplayCategory>Sample</MyModName.SampleSettingServer.DisplayCategory>
 <MyModName.SampleSettingServer.Tooltip>Sample tooltip!</MyModName.SampleSettingServer.Tooltip>
 
-<!-- Sample Shared Setting -->
+--><!-- Sample Shared Setting --><!--
 <MyModName.SampleSettingShared.DisplayName>Sample Shared Setting</MyModName.SampleSettingShared.DisplayName>
 <MyModName.SampleSettingShared.DisplayCategory>Sample</MyModName.SampleSettingShared.DisplayCategory>
-<MyModName.SampleSettingShared.Tooltip>Sample tooltip!</MyModName.SampleSettingShared.Tooltip>
+<MyModName.SampleSettingShared.Tooltip>Sample tooltip!</MyModName.SampleSettingShared.Tooltip>-->
 	
 
 <!-- ================================================= COLOUR CODING ================================================= -->
@@ -1223,6 +1223,11 @@ Can give blood to: AB+</entitydescription.ab_positivecard>
 <ntgui_configmenubutton_saveexit>Save and Exit</ntgui_configmenubutton_saveexit>
 <ntgui_configmenubutton_discardexit>Discard and Exit</ntgui_configmenubutton_discardexit>
 <ntgui_configmenubutton_resetvalues>Reset Settings</ntgui_configmenubutton_resetvalues>
+
+<ntgui_resetconfirm_title>Reset Neurotrauma Settings</ntgui_resetconfirm_title>
+<ntgui_resetconfirm_body>Are you sure you want to reset the Neurotrauma settings to their default values?</ntgui_resetconfirm_body>
+<ntgui_resetconfirm_yes>Yes</ntgui_resetconfirm_yes>
+<ntgui_resetconfirm_no>No</ntgui_resetconfirm_no>
 
 <!-- Default Title -->
 <ntgui_config_title>Neurotrauma Config Settings</ntgui_config_title>

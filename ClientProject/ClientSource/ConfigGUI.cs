@@ -623,8 +623,8 @@ namespace Neurotrauma
         // SaveExit + CloseExit + Reset Buttons
         public static GUIButton CreateButtonRow(GUILayoutGroup parent, GUIFrame container)
         {
-            var save = new GUIButton(new RectTransform(new Vector2(0.32f, 1f), parent.RectTransform), TextManager.Get("ntgui_configmenubutton_saveexit"));
-            save.OnClicked = (_, _) =>
+            var SaveButton = new GUIButton(new RectTransform(new Vector2(0.32f, 1f), parent.RectTransform), TextManager.Get("ntgui_configmenubutton_saveexit"));
+            SaveButton.OnClicked = (_, _) =>
             {
                 if (GameMain.NetworkMember != null && GameMain.NetworkMember.IsClient)
                 {
@@ -643,22 +643,67 @@ namespace Neurotrauma
                 return true;
             };
 
-            var discard = new GUIButton(new RectTransform(new Vector2(0.32f, 1f), parent.RectTransform), TextManager.Get("ntgui_configmenubutton_discardexit"));
-            discard.OnClicked = (_, _) =>
+            var DiscardButton = new GUIButton(new RectTransform(new Vector2(0.32f, 1f), parent.RectTransform), TextManager.Get("ntgui_configmenubutton_discardexit"));
+            DiscardButton.OnClicked = (_, _) =>
             {
                 container.Parent.RemoveChild(container);
                 return true;
             };
 
-            var reset = new GUIButton(new RectTransform(new Vector2(0.32f, 1f), parent.RectTransform), TextManager.Get("ntgui_configmenubutton_resetvalues"));
-            reset.OnClicked = (_, _) =>
+            var ResetButton = new GUIButton(new RectTransform(new Vector2(0.32f, 1f), parent.RectTransform), TextManager.Get("ntgui_configmenubutton_resetvalues"));
+            ResetButton.OnClicked = (_, _) =>
+            {
+                bool canReset = !HF.GameIsMultiplayer()
+                    || (GameMain.NetworkMember != null && GameMain.NetworkMember.IsClient
+                        && GameMain.Client?.MyClient != null
+                        && GameMain.Client.MyClient.HasPermission(ClientPermissions.ManageSettings));
+
+                if (!canReset) return true;
+
+                ResetMessage(container);
+                return true;
+            };
+
+            return SaveButton;
+        }
+
+        private static void ResetMessage(GUIFrame container)
+        {
+            var resetMessage = new GUIMessageBox(
+                TextManager.Get("ntgui_resetconfirm_title"),
+                TextManager.Get("ntgui_resetconfirm_body"),
+                new LocalizedString[] { TextManager.Get("ntgui_resetconfirm_yes"), TextManager.Get("ntgui_resetconfirm_no") })
+            {
+                DrawOnTop = true
+            };
+            resetMessage.Text.TextAlignment = Alignment.Center;
+
+            resetMessage.Buttons[0].OnClicked = (_, _) =>
             {
                 NTConfig.ResetConfig();
+
+                if (HF.GameIsMultiplayer()
+                    && GameMain.NetworkMember != null && GameMain.NetworkMember.IsClient
+                    && GameMain.Client?.MyClient != null
+                    && GameMain.Client.MyClient.HasPermission(ClientPermissions.ManageSettings))
+                {
+                    NTConfig.SendConfig();
+                }
+                else if (!HF.GameIsMultiplayer())
+                {
+                    NTConfig.SaveConfig();
+                }
+
                 container.Parent.RemoveChild(container);
+                resetMessage.Close();
                 return true;
             };
 
-            return save;
+            resetMessage.Buttons[1].OnClicked = (_, _) =>
+            {
+                resetMessage.Close();
+                return true;
+            };
         }
 
         // This was fucking miserable
