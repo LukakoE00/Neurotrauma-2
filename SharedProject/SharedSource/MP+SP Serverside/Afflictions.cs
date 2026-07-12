@@ -562,6 +562,7 @@ namespace Neurotrauma
             // Caused By: ABX, LiOxy, Ambubag, HemoTransShock, RadSickness, Sepsis, Hypoxemia, BFT (DMG), GSW (DMG).
             // Effects: Cough, Shortness of Breath, Respiratory Arrest
             AfflictionsToAdd["lungdamage"] = new("lungdamage", 0, 100, 0, AfflictionPriority.HIGH);
+            AfflictionsToAdd["lungdamage"].Const = true;
             AfflictionsToAdd["lungdamage"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanNonLimbAffData AffData) =>
                 {
