@@ -13,8 +13,8 @@ public static class NTInfo
 
     // Make a new list (like a table! but not!) that only holds NTAddon objects.
     // 'get' means we can read the list, but not replace it and 'new' means it get's created on loading.
-    public static List<NTAddon> RegisteredAddons { get; } = new();
-    public static List<Table> LuaRegisteredAddons = new();
+    public static Dictionary<string,NTAddon> RegisteredAddons { get; } = new();
+    public static Dictionary<string, Table> LuaRegisteredAddons = new();
 
     // This is the NTC.RegisterExpansion function from NTCompat.
     // NTAddon (defined below!) is an object, or like a 'blueprint' from which other Addon objects are made!
@@ -23,11 +23,11 @@ public static class NTInfo
 
     public static void RegisterAddon(NTAddon addon)
     {
-        RegisteredAddons.Add(addon);
+        RegisteredAddons[addon.Name] = addon;
     }
     public static void RegisterAddon(Table addon)
     {
-        LuaRegisteredAddons.Add(addon);
+        LuaRegisteredAddons[addon.Get("Name").String] = addon;
     }
 
     public static void PrintNTInitInfo(ImmutableArray<ILuaScriptResourceInfo> executionOrder, bool enableSandbox)
@@ -47,8 +47,9 @@ public static class NTInfo
 
             if (hasCSAddons) consolePrint += "- C# Addons:\n";
             else consolePrint += "- Not running any C# Addons\n";
-            foreach (NTAddon addon in RegisteredAddons)
+            foreach (KeyValuePair<string, NTAddon> kvp in RegisteredAddons)
             {
+                NTAddon addon = kvp.Value;
                 consolePrint += $"\n+ {addon.Name} V {addon.Version}";
 
                 if (VersionNum < addon.MinNTVersionNum)
@@ -59,8 +60,9 @@ public static class NTInfo
 
             if (hasLuaAddons) consolePrint += "- Lua Addons:\n";
             else consolePrint += "- Not running any Lua Addons\n";
-            foreach (Table addon in LuaRegisteredAddons)
+            foreach (KeyValuePair< string, Table > kvp in LuaRegisteredAddons)
             {
+                Table addon = kvp.Value;
                 consolePrint += $"\n+ {addon.Get("Name").String} V {addon.Get("Version").String}";
 
                 if (VersionNum < addon.Get("MinNTVersionNum").Number)

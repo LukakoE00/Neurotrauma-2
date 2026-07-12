@@ -1026,9 +1026,19 @@ namespace Neurotrauma
             return NTInfo.LuaRegisteredAddons.Count > 0;
         }
 
+        public static bool UsingLuaAddon(string ModName)
+        {
+            return NTInfo.LuaRegisteredAddons.ContainsKey(ModName);
+        }
+
         public static bool UsingCSAddons()
         {
             return NTInfo.RegisteredAddons.Count > 0;
+        }
+
+        public static bool UsingCSAddon(string ModName)
+        {
+            return NTInfo.RegisteredAddons.ContainsKey(ModName);
         }
 
         // ---------------------------------------- Affliction Related Helper Functions -------------------------------------------------- \\
