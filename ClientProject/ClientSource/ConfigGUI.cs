@@ -50,6 +50,13 @@ namespace Neurotrauma
 
         public static GUIListBox CreateConfigGUI(GUIComponent parent)
         {
+            // Sync the config settings on opening
+            if (GameMain.NetworkMember != null && GameMain.NetworkMember.IsClient)
+            {
+                IWriteMessage ConfigRequest = LuaCsSetup.Instance.Networking.Start("NT.ConfigRequest");
+                LuaCsSetup.Instance.Networking.Send(ConfigRequest);
+            }
+
             // GUI shape identical to Lua
             var menuContent = new GUIFrame(new RectTransform(new Vector2(0.5f, 0.8f), parent.RectTransform, Anchor.Center));
             var mainLayout = new GUILayoutGroup(new RectTransform(new Vector2(0.95f, 0.95f), menuContent.RectTransform, Anchor.Center));
