@@ -11,6 +11,8 @@ A complete re-write of Neurotrauma in C# (with a dash of Lua).
 - New additions.
 - Full addon compatibility.
 
+Prior releases can be found under "Releases". To revert back download the zip and extract it into local mods.
+
 <h3>Links</h3>
 
 <hr>
@@ -51,12 +53,12 @@ NT Repository (Lua version) can be found [here](https://github.com/OlegBSTU/Neur
 
 - Heelge: For maintaing/updating the NT Fork.
 
-- Lukako: 
+- Lukako: For porting/making XML, writing Afflictions, writing Item Methods, making Config. + Misc files
 
-- Cookie:
+- Cookie: For writing Priority system, Human Update Template, Stat Template, writing Item Method system. + Misc files
 
-- Finka:
+- Finka: For Writing Dynamic Items system. + Misc files
 
-- BigEvilGreenBean:
+- BigEvilGreenBean: For writing Human Update system, writing Helper Functions, NT types. + Misc files
 
-- Walter:
+- Walter: Helped in spirit 🙏
