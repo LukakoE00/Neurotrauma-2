@@ -307,11 +307,6 @@ public class NTItemMethods
 
         if (HF.HasAfflictionLimb(infos.target, "sawedbones", limbType, 99))
         {
-            if (!HF.LimbIsAmputated(infos.target, limbType))
-            {
-                HF.SurgicallyAmputateLimbAndGenerateItem(infos.user, infos.target, limbType);
-            }
-
             HF.SetAfflictionLimb(infos.target, "sawedbones", limbType, 0f, infos.user, 99);
             HF.SurgicallyAmputateLimb(infos.target, limbType, 0, 0);
             HF.RemoveItem(infos.item);
