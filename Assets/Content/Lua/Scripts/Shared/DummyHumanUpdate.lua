@@ -29,6 +29,8 @@ NT.NonLimbAfflictionTranslations =
 	["fracturedribs"] = "t_fracture",
 	["fracturedskull"] = "h_fracture",
 	["fracturedneck"] = "n_fracture",
+	["sawedbones"] = "bonecut",
+	["stimulatedbonegrowth"] = "bonegrowth",
 
 	-- Head
 	["spinalcordinjury"] = "t_paralysis",
@@ -36,12 +38,15 @@ NT.NonLimbAfflictionTranslations =
 
 	-- Limbs
 	["tourniqueted"] = "clampedarteries",
+	["clampedbleeding"] = "clampedbleeders",
+	["plastercast"] = "gypsumcast",
 
 	-- Heart
 	["increasedheartrate"] = "tachycardia",
 
 	-- Torso
 	["aorticrupture"] = "t_arterialcut",
+	["carotidarterialcut"] = "h_arterialcut",
 	
 	-- Symptoms
 	["cough"] = "sym_cough",
@@ -80,6 +85,8 @@ NT.NonLimbAfflictionTranslationsModern =
 	["t_fracture"] = "fracturedribs",
 	["h_fracture"] = "fracturedskull",
 	["n_fracture"] = "fracturedneck",
+	["bonecut"] = "sawedbones",
+	["bonegrowth"] = "stimulatedbonegrowth",
 
 	-- Head
 	["t_paralysis"] = "spinalcordinjury",
@@ -87,12 +94,15 @@ NT.NonLimbAfflictionTranslationsModern =
 
 	-- Limbs
 	["clampedarteries"] = "tourniqueted",
+	["clampedbleeders"] = "clampedbleeding",
+	["gypsumcast"] = "plastercast",
 
 	-- Heart
 	["tachycardia"] = "increasedheartrate",
 
 	-- Torso
 	["t_arterialcut"] = "aorticrupture",
+	["h_arterialcut"] = "carotidarterialcut",
 	
 	-- Symptoms
 	["sym_cough"] = "cough",
