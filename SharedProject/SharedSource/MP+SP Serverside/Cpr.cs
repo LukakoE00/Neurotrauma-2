@@ -12,13 +12,18 @@ namespace Neurotrauma
                 if (args.Length < 1) return null;
 
                 var animController = args[0] as AnimController;
-                if (animController?.Character?.SelectedCharacter == null) return null;
+
+                if (animController?.Character?.SelectedCharacter == null)
+                {
+                    return null;
+                }
 
                 Character character = animController.Character.SelectedCharacter;
 
-                var debugAff = HF.GetAffliction(character, "cpr_buff_auto");
-
-                if (!HF.HasAffliction(character, "cpr_buff_auto")) HF.AddAffliction(character, "cpr_buff", 2f, null);
+                if (!HF.HasAffliction(character, "cpr_buff_auto"))
+                {
+                    HF.AddAffliction(character, "cpr_buff", 2f, null);
+                }
 
                 // Prevent fractures during CPR
                 HF.AddAffliction(character, "cpr_fracturebuff", 2f, null);
