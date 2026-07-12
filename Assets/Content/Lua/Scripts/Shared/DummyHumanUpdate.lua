@@ -250,29 +250,29 @@ Hook.Patch("Neurotrauma.HumanUpdateLuaSync","SyncLuaAfflictions", function(GameS
 		local CharData = { character = NTHuman.Human, afflictions = {}, stats = {} }
 
 		for AffData in NTHuman.LocalAfflictions.UpdatingNonLimbAfflictions do
-			CharData.afflictions[NT.ConvertToLegacy(AffData.ID)] = { prev = AffData.PrevStrength, strength = AffData.Strength }
+			CharData.afflictions[NT.ConvertToLegacy(AffData.ID)] = { prev = AffData.PrevStrength, strength = HF.GetAfflictionStrength(NTHuman.Human,AffData.ID,0) }
 		end
 
 		for AffData in NTHuman.LocalAfflictions.UpdatingBloodAfflictions do
-			CharData.afflictions[NT.ConvertToLegacy(AffData.ID)] = { prev = AffData.PrevStrength, strength = AffData.Strength }
+			CharData.afflictions[NT.ConvertToLegacy(AffData.ID)] = { prev = AffData.PrevStrength, strength = HF.GetAfflictionStrength(NTHuman.Human,AffData.ID,0)}
 		end
 
 		for AffData in NTHuman.LocalAfflictions.UpdatingSymptoms do
-			CharData.afflictions[NT.ConvertToLegacy(AffData.ID)] = { prev = AffData.PrevStrength, strength = AffData.Strength }
+			CharData.afflictions[NT.ConvertToLegacy(AffData.ID)] = { prev = AffData.PrevStrength, strength = HF.GetAfflictionStrength(NTHuman.Human,AffData.ID,0)}
 		end
 
 		NT.CreateLimbTables(CharData)
 		for AffData in NTHuman.LocalAfflictions.UpdatingLimbAfflictions do
 			for limb in limbtypes do
 				local keystring = tostring(limb) .. "afflictions"
-				CharData[keystring][NT.ConvertToLegacy(AffData.ID)] = { prev = AffData.GetLimbPrevStrength(limb), strength = AffData.GetLimbStrength(limb) }
+				CharData[keystring][NT.ConvertToLegacy(AffData.ID)] = { prev = AffData.GetLimbPrevStrength(limb), strength = HF.GetAfflictionStrengthLimb(NTHuman.Human, limb, AffData.ID, 0) }
 			end
 		end
 
 		for AffData in NTHuman.LocalAfflictions.UpdatingLimbSymptoms do
 			for limb in limbtypes do
 				local keystring = tostring(limb) .. "afflictions"
-				CharData[keystring][NT.ConvertToLegacy(AffData.ID)] = { prev = AffData.GetLimbPrevStrength(limb), strength = AffData.GetLimbStrength(limb) }
+				CharData[keystring][NT.ConvertToLegacy(AffData.ID)] = { prev = AffData.GetLimbPrevStrength(limb), strength = HF.GetAfflictionStrengthLimb(NTHuman.Human, limb, AffData.ID, 0) }
 			end
 		end
 

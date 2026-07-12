@@ -1021,7 +1021,7 @@ public static class HumanUpdate
                     AffData.Strength = CurrentStrength;
 
                     // If the affliction was already gone and is still gone, nothing ever happens.
-                    if (PrevStrength == 0 && CurrentStrength == 0) return;
+                    if (PrevStrength == 0 && CurrentStrength == 0 && (!Aff.Const)) return;
 
                     Aff.UpdateAction(this, ID, LimbType.Torso, AffData);
 
@@ -1046,7 +1046,7 @@ public static class HumanUpdate
                         LimbAffData.PrevStrength[Limb] = LimbPrevStrength;
                         LimbAffData.Strength[Limb] = LimbCurrentStrength;
 
-                        if (LimbPrevStrength == 0 && LimbCurrentStrength == 0) continue;
+                        if (LimbPrevStrength == 0 && LimbCurrentStrength == 0 && (!LimbAff.Const)) continue;
 
                         LimbAff.UpdateAction(this, LimbID, Limb, LimbAffData);
 
@@ -1070,7 +1070,7 @@ public static class HumanUpdate
                     BloodAffData.PrevStrength = BloodPrevStrength;
                     BloodAffData.Strength = BloodCurrentStrength;
 
-                    if (BloodPrevStrength == 0 && BloodCurrentStrength == 0) return;
+                    if (BloodPrevStrength == 0 && BloodCurrentStrength == 0 && (!BloodAff.Const)) return;
 
                     BloodAff.UpdateAction(this, BloodID, LimbType.Torso, BloodAffData);
 
@@ -1093,7 +1093,7 @@ public static class HumanUpdate
                     SymData.PrevStrength = SymPrevStrength;
                     SymData.Strength = SymCurrentStrength;
 
-                    if (SymPrevStrength == 0 && SymCurrentStrength == 0) return;
+                    if (SymPrevStrength == 0 && SymCurrentStrength == 0 && (!Sym.Const)) return;
 
                     if (SymData.Strength == 0 && (SymData.HumanUpdateTime <= 0 || SymData.HumanUpdateStoptime > 0)) return;
                     Sym.UpdateAction(this, SymID, LimbType.Torso, SymData);
@@ -1143,7 +1143,7 @@ public static class HumanUpdate
                         LimbSymData.PrevStrength[Limb] = LimbSymPrevStrength;
                         LimbSymData.Strength[Limb] = LimbSymCurrentStrength;
 
-                        if (LimbSymPrevStrength == 0 && LimbSymCurrentStrength == 0) continue;
+                        if (LimbSymPrevStrength == 0 && LimbSymCurrentStrength == 0 && (!LimbSym.Const)) continue;
 
                         if (LimbSymData.Strength[Limb] == 0 && (LimbSymData.HumanUpdateTime[Limb] <= 0 || LimbSymData.HumanUpdateStoptime[Limb] > 0)) return;
                         LimbSym.UpdateAction(this, LimbSymID, Limb, LimbSymData);

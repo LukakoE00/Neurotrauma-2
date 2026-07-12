@@ -142,7 +142,7 @@ namespace Neurotrauma
 
             Stats["forceprone"] = new NTStatBool("forceprone", false, (C) =>
             {
-                return LimbLockedInitial(C, LimbType.RightLeg, "lockrightleg");
+                return NTC.HasSymptom(C.Human,"forceprone");
             });
 
             Stats["wheelchaired"] = new NTStatBool("wheelchaired", false, (C) => 
