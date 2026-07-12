@@ -1095,6 +1095,7 @@ public static class HumanUpdate
 
                     if (SymPrevStrength == 0 && SymCurrentStrength == 0) return;
 
+                    if (SymData.Strength == 0 && (SymData.HumanUpdateTime <= 0 || SymData.HumanUpdateStoptime > 0)) return;
                     Sym.UpdateAction(this, SymID, LimbType.Torso, SymData);
 
                     ApplyAfflictionChange(Human, SymID, (float)SymData.Strength, (float)SymPrevStrength, (float)Sym.MinStrength, (float)Sym.MaxStrength);
@@ -1144,6 +1145,7 @@ public static class HumanUpdate
 
                         if (LimbSymPrevStrength == 0 && LimbSymCurrentStrength == 0) continue;
 
+                        if (LimbSymData.Strength[Limb] == 0 && (LimbSymData.HumanUpdateTime[Limb] <= 0 || LimbSymData.HumanUpdateStoptime[Limb] > 0)) return;
                         LimbSym.UpdateAction(this, LimbSymID, Limb, LimbSymData);
 
                         HF.ApplyAfflictionChangeLimb(Human, Limb, LimbSymID, (float)LimbSymData.Strength[Limb], (float)LimbSymPrevStrength, (float)LimbSym.MinStrength, (float)LimbSym.MaxStrength);

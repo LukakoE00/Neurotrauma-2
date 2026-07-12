@@ -4151,6 +4151,19 @@ namespace Neurotrauma
                 {
                     HF.SetAffliction(C.Human, "stroke", 100);
                 };
+            SymptomsToAdd["triggersym_coma"] = new("triggersym_coma", 0, 100, 0, AfflictionPriority.HIGH);
+            SymptomsToAdd["triggersym_coma"].UpdateAction =
+                (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanSymptomData AffData) =>
+                {
+                    HF.SetAffliction(C.Human, "coma", 100);
+                };
+            SymptomsToAdd["triggersym_cardiacarrest"] = new("triggersym_cardiacarrest", 0, 100, 0, AfflictionPriority.HIGH);
+            SymptomsToAdd["triggersym_cardiacarrest"].UpdateAction =
+                (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanSymptomData AffData) =>
+                {
+                    HF.SetAffliction(C.Human, "cardiacarrest", 100);
+                };
+
 
             foreach (KeyValuePair<string, NTSymptom> Pair in SymptomsToAdd)
             {
