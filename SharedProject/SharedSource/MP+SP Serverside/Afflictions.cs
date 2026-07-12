@@ -3285,7 +3285,7 @@ namespace Neurotrauma
                     if (C.GetBoolStatStrength("stasis")) return;
 
                     AffData.Strength += HF.BoolToNum(
-                            C.GetNonLimbAffData("hypoventilation").Strength > 0
+                            C.GetSymptomAffData("hypoventilation").Strength > 0
                             && C.GetAffData("artificialventilation").Strength <= 0.1
                         ) * 0.09 * NT.DeltaTime
                         + Math.Max(0, C.GetAffData("kidneydamage").Strength - 80) / 20 * 0.1 * NT.DeltaTime

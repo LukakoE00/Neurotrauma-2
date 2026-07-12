@@ -70,6 +70,7 @@ NT.NonLimbAfflictionTranslations =
 
 	-- Mechanics
 	["artificialventilation"] = "alv",
+	["safesurgery"] = "table",
 }
 
 NT.NonLimbAfflictionTranslationsModern = 
@@ -119,7 +120,8 @@ NT.NonLimbAfflictionTranslationsModern =
 	["chestpain"] = "pain_chest",
 
 	-- Mechanics
-	["artificialventilation"] = "alv",
+	["table"] = "safesurgery",
+	["alv"] = "artificialventilation",
 
 	-- Limb afflictions
 	["dirtybandage"] = "bandageddirty",
