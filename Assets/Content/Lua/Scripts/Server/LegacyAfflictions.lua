@@ -1376,6 +1376,14 @@ NT.Afflictions = {
 }
 
 NT.LimbAfflictions = {
+	cs_example_stuff = {
+        legacy = true,
+		priority = AfflictionPriority.HIGH, -- This is the default
+		const = true, -- This is the default. A constant affliction will always run, if false only runs when applied to character.
+		update = function(c, limbaff, i, type)
+		end,
+	},
+
 	bandaged = {
         legacy = true,
 		update = function(c, limbaff, i, type)

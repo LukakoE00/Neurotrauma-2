@@ -9,6 +9,13 @@ local limbtypes = {
 	LimbType.RightLeg,
 }
 
+AfflictionPriority = -- Enums
+{
+	LOW = 6 * 60,  -- Every 6s
+	MEDIUM = 4 * 60, -- Every 4s
+	HIGH = 2 * 60 -- Every 2s
+}
+
 CSHumanUpdate = LuaUserData.CreateStatic("Neurotrauma.HumanUpdate",false)-- stores our class ref
 Init = LuaUserData.CreateStatic("Neurotrauma.NT",false)-- stores our class ref
 
@@ -67,6 +74,7 @@ NT.NonLimbAfflictionTranslations =
 
 NT.NonLimbAfflictionTranslationsModern = 
 {
+--     [OLD ID]  <---->  [NEW ID]
 	-- Bones
 	["t_fracture"] = "fracturedribs",
 	["h_fracture"] = "fracturedskull",
@@ -113,11 +121,11 @@ NT.NonLimbAfflictionTranslationsModern =
 	-- Mechanics
 	["artificialventilation"] = "alv",
 
+	-- Limb afflictions
 	["dirtybandage"] = "bandageddirty",
 	["burn_deg1"] = "firstdegreeburn",
 	["burn_deg2"] = "seconddegreeburn",
 	["burn_deg3"] = "thirddegreeburn",
-
 	["la_fracture"] = "fracturedextremity",
 	["ra_fracture"] = "fracturedextremity",
 	["ll_fracture"] = "fracturedextremity",
