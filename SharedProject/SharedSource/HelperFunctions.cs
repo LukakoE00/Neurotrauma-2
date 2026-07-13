@@ -1377,14 +1377,14 @@ namespace Neurotrauma
         {
             givenLimbType = NormalizeLimbType(givenLimbType);
 
-            return HasAfflictionLimb(character, "t" + CreateLimbAfflictionID(givenLimbType, "amputation"), givenLimbType);
+            return HasAffliction(character, "t" + CreateLimbAfflictionID(givenLimbType, "amputation"));
         }
 
         public static bool LimbIsSurgicallyAmputated(Character character, LimbType givenLimbType)
         {
             givenLimbType = NormalizeLimbType(givenLimbType);
 
-            return HasAfflictionLimb(character, "s" + CreateLimbAfflictionID(givenLimbType, "amputation"), givenLimbType);
+            return HasAffliction(character, "s" + CreateLimbAfflictionID(givenLimbType, "amputation"));
         }
 
         public static bool LimbIsAmputated(Character Character, LimbType GivenLimbType)
@@ -1550,7 +1550,7 @@ namespace Neurotrauma
 
         public static bool LimbLockedInitial(HumanUpdate.NTHuman C, LimbType Limb, string Key)
         {
-            return !NTC.HasSymptomFalse(C, Key)
+            return (!NTC.HasSymptomFalse(C, Key))
                    && (
                        NTC.HasSymptom(C, Key)
                 || LimbIsAmputated(C.Human, Limb)

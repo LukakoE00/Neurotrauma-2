@@ -333,7 +333,7 @@ namespace Neurotrauma
             if (Character == null) return false;
             HumanUpdate.NTHumanSymptomData Symptom = Character.GetSymptomAffData(SymIdentifier);
             if (Symptom == null) return false;
-            if (Symptom.Strength > 0) return true;
+            if (Symptom.Strength > 0 || Symptom.HumanUpdateTime > 0) return true;
             return false;
         }
 
@@ -343,7 +343,7 @@ namespace Neurotrauma
             if (Human == null) return false;
             HumanUpdate.NTHumanSymptomData Symptom = Human.GetSymptomAffData(SymIdentifier);
             if (Symptom == null) return false;
-            if (Symptom.Strength > 0) return true;
+            if (Symptom.Strength > 0 || Symptom.HumanUpdateTime > 0) return true;
             return false;
         }
 
@@ -352,7 +352,7 @@ namespace Neurotrauma
             if (Character == null) return false;
             HumanUpdate.NTHumanLimbSymptomData Symptom = Character.GetLimbSymptomData(SymIdentifier);
             if (Symptom == null) return false;
-            if (Symptom.Strength[Limb] > 0) return true;
+            if (Symptom.Strength[Limb] > 0 || Symptom.HumanUpdateTime[Limb] > 0) return true;
             return false;
         }
 
@@ -362,7 +362,7 @@ namespace Neurotrauma
             if (Human == null) return false;
             HumanUpdate.NTHumanLimbSymptomData Symptom = Human.GetLimbSymptomData(SymIdentifier);
             if (Symptom == null) return false;
-            if (Symptom.Strength[Limb] > 0) return true;
+            if (Symptom.Strength[Limb] > 0 || Symptom.HumanUpdateTime[Limb] > 0) return true;
             return false;
         }
 
@@ -372,7 +372,7 @@ namespace Neurotrauma
             HumanUpdate.NTHumanSymptomData Symptom = Character.GetSymptomAffData(SymIdentifier);
             if (Symptom == null) return false;
 
-            if (Symptom.HumanUpdateStoptime <= 0) return true;
+            if (Symptom.HumanUpdateStoptime > 0) return true;
             return false;
         }
 
@@ -383,7 +383,7 @@ namespace Neurotrauma
             HumanUpdate.NTHumanSymptomData Symptom = Human.GetSymptomAffData(SymIdentifier);
             if (Symptom == null) return false;
 
-            if (Symptom.HumanUpdateStoptime <= 0) return true;
+            if (Symptom.HumanUpdateStoptime > 0) return true;
             return false;
         }
 
@@ -393,7 +393,7 @@ namespace Neurotrauma
             HumanUpdate.NTHumanLimbSymptomData Symptom = Character.GetLimbSymptomData(SymIdentifier);
             if (Symptom == null) return false;
 
-            if (Symptom.HumanUpdateStoptime[Limb] <= 0) return true;
+            if (Symptom.HumanUpdateStoptime[Limb] > 0) return true;
             return false;
         }
 
@@ -404,7 +404,7 @@ namespace Neurotrauma
             HumanUpdate.NTHumanLimbSymptomData Symptom = Human.GetLimbSymptomData(SymIdentifier);
             if (Symptom == null) return false;
 
-            if (Symptom.HumanUpdateStoptime[Limb] <= 0) return true;
+            if (Symptom.HumanUpdateStoptime[Limb] > 0) return true;
             return false;
         }
 

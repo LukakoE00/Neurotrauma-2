@@ -3,6 +3,7 @@ using Barotrauma.LuaCs.Data;
 using FarseerPhysics.Dynamics;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Utilities;
+using MonoMod.RuntimeDetour;
 using static Barotrauma.Networking.MessageFragment;
 
 namespace Neurotrauma
@@ -32,6 +33,7 @@ namespace Neurotrauma
             DynamicItems.InitDynamicItems(); // Add the DynamicItems hooks
             OnDamaged.InitializeOnDamagedMethods(); // Add OnDamaged patches
             InitLuaHooks(); // Initializes the Lua hooks at the bottom of this file
+            AddApplyHooks();
 
             // What a mess. - Lukako (holy old status)
             harmony = new Harmony("neurotrauma.server");
@@ -95,6 +97,14 @@ namespace Neurotrauma
             }); // End of our Function
 
 #pragma warning restore CS0618 // Type or member is obsolete
+        }
+
+        public static void AddApplyHooks()
+        {
+            NTC.AddPostHumanUpdateHook((HumanUpdate.NTHuman C) =>
+            {
+                C.Human.SetStun((float)C.GetAffStrength("stun"));
+            });
         }
     }
 }

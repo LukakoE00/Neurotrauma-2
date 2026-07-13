@@ -2359,6 +2359,23 @@ namespace Neurotrauma
                     AffData.Strength = C.GetDoubleStatStrength("slowdown");
                 };
 
+            // Stun 
+            // Constant; too complicated otherwise.
+            // Type: Functionality
+            // Effects: Used to stun the character.
+            AfflictionsToAdd["stun"] = new("stun", 0, 30, 0, AfflictionPriority.HIGH);
+            AfflictionsToAdd["stun"].Const = true;
+            AfflictionsToAdd["stun"].UpdateAction =
+                (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanNonLimbAffData AffData) =>
+                {
+                    if (C.GetNonLimbAffStrength("spinalcordinjury") > 0
+                        || C.GetNonLimbAffStrength("anesthesia") > 15
+                        || NTC.HasSymptom(C,"unconsciousness"))
+                    {
+                        AffData.Strength = Math.Max(5,AffData.Strength);
+                    }
+                };
+
             // Now add these afflictions.
             foreach (KeyValuePair<string,NTNonLimbAffliction> Pair in AfflictionsToAdd)
             {
@@ -3879,6 +3896,7 @@ namespace Neurotrauma
             SymptomsToAdd["unconsciousness"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanSymptomData AffData) =>
                 {
+
                     AffData.Strength = HF.BoolToNum(
                         // Symptom must not be forced false.
                         (!NTC.HasSymptomFalse(C, ID))
@@ -3901,6 +3919,7 @@ namespace Neurotrauma
                         ),
                         100
                     );
+
                 };
 
             // Craving
@@ -4063,13 +4082,17 @@ namespace Neurotrauma
                     AffData.Strength = HF.BoolToNum(
                         (!NTC.HasSymptomFalse(C, "forceprone"))
                         && C.GetSymptomAffData("unconsciousness").Strength <= 0
-                        && !C.Human.IsClimbing
+                        && (!C.Human.IsClimbing)
                         && (
                             NTC.HasSymptom(C, "forceprone")
-                            || (C.GetBoolStatStrength("lockleftleg") && C.GetBoolStatStrength("lockrightleg") && !C.GetBoolStatStrength("wheelchaired"))
+                            || (C.GetBoolStatStrength("lockleftleg") && C.GetBoolStatStrength("lockrightleg") && (!C.GetBoolStatStrength("wheelchaired")))
                         ),
                         2
                     );
+                    if (AffData.Strength > 0)
+                    {
+                        AffData.HumanUpdateTime = 2;
+                    }
                 };
 
             // Hyperventilation

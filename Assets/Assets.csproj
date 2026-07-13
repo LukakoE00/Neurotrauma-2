@@ -11,8 +11,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Content\Lua\Scripts\Client\" />
-      <Folder Include="Content\Lua\Scripts\Server\" />
+      <Compile Remove="Content\Lua\Scripts\Client\**" />
+      <Compile Remove="Content\Lua\Scripts\Server\**" />
+      <EmbeddedResource Remove="Content\Lua\Scripts\Client\**" />
+      <EmbeddedResource Remove="Content\Lua\Scripts\Server\**" />
+      <None Remove="Content\Lua\Scripts\Client\**" />
+      <None Remove="Content\Lua\Scripts\Server\**" />
     </ItemGroup>
 
     <Import Project="../Build.props" />
