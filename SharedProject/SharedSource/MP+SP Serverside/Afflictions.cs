@@ -386,7 +386,6 @@ namespace Neurotrauma
             // Caused By: Lack of Oxygen, Respiratory Arrest
             // Effects: Hypoxemia
             AfflictionsToAdd["oxygenlow"] = new("oxygenlow", 0, 200, 0, AfflictionPriority.HIGH);
-            AfflictionsToAdd["oxygenlow"].Const = true;
             AfflictionsToAdd["oxygenlow"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanNonLimbAffData AffData) =>
                 {
@@ -1416,8 +1415,17 @@ namespace Neurotrauma
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanNonLimbAffData AffData) =>
                 {
                     // Arm lock items
-                    Item LeftLockItem = C.Human.Inventory.FindItemByIdentifier("armlock2", false);
-                    Item RightLockItem = C.Human.Inventory.FindItemByIdentifier("armlock1", false);
+                    Item LeftLockItem = HF.GetItemInLeftHand(C.Human);
+                    if (LeftLockItem?.Prefab.Identifier.Value != "armlock")
+                    {
+                        LeftLockItem = null;
+                    }
+
+                    Item RightLockItem = HF.GetItemInRightHand(C.Human);
+                    if (RightLockItem?.Prefab.Identifier.Value != "armlock")
+                    {
+                        RightLockItem = null;
+                    }
 
                     // Handcuffs Check
                     Item Handcuffs = C.Human.Inventory.FindItemByIdentifier("handcuffs", false);
