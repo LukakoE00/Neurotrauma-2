@@ -1,4 +1,5 @@
-﻿using MonoMod.Utils;
+﻿using Barotrauma;
+using MonoMod.Utils;
 using static Microsoft.Xna.Framework.Graphics.VertexDeclaration;
 using static Neurotrauma.HF;
 using static Neurotrauma.NTC;
@@ -955,6 +956,7 @@ public static class HumanUpdate
                 case NTAfflictionType.SYMPTOM:
                     // Fetch the data of the affliction
                     string ID = Key;
+                    HF.Print(ID);
                     NTHumanAffData AffData = Data;
                     NTAffliction Aff = AffData.AffTemplate;
 

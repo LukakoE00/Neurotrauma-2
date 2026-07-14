@@ -17,6 +17,7 @@ namespace Neurotrauma
             HumanUpdate.NTHumanSymptomData Sym = Afflictions[SymptomIdentifier];
             Sym.HumanUpdateTime = Duration;
             Sym.Strength = 100;
+            if (Sym.SymTemplate.Real) HF.SetAffliction(Human.Human, SymptomIdentifier, 100f);
         }
 
         public static void SetSymptomTrue(Character Char, string SymptomIdentifier, int Duration = 2)
@@ -26,6 +27,7 @@ namespace Neurotrauma
             HumanUpdate.NTHumanSymptomData Sym = Afflictions[SymptomIdentifier];
             Sym.HumanUpdateTime = Duration;
             Sym.Strength = 100;
+            if (Sym.SymTemplate.Real) HF.SetAffliction(Char, SymptomIdentifier,100f);
         }
 
         /// <summary>
@@ -41,6 +43,7 @@ namespace Neurotrauma
             HumanUpdate.NTHumanLimbSymptomData Sym = Afflictions[SymptomIdentifier];
             Sym.HumanUpdateTime[Limb] = Duration;
             Sym.Strength[Limb] = 100;
+            if (Sym.SymTemplate.Real) HF.SetAfflictionLimb(Human.Human, SymptomIdentifier, Limb, 100f);
         }
 
         public static void SetLimbSymptomTrue(Character Char, string SymptomIdentifier, LimbType Limb, int Duration = 2)
@@ -50,6 +53,7 @@ namespace Neurotrauma
             HumanUpdate.NTHumanLimbSymptomData Sym = Afflictions[SymptomIdentifier];
             Sym.HumanUpdateTime[Limb] = Duration;
             Sym.Strength[Limb] = 100;
+            if (Sym.SymTemplate.Real) HF.SetAfflictionLimb(Char, SymptomIdentifier, Limb, 100f);
         }
 
         /// <summary>
@@ -64,6 +68,7 @@ namespace Neurotrauma
             HumanUpdate.NTHumanSymptomData Sym = Afflictions[SymptomIdentifier];
             Sym.HumanUpdateStoptime = Duration;
             Sym.Strength = 0;
+            if (Sym.SymTemplate.Real) HF.SetAffliction(Human.Human, SymptomIdentifier, 100f);
         }
 
         public static void SetSymptomFalse(Character Char, string SymptomIdentifier, int Duration = 2)
@@ -73,6 +78,7 @@ namespace Neurotrauma
             HumanUpdate.NTHumanSymptomData Sym = Afflictions[SymptomIdentifier];
             Sym.HumanUpdateStoptime = Duration;
             Sym.Strength = 0;
+            if (Sym.SymTemplate.Real) HF.SetAffliction(Char, SymptomIdentifier, 100f);
         }
 
         /// <summary>
@@ -88,6 +94,7 @@ namespace Neurotrauma
             HumanUpdate.NTHumanLimbSymptomData Sym = Afflictions[SymptomIdentifier];
             Sym.HumanUpdateStoptime[Limb] = Duration;
             Sym.Strength[Limb] = 0;
+            if (Sym.SymTemplate.Real) HF.SetAfflictionLimb(Human.Human, SymptomIdentifier, Limb, 100f);
         }
 
         public static void SetLimbSymptomFalse(Character Char, string SymptomIdentifier, LimbType Limb, int Duration = 2)
@@ -97,6 +104,7 @@ namespace Neurotrauma
             HumanUpdate.NTHumanLimbSymptomData Sym = Afflictions[SymptomIdentifier];
             Sym.HumanUpdateStoptime[Limb] = Duration;
             Sym.Strength[Limb] = 0;
+            if (Sym.SymTemplate.Real) HF.SetAfflictionLimb(Char, SymptomIdentifier, Limb, 100f);
         }
 
         public static void DebugPrintAllData() // UNFINISHED

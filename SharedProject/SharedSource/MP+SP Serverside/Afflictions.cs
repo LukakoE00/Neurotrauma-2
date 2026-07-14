@@ -106,6 +106,11 @@ namespace Neurotrauma
             return Afflictions.ContainsKey(id);
         }
 
+        public static NTAffliction GetAffliction(string id)
+        {
+            return Afflictions[id];
+        }
+
         public static NTAffliction IDToNTAff(string id)
         {
             if (Afflictions.ContainsKey(id))

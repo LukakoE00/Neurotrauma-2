@@ -218,9 +218,18 @@ end
 NT.PostSync = function (CharData)
 	
 	for _, Data in pairs(CharData.afflictions) do -- Sync non limb afflictions
-		if AfflictionPrefab.Prefabs.ContainsKey(_) then
-			if Data.strength ~= 0 and Data.strength ~= Data.prev  then
-				HF.SetAffliction(CharData.character,NT.ConvertToModern(_),Data.strength,CharData.character,Data.prev)
+		local ModernID = NT.ConvertToModern(_)
+		if AfflictionPrefab.Prefabs.ContainsKey(ModernID) then
+			if NTCSAfflictions.HasAffliction(ModernID) then
+				if NTCSAfflictions.GetAffliction(ModernID).Real then
+					if Data.strength ~= 0 and Data.strength ~= Data.prev then
+						HF.SetAffliction(CharData.character,ModernID,Data.strength,CharData.character,Data.prev)
+					end
+				end
+			else
+				if Data.strength ~= 0 and Data.strength ~= Data.prev then
+					HF.SetAffliction(CharData.character,ModernID,Data.strength,CharData.character,Data.prev)
+				end
 			end
 		end
 	end
