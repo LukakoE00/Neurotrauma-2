@@ -15,9 +15,13 @@ namespace Neurotrauma
         {
             Dictionary<string, HumanUpdate.NTHumanSymptomData> Afflictions = Human.LocalAfflictions.UpdatingSymptoms;
             HumanUpdate.NTHumanSymptomData Sym = Afflictions[SymptomIdentifier];
+
             Sym.HumanUpdateTime = Duration;
             Sym.Strength = 100;
-            if (Sym.SymTemplate.Real) HF.SetAffliction(Human.Human, SymptomIdentifier, 100f);
+            if (Sym.SymTemplate.Real)
+            {
+                HF.SetAffliction(Human.Human, SymptomIdentifier, 100f);
+            }
         }
 
         public static void SetSymptomTrue(Character Char, string SymptomIdentifier, int Duration = 2)
@@ -25,9 +29,13 @@ namespace Neurotrauma
             HumanUpdate.NTHuman Human = HumanUpdate.CharacterToNTHuman(Char);
             Dictionary<string, HumanUpdate.NTHumanSymptomData> Afflictions = Human.LocalAfflictions.UpdatingSymptoms;
             HumanUpdate.NTHumanSymptomData Sym = Afflictions[SymptomIdentifier];
+
             Sym.HumanUpdateTime = Duration;
             Sym.Strength = 100;
-            if (Sym.SymTemplate.Real) HF.SetAffliction(Char, SymptomIdentifier,100f);
+            if (Sym.SymTemplate.Real)
+            {
+                HF.SetAffliction(Char, SymptomIdentifier, 100f);
+            }
         }
 
         /// <summary>

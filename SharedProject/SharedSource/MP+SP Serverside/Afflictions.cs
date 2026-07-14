@@ -533,7 +533,7 @@ namespace Neurotrauma
 
                     // Effects:
                     // Chest Pain
-                    if (AffData.Strength > 0)
+                    if (AffData.Strength > 0 && C.GetSymptomAffData("unconsciousness").Strength <= 0 && (!C.GetBoolStatStrength("sedated")))
                     {
                         NTC.SetSymptomTrue(C, "chestpain", 2);
                     }
@@ -566,7 +566,7 @@ namespace Neurotrauma
 
                     // Effects:
                     // Headache
-                    if (AffData.Strength > 0)
+                    if (AffData.Strength > 0 && C.GetAffData("unconsciousness").Strength <= 0)
                     {
                         NTC.SetSymptomTrue(C, "headache", 2);
                     }
@@ -626,20 +626,23 @@ namespace Neurotrauma
                     // Shortness of Breath
                     if (AffData.Strength > 45)
                     {
-                        NTC.SetSymptomTrue(C, "shortnessofbreath", 2);
+                        if (C.GetAffData("respiratoryarrest").Strength <= 0)
+                        {
+                            NTC.SetSymptomTrue(C, "shortnessofbreath", 2);
+                        }
+
+                        // Cough
+                        if (AffData.Strength > 50 && C.GetAffData("unconsciousness").Strength <= 0 && C.GetAffData("lungremoved").Strength <= 0)
+                        {
+                            NTC.SetSymptomTrue(C, "cough", 2);
+                        }
+
+                        // Respiratory Arrest
+                        if (AffData.Strength > 99 && HF.Chance(0.8f))
+                        {
+                            HF.AddAffliction(C.Human, "respiratoryarrest", 200, null);
+                        }
                     }
-                       
-                    // Cough
-                    if (AffData.Strength > 50)
-                    {
-                        NTC.SetSymptomTrue(C, "cough", 2);
-                    }
-                        
-                    // Respiratory Arrest
-                    if (AffData.Strength > 99 && HF.Chance(0.8f))
-                    {
-                        HF.AddAffliction(C.Human, "respiratoryarrest", 200, null);
-                    } 
                 };
 
             // Lung Removed
@@ -735,19 +738,22 @@ namespace Neurotrauma
                     // Shortness of Breath
                     if (AffData.Strength > 10)
                     {
-                        NTC.SetSymptomTrue(C, "shortnessofbreath", 2);
-                    }
+                        if (C.GetAffData("respiratoryarrest").Strength <= 0)
+                        {
+                            NTC.SetSymptomTrue(C, "shortnessofbreath", 2);
+                        }
 
-                    // Cough
-                    if (AffData.Strength > 20) 
-                    { 
-                        NTC.SetSymptomTrue(C, "cough", 2); 
-                    }
+                        // Cough
+                        if (AffData.Strength > 20 && C.GetAffData("unconsciousness").Strength <= 0 && C.GetAffData("lungremoved").Strength <= 0)
+                        {
+                            NTC.SetSymptomTrue(C, "cough", 2);
+                        }
 
-                    // Weakness
-                    if (AffData.Strength > 30)
-                    {
-                        NTC.SetSymptomTrue(C, "weakness", 2);
+                        // Weakness
+                        if (AffData.Strength > 30)
+                        {
+                            NTC.SetSymptomTrue(C, "weakness", 2);
+                        }
                     }
                 };
 
@@ -912,8 +918,11 @@ namespace Neurotrauma
                     NTC.SetSymptomTrue(C, "sweating", 2);
                         
                     // Shortness of Breath
-                    NTC.SetSymptomTrue(C, "shortnessofbreath", 2);
-
+                    if (C.GetAffData("respiratoryarrest").Strength <= 0)
+                    {
+                        NTC.SetSymptomTrue(C, "shortnessofbreath", 2);
+                    }
+                    
                     // Heart Damage
                     HF.AddAffliction(C.Human, "heartdamage", (float)(Math.Clamp(C.GetAffData("heartattack").Strength, 0, 0.5) * NT.DeltaTime), null);
                 };
@@ -940,20 +949,30 @@ namespace Neurotrauma
                     // Cough
                     if (AffData.Strength > 50)
                     {
-                        NTC.SetSymptomTrue(C, "cough", 2);
-                    }
+                        if (C.GetAffData("unconsciousness").Strength <= 0 && C.GetAffData("lungremoved").Strength <= 0)
+                        {
+                            NTC.SetSymptomTrue(C, "cough", 2);
+                        }
 
-                    // Leg Swelling & Shortness of Breath
-                    if (AffData.Strength > 80)
-                    {
-                        NTC.SetSymptomTrue(C, "legswelling", 2);
-                        NTC.SetSymptomTrue(C, "shortnessofbreath", 2);
-                    }
+                        // Leg Swelling & Shortness of Breath
+                        if (AffData.Strength > 80)
+                        {
+                            if (HF.GetAfflictionStrength(C.Human, "rl_cyber", 0) < 0.1)
+                            {
+                                NTC.SetSymptomTrue(C, "legswelling", 2);
+                            }
 
-                    // Cardiac Arrest
-                    if (AffData.Strength > 99 && HF.Chance(0.3f))
-                    { 
-                        HF.AddAffliction(C.Human, "cardiacarrest", 200, null); 
+                            if (C.GetAffData("respiratoryarrest").Strength <= 0)
+                            {
+                                NTC.SetSymptomTrue(C, "shortnessofbreath", 2);
+                            }
+
+                            // Cardiac Arrest
+                            if (AffData.Strength > 99 && HF.Chance(0.3f))
+                            {
+                                HF.AddAffliction(C.Human, "cardiacarrest", 200, null);
+                            }
+                        }
                     }
                 };
 
@@ -1020,19 +1039,23 @@ namespace Neurotrauma
                     if (AffData.Strength > 60)
                     {
                         NTC.SetSymptomTrue(C, "nausea", 2);
-                        NTC.SetSymptomTrue(C, "legswelling", 2);
-                    }
 
-                    // Vomiting
-                    if (AffData.Strength >= 60 && !NTC.HasSymptom(C, "vomiting") && HF.Chance((float)(AffData.Strength - 60) / 40f * 0.07f))
-                    {
-                        NTC.SetSymptomTrue(C, "vomiting", Rand.Range(3, 11));
-                    }
+                        if (HF.GetAfflictionStrength(C.Human, "rl_cyber", 0) < 0.1)
+                        {
+                            NTC.SetSymptomTrue(C, "legswelling", 2);
+                        }
 
-                    // Bone Damage
-                    if (AffData.Strength > 70)
-                    { 
-                        HF.AddAffliction(C.Human, "bonedamage", (float)((AffData.Strength - 70) / 30 * 0.15 * NT.DeltaTime), null);
+                        // Vomiting
+                        if (!NTC.HasSymptom(C, "vomiting") && HF.Chance((float)(AffData.Strength - 60) / 40f * 0.07f))
+                        {
+                            NTC.SetSymptomTrue(C, "vomiting", Rand.Range(3, 11));
+                        }
+
+                        // Bone Damage
+                        if (AffData.Strength > 70)
+                        {
+                            HF.AddAffliction(C.Human, "bonedamage", (float)((AffData.Strength - 70) / 30 * 0.15 * NT.DeltaTime), null);
+                        }
                     }
                 };
 
@@ -1070,8 +1093,8 @@ namespace Neurotrauma
 
                     // Effects:
                     // Neurotrauma
-                    double NeurotraumaIncrease = (AffData.Strength / 800.0 * NT.DeltaTime) 
-                        * NTC.GetMultiplier(C, "neurotraumagain") 
+                    double NeurotraumaIncrease = (AffData.Strength / 800.0 * NT.DeltaTime)
+                        * NTC.GetMultiplier(C, "neurotraumagain")
                         * NTConfig.Get("NT_neurotraumaGain", 1)
                         * (1 - Math.Clamp(C.GetAffData("afmannitol").Strength, 0, 0.5));
 
@@ -1082,32 +1105,38 @@ namespace Neurotrauma
                     // Leg Swelling
                     if (AffData.Strength > 40)
                     {
-                        NTC.SetSymptomTrue(C, "legswelling", 2);
-                    }
+                        if (HF.GetAfflictionStrength(C.Human, "rl_cyber", 0) < 0.1)
+                        {
+                            NTC.SetSymptomTrue(C, "legswelling", 2);
+                        }
 
-                    // Bloating
-                    if (AffData.Strength > 50)
-                    {
-                        NTC.SetSymptomTrue(C, "bloating", 2);
-                    }
+                        if (AffData.Strength > 50)
+                        {
+                            // Bloating
+                            NTC.SetSymptomTrue(C, "bloating", 2);
 
-                    // Abdominal Discomfort
-                    if (AffData.Strength > 65)
-                    {
-                        NTC.SetSymptomTrue(C, "abdominaldiscomfort", 2);
-                    }
+                            if (AffData.Strength > 65)
+                            {
+                                // Abdominal Discomfort
+                                if (C.GetAffData("unconsciousness").Strength <= 0)
+                                {
+                                    NTC.SetSymptomTrue(C, "abdominaldiscomfort", 2);
+                                }
 
-                    // Jaundice
-                    if (AffData.Strength > 80)
-                    {
-                        NTC.SetSymptomTrue(C, "jaundice", 2);
-                    }
+                                if (AffData.Strength > 80)
+                                {
+                                    // Jaundice
+                                    NTC.SetSymptomTrue(C, "jaundice", 2);
 
-                    // Internal Bleeding & Vomiting Blood
-                    if (AffData.Strength >= 99 && HF.Chance(0.05f))
-                    {
-                        NTC.SetSymptomTrue(C, "vomitingblood", Random.Shared.Next(3, 10));
-                        HF.AddAffliction(C.Human, "internalbleeding", 2, null);
+                                    if (AffData.Strength >= 99 && HF.Chance(0.05f))
+                                    {
+                                        // Internal Bleeding & Vomiting Blood
+                                        NTC.SetSymptomTrue(C, "vomitingblood", Random.Shared.Next(3, 10));
+                                        HF.AddAffliction(C.Human, "internalbleeding", 2, null);
+                                    }
+                                }
+                            }
+                        }
                     }
                 };
 
@@ -1149,12 +1178,12 @@ namespace Neurotrauma
                     if (AffData.Strength > 15)
                     {
                         HF.AddAffliction(C.Human, "hyperventilation", 100, null);
-                    }
 
-                    // Shortness of Breath
-                    if (AffData.Strength > 40)
-                    {
-                        NTC.SetSymptomTrue(C, "shortnessofbreath", 2);
+                        // Shortness of Breath
+                        if (AffData.Strength > 40 && C.GetAffData("respiratoryarrest").Strength <= 0)
+                        {
+                            NTC.SetSymptomTrue(C, "shortnessofbreath", 2);
+                        }
                     }
                 };
 
@@ -1655,7 +1684,10 @@ namespace Neurotrauma
                    AffData.Strength -= 40;
 
                    // Reduce Oxygen Low if lungs are present
-                   if (C.GetAffData("lungremoved").Strength <= 0) HF.AddAffliction(C.Human, "oxygenlow", -40, null);
+                   if (C.GetAffData("lungremoved").Strength <= 0)
+                   {
+                       HF.AddAffliction(C.Human, "oxygenlow", -40, null);
+                   }
                };
 
 
@@ -1695,49 +1727,55 @@ namespace Neurotrauma
                     // Craving
                     if (AffData.Strength > 20)
                     {
-                        NTC.SetSymptomTrue(C, "craving", 2);
-                    }
-
-                    // Sweating
-                    if (AffData.Strength > 30)
-                    {
-                        NTC.SetSymptomTrue(C, "sweating", 2);
-                    }
-
-                    // Nausea
-                    if (AffData.Strength > 40)
-                    {
-                        NTC.SetSymptomTrue(C, "nausea", 2);
-                    }
-
-                    if (AffData.Strength > 50)
-                    {
-                        // Headache
-                        NTC.SetSymptomTrue(C, "headache", 2);
-
-                        // Seizure
-                        if (HF.Chance((float)AffData.Strength / 1000f))
+                        if (C.GetAffData("unconsciousness").Strength <= 0)
                         {
-                            HF.AddAffliction(C.Human, "seizure", 10, null);
+                            NTC.SetSymptomTrue(C, "craving", 2);
                         }
-                    }
 
-                    // Vomiting
-                    if (AffData.Strength > 60)
-                    {
-                        NTC.SetSymptomTrue(C, "vomiting", 2);
-                    }
+                        // Sweating
+                        if (AffData.Strength > 30)
+                        {
+                            NTC.SetSymptomTrue(C, "sweating", 2);
 
-                    // Confusion
-                    if (AffData.Strength > 80)
-                    {
-                        NTC.SetSymptomTrue(C, "confusion", 2);
-                    }
+                            // Nausea
+                            if (AffData.Strength > 40)
+                            {
+                                NTC.SetSymptomTrue(C, "nausea", 2);
 
-                    // Fever
-                    if (AffData.Strength > 90)
-                    {
-                        NTC.SetSymptomTrue(C, "fever", 2);
+                                if (AffData.Strength > 50)
+                                {
+                                    // Headache
+                                    if (C.GetAffData("unconsciousness").Strength <= 0)
+                                    {
+                                        NTC.SetSymptomTrue(C, "headache", 2);
+                                    }
+
+                                    // Seizure
+                                    if (HF.Chance((float)AffData.Strength / 1000f))
+                                    {
+                                        HF.AddAffliction(C.Human, "seizure", 10, null);
+                                    }
+
+                                    // Vomiting
+                                    if (AffData.Strength > 60)
+                                    {
+                                        NTC.SetSymptomTrue(C, "vomiting", 2);
+
+                                        // Confusion
+                                        if (AffData.Strength > 80 && C.GetAffData("unconsciousness").Strength <= 0)
+                                        {
+                                            NTC.SetSymptomTrue(C, "confusion", 2);
+
+                                            // Fever
+                                            if (AffData.Strength > 90)
+                                            {
+                                                NTC.SetSymptomTrue(C, "fever", 2);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 };
 
@@ -1804,11 +1842,17 @@ namespace Neurotrauma
                     }
                     else if (case_ < 2 / casecount)
                     {
-                        NTC.SetSymptomTrue(C, "blurredvision", (int)(5 + Random.Shared.NextDouble() * 10));
+                        if (C.GetAffData("unconsciousness").Strength <= 0)
+                        {
+                            NTC.SetSymptomTrue(C, "blurredvision", (int)(5 + Random.Shared.NextDouble() * 10));
+                        }
                     }
                     else if (case_ < 3 / casecount)
                     {
-                        NTC.SetSymptomTrue(C, "confusion", (int)(5 + Random.Shared.NextDouble() * 10));
+                        if (C.GetAffData("unconsciousness").Strength <= 0)
+                        {
+                            NTC.SetSymptomTrue(C, "confusion", (int)(5 + Random.Shared.NextDouble() * 10));
+                        }
                     }
                     else if (case_ < 4 / casecount)
                     {
@@ -1855,7 +1899,10 @@ namespace Neurotrauma
                     HF.AddAffliction(C.Human, "neurotrauma", (float)NeurotraumaGain, null);
 
                     // Headache
-                    if (AffData.Strength > 1) NTC.SetSymptomTrue(C, "headache", 2);
+                    if (AffData.Strength > 1 && C.GetAffData("unconsciousness").Strength <= 0)
+                    {
+                        NTC.SetSymptomTrue(C, "headache", 2);
+                    }
 
                     // Coma & Seizure
                     if (AffData.Strength > 1 && HF.Chance(0.05f))
@@ -1896,8 +1943,10 @@ namespace Neurotrauma
                     if (AffData.Strength > 100)
                     {
                         NTC.SetSymptomTrue(C, "unconsciousness", 2);
-                        if (HF.Chance(0.05f))
+                        if (HF.Chance(0.05f)) 
+                        {
                             HF.AddAffliction(C.Human, "respiratoryarrest", 200, null);
+                        }
                     }
                 };
 
@@ -1953,17 +2002,19 @@ namespace Neurotrauma
                     }
 
                     // Effects:
+                    
+
                     // Unconsciousness
                     if (AffData.Strength > 15)
                     {
                         NTC.SetSymptomTrue(C, "unconsciousness", 2);
-                    }
 
-                    // Cardiac Arrest
-                    if (AffData.Strength > 40 && HF.Chance(0.03f))
-                    {
-                        HF.AddAffliction(C.Human, "cardiacarrest", 200, null);
-                    } 
+                        // Cardiac Arrest
+                        if (AffData.Strength > 40 && HF.Chance(0.03f))
+                        {
+                            HF.AddAffliction(C.Human, "cardiacarrest", 200, null);
+                        }
+                    }
                 };
 
             // Spinal Cord Injury
@@ -2277,23 +2328,26 @@ namespace Neurotrauma
 
                     // Effects:
                     // Pain & Psychosis
-                    if (AffData.Strength > 5 && C.GetSymptomAffData("unconsciousness").Strength < 0.1)
+                    if (AffData.Strength > 5)
                     {
-                        HF.AddAffliction(C.Human, "shockpain", (float)(10 * NT.DeltaTime), null);
-                        HF.AddAffliction(C.Human, "psychosis", (float)(AffData.Strength / 100 * NT.DeltaTime), null);
-                    }
+                        if (C.GetSymptomAffData("unconsciousness").Strength < 0.1)
+                        {
+                            HF.AddAffliction(C.Human, "shockpain", (float)(10 * NT.DeltaTime), null);
+                            HF.AddAffliction(C.Human, "psychosis", (float)(AffData.Strength / 100 * NT.DeltaTime), null);
+                        }
 
-                    // Respiratory Arrest
-                    if (AffData.Strength > 30 && HF.Chance(0.2f))
-                    { 
-                        HF.AddAffliction(C.Human, "respiratoryarrest", 200, null); 
+                        // Respiratory Arrest
+                        if (AffData.Strength > 30 && HF.Chance(0.2f))
+                        {
+                            HF.AddAffliction(C.Human, "respiratoryarrest", 200, null);
+                        }
+
+                        // Cardiac Arrest
+                        if (AffData.Strength > 40 && HF.Chance(0.1f))
+                        {
+                            HF.AddAffliction(C.Human, "cardiacarrest", 200, null);
+                        }
                     }
-                        
-                    // Cardiac Arrest
-                    if (AffData.Strength > 40 && HF.Chance(0.1f))
-                    { 
-                        HF.AddAffliction(C.Human, "cardiacarrest", 200, null); 
-                    }   
                 };
 
             // Ballooned Aorta
@@ -2327,9 +2381,11 @@ namespace Neurotrauma
                     // Chest Pain & Abdominal Pain & Unconsciousness
                     if (AffData.Strength > 0)
                     {
-                        NTC.SetSymptomTrue(C, "chestpain", 2);
-                        NTC.SetSymptomTrue(C, "abdominalpain", 2);
-                        NTC.SetSymptomTrue(C, "unconsciousness", 2);
+                        if (C.GetSymptomAffData("unconsciousness").Strength <= 0 && (!C.GetBoolStatStrength("sedated")))
+                        {
+                            NTC.SetSymptomTrue(C, "chestpain", 2);
+                            NTC.SetSymptomTrue(C, "abdominalpain", 2);
+                        }
                     }
                 };
 
@@ -2353,12 +2409,12 @@ namespace Neurotrauma
                     if (AffData.Strength > 0)
                     {
                         HF.AddAffliction(C.Human, "bloodloss", (float)(AffData.Strength * (1f / 40f) * NT.DeltaTime), null);
-                    }
 
-                    // Vomiting Blood
-                    if (AffData.Strength > 50)
-                    {
-                        NTC.SetSymptomTrue(C, "vomitingblood", 2);
+                        // Vomiting Blood
+                        if (AffData.Strength > 50)
+                        {
+                            NTC.SetSymptomTrue(C, "vomitingblood", 2);
+                        }
                     }
                 };
 
@@ -3179,49 +3235,55 @@ namespace Neurotrauma
                     }
                     
                     // Move to desired amount
-                    AffData.Strength = Math.Clamp( Double.Lerp(AffData.Strength, desiredBloodPressure, bloodPressureLerp), 5, 200);
+                    AffData.Strength = Math.Clamp(Double.Lerp(AffData.Strength, desiredBloodPressure, bloodPressureLerp), 5, 200);
 
                     // Effects:
                     // Confusion
-                    if (AffData.Strength < 30)
-                    {
-                        NTC.SetSymptomTrue(C, "confusion", 2);
-                    }
-
-                    // Pale Skin
-                    if (AffData.Strength < 50)
-                    {
-                        NTC.SetSymptomTrue(C, "paleskin", 2);
-                    }
-
-                    // Blurred Vision
-                    if (AffData.Strength < 55)
-                    {
-                        NTC.SetSymptomTrue(C, "blurredvision", 2);
-                    }
-
-                    // Lightheadedness & Headache
                     if (AffData.Strength < 60)
                     {
-                        NTC.SetSymptomTrue(C, "lightheadedness", 2);
-                        NTC.SetSymptomTrue(C, "headache", 2);
+                        if (C.GetAffData("unconsciousness").Strength <= 0)
+                        {
+                            NTC.SetSymptomTrue(C, "lightheadedness", 2);
+                            NTC.SetSymptomTrue(C, "headache", 2);
+                        }
+
+                        // Blurred Vision
+                        if (AffData.Strength < 55)
+                        {
+                            if (C.GetAffData("unconsciousness").Strength <= 0)
+                            {
+                                NTC.SetSymptomTrue(C, "blurredvision", 2);
+                            }
+
+                            // Pale Skin
+                            if (AffData.Strength < 50)
+                            {
+                                NTC.SetSymptomTrue(C, "paleskin", 2);
+
+                                // Confusion
+                                if (AffData.Strength < 30)
+                                {
+                                    if (C.GetAffData("unconsciousness").Strength <= 0)
+                                    {
+                                        NTC.SetSymptomTrue(C, "confusion", 2);
+                                    }
+                                }
+                            }
+                        }
                     }
 
-                    // Heart Attack
-                    if (AffData.Strength > 150
-                        && C.GetAffData("afstreptokinase").Strength <= 0
-                        && C.GetAffData("heartremoved").Strength <= 0
-                        && HF.Chance(NTConfig.Get("NT_heartattackChance", 1f) * (float)((AffData.Strength - 150) / 50 * 0.02)))
+                    // Heart Attack + Stroke
+                    if (AffData.Strength > 150)
                     {
-                        HF.AddAffliction(C.Human, "heartattack", 50, null);
-                    }
+                        if (C.GetAffData("afstreptokinase").Strength <= 0 && C.GetAffData("heartremoved").Strength <= 0 && HF.Chance((float)(NTConfig.Get("NT_heartattackChance", 1f) * ((AffData.Strength - 150) / 50 * 0.02f))))
+                        {
+                            HF.AddAffliction(C.Human, "heartattack", 50, null);
+                        }
 
-                    // Stroke
-                    if (AffData.Strength > 150
-                        && HF.Chance((float)(NTConfig.Get("NT_strokeChance", 1) * ((AffData.Strength - 150) / 50 * 0.02
-                        + Math.Clamp(C.GetAffData("afstreptokinase").Strength, 0, 1) * 0.05))))
-                    {
-                        HF.AddAffliction(C.Human, "stroke", 5, null);
+                        if (HF.Chance((float)(NTConfig.Get("NT_strokeChance", 1) * ((AffData.Strength - 150) / 50 * 0.02 + Math.Clamp(C.GetAffData("afstreptokinase").Strength, 0, 1) * 0.05))))
+                        {
+                            HF.AddAffliction(C.Human, "stroke", 5, null);
+                        }
                     }
                 };
 
@@ -3277,36 +3339,45 @@ namespace Neurotrauma
                     // Shortness of Breath
                     if (AffData.Strength > 20)
                     {
-                        NTC.SetSymptomTrue(C, "shortnessofbreath", 2);
-                    }
+                        if (C.GetAffData("respiratoryarrest").Strength <= 0)
+                        {
+                            NTC.SetSymptomTrue(C, "shortnessofbreath", 2);
+                        }
 
-                    // Headache
-                    if (AffData.Strength > 40)
-                    {
-                        NTC.SetSymptomTrue(C, "headache", 2);
-                    }
+                        // Headache
+                        if (AffData.Strength > 40)
+                        {
+                            if (C.GetAffData("unconsciousness").Strength <= 0)
+                            {
+                                NTC.SetSymptomTrue(C, "headache", 2);
+                            }
 
-                    // Confusion
-                    if (AffData.Strength > 50)
-                    {
-                        NTC.SetSymptomTrue(C, "confusion", 2);
-                    }
+                            // Confusion
+                            if (AffData.Strength > 50)
+                            {
+                                if (C.GetAffData("unconsciousness").Strength <= 0)
+                                {
+                                    NTC.SetSymptomTrue(C, "confusion", 2);
+                                }
 
-                    // Respiratory Arrest
-                    if (AffData.Strength > 70 && HF.Chance(0.05f))
-                    {
-                        HF.AddAffliction(C.Human, "respiratoryarrest", 200, null);
-                    }
+                                // Respiratory Arrest
+                                if (AffData.Strength > 70 && HF.Chance(0.05f))
+                                {
+                                    HF.AddAffliction(C.Human, "respiratoryarrest", 200, null);
+                                }
 
-                    // Unconsciousness & Cardiac Arrest
-                    if (AffData.Strength > 80)
-                    {
-                        NTC.SetSymptomTrue(C, "unconsciousness", 2);
+                                // Unconsciousness & Cardiac Arrest
+                                if (AffData.Strength > 80)
+                                {
+                                    NTC.SetSymptomTrue(C, "unconsciousness", 2);
 
-                        if (HF.Chance(0.01f))
-                        { 
-                            HF.AddAffliction(C.Human, "cardiacarrest", 200, null);
-                        }  
+                                    if (HF.Chance(0.01f))
+                                    {
+                                        HF.AddAffliction(C.Human, "cardiacarrest", 200, null);
+                                    }
+                                }
+                            }
+                        }
                     }
                 };
 
@@ -3337,13 +3408,16 @@ namespace Neurotrauma
                     // Palpitations
                     if (AffData.Strength > 20)
                     {
-                        NTC.SetSymptomTrue(C, "palpitations", 2);
-                    }
+                        if (C.GetAffData("cardiacarrest").Strength <= 0)
+                        {
+                            NTC.SetSymptomTrue(C, "palpitations", 2);
+                        }
 
-                    // Seizures
-                    if (AffData.Strength > 60 && HF.Chance(0.05f))
-                    {
-                        HF.AddAffliction(C.Human, "seizure", 10, null);
+                        // Seizures
+                        if (AffData.Strength > 60 && HF.Chance(0.05f))
+                        {
+                            HF.AddAffliction(C.Human, "seizure", 10, null);
+                        }
                     }
                 };
 
@@ -3367,40 +3441,49 @@ namespace Neurotrauma
                         - NT.DeltaTime * 0.03;
 
                     // Effects:
+                    
+
                     // Fibrillation (in IncreasedHeartrate constant)
                     // Increased Heartrate (in IncreasedHeartrate constant)
 
                     // Confusion
                     if (AffData.Strength > 15)
                     {
-                        NTC.SetSymptomTrue(C, "confusion", 2);
-                    }
+                        bool IsConscious = C.GetAffData("unconsciousness").Strength <= 0;
 
-                    // Headache
-                    if (AffData.Strength > 20)
-                    {
-                        NTC.SetSymptomTrue(C, "headache", 2);
-                    }
+                        if (IsConscious)
+                        {
+                            NTC.SetSymptomTrue(C, "confusion", 2);
 
-                    // Weakness
-                    if (AffData.Strength > 35)
-                    {
-                        NTC.SetSymptomTrue(C, "weakness", 2);
-                    }
+                            // Headache
+                            if (AffData.Strength > 20)
+                            {
+                                NTC.SetSymptomTrue(C, "headache", 2);
+                            }
+                        }
 
-                    // Coma
-                    if (AffData.Strength > 60 && HF.Chance(0.05f + (float)(AffData.Strength - 60f) / 100f))
-                    {
-                        HF.AddAffliction(C.Human, "coma", 14, null);
-                    }
+                        // Weakness
+                        if (AffData.Strength > 35)
+                        {
+                            NTC.SetSymptomTrue(C, "weakness", 2);
 
-                    // Seizures
-                    if (AffData.Strength > 60 && HF.Chance(0.05f))
-                    {
-                        HF.AddAffliction(C.Human, "seizure", 10, null);
+                            if (AffData.Strength > 60)
+                            {
+                                // Coma
+                                if (HF.Chance(0.05f + (float)(AffData.Strength - 60f) / 100f))
+                                {
+                                    HF.AddAffliction(C.Human, "coma", 14, null);
+                                }
+
+                                // Seizures
+                                if (HF.Chance(0.05f))
+                                {
+                                    HF.AddAffliction(C.Human, "seizure", 10, null);
+                                }
+                            }
+                        }
                     }
                 };
-
 
             // Hemotransfusion Shock
             // Not constant; gets applied by other sources.
@@ -3412,34 +3495,49 @@ namespace Neurotrauma
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanBloodAffData AffData) =>
                 {
                     // Effects:
-                    // Vomiting
-                    if (AffData.Strength < 40)
-                    {
-                        NTC.SetSymptomTrue(C, "vomiting", 2);
-                    }
-                        
-                    // Chest Pain
-                    if (AffData.Strength < 60)
-                    {
-                        NTC.SetSymptomTrue(C, "chestpain", 2);
-                    }
-                        
-                    // Shortness of Breath
-                    if (AffData.Strength < 70)
-                    {
-                        NTC.SetSymptomTrue(C, "shortnessofbreath", 2);
-                    }
-                        
-                    // Abdominal Pain
-                    if (AffData.Strength < 80)
-                    {
-                        NTC.SetSymptomTrue(C, "abdominalpain", 2);
-                    }
-
                     // Wheezing
                     if (AffData.Strength < 90)
                     {
-                        NTC.SetSymptomTrue(C, "wheezing", 2);
+                        bool IsConscious = C.GetAffData("unconsciousness").Strength <= 0;
+                        bool IsSedated = C.GetBoolStatStrength("sedated");
+
+                        if (C.GetAffData("respiratoryarrest").Strength <= 0)
+                        {
+                            NTC.SetSymptomTrue(C, "wheezing", 2);
+                        }
+
+                        // Abdominal Pain
+                        if (AffData.Strength < 80)
+                        {
+                            if (IsConscious && !IsSedated)
+                            {
+                                NTC.SetSymptomTrue(C, "abdominalpain", 2);
+                            }
+
+                            // Shortness of Breath
+                            if (AffData.Strength < 70)
+                            {
+                                if (C.GetAffData("respiratoryarrest").Strength <= 0)
+                                {
+                                    NTC.SetSymptomTrue(C, "shortnessofbreath", 2);
+                                }
+
+                                // Chest Pain
+                                if (AffData.Strength < 60)
+                                {
+                                    if (IsConscious && !IsSedated)
+                                    {
+                                        NTC.SetSymptomTrue(C, "chestpain", 2);
+                                    }
+
+                                    // Vomiting
+                                    if (AffData.Strength < 40)
+                                    {
+                                        NTC.SetSymptomTrue(C, "vomiting", 2);
+                                    }
+                                }
+                            }
+                        }
                     }
                 };
 
@@ -3456,7 +3554,10 @@ namespace Neurotrauma
                     if (C.GetBoolStatStrength("stasis")) return;
 
                     // Passive Increase
-                    if (AffData.Strength > 0.1) AffData.Strength += 0.05 * NT.DeltaTime;
+                    if (AffData.Strength > 0.1)
+                    {
+                        AffData.Strength += 0.05 * NT.DeltaTime;
+                    }
 
                     // Effects:
                     // Neurotrauma
@@ -3474,24 +3575,24 @@ namespace Neurotrauma
                     if (AffData.Strength > 5)
                     {
                         NTC.SetSymptomTrue(C, "fever", 2);
-                    }
 
-                    // Gangrene
-                    if (AffData.Strength > 5 && HF.Chance(0.04f))
-                    {
-                        foreach (LimbType AllLimbs in HF.LimbsToCheck)
+                        // Gangrene
+                        if (HF.Chance(0.04f))
                         {
-                            if (HF.LimbIsExtremity(Limb))
+                            foreach (LimbType AllLimbs in HF.LimbsToCheck)
                             {
-                                HF.AddAfflictionLimb(C.Human, "gangrene", Limb, (float)((0.5 + AffData.Strength / 150) * NTConfig.Get("NT_gangrenespeed", 1) * NT.DeltaTime), null);
-                            }   
+                                if (HF.LimbIsExtremity(Limb))
+                                {
+                                    HF.AddAfflictionLimb(C.Human, "gangrene", Limb, (float)((0.5 + AffData.Strength / 150) * NTConfig.Get("NT_gangrenespeed", 1) * NT.DeltaTime), null);
+                                }
+                            }
                         }
-                    }
 
-                    // Confusion
-                    if (AffData.Strength > 40)
-                    {
-                        NTC.SetSymptomTrue(C, "confusion", 2);
+                        // Confusion
+                        if (AffData.Strength > 40 && C.GetAffData("unconsciousness").Strength <= 0)
+                        {
+                            NTC.SetSymptomTrue(C, "confusion", 2);
+                        }
                     }
                 };
 
@@ -3541,25 +3642,6 @@ namespace Neurotrauma
             SymptomsToAdd["cough"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanSymptomData AffData) =>
                 {
-                    AffData.Strength = HF.BoolToNum(
-                        // Symptom must not be forced false.
-                        (!NTC.HasSymptomFalse(C, ID))
-
-                        // Mental; must be awake.
-                        && C.GetAffData("unconsciousness").Strength <= 0
-
-                        // Must have lungs to cough.
-                        && C.GetAffData("lungremoved").Strength <= 0
-
-                        // Conditions:
-                        && (
-                            NTC.HasSymptom(C, ID)
-                            || C.GetAffData("lungdamage").Strength > 50
-                            || C.GetAffData("heartdamage").Strength > 50
-                            || C.GetAffData("tamponade").Strength > 20
-                        ),
-                        100
-                    );
                 };
 
             // Pale Skin
@@ -3569,18 +3651,6 @@ namespace Neurotrauma
             SymptomsToAdd["paleskin"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanSymptomData AffData) =>
                 {
-                    AffData.Strength = HF.BoolToNum(
-                        // Symptom must not be forced false.
-                        (!NTC.HasSymptomFalse(C, ID))
-
-                        // Conditions:
-                        && (
-                            NTC.HasSymptom(C, ID)
-                            || C.GetDoubleStatStrength("bloodamount") < 60
-                            || C.GetAffData("bloodpressure").Strength < 50
-                        ),
-                        100
-                    );
                 };
 
             // Lightheadedness
@@ -3590,20 +3660,6 @@ namespace Neurotrauma
             SymptomsToAdd["lightheadedness"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanSymptomData AffData) =>
                 {
-                    AffData.Strength = HF.BoolToNum(
-                        // Symptom must not be forced false.
-                        (!NTC.HasSymptomFalse(C, ID))
-
-                        // Mental; must be awake.
-                        && C.GetAffData("unconsciousness").Strength <= 0
-
-                        // Conditions:
-                        && (
-                            NTC.HasSymptom(C, ID)
-                            || C.GetAffData("bloodpressure").Strength < 60
-                        ),
-                        100
-                    );
                 };
 
             // Blurred Vision
@@ -3613,20 +3669,6 @@ namespace Neurotrauma
             SymptomsToAdd["blurredvision"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanSymptomData AffData) =>
                 {
-                    AffData.Strength = HF.BoolToNum(
-                        // Symptom must not be forced false.
-                        (!NTC.HasSymptomFalse(C, ID))
-
-                        // Mental; must be awake.
-                        && C.GetAffData("unconsciousness").Strength <= 0
-
-                        // Conditions:
-                        && (
-                            NTC.HasSymptom(C, ID)
-                            || C.GetAffData("bloodpressure").Strength < 55
-                        ),
-                        100
-                    );
                 };
 
             // Confusion
@@ -3636,24 +3678,6 @@ namespace Neurotrauma
             SymptomsToAdd["confusion"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanSymptomData AffData) =>
                 {
-                    AffData.Strength = HF.BoolToNum(
-                        // Symptom must not be forced false.
-                        (!NTC.HasSymptomFalse(C, ID))
-
-                        // Mental; must be awake.
-                        && C.GetAffData("unconsciousness").Strength <= 0
-
-                        // Conditions:
-                        && (
-                            NTC.HasSymptom(C, ID)
-                            || C.GetAffData("acidosis").Strength > 15
-                            || C.GetAffData("bloodpressure").Strength < 30
-                            || C.GetAffData("hypoxemia").Strength > 50
-                            || C.GetAffData("sepsis").Strength > 40
-                            || C.GetAffData("alcoholwithdrawal").Strength > 80
-                        ),
-                        100
-                    );
                 };
 
             // Headache
@@ -3663,29 +3687,6 @@ namespace Neurotrauma
             SymptomsToAdd["headache"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanSymptomData AffData) =>
                 {
-                    AffData.Strength = HF.BoolToNum(
-                        // Symptom must not be forced false.
-                        (!NTC.HasSymptomFalse(C, ID))
-
-                        // Mental; must be awake.
-                        && C.GetAffData("unconsciousness").Strength <= 0
-
-                        // Pain; can be suppressed.
-                        && !C.GetBoolStatStrength("sedated")
-
-                        // Conditions:
-                        && (
-                            NTC.HasSymptom(C, ID)
-                            || C.GetDoubleStatStrength("bloodamount") < 50
-                            || C.GetAffData("acidosis").Strength > 20
-                            || C.GetAffData("stroke").Strength > 1
-                            || C.GetAffData("hypoxemia").Strength > 40
-                            || C.GetAffData("bloodpressure").Strength < 60
-                            || C.GetAffData("alcoholwithdrawal").Strength > 50
-                            || C.GetAffData("fracturedskull").Strength > 0
-                        ),
-                        100
-                    );
                 };
 
             // Leg Swelling
@@ -3695,22 +3696,6 @@ namespace Neurotrauma
             SymptomsToAdd["legswelling"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanSymptomData AffData) =>
                 {
-                    AffData.Strength = HF.BoolToNum(
-                        // Symptom must not be forced false.
-                        (!NTC.HasSymptomFalse(C, ID))
-
-                        // Organic; must not be Cybernetic.
-                        && HF.GetAfflictionStrength(C.Human, "rl_cyber", 0) < 0.1
-
-                        // Conditions:
-                        && (
-                            NTC.HasSymptom(C, ID)
-                            || C.GetAffData("liverdamage").Strength > 40
-                            || C.GetAffData("kidneydamage").Strength > 60
-                            || C.GetAffData("heartdamage").Strength > 80
-                        ),
-                        100
-                    );
                 };
 
             // Weakness
@@ -3720,19 +3705,6 @@ namespace Neurotrauma
             SymptomsToAdd["weakness"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanSymptomData AffData) =>
                 {
-                    AffData.Strength = HF.BoolToNum(
-                        // Symptom must not be forced false.
-                        (!NTC.HasSymptomFalse(C, ID))
-
-                        // Conditions:
-                        && (
-                            NTC.HasSymptom(C, ID)
-                            || C.GetAffData("tamponade").Strength > 30
-                            || C.GetDoubleStatStrength("bloodamount") < 40
-                            || C.GetAffData("acidosis").Strength > 35
-                        ),
-                        100
-                    );
                 };
 
             // Wheezing
@@ -3742,21 +3714,6 @@ namespace Neurotrauma
             SymptomsToAdd["wheezing"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanSymptomData AffData) =>
                 {
-                    AffData.Strength = HF.BoolToNum(
-                        // Symptom must not be forced false.
-                        (!NTC.HasSymptomFalse(C, ID))
-
-                        // Must be breathing.
-                        && C.GetAffData("respiratoryarrest").Strength <= 0
-
-                        // Conditions:
-                        && (
-                            NTC.HasSymptom(C, ID)
-                            || (C.GetAffData("hemotransfusionshock").Strength > 0 && C.GetAffData("hemotransfusionshock").Strength < 90
-                            )
-                        ),
-                        100
-                    );
                 };
 
             // Vomiting
@@ -3767,28 +3724,6 @@ namespace Neurotrauma
             SymptomsToAdd["vomiting"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanSymptomData AffData) =>
                 {
-                    AffData.Strength = HF.BoolToNum(
-                        // Symptom must not be forced false.
-                        (!NTC.HasSymptomFalse(C, ID))
-
-                        // Conditions:
-                        && (
-                            NTC.HasSymptom(C, ID)
-                            || C.GetAffData("drunk").Strength > 100
-                            || (C.GetAffData("hemotransfusionshock").Strength > 0 && C.GetAffData("hemotransfusionshock").Strength < 40
-                            )
-
-                            || C.GetAffData("alcoholwithdrawal").Strength > 60
-                        ),
-                        100
-                    );
-
-                    // Effects:
-                    // Alkalosis
-                    if (AffData.Strength > 0)
-                    {
-                        HF.AddAffliction(C.Human, "alkalosis", (float)(Math.Clamp(AffData.Strength, 0, 1) * 0.1 * NT.DeltaTime), null);
-                    }
                 };
 
             // Vomiting Blood
@@ -3798,17 +3733,6 @@ namespace Neurotrauma
             SymptomsToAdd["vomitingblood"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanSymptomData AffData) =>
                 {
-                    AffData.Strength = HF.BoolToNum(
-                        // Symptom must not be forced false.
-                        (!NTC.HasSymptomFalse(C, ID))
-
-                        // Conditions:
-                        && (
-                            NTC.HasSymptom(C, ID)
-                            || C.GetAffData("internalbleeding").Strength > 50
-                        ),
-                        100
-                    );
                 };
 
             // Fever
@@ -3818,19 +3742,6 @@ namespace Neurotrauma
             SymptomsToAdd["fever"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanSymptomData AffData) =>
                 {
-                    AffData.Strength = HF.BoolToNum(
-                        // Symptom must not be forced false.
-                        (!NTC.HasSymptomFalse(C, ID))
-
-                        // Conditions:
-                        && (
-                            NTC.HasSymptom(C, ID)
-                            || C.GetAffData("sepsis").Strength > 5
-                            || C.GetAffData("alcoholwithdrawal").Strength > 90
-                        //|| C.GetAffData("infectedcavity").Strength > 5
-                        ),
-                        100
-                    );
                 };
 
             // Abdominal Discomfort
@@ -3840,21 +3751,6 @@ namespace Neurotrauma
             SymptomsToAdd["abdominaldiscomfort"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanSymptomData AffData) =>
                 {
-                    AffData.Strength = HF.BoolToNum(
-                        // Symptom must not be forced false.
-                        (!NTC.HasSymptomFalse(C, ID))
-
-                        // Mental; must be awake.
-                        && C.GetAffData("unconsciousness").Strength <= 0
-
-                        // Conditions:
-                        && (
-                            NTC.HasSymptom(C, ID)
-                            || C.GetAffData("liverdamage").Strength > 65
-                        //|| C.GetAffData("infectedcavity").Strength > 40
-                        ),
-                        100
-                    );
                 };
 
             // Bloating
@@ -3864,17 +3760,6 @@ namespace Neurotrauma
             SymptomsToAdd["bloating"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanSymptomData AffData) =>
                 {
-                    AffData.Strength = HF.BoolToNum(
-                        // Symptom must not be forced false.
-                        (!NTC.HasSymptomFalse(C, ID))
-
-                        // Conditions:
-                        && (
-                            NTC.HasSymptom(C, ID)
-                            || C.GetAffData("liverdamage").Strength > 50
-                        ),
-                        100
-                    );
                 };
 
             // Jaundice
@@ -3884,17 +3769,6 @@ namespace Neurotrauma
             SymptomsToAdd["jaundice"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanSymptomData AffData) =>
                 {
-                    AffData.Strength = HF.BoolToNum(
-                        // Symptom must not be forced false.
-                        (!NTC.HasSymptomFalse(C, ID))
-
-                        // Conditions:
-                        && (
-                            NTC.HasSymptom(C, ID)
-                            || C.GetAffData("liverdamage").Strength > 80
-                        ),
-                        100
-                    );
                 };
 
             // Sweating
@@ -3904,18 +3778,6 @@ namespace Neurotrauma
             SymptomsToAdd["sweating"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanSymptomData AffData) =>
                 {
-                    AffData.Strength = HF.BoolToNum(
-                        // Symptom must not be forced false.
-                        (!NTC.HasSymptomFalse(C, ID))
-
-                        // Conditions:
-                        && (
-                            NTC.HasSymptom(C, ID)
-                            || C.GetAffData("heartattack").Strength > 1
-                            || C.GetDoubleStatStrength("withdrawal") > 30
-                        ),
-                        100
-                    );
                 };
 
             // Palpitations
@@ -3925,20 +3787,6 @@ namespace Neurotrauma
             SymptomsToAdd["palpitations"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanSymptomData AffData) =>
                 {
-                    AffData.Strength = HF.BoolToNum(
-                        // Symptom must not be forced false.
-                        (!NTC.HasSymptomFalse(C, ID))
-
-                        // Heart must be beating.
-                        && C.GetAffData("cardiacarrest").Strength <= 0
-
-                        // Conditions:
-                        && (
-                            NTC.HasSymptom(C, ID)
-                            || C.GetAffData("alkalosis").Strength > 20
-                        ),
-                        100
-                    );
                 };
 
             // Unconsciousness
@@ -3948,29 +3796,6 @@ namespace Neurotrauma
             SymptomsToAdd["unconsciousness"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanSymptomData AffData) =>
                 {
-                    AffData.Strength = HF.BoolToNum(
-                        // Symptom must not be forced false.
-                        (!NTC.HasSymptomFalse(C, ID))
-
-                        // Cannot stay conscious permanently.
-                        && (!C.Human.HasAbilityFlag(AbilityFlags.AlwaysStayConscious))
-
-                        // Conditions:
-                        && (
-                            NTC.HasSymptom(C, ID)
-                            || C.GetBoolStatStrength("stasis")
-                            || C.GetAffStrength("brainremoved") > 0
-                            || C.GetAffStrength("neurotrauma") > 100
-                            || C.GetAffStrength("coma") > 15
-                            || C.Human.Vitality <= 0
-                            || C.GetAffStrength("hypoxemia") > 80
-                            || C.GetAffStrength("aorticrupture") > 0
-                            || C.GetAffStrength("seizure") > 0.1
-                            || C.GetAffStrength("opiateoverdose") > 60
-                        ),
-                        100
-                    );
-
                     // Effects:
                     // Give In
                     if (AffData.Strength > 0)
@@ -3986,20 +3811,6 @@ namespace Neurotrauma
             SymptomsToAdd["craving"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanSymptomData AffData) =>
                 {
-                    AffData.Strength = HF.BoolToNum(
-                        // Symptom must not be forced false.
-                        (!NTC.HasSymptomFalse(C, ID))
-
-                        // Mental; must be awake.
-                        && C.GetAffData("unconsciousness").Strength <= 0
-
-                        // Conditions:
-                        && (
-                            NTC.HasSymptom(C, ID)
-                            || C.GetDoubleStatStrength("withdrawal") > 20
-                        ),
-                        100
-                    );
                 };
 
             // Nausea
@@ -4010,22 +3821,6 @@ namespace Neurotrauma
             SymptomsToAdd["nausea"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanSymptomData AffData) =>
                 {
-                    AffData.Strength = HF.BoolToNum(
-                        // Symptom must not be forced false.
-                        (!NTC.HasSymptomFalse(C, ID))
-
-                        // Conditions:
-                        && (
-                            NTC.HasSymptom(C, ID)
-                            || C.GetAffData("kidneydamage").Strength > 60
-                            || C.GetAffData("radiationsickness").Strength > 80
-                            || (C.GetAffData("hemotransfusionshock").Strength > 0 && C.GetAffData("hemotransfusionshock").Strength < 90)
-                            || C.GetDoubleStatStrength("withdrawal") > 40
-                        //|| C.GetBloodAffData("infectedcavity").Strength > 5
-                        ),
-                        100
-                    );
-
                     // Effects:
                     // Alkalosis
                     if (AffData.Strength > 0)
@@ -4041,27 +3836,6 @@ namespace Neurotrauma
             SymptomsToAdd["chestpain"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanSymptomData AffData) =>
                 {
-
-                    AffData.Strength = HF.BoolToNum(
-                        // Symptom must not be forced false.
-                        (!NTC.HasSymptomFalse(C, ID))
-
-                        // Mental; must be awake.
-                        && C.GetSymptomAffData("unconsciousness").Strength <= 0
-
-                        // Pain; can be suppressed.
-                        && (!C.GetBoolStatStrength("sedated"))
-
-                        // Conditions:
-                        && (
-                            NTC.HasSymptom(C, ID)
-                            || (C.GetAffData("hemotransfusionshock").Strength > 0 && C.GetAffData("hemotransfusionshock").Strength < 60)
-                            || C.GetAffData("fracturedribs").Strength > 0
-                            || C.GetAffData("aorticrupture").Strength > 0
-                        ),
-                        100
-                    );
-
                 };
 
             // Abdominal Pain
@@ -4071,30 +3845,15 @@ namespace Neurotrauma
             SymptomsToAdd["abdominalpain"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanSymptomData AffData) =>
                 {
-                    AffData.Strength = HF.BoolToNum(
-                        // Symptom must not be forced false.
-                        (!NTC.HasSymptomFalse(C, ID))
-
-                        // Mental; must be awake.
-                        && C.GetSymptomAffData("unconsciousness").Strength <= 0
-
-                        // Pain; can be suppressed.
-                        && !C.GetBoolStatStrength("sedated")
-
-                        // Conditions:
-                        && (
-                            NTC.HasSymptom(C, ID)
-                            || (C.GetAffData("hemotransfusionshock").Strength > 0 && C.GetAffData("hemotransfusionshock").Strength < 80)
-                            || C.GetAffData("aorticrupture").Strength > 0
-                        //|| C.GetBloodAffData("infectedcavity").Strength > 5
-                        ),
-                        100
-                    );
                 };
 
             // Intense Pain
             // Type: Symptom, Mental, Pain
             SymptomsToAdd["intensepain"] = new("intensepain", 0, 100, 0);
+            SymptomsToAdd["intensepain"].UpdateAction =
+                (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanSymptomData AffData) =>
+                {
+                };
 
             // Shortness of Breath
             // Type: Symptom
@@ -4103,27 +3862,6 @@ namespace Neurotrauma
             SymptomsToAdd["shortnessofbreath"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanSymptomData AffData) =>
                 {
-                    AffData.Strength = HF.BoolToNum(
-                        // Symptom must not be forced false.
-                        !(NTC.HasSymptomFalse(C, ID))
-
-                        // Must be breathing.
-                        && C.GetAffData("respiratoryarrest").Strength > 0
-
-                        // Conditions:
-                        && (
-                            NTC.HasSymptom(C, ID)
-                            || C.GetAffData("heartattack").Strength > 1
-                            || C.GetAffData("heartdamage").Strength > 80
-                            || C.GetAffData("hypoxemia").Strength > 20
-                            || C.GetAffData("lungdamage").Strength > 45
-                            || C.GetAffData("pneumothorax").Strength > 40
-                            || C.GetAffData("tamponade").Strength > 10
-                            || (C.GetAffData("hemotransfusionshock").Strength > 0 && C.GetBloodAffData("hemotransfusionshock").Strength < 70
-                            )
-                        ),
-                        100
-                    );
                 };
 
             // Force Prone
@@ -4161,19 +3899,6 @@ namespace Neurotrauma
             SymptomsToAdd["hyperventilation"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanSymptomData AffData) =>
                 {
-                    // Removal Conditions
-                    AffData.Strength = HF.BoolToNum(C.GetAffData("respiratoryarrest").Strength < 1 && !(NTC.HasSymptomFalse(C, "hyperventilation")) &&
-                        (
-                            NTC.HasSymptom(C, "hyperventilation") ||
-                            C.GetAffData("hypoxemia").Strength > 10 ||
-                            C.GetAffData("bloodpressure").Strength < 80 ||
-                            C.GetAffData("afadrenaline").Strength > 1 ||
-                            C.GetAffData("pneumothorax").Strength > 15 ||
-                            C.GetAffData("sepsis").Strength > 15
-                        ),
-                        100
-                    );
-
                     // Effects:
                     // Alkalosis
                     HF.AddAffliction(C.Human, "alkalosis", (float)(Math.Clamp(AffData.Strength, 0, 1) * 0.09 * NT.DeltaTime), null);
@@ -4188,16 +3913,6 @@ namespace Neurotrauma
             SymptomsToAdd["hypoventilation"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanSymptomData AffData) =>
                 {
-                    // Removal Conditions
-                    AffData.Strength = HF.BoolToNum(C.GetAffData("respiratoryarrest").Strength < 1 &&
-                        (
-                            C.GetAffData("afopioid").Strength > 1 ||
-                            C.GetAffData("afanaesthetic").Strength > 1 ||
-                            C.GetAffData("opiateoverdose").Strength > 30
-                        ),
-                        100
-                    );
-
                     // Counteracting with Hyperventilation
                     if (C.GetSymptomAffData("hyperventilation").Strength > 0 && AffData.Strength > 0)
                     {

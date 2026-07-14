@@ -981,14 +981,14 @@ public static class HumanUpdate
 
                     Aff.ActuallyFuckingUpdateAgain(this, ID, LimbType.Torso, AffData);
 
-                    if (Aff.Real)
-                    {
-                        ApplyAfflictionChange(Human, ID, (float)AffData.Strength, (float)PrevStrength, (float)Aff.MinStrength, (float)Aff.MaxStrength);
-                    }
-
                     if (AffType == NTAfflictionType.SYMPTOM)
                     {
                         PostSymptomCheck((NTHumanSymptomData)AffData);
+                    }
+
+                    if (Aff.Real)
+                    {
+                        ApplyAfflictionChange(Human, ID, (float)AffData.Strength, (float)PrevStrength, (float)Aff.MinStrength, (float)Aff.MaxStrength);
                     }
 
                     break;
@@ -1014,25 +1014,23 @@ public static class HumanUpdate
                         LimbAffData.PrevStrength[Limb] = LimbPrevStrength;
                         LimbAffData.Strength[Limb] = LimbCurrentStrength;
 
-                        if (AffType == NTAfflictionType.SYMPTOM)
+                        if (PreSymptomCheck(LimbAffData, Limb))
                         {
-                            if (PreSymptomCheck(LimbAffData, Limb))
-                            {
-                                return;
-                            }
+                            return;
                         }
 
                         LimbAff.ActuallyFuckingUpdateAgain(this, LimbID, Limb, LimbAffData);
-
-                        if (LimbAff.Real)
-                        {
-                            ApplyAfflictionChangeLimb(Human, Limb, LimbID, (float)LimbAffData.Strength[Limb], (float)LimbPrevStrength, (float)LimbAff.MinStrength, (float)LimbAff.MaxStrength);
-                        }
 
                         if (AffType == NTAfflictionType.LIMBSYMPTOM)
                         {
                             PostSymptomCheck((NTHumanLimbSymptomData)LimbAffData, Limb);
                         }
+
+                        if (LimbAff.Real)
+                        {
+                            ApplyAfflictionChangeLimb(Human, Limb, LimbID, (float)LimbAffData.Strength[Limb], (float)LimbPrevStrength, (float)LimbAff.MinStrength, (float)LimbAff.MaxStrength);
+                        }
+                        
                     }
 
                     break;
