@@ -956,11 +956,13 @@ public static class HumanUpdate
                 case NTAfflictionType.SYMPTOM:
                     // Fetch the data of the affliction
                     string ID = Key;
-                    HF.Print(ID);
                     NTHumanAffData AffData = Data;
                     NTAffliction Aff = AffData.AffTemplate;
 
-                    if (!Priorities.Contains(Aff.Priority)) return; // Skip to the next affliction, we don't have the same priority currently.
+                    if (!Priorities.Contains(Aff.Priority))
+                    {
+                        return; // Skip to the next affliction, we don't have the same priority currently.
+                    }
 
                     // Store the previous strength before reading the current value.
                     double PrevStrength = AffClamp(AffData.Strength,Aff);
@@ -969,12 +971,25 @@ public static class HumanUpdate
                     AffData.PrevStrength = PrevStrength;
                     AffData.Strength = CurrentStrength;
 
-                    if (PreSymptomCheck(AffData)) return;
-                    Aff.UpdateAction(this, ID, LimbType.Torso, AffData);
+                    if (AffType == NTAfflictionType.SYMPTOM)
+                    {
+                        if (PreSymptomCheck(AffData))
+                        {
+                            return;
+                        }
+                    }
 
-                    if (Aff.Real) ApplyAfflictionChange(Human, ID, (float)AffData.Strength, (float)PrevStrength, (float)Aff.MinStrength, (float)Aff.MaxStrength);
+                    Aff.ActuallyFuckingUpdateAgain(this, ID, LimbType.Torso, AffData);
 
-                    if (AffType == NTAfflictionType.SYMPTOM) PostSymptomCheck((NTHumanSymptomData)AffData);
+                    if (Aff.Real)
+                    {
+                        ApplyAfflictionChange(Human, ID, (float)AffData.Strength, (float)PrevStrength, (float)Aff.MinStrength, (float)Aff.MaxStrength);
+                    }
+
+                    if (AffType == NTAfflictionType.SYMPTOM)
+                    {
+                        PostSymptomCheck((NTHumanSymptomData)AffData);
+                    }
 
                     break;
 
@@ -988,7 +1003,10 @@ public static class HumanUpdate
                         NTHumanLimbAffData LimbAffData = (NTHumanLimbAffData)Data;
                         NTLimbAffliction LimbAff = LimbAffData.AffTemplate;
 
-                        if (!Priorities.Contains(LimbAff.Priority) || ((!LimbAff.IgnoreStasis) && GetBoolStatStrength("stasis"))) continue;
+                        if (!Priorities.Contains(LimbAff.Priority) || ((!LimbAff.IgnoreStasis) && GetBoolStatStrength("stasis")))
+                        {
+                            continue;
+                        }
 
                         double LimbPrevStrength = AffClamp(LimbAffData.Strength[Limb], LimbAff);
                         double LimbCurrentStrength = LimbAff.Real ?  GetAfflictionStrengthLimb(Human, Limb, LimbID) : LimbPrevStrength; // If real, use the prefab strength, else use custom.
@@ -996,13 +1014,25 @@ public static class HumanUpdate
                         LimbAffData.PrevStrength[Limb] = LimbPrevStrength;
                         LimbAffData.Strength[Limb] = LimbCurrentStrength;
 
-                        if (PreSymptomCheck(LimbAffData, Limb)) return;
-                        LimbAff.UpdateAction(this, LimbID, Limb, LimbAffData);
+                        if (AffType == NTAfflictionType.SYMPTOM)
+                        {
+                            if (PreSymptomCheck(LimbAffData, Limb))
+                            {
+                                return;
+                            }
+                        }
 
-                        if (LimbAff.Real) ApplyAfflictionChangeLimb(Human, Limb, LimbID, (float)LimbAffData.Strength[Limb], (float)LimbPrevStrength, (float)LimbAff.MinStrength, (float)LimbAff.MaxStrength);
+                        LimbAff.ActuallyFuckingUpdateAgain(this, LimbID, Limb, LimbAffData);
 
-                        if (AffType == NTAfflictionType.LIMBSYMPTOM) PostSymptomCheck((NTHumanLimbSymptomData)LimbAffData, Limb);
+                        if (LimbAff.Real)
+                        {
+                            ApplyAfflictionChangeLimb(Human, Limb, LimbID, (float)LimbAffData.Strength[Limb], (float)LimbPrevStrength, (float)LimbAff.MinStrength, (float)LimbAff.MaxStrength);
+                        }
 
+                        if (AffType == NTAfflictionType.LIMBSYMPTOM)
+                        {
+                            PostSymptomCheck((NTHumanLimbSymptomData)LimbAffData, Limb);
+                        }
                     }
 
                     break;

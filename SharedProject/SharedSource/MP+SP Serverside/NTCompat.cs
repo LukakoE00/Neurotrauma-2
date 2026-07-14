@@ -348,10 +348,22 @@ namespace Neurotrauma
         public static bool HasSymptom(Character Char, string SymIdentifier)
         {
             HumanUpdate.NTHuman Human = HumanUpdate.CharacterToNTHuman(Char);
-            if (Human == null) return false;
+            if (Human == null)
+            {
+                return false;
+            }
+
             HumanUpdate.NTHumanSymptomData Symptom = Human.GetSymptomAffData(SymIdentifier);
-            if (Symptom == null) return false;
-            if (Symptom.Strength > 0 || Symptom.HumanUpdateTime > 0) return true;
+            if (Symptom == null)
+            {
+                return false;
+            }
+
+            if (Symptom.Strength > 0 || Symptom.HumanUpdateTime > 0)
+            {
+                return true;
+            }
+
             return false;
         }
 
@@ -374,24 +386,58 @@ namespace Neurotrauma
             return false;
         }
 
+        /// <summary>
+        /// Checks a Symptom to see if it should be removed during an update.
+        /// </summary>
+        /// <param name="Character">Character to be checked.</param>
+        /// <param name="SymIdentifier">Affliction Identifier of the Symptom to check for.</param>
+        /// <returns>True if it should be removed, else False.</returns>
         public static bool HasSymptomFalse(HumanUpdate.NTHuman Character, string SymIdentifier)
         {
-            if (Character == null) return false;
-            HumanUpdate.NTHumanSymptomData Symptom = Character.GetSymptomAffData(SymIdentifier);
-            if (Symptom == null) return false;
+            if (Character == null)
+            {
+                return false;
+            }
 
-            if (Symptom.HumanUpdateStoptime > 0) return true;
+            HumanUpdate.NTHumanSymptomData Symptom = Character.GetSymptomAffData(SymIdentifier);
+            if (Symptom == null)
+            {
+                return false;
+            }
+
+            if (Symptom.HumanUpdateStoptime > 0)
+            {
+                return true;
+            }
+
             return false;
         }
 
-        public static bool HasSymptomFalse(Character Char, string SymIdentifier)
+        /// <summary>
+        /// Checks a Symptom to see if it should be removed during an update.
+        /// </summary>
+        /// <param name="Character">Character to be checked.</param>
+        /// <param name="SymIdentifier">Affliction Identifier of the Symptom to check for.</param>
+        /// <returns>True if it should be removed, else False.</returns>
+        public static bool HasSymptomFalse(Character Character, string SymIdentifier)
         {
-            HumanUpdate.NTHuman Human = HumanUpdate.CharacterToNTHuman(Char);
-            if (Human == null) return false;
-            HumanUpdate.NTHumanSymptomData Symptom = Human.GetSymptomAffData(SymIdentifier);
-            if (Symptom == null) return false;
+            HumanUpdate.NTHuman Human = HumanUpdate.CharacterToNTHuman(Character);
+            if (Human == null)
+            {
+                return false;
+            }
 
-            if (Symptom.HumanUpdateStoptime > 0) return true;
+            HumanUpdate.NTHumanSymptomData Symptom = Human.GetSymptomAffData(SymIdentifier);
+            if (Symptom == null)
+            {
+                return false;
+            }
+
+            if (Symptom.HumanUpdateStoptime > 0)
+            {
+                return true;
+            }
+
             return false;
         }
 

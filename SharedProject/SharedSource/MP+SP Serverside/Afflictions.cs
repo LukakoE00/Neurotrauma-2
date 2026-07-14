@@ -189,6 +189,12 @@ namespace Neurotrauma
             { 
                 // Insert your Affliction Update in here.
             };
+
+        public virtual void ActuallyFuckingUpdateAgain(HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanAffData Data)
+        {
+            UpdateAction?.Invoke(C, ID, Limb, Data);
+        }
+
         public NTAffliction(string NewID, double NewMinStrength = 0, double NewMaxStrength = 100, double NewDefaultStrength = 0,
                                         AfflictionPriority NewPriority = AfflictionPriority.HIGH)
         {
@@ -220,6 +226,11 @@ namespace Neurotrauma
             AffSortID = 1;
             Type = NTAfflictionType.NONLIMB;
         }
+
+        public override void ActuallyFuckingUpdateAgain(HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanAffData Data)
+        {
+            UpdateAction?.Invoke(C, ID, Limb, (HumanUpdate.NTHumanNonLimbAffData)Data);
+        }
     }
 
     public class NTLimbAffliction : NTAffliction
@@ -241,6 +252,11 @@ namespace Neurotrauma
             IgnoreStasis = false;
             AffSortID = 2;
             Type = NTAfflictionType.LIMB;
+        }
+
+        public override void ActuallyFuckingUpdateAgain(HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanAffData Data)
+        {
+            UpdateAction?.Invoke(C, ID, Limb, (HumanUpdate.NTHumanLimbAffData)Data);
         }
 
         public List<LimbType> AllowedLimbs { get; set; } = HF.LimbsToCheck; // I'll add this one later.
@@ -270,6 +286,11 @@ namespace Neurotrauma
                 NTC.AddHematologyAffliction(ID);
             }
         }
+
+        public override void ActuallyFuckingUpdateAgain(HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanAffData Data)
+        {
+            UpdateAction?.Invoke(C, ID, Limb, (HumanUpdate.NTHumanBloodAffData)Data);
+        }
     }
 
     public class NTSymptom : NTNonLimbAffliction
@@ -291,7 +312,12 @@ namespace Neurotrauma
             Priority = NewPriority;
             Type = NTAfflictionType.SYMPTOM;
             AffSortID = 4;
-    }
+        }
+
+        public override void ActuallyFuckingUpdateAgain(HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanAffData Data)
+        {
+            UpdateAction?.Invoke(C, ID, Limb, (HumanUpdate.NTHumanSymptomData)Data);
+        }
     }
 
     public class NTLimbSymptom : NTLimbAffliction
@@ -312,6 +338,11 @@ namespace Neurotrauma
             Priority = NewPriority;
             AffSortID = 5;
             Type = NTAfflictionType.LIMBSYMPTOM;
+        }
+
+        public override void ActuallyFuckingUpdateAgain(HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanAffData Data)
+        {
+            UpdateAction?.Invoke(C, ID, Limb, (HumanUpdate.NTHumanLimbSymptomData)Data);
         }
     }
 
@@ -4074,10 +4105,10 @@ namespace Neurotrauma
                 {
                     AffData.Strength = HF.BoolToNum(
                         // Symptom must not be forced false.
-                        (!NTC.HasSymptomFalse(C, ID))
+                        !(NTC.HasSymptomFalse(C, ID))
 
                         // Must be breathing.
-                        && C.GetAffData("respiratoryarrest").Strength <= 0
+                        && C.GetAffData("respiratoryarrest").Strength > 0
 
                         // Conditions:
                         && (

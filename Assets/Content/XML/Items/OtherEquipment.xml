@@ -926,7 +926,7 @@
     </Item>
 
     <!-- ============================================== Beds ============================================== -->
-    <!-- Surgery safesurgery -->
+    <!-- Surgery table -->
     <Item name="" identifier="operatingtable" scale="0.4" Tags="operatingtable" maxstacksize="1" category="medical" description="" isshootable="true">
 
         <Upgrade gameversion="0.12.0.0" noninteractable="false"/>
