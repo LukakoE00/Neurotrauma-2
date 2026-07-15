@@ -783,10 +783,7 @@ public static class HumanUpdate
 
             UpdateAfflictions(Priorities);
 
-            if (!UsingLuaAddons())
-            {
-                SyncAfflictionStrengths();
-            }
+            SyncAfflictionStrengths();
 
             // ----------------------------------------- Clearing ----------------------------------------- \\
 
@@ -979,7 +976,11 @@ public static class HumanUpdate
                         }
                     }
 
+<<<<<<< Updated upstream
                     Aff.ActuallyFuckingUpdateAgain(this, ID, LimbType.Torso, AffData);
+=======
+                    Aff.Update(this, ID, LimbType.Torso, AffData);
+>>>>>>> Stashed changes
 
                     if (AffType == NTAfflictionType.SYMPTOM)
                     {
@@ -1019,7 +1020,11 @@ public static class HumanUpdate
                             return;
                         }
 
+<<<<<<< Updated upstream
                         LimbAff.ActuallyFuckingUpdateAgain(this, LimbID, Limb, LimbAffData);
+=======
+                        LimbAff.Update(this, LimbID, Limb, LimbAffData);
+>>>>>>> Stashed changes
 
                         if (AffType == NTAfflictionType.LIMBSYMPTOM)
                         {

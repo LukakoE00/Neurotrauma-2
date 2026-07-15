@@ -1136,7 +1136,8 @@ namespace Neurotrauma
 
         public static Affliction GetAfflictionLimb(Character Character, String Identifier = "", LimbType GivenLimbType = LimbType.Torso)
         {
-            return Character.CharacterHealth.GetAffliction(Identifier, GetCharacterLimb(Character, GivenLimbType)); // No error handling on this one, gonna need someone smarter to do that.
+            if (Character == null || Character.CharacterHealth == null) return null;
+            return Character.CharacterHealth.GetAffliction(Identifier, GetCharacterLimb(Character, GivenLimbType));
         }
 
         // Previous iteration was broken - Lukako

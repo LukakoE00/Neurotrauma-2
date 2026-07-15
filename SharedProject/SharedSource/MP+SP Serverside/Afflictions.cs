@@ -36,7 +36,7 @@ namespace Neurotrauma
         {
             if (!Afflictions.ContainsKey(id))
             {
-                Afflictions.Add(id, affliction);
+                Afflictions[id] = affliction;
                 switch (affliction.Priority)
                 {
                     case AfflictionPriority.LOW:
@@ -103,7 +103,15 @@ namespace Neurotrauma
 
         public static bool HasAffliction(string id)
         {
-            return Afflictions.ContainsKey(id);
+            return NTAfflictions.Afflictions.ContainsKey(id);
+        }
+
+        public static void PrintIDs()
+        {
+            foreach (KeyValuePair<string,NTAffliction> kvp in Afflictions)
+            {
+                HF.Print(kvp.Key);
+            }
         }
 
         public static NTAffliction GetAffliction(string id)
@@ -190,9 +198,15 @@ namespace Neurotrauma
                 // Insert your Affliction Update in here.
             };
 
+<<<<<<< Updated upstream
         public virtual void ActuallyFuckingUpdateAgain(HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanAffData Data)
         {
             UpdateAction?.Invoke(C, ID, Limb, Data);
+=======
+        public virtual void Update(HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanAffData Data)
+        {
+            UpdateAction.Invoke(C, ID, Limb, Data);
+>>>>>>> Stashed changes
         }
 
         public NTAffliction(string NewID, double NewMinStrength = 0, double NewMaxStrength = 100, double NewDefaultStrength = 0,
@@ -227,9 +241,15 @@ namespace Neurotrauma
             Type = NTAfflictionType.NONLIMB;
         }
 
+<<<<<<< Updated upstream
         public override void ActuallyFuckingUpdateAgain(HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanAffData Data)
         {
             UpdateAction?.Invoke(C, ID, Limb, (HumanUpdate.NTHumanNonLimbAffData)Data);
+=======
+        public override void Update(HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanAffData Data)
+        {
+            UpdateAction.Invoke(C, ID, Limb, (HumanUpdate.NTHumanNonLimbAffData)Data);
+>>>>>>> Stashed changes
         }
     }
 
@@ -254,9 +274,15 @@ namespace Neurotrauma
             Type = NTAfflictionType.LIMB;
         }
 
+<<<<<<< Updated upstream
         public override void ActuallyFuckingUpdateAgain(HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanAffData Data)
         {
             UpdateAction?.Invoke(C, ID, Limb, (HumanUpdate.NTHumanLimbAffData)Data);
+=======
+        public override void Update(HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanAffData Data)
+        {
+            UpdateAction.Invoke(C, ID, Limb, (HumanUpdate.NTHumanLimbAffData)Data);
+>>>>>>> Stashed changes
         }
 
         public List<LimbType> AllowedLimbs { get; set; } = HF.LimbsToCheck; // I'll add this one later.
@@ -287,9 +313,15 @@ namespace Neurotrauma
             }
         }
 
+<<<<<<< Updated upstream
         public override void ActuallyFuckingUpdateAgain(HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanAffData Data)
         {
             UpdateAction?.Invoke(C, ID, Limb, (HumanUpdate.NTHumanBloodAffData)Data);
+=======
+        public override void Update(HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanAffData Data)
+        {
+            UpdateAction.Invoke(C, ID, Limb, (HumanUpdate.NTHumanBloodAffData)Data);
+>>>>>>> Stashed changes
         }
     }
 
@@ -314,9 +346,15 @@ namespace Neurotrauma
             AffSortID = 4;
         }
 
+<<<<<<< Updated upstream
         public override void ActuallyFuckingUpdateAgain(HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanAffData Data)
         {
             UpdateAction?.Invoke(C, ID, Limb, (HumanUpdate.NTHumanSymptomData)Data);
+=======
+        public override void Update(HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanAffData Data)
+        {
+            UpdateAction.Invoke(C, ID, Limb, (HumanUpdate.NTHumanSymptomData)Data);
+>>>>>>> Stashed changes
         }
     }
 
@@ -340,9 +378,15 @@ namespace Neurotrauma
             Type = NTAfflictionType.LIMBSYMPTOM;
         }
 
+<<<<<<< Updated upstream
         public override void ActuallyFuckingUpdateAgain(HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanAffData Data)
         {
             UpdateAction?.Invoke(C, ID, Limb, (HumanUpdate.NTHumanLimbSymptomData)Data);
+=======
+        public override void Update(HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanAffData Data)
+        {
+            UpdateAction.Invoke(C, ID, Limb, (HumanUpdate.NTHumanLimbSymptomData)Data);
+>>>>>>> Stashed changes
         }
     }
 
