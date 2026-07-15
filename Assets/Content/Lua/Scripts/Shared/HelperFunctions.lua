@@ -281,6 +281,10 @@ function HF.FindDepth(item)
 	end
 end
 
+function HF.IsNaN(v)
+	return tostring(v) == "NaN"
+end
+
 -- /// affliction magic ///
 ------------------------------
 function HF.GetAfflictionStrength(character, identifier, defaultvalue)
@@ -289,6 +293,7 @@ function HF.GetAfflictionStrength(character, identifier, defaultvalue)
 	local aff = character.CharacterHealth.GetAffliction(identifier)
 	local res = defaultvalue or 0
 	if aff ~= nil then res = aff.Strength end
+	if HF.IsNaN(res) then res = defaultvalue or 0 end
 	return res
 end
 
@@ -302,6 +307,7 @@ function HF.GetAfflictionStrengthLimb(character, limbtype, identifier, defaultva
 	local aff = character.CharacterHealth.GetAffliction(identifier, limb)
 	local res = defaultvalue or 0
 	if aff ~= nil then res = aff.Strength end
+	if HF.IsNaN(res) then res = defaultvalue or 0 end
 	return res
 end
 
