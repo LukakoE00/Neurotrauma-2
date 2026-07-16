@@ -953,12 +953,26 @@ namespace Neurotrauma
             return Chance(Math.Clamp(SkillLevel / RequiredAmount, 0, 1));
         }
 
+        // For performances reason the check is cached in NTInfo to avoid looping all the time
+        // If you dont like it idc change it yourself
+        public static bool IsNTSPEnabled()
+        {
+            return NTInfo.NTSPEnabled;
+        }
+
         public static float GetSurgerySkill(Character Character)
         {
             // TODO: NTSP integration
             // if (NTSP != null && NTConfig.Get("NTSP_enableSurgerySkill", false))
             //     return Math.Max(5, GetSkillLevel(Character, "surgery"), GetSkillLevel(Character, "medical") / 4);
+
+            if (IsNTSPEnabled() && NTConfig.Get("NTSP_enableSurgerySkill", false)) 
+            { 
+                return Math.Max(GetSkillLevel(Character, "surgery"), GetSkillLevel(Character, "medical") / 4);
+            }
+            
             return GetSkillLevel(Character, "medical");
+
         }
 
         public static bool GetSurgerySkillRequirementMet(Character Character, float RequiredAmount)

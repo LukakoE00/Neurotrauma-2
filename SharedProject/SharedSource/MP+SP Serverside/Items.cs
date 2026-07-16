@@ -205,8 +205,8 @@ public class NTItemMethods
         }
 
         // Move towards isotonic
-        HF.SetAffliction(infos.target, "acidosis", HF.GetAfflictionStrength(infos.target, "acidosis", 0) * Single.Lerp(1f, 0.9f, usefulFraction), null, 0);
-        HF.SetAffliction(infos.target, "alkalosis", HF.GetAfflictionStrength(infos.target, "alkalosis", 0) * Single.Lerp(1f, 0.9f, usefulFraction), null, 0);
+        HF.SetAffliction(infos.target, "acidosis", HF.GetAfflictionStrength(infos.target, "acidosis", 0) * Single.Lerp(1f, 0.9f, usefulFraction));
+        HF.SetAffliction(infos.target, "alkalosis", HF.GetAfflictionStrength(infos.target, "alkalosis", 0) * Single.Lerp(1f, 0.9f, usefulFraction));
 
         // Check item tags for acidosis, alkalosis, sepsis
         string[] tags = infos.item.Tags.Split(',');
@@ -816,7 +816,7 @@ public class NTItemMethods
             // Technically, this is different from the XML original; this applies 1 Sepsis instantly, the other had a 50% chance to apply per tick.
             if (!success && HF.Chance(0.5f))
             {
-                HF.AddAffliction(infos.target, "sepsis", 1f, null);
+                HF.AddAffliction(infos.target, "sepsis", 1f);
             }
 
             HF.RemoveItem(infos.item);
@@ -1358,7 +1358,16 @@ public class NTItemMethods
                 float healedAmount = Math.Min(affAmount, 200f);
 
                 HF.AddAfflictionLimb(infos.target, "burn", infos.targetLimb.type, -healedAmount, infos.user);
-                HF.GiveSkillScaled(infos.user, "medical", (float)healedAmount * 150);
+
+                if (HF.IsNTSPEnabled() && NTConfig.Get("NTSP_enableSurgerySkill", true))
+                {
+                    HF.GiveSkillScaled(infos.user, "surgery", (float)healedAmount * 300);
+                }
+                else
+                {
+                    HF.GiveSkillScaled(infos.user, "medical", (float)healedAmount * 150);
+                }
+                
             }
             else if (HF.GetAfflictionStrengthLimb(infos.target, infos.targetLimb.type, "burn", 0) > 50f)
             {
@@ -1519,7 +1528,7 @@ public class NTItemMethods
 
             // Base NT has no stasis check ?
 
-            if (!HF.GetSkillRequirementMet(infos.user, "medical", 30))
+            if (!HF.GetSurgerySkillRequirementMet(infos.user, 30))
             {
                 HF.AddAfflictionLimb(infos.target, "internaldamage", infos.targetLimb.type, 6, infos.user);
                 return;
@@ -1670,14 +1679,22 @@ public class NTItemMethods
             }
 
             // Originally NTSP integrated for Surgery Skill, TODO.
-            if (HF.GetSkillRequirementMet(infos.user, "Medical", 45f))
+            if (HF.GetSurgerySkillRequirementMet(infos.user, 45f))
             {
                 void removeAfflictionPlusGainSkill(string afflictionId, float skillGain)
                 {
                     if (HF.HasAfflictionLimb(infos.target, afflictionId, infos.targetLimb.type))
                     {
                         HF.SetAfflictionLimb(infos.target, afflictionId, infos.targetLimb.type, 0f, infos.user, 0);
-                        HF.GiveSkillScaled(infos.user, "medical", skillGain / 4f);
+
+                        if (HF.IsNTSPEnabled() && NTConfig.Get("NTSP_enableSurgerySkill", true))
+                        {
+                            HF.GiveSkillScaled(infos.user, "surgery", skillGain);
+                        } else
+                        {
+                            HF.GiveSkillScaled(infos.user, "medical", skillGain / 4f);
+                        }
+                        
                     }
                 }
 
@@ -1686,20 +1703,33 @@ public class NTItemMethods
                     if (HF.HasAffliction(infos.target, afflictionId))
                     {
                         HF.SetAffliction(infos.target, afflictionId, 0f, infos.user, 0);
-                        HF.GiveSkillScaled(infos.user, "medical", skillGain / 4f);
+
+                        if (HF.IsNTSPEnabled() && NTConfig.Get("NTSP_enableSurgerySkill", true))
+                        {
+                            HF.GiveSkillScaled(infos.user, "surgery", skillGain);
+                        }
+                        else
+                        {
+                            HF.GiveSkillScaled(infos.user, "medical", skillGain / 4f);
+                        }
                     }
                 }
 
                 var implantAfflictions = new Dictionary<string, float>
                 {
-                    ["ll_fracture"] = 10000f,
-                    ["rl_fracture"] = 10000f,
-                    ["la_fracture"] = 10000f,
-                    ["ra_fracture"] = 10000f,
-                    ["h_fracture"] = 10000f,
-                    ["n_fracture"] = 10000f,
-                    ["t_fracture"] = 10000f,
-                    ["boneclamp"] = 0f,
+                    //["ll_fracture"] = 10000f,
+                    //["rl_fracture"] = 10000f,
+                    //["la_fracture"] = 10000f,
+                    //["ra_fracture"] = 10000f,
+                    ["fracturedextremity"] = 10000f,
+                    //["h_fracture"] = 10000f,
+                    ["fracturedskull"] = 10000f,
+                    //["n_fracture"] = 10000f,
+                    ["fracturedneck"] = 10000f,
+                    //["t_fracture"] = 10000f,
+                    ["fracturedribs"] = 10000f,
+                    // No idea if we still use boneclamp
+                    //["boneclamp"] = 0f,
                     ["drilledbones"] = 0f
                 };
 
@@ -1708,6 +1738,7 @@ public class NTItemMethods
                     string identifier = kvp.Key;
                     float skillGain = kvp.Value;
 
+                    // This will crash the game if the identifier does not exist -Cookie
                     var prefab = AfflictionPrefab.Prefabs[identifier];
 
                     if (prefab == null) continue;
@@ -1757,7 +1788,7 @@ public class NTItemMethods
             }
 
             // Originally NTSP integrated for Surgery Skill, TODO.
-            if (HF.GetSkillRequirementMet(infos.user, "Medical", 45f))
+            if (HF.GetSurgerySkillRequirementMet(infos.user, 45f))
             {
                 HF.SetAffliction(infos.target, "spinalcordinjury", 0f, infos.user, 0);
 
@@ -1770,7 +1801,14 @@ public class NTItemMethods
                     HF.RemoveItem(infos.item);
                 }
 
-                HF.GiveSkillScaled(infos.user, "medical", 6000f);
+                if (HF.IsNTSPEnabled() && NTConfig.Get("NTSP_enableSurgerySkill", true))
+                {
+                    HF.GiveSkillScaled(infos.user, "surgery", 12000f);
+                }
+                else
+                {
+                    HF.GiveSkillScaled(infos.user, "medical", 6000f);
+                }
             }
             else
             {
@@ -1797,7 +1835,7 @@ public class NTItemMethods
 
             if (success)
             {
-                HF.AddAfflictionLimb(infos.target, "surgeryincision", infos.targetLimb.type, 1 + HF.GetSurgerySkill(infos.user) / 2, infos.user); // TODO change this to using surgery instead of medical
+                HF.AddAfflictionLimb(infos.target, "surgeryincision", infos.targetLimb.type, 1 + HF.GetSurgerySkill(infos.user) / 2, infos.user); 
 
                 HF.SetAfflictionLimb(infos.target, "suturedi", infos.targetLimb.type, 0, infos.user, 0);
                 HF.SetAfflictionLimb(infos.target, "gypsumcast", infos.targetLimb.type, 0, infos.user, 0);
@@ -1934,7 +1972,7 @@ public class NTItemMethods
 
             if (usecase != "")
             {
-                if (HF.GetSkillRequirementMet(infos.user, "medical", 30f))
+                if (HF.GetSurgerySkillRequirementMet(infos.user, 30f))
                 {
                     HF.AddAfflictionLimb(infos.target, "lacerations", infos.targetLimb.type, 5f, infos.user);
 
@@ -1949,7 +1987,16 @@ public class NTItemMethods
                         float healedAmount = Math.Min(affAmount, healAmount);
 
                         HF.AddAfflictionLimb(infos.target, identifier, infos.targetLimb.type, -healAmount, infos.user);
-                        HF.GiveSkillScaled(infos.user, "medical", healedAmount * skillGain / 2f);
+
+                        if (HF.IsNTSPEnabled()&& NTConfig.Get("NTSP_enableSurgerySkill", true))
+                        {
+                            HF.GiveSkillScaled(infos.user, "surgery", healedAmount * skillGain);
+                        }
+                        else
+                        {
+                            HF.GiveSkillScaled(infos.user, "medical", healedAmount * skillGain / 2f);
+                        }
+
                     }
 
                     float foreignBody = HF.GetAfflictionStrengthLimb(infos.target, infos.targetLimb.type, "foreignbody", 0f);
@@ -2046,7 +2093,7 @@ public class NTItemMethods
                 if (damage < 90)
                 {
                     string transplantID = "livertransplant_q1";
-                    // TODO: if (NTC.HasTag(infos.user, "organssellforfull")) transplantID = "livertransplant";
+                    if (NTC.HasTag(CharacterToNTHuman(infos.user), "organssellforfull")) transplantID = "livertransplant";
                     SpawnOrganTransplantInContainer(transplantID, infos.user, 100 - damage);
                 }
             }
@@ -2097,7 +2144,7 @@ public class NTItemMethods
                 if (damage < 90)
                 {
                     string transplantID = "lungtransplant_q1";
-                    // TODO: if (NTC.HasTag(infos.user, "organssellforfull")) transplantID = "lungtransplant";
+                    if (NTC.HasTag(CharacterToNTHuman(infos.user), "organssellforfull")) transplantID = "lungtransplant";
                     SpawnOrganTransplantInContainer(transplantID, infos.user, 100 - damage);
                 }
             }
@@ -2148,7 +2195,7 @@ public class NTItemMethods
                 if (damage < 90)
                 {
                     string transplantID = "hearttransplant_q1";
-                    // TODO: if (NTC.HasTag(infos.user, "organssellforfull")) transplantID = "hearttransplant";
+                    if (NTC.HasTag(CharacterToNTHuman(infos.user), "organssellforfull")) transplantID = "hearttransplant";
                     SpawnOrganTransplantInContainer(transplantID, infos.user, 100 - damage);
                 }
             }
@@ -2189,7 +2236,7 @@ public class NTItemMethods
                 if (damage >= 100) return;
 
                 string transplantID = "kidneytransplant_q1";
-                // TODO: if (NTC.HasTag(infos.user, "organssellforfull")) transplantID = "kidneytransplant";
+                if (NTC.HasTag(CharacterToNTHuman(infos.user), "organssellforfull")) transplantID = "kidneytransplant";
 
                 if (damage < 50)
                 {
@@ -2247,12 +2294,14 @@ public class NTItemMethods
                 HF.SetAffliction(infos.target, "brainremoved", 100, infos.user, 0);
                 HF.SetAffliction(infos.target, "brainswap", 0, infos.user, 0);
 
-                // TODO: NTSP artificialbrain check
-                // if (HF.HasAffliction(infos.target, "artificialbrain"))
-                // {
-                //     HF.SetAffliction(infos.target, "artificialbrain", 0, infos.user, 0);
-                //     damage = 100;
-                // }
+                if (HF.IsNTSPEnabled())
+                {
+                    if (HF.HasAffliction(infos.target, "artificialbrain"))
+                     {
+                        HF.SetAffliction(infos.target, "artificialbrain", 0, infos.user, 0);
+                        damage = 100;
+                    }
+                }
 
                 if (damage < 90)
                 {
@@ -2378,7 +2427,14 @@ public class NTItemMethods
                 {
                     if (!HF.HasAffliction(infos.target, "infectedcavity", 1f))
                     {
-                        HF.GiveSkillScaled(infos.user, "medical", 10000f);
+                        if (HF.IsNTSPEnabled() && NTConfig.Get("NTSP_enableSurgerySkill", true))
+                        {
+                            HF.GiveSkillScaled(infos.user, "surgery", 20000f);
+                        }
+                        else
+                        {
+                            HF.GiveSkillScaled(infos.user, "medical", 10000f);
+                        }
                     }
                 }, (int)delay);
 
@@ -2408,7 +2464,13 @@ public class NTItemMethods
                 HF.AddAffliction(infos.target, "balloonedaorta", 100f, infos.user);
                 HF.SetAffliction(infos.target, "internalbleeding", 0f, infos.user, 0);
 
-                HF.GiveSkillScaled(infos.user, "medical", 5000f);
+                if (HF.IsNTSPEnabled() && NTConfig.Get("NTSP_enableSurgerySkill", true))
+                {
+                    HF.GiveSkillScaled(infos.user, "surgery", 10000f);
+                }  else
+                {
+                    HF.GiveSkillScaled(infos.user, "medical", 5000f);
+                } 
 
                 HF.GiveItem(infos.target, "ntsfx_syringe");
                 HF.RemoveItem(infos.item);
@@ -2428,7 +2490,14 @@ public class NTItemMethods
                 HF.SetAffliction(infos.target, "balloonedaorta", 0f, infos.user, 0);
                 HF.SetAffliction(infos.target, "aorticrupture", 0f, infos.user, 0);
 
-                HF.GiveSkillScaled(infos.user, "medical", 10000f);
+                if (HF.IsNTSPEnabled() && NTConfig.Get("NTSP_enableSurgerySkill", true))
+                {
+                    HF.GiveSkillScaled(infos.user, "surgery", 20000f);
+                }
+                else
+                {
+                    HF.GiveSkillScaled(infos.user, "medical", 10000f);
+                }
             }
 
             HF.GiveItem(infos.target, "ntsfx_syringe");

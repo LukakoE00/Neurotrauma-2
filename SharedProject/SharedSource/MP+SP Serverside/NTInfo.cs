@@ -11,6 +11,8 @@ public static class NTInfo
     public const string Version = "A2.0.0";
     public const int VersionNum = 02000000;
 
+    public static bool NTSPEnabled = false;
+
     // Make a new list (like a table! but not!) that only holds NTAddon objects.
     // 'get' means we can read the list, but not replace it and 'new' means it get's created on loading.
     public static Dictionary<string,NTAddon> RegisteredAddons { get; } = new();
@@ -79,12 +81,22 @@ public static class NTInfo
             List<String> incompatibleMods = ["3705482890", "3439141713", "3190189044", "3369418643"];
             String detectedMods = "";
 
+            String NTSPId = "3478084070";
+
             foreach (var item in ContentPackageManager.EnabledPackages.All)
             {
 
-                if (item.UgcId.value != null && incompatibleMods.Contains(item.UgcId.value.ToString()))
+                if (item.UgcId.value != null)
                 {
-                    detectedMods += " - " + item.Name + "\n";
+                    if (incompatibleMods.Contains(item.UgcId.value.ToString()))
+                    {
+                        detectedMods += " - " + item.Name + "\n";
+                    }
+
+                    if (item.UgcId.value.ToString() == NTSPId)
+                    {
+                        NTSPEnabled = true;
+                    }
                 }
             }
 
@@ -92,6 +104,8 @@ public static class NTInfo
             {
                 HF.PrintError("Incompatible mods detected ! This will cause many errors and you should disable them before playing !\n" + detectedMods);
             }
+
+            if (NTSPEnabled) HF.Print("NT Surgery Plus Enabled!");
 
         }, 1000);
     }
