@@ -20,29 +20,27 @@ namespace Neurotrauma
         /// <summary>
         /// Syncs our C# human update with our Lua human update, syncs our C# characters with our lua characters
         /// </summary>
-        static public void PreSync(IEnumerable<HumanUpdate.NTHuman> CharacterList)
+        static public void  Update(IEnumerable<HumanUpdate.NTHuman> CharacterList, List<AfflictionPriority> Priorities)
         {
-            SyncLuaCharacters(CharacterList);
-            SyncLuaAfflictions(CharacterList);
+            SyncCharacters(CharacterList);
+            SyncAfflictions(CharacterList,Priorities);
         }
 
-        static public void SyncLuaAfflictions(IEnumerable<HumanUpdate.NTHuman> CharacterList)
-        {
-        }
+        // Empty Methods, exist purely so we can hook Lua functions.
 
-        static public void SyncLuaCharacters(IEnumerable<HumanUpdate.NTHuman> CharacterList)
+        static public void SyncAfflictions(IEnumerable<HumanUpdate.NTHuman> CharacterList, List<AfflictionPriority> Priorities)
         {
         }
 
-        static public void SyncLuaCharacterSpeed(Character Human, double Speed)
+        static public void SyncCharacters(IEnumerable<HumanUpdate.NTHuman> CharacterList)
+        {
+        }
+
+        static public void SyncCharacterSpeed(Character Human, double Speed)
         {
         }
 
         static public void SyncPreHumanUpdateHooks(Character Character)
-        {
-        }
-
-        static public void SyncPostHumanUpdateHooks(Character Character)
         {
         }
     }

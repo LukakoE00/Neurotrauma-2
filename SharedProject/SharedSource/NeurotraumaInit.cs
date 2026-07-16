@@ -33,6 +33,8 @@ namespace Neurotrauma
             UserData.RegisterType(typeof(HF));
             UserData.RegisterType(typeof(NTConfig));
             UserData.RegisterType(typeof(NTConfigData));
+            UserData.RegisterType(typeof(AfflictionPriority));
+            UserData.RegisterType(typeof(List<AfflictionPriority>));
 
             if (HF.GameIsMultiplayer())
             {
