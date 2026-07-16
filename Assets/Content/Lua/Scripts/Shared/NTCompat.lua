@@ -18,7 +18,7 @@ NTC = {} -- a class containing compatibility functions for other mods to make us
 
 NTInfo = LuaUserData.CreateStatic("Neurotrauma.NTInfo",false)
 CSNTCompat = LuaUserData.CreateStatic("Neurotrauma.NTC",false)
-NTCSAfflictions = LuaUserData.CreateStatic("Neurotrauma.NTAfflictions",false)
+CSNTAfflictions = LuaUserData.CreateStatic("Neurotrauma.NTAfflictions",false)
 
 NTC.RegisteredExpansions = {}
 -- The function to add your addon to NT, see above for more info.
@@ -39,7 +39,7 @@ NTC.CharacterData = {}
 function NTC.SetSymptomTrue(character, symptomidentifer, duration)
 
 	local ModernSymID = NT.ConvertToModern(symptomidentifer)
-	if NTCSAfflictions.HasAffliction(ModernSymID) then -- Is this a C# symptom we need to sync?
+	if CSNTAfflictions.HasAffliction(ModernSymID) then -- Is this a C# symptom we need to sync?
 		CSNTCompat.SetSymptomTrue(character, ModernSymID, duration)
 		return
 	end
@@ -61,7 +61,7 @@ end
 function NTC.SetSymptomFalse(character, symptomidentifer, duration)
 
 	local ModernSymID = NT.ConvertToModern(symptomidentifer)
-	if NTCSAfflictions.HasAffliction(ModernSymID) then -- Is this a C# symptom we need to sync?
+	if CSNTAfflictions.HasAffliction(ModernSymID) then -- Is this a C# symptom we need to sync?
 		CSNTCompat.SetSymptomFalse(character, ModernSymID, duration)
 		return
 	end

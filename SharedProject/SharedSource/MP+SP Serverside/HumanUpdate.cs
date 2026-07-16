@@ -798,6 +798,11 @@ public static class HumanUpdate
             {
                 Hook.Invoke(this);
             }
+
+            if (UsingLuaAddons())
+            {
+                HumanUpdateLuaSync.SyncPreHumanUpdateHooks(this.Human);
+            }
         }
 
         private void UpdatePostHumanHooks()
@@ -807,6 +812,11 @@ public static class HumanUpdate
             foreach (Action<NTHuman> Hook in PostHumanUpdateHooks) // Post hooks.
             {
                 Hook.Invoke(this);
+            }
+
+            if (UsingLuaAddons())
+            {
+                HumanUpdateLuaSync.SyncPostHumanUpdateHooks(this.Human);
             }
 
             HF.SetAffliction(Human,"slowdown", Math.Clamp(100 * (1 - (float)GetDoubleStatStrength("speedmultiplier")), 0, 100));

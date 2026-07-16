@@ -37,5 +37,13 @@ namespace Neurotrauma
         static public void SyncLuaCharacterSpeed(Character Human, double Speed)
         {
         }
+
+        static public void SyncPreHumanUpdateHooks(Character Character)
+        {
+        }
+
+        static public void SyncPostHumanUpdateHooks(Character Character)
+        {
+        }
     }
 }
