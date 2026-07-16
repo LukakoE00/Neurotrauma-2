@@ -1,5 +1,6 @@
 using static Neurotrauma.HF;
 using Barotrauma.Items.Components;
+using System.Xml.Linq;
 
 namespace Neurotrauma
 {
@@ -11,12 +12,20 @@ namespace Neurotrauma
         public string MyAttribute { get; init; }
         public NTCall(Item item, ContentXElement element) : base(item, element)
         {
-            MyAttribute = element.GetAttributeString("NTFunc", "default value");
-            var Method = typeof(NTXmlMethods).GetMethod(MyAttribute);
-            if (Method != null)
+            MyAttribute = element.GetAttributeString("NTMethod", "default value");
+            Dictionary<string,object> MyValue = new();
+
+            foreach (ContentXElement X in element.Elements())
             {
-                Method.Invoke(this, new object[] { });
+                if (X.Name != "NTMethod") MyValue[X.Name.ToString()] = element.GetAttributeString(X.Name.ToString(), "default value");
             }
+
+            if (NTXmlMethods.HasMethod(MyAttribute))
+            {
+                NTXmlMethods.CallMethod(MyAttribute, MyValue);
+                return;
+            }
+            HF.PrintError("Attempted to invoke method [" + MyAttribute + "] but the method doesn't exist.");
         }
     }
 
@@ -34,15 +43,63 @@ namespace Neurotrauma
 
     public static class NTXmlMethods
     {
-        public static void PrintExample()
+
+        private static Dictionary<string,Action<Dictionary<string, object>>> NTCallMethods = new();
+
+        /// <summary>
+        /// Adds a new method to be called into the XML Methods.
+        /// </summary>
+        public static void AddMethod(string Name, Action<Dictionary<string, object>> Method)
         {
-            Print("THIS IS AN EXAMPLE");
+            NTCallMethods[Name] = Method;
+        }
+
+        public static void RemoveMethod(string Name)
+        {
+            NTCallMethods.Remove(Name);
+        }
+
+        public static void CallMethod(string Name, Dictionary<string, object> _)
+        {
+            NTCallMethods[Name].Invoke(_);
+        }
+
+        public static bool HasMethod(string Name)
+        {
+            return NTCallMethods.ContainsKey(Name);
         }
     }
 
-    public struct NTXmlProperties
+    public static class NTXmlProperties
     {
+        private static Dictionary<string, object> NTSetProperties = new ();
 
+        public static void AddProperty(string Name, object Value)
+        {
+            if (NTSetProperties.ContainsKey(Name)) return;
+            NTSetProperties[Name] = Value;
+        }
+
+        public static void RemoveProperty(string Name)
+        {
+            if (!NTSetProperties.ContainsKey(Name)) return;
+            NTSetProperties.Remove(Name);
+        }
+
+        public static bool HasProperty(string Name) 
+        { 
+            return NTSetProperties.ContainsKey(Name); 
+        }
+
+        public static object GetProperty(string Name)
+        {
+            return NTSetProperties[Name];
+        }
+
+        public static void SetProperty(string Name, object Value)
+        {
+            NTSetProperties[Name] = Value;
+        }
     }
 
 }
