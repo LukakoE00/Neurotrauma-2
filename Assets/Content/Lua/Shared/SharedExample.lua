@@ -36,6 +36,13 @@ LuaUserData.RegisterType("Neurotrauma.HumanUpdate+NTHumanLimbSymptomData")
 LuaUserData.RegisterType("Neurotrauma.HumanUpdate+CharacterStats+NTHumanStatDoubleData")
 LuaUserData.RegisterType("Neurotrauma.HumanUpdate+CharacterStats+NTHumanStatBoolData")
 
+Init = LuaUserData.CreateStatic("Neurotrauma.NT",false)-- stores our class ref
+NTConfig = LuaUserData.CreateStatic("Neurotrauma.NTConfig",false)
+NTInfo = LuaUserData.CreateStatic("Neurotrauma.NTInfo",false)
+CSNTCompat = LuaUserData.CreateStatic("Neurotrauma.NTC",false)
+CSNTAfflictions = LuaUserData.CreateStatic("Neurotrauma.NTAfflictions",false)
+CSHumanUpdate = LuaUserData.CreateStatic("Neurotrauma.HumanUpdate",false)-- stores our class ref
+AfflictionPriority = LuaUserData.CreateEnumTable("Neurotrauma.AfflictionPriority",false)
 
 dofile(NT.Path .. "/Lua/Scripts/Shared/ConfigData.lua") 		
 dofile(NT.Path .. "/Lua/Scripts/Shared/HelperFunctions.lua") 		

@@ -16,9 +16,6 @@ NTC = {} -- a class containing compatibility functions for other mods to make us
 -- MyExp.MinNTVersionNum = 01070100 -- 01.07.01.00 -> A1.7.1h0
 -- Timer.Wait(function() if NT ~= nil then NTC.RegisterExpansion(MyExp) end end,1)
 
-NTInfo = LuaUserData.CreateStatic("Neurotrauma.NTInfo",false)
-CSNTCompat = LuaUserData.CreateStatic("Neurotrauma.NTC",false)
-CSNTAfflictions = LuaUserData.CreateStatic("Neurotrauma.NTAfflictions",false)
 
 NTC.RegisteredExpansions = {}
 -- The function to add your addon to NT, see above for more info.
@@ -231,6 +228,9 @@ end
 ---@param symptomidentifer string The identifier of the symptom.
 ---@return boolean
 function NTC.GetSymptom(character, symptomidentifer)
+
+	if NT.LegacyAfflictions[NT.ConvertToModern(symptomidentifer)] then return CSNTCompat.GetSymptom(character, symptomidentifer) end
+
 	local chardata = NTC.GetCharacterData(character)
 	if chardata == nil then return false end
 
@@ -245,6 +245,9 @@ end
 ---@param symptomidentifer string The identifier of the symptom false.
 ---@return boolean
 function NTC.GetSymptomFalse(character, symptomidentifer)
+
+	if NT.LegacyAfflictions[NT.ConvertToModern(symptomidentifer)] then return CSNTCompat.GetSymptomFalse(character, symptomidentifer) end
+
 	local chardata = NTC.GetCharacterData(character)
 	if chardata == nil then return false end
 
@@ -260,32 +263,24 @@ end
 ---@param multiplieridentifier string The identifier of the multiplier.
 ---@param multiplier number The multiplier number.
 function NTC.SetMultiplier(character, multiplieridentifier, multiplier)
-	NTC.AddEmptyCharacterData(character)
-	local data = NTC.GetCharacterData(character)
-	data["mult_" .. multiplieridentifier] = NTC.GetMultiplier(character, multiplieridentifier) * multiplier
-	NTC.CharacterData[character.ID] = data
+	CSNTCompat.SetMultiplier(character, multiplieridentifier, multiplier)
 end
 
 ---@param character Character The character to set the multiplier on.
 ---@param multiplieridentifier string The identifier of the multiplier.
 function NTC.GetMultiplier(character, multiplieridentifier)
-	local data = NTC.GetCharacterData(character)
-	if data == nil or data["mult_" .. multiplieridentifier] == nil then return 1 end
-	return data["mult_" .. multiplieridentifier]
+	CSNTCompat.GetMultiplier(character, multiplieridentifier)
 end
 
 -- sets tag data for one humanupdate, should be called from within a humanupdate hook
 ---@param character Character The character to set the tag on.
 ---@param multiplieridentifier string The identifier of the tag.
 function NTC.SetTag(character, tagidentifier)
-	NTC.AddEmptyCharacterData(character)
-	local data = NTC.GetCharacterData(character)
-	data["tag_" .. tagidentifier] = 1
+	CSNTCompat.SetTag(character, tagidentifier)
 end
+
 function NTC.HasTag(character, tagidentifier)
-	local data = NTC.GetCharacterData(character)
-	if data == nil or data["tag_" .. tagidentifier] == nil then return false end
-	return true
+	CSNTCompat.HasTag(character, tagidentifier)
 end
 
 -- // Utility functions //
@@ -330,6 +325,5 @@ function NTC.TickCharacter(character)
 	NTC.CharacterData[character.ID] = chardata
 end
 function NTC.GetSpeedMultiplier(character)
-	if NTC.CharacterSpeedMultipliers[character] ~= nil then return NTC.CharacterSpeedMultipliers[character] end
-	return 1
+	return CSNTCompat.GetSpeed(character)
 end

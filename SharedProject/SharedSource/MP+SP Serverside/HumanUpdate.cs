@@ -787,12 +787,16 @@ public static class HumanUpdate
 
             // ----------------------------------------- Clearing ----------------------------------------- \\
 
-            UpdatePostHumanHooks();
+            UpdatePost();
 
         }
 
+        public void ClearSpeedMultiplier()
+        {
+            CharacterSpeedMultipliers.Remove(this);
+        }
 
-        private void UpdatePreHumanHooks()
+        public void UpdatePreHumanHooks()
         {
             foreach (Action<NTHuman> Hook in PreHumanUpdateHooks) // Pre hooks.
             {
@@ -805,26 +809,31 @@ public static class HumanUpdate
             }
         }
 
-        private void UpdatePostHumanHooks()
+        private void UpdatePost()
         {
-            NTC.TickCharacterTags(this);
+            UpdatePostHumanHooks();
 
-            foreach (Action<NTHuman> Hook in PostHumanUpdateHooks) // Post hooks.
+            HF.SetAffliction(Human, "slowdown", Math.Clamp(100 * (1 - (float)GetDoubleStatStrength("speedmultiplier")), 0, 100));
+
+            if (UsingLuaAddons()) HumanUpdateLuaSync.SyncCharacterSpeed(Human, GetDoubleStatStrength("speedmultiplier")); // If we have lua addons sync our character speed.
+
+            else
             {
-                Hook.Invoke(this);
+                SetDoubleStatStrength("speedmultiplier", 1);
+                ClearSpeedMultiplier();
             }
+        }
 
-            if (UsingLuaAddons())
+        public void UpdatePostHumanHooks()
+        {
+            if (!UsingLuaAddons())
             {
-                HumanUpdateLuaSync.SyncPostHumanUpdateHooks(this.Human);
+                NTC.TickCharacterTags(this);
+                foreach (Action<NTHuman> Hook in PostHumanUpdateHooks) // Post hooks.
+                {
+                    Hook.Invoke(this);
+                }
             }
-
-            HF.SetAffliction(Human,"slowdown", Math.Clamp(100 * (1 - (float)GetDoubleStatStrength("speedmultiplier")), 0, 100));
-
-            if (UsingLuaAddons()) HumanUpdateLuaSync.SyncLuaCharacterSpeed(Human, GetDoubleStatStrength("speedmultiplier")); // If we have lua addons sync our character speed.
-
-            SetDoubleStatStrength("speedmultiplier", 1);
-            CharacterSpeedMultipliers.Remove(this);
         }
 
         private void UpdateStats()
@@ -1326,9 +1335,9 @@ public static class HumanUpdate
             UpdateHumans(priorities);
         }
 
-        if (UsingLuaAddons()) HumanUpdateLuaSync.PreSync(UpdatingHumans.Values.ToList());
+        if (UsingLuaAddons()) HumanUpdateLuaSync.Update(UpdatingHumans.Values.ToList(),priorities);
     }
-
+    
     private static void UpdateHumans(List<AfflictionPriority> priorities)
     {
         List<Character> QueuedCharacters = new();

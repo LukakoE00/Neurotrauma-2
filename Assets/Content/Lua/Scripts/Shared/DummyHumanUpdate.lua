@@ -9,16 +9,6 @@ local limbtypes = {
 	LimbType.RightLeg,
 }
 
-AfflictionPriority = -- Enums
-{
-	LOW = 6 * 60,  -- Every 6s
-	MEDIUM = 4 * 60, -- Every 4s
-	HIGH = 2 * 60 -- Every 2s
-}
-
-CSHumanUpdate = LuaUserData.CreateStatic("Neurotrauma.HumanUpdate",false)-- stores our class ref
-Init = LuaUserData.CreateStatic("Neurotrauma.NT",false)-- stores our class ref
-
 NT.UsingAddons = function ()
 	return #NTC.RegisteredExpansions > 0
 end
@@ -215,7 +205,7 @@ NT.CreateLimbTables = function (CharData)
 		end
 end
 
-Hook.Patch("Neurotrauma.HumanUpdateLuaSync","SyncLuaAfflictions", function(GameSession, ptable)
+Hook.Patch("Neurotrauma.HumanUpdateLuaSync","SyncAfflictions", function(GameSession, ptable)
 
 	NT.Deltatime = Init.DeltaTime
 	for NTHuman in ptable["CharacterList"] do
@@ -230,31 +220,24 @@ Hook.Patch("Neurotrauma.HumanUpdateLuaSync","SyncLuaAfflictions", function(GameS
 		end
 
 		NT.CreateLimbTables(CharData)
-		NT.UpdateHuman(NTHuman.Human,CharData)
+		NT.UpdateHuman(NTHuman.Human,CharData,NTHuman,ptable["Priorities"])
 
 	end
 end,  Hook.HookMethodType.After)
 
-Hook.Patch("Neurotrauma.HumanUpdateLuaSync","SyncLuaCharacters", function(GameSession, ptable)
+Hook.Patch("Neurotrauma.HumanUpdateLuaSync","SyncCharacters", function(GameSession, ptable)
 	for NTHuman in ptable["CharacterList"] do
 		NTC.AddEmptyCharacterData(NTHuman.Human)
 	end
 end,  Hook.HookMethodType.After)
 
-Hook.Patch("Neurotrauma.HumanUpdateLuaSync","SyncLuaCharacterSpeed", function(GameSession, ptable)
+Hook.Patch("Neurotrauma.HumanUpdateLuaSync","SyncCharacterSpeed", function(GameSession, ptable) -- I don't think this is needed anymore
 	NTC.CharacterSpeedMultipliers[ptable["Human"]] = ptable["Speed"]
 end,  Hook.HookMethodType.After)
 
 Hook.Patch("Neurotrauma.HumanUpdateLuaSync","SyncPreHumanUpdateHooks", function(GameSession, ptable)
 	-- pre humanupdate hooks
 	for key, val in pairs(NTC.PreHumanUpdateHooks) do
-		val(ptable["Character"])
-	end
-end,  Hook.HookMethodType.After)
-
-Hook.Patch("Neurotrauma.HumanUpdateLuaSync","SyncPostHumanUpdateHooks", function(GameSession, ptable)
-	-- post humanupdate hooks
-	for key, val in pairs(NTC.HumanUpdateHooks) do
 		val(ptable["Character"])
 	end
 end,  Hook.HookMethodType.After)
@@ -271,7 +254,7 @@ NT.organDamageCalc = function(c, damagevalue, nomaxstrength)
 	return damagevalue - 0.01 * c.stats.healingrate * c.stats.specificOrganDamageHealMultiplier * NT.Deltatime
 end
 
-function NT.UpdateHuman(character, currentCharData)
+function NT.UpdateHuman(character, currentCharData, NTHuman, Priorities)
 	-- Doing this additional check here enables NT updates for 'important' people like players, crew and AI opponents from the get-go
 	-- instead of waiting on other interactions before updates start. - Lukako
 	if character.IsHuman and character.TeamID == 1 or character.TeamID == 2 and not character.IsDead then
@@ -302,7 +285,9 @@ function NT.UpdateHuman(character, currentCharData)
 	-- update non-limb-specific afflictions
 	for identifier, data in pairs(NT.Afflictions) do
 		if NT.LegacyAfflictions[identifier] == nil and not NT.Afflictions[identifier].legacy  then
-			if data.update ~= nil then data.update(charData, identifier) end
+			if data.const ~= false or (data.const == false and HF.HasAffliction(charData,identifier,data.default or 0)) then -- Const check
+				if data.update ~= nil and (Priorities.Contains(data.priority or AfflictionPriority.HIGH)) then data.update(charData, identifier) end
+			end
 		end
 	end
 
@@ -317,18 +302,20 @@ function NT.UpdateHuman(character, currentCharData)
 	local function UpdateLimb(type, stasisflag)
 		local keystring = tostring(type) .. "afflictions"
 		for identifier, data in pairs(NT.LimbAfflictions) do
-			if NT.LegacyLimbAfflictions[identifier] == nil and not NT.LimbAfflictions[identifier].legacy then
-				if
-					data.update ~= nil
-					and (
-						not stasisflag
-						or (
-							NT.LimbAfflictions[identifier].ignorestasis ~= nil
-							and NT.LimbAfflictions[identifier].ignorestasis == true
+			if data.const ~= false or (data.const == false and HF.HasAfflictionLimb(charData,identifier,type,data.default or 0)) then -- Const check
+				if NT.LegacyLimbAfflictions[identifier] == nil and not NT.LimbAfflictions[identifier].legacy then
+					if
+						data.update ~= nil and (not data.priority or Priorities.Contains(AfflictionPriority.HIGH)) -- Priority check
+						and (
+							not stasisflag
+							or (
+								NT.LimbAfflictions[identifier].ignorestasis ~= nil
+								and NT.LimbAfflictions[identifier].ignorestasis == true
+							)
 						)
-					)
-				then
-					data.update(charData, charData[keystring], identifier, type)
+					then
+						data.update(charData, charData[keystring], identifier, type)
+					end
 				end
 			end
 		end
@@ -391,8 +378,15 @@ function NT.UpdateHuman(character, currentCharData)
 		end
 	end
 
-	NTC.TickCharacter(character)
+	CSNTCompat.TickCharacterTags(NTHuman)
+
+	-- humanupdate hooks
+	NTHuman.UpdatePostHumanHooks()
+	for key, val in pairs(NTC.HumanUpdateHooks) do
+		val(character)
+	end
 	
-	HF.SetAffliction(character,"slowdown", HF.Clamp(100 * (1 - NTC.CharacterSpeedMultipliers[character]), 0, 100));
+	HF.SetAffliction(character,"slowdown", HF.Clamp(100 * (1 - NTHuman.GetDoubleStatStrength("speedmultiplier")), 0, 100));
+	NTHuman.ClearSpeedMultiplier();
 	NTC.CharacterSpeedMultipliers[character] = nil
 end
