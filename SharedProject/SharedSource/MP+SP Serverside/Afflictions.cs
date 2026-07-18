@@ -157,6 +157,11 @@ namespace Neurotrauma
         public bool Real = true;
 
         /// <summary>
+        /// Delays the update from occuring for as many human updates as the delay. Decremented each time the affliction is update. (Only is used when a character is first created.)
+        /// </summary>
+        public int Delay = 0;
+
+        /// <summary>
         /// The minimum strength the affliction can have.
         /// </summary>
         public double MinStrength { get; set; }
@@ -326,6 +331,11 @@ namespace Neurotrauma
         {
             UpdateAction.Invoke(C, ID, Limb, (HumanUpdate.NTHumanSymptomData)Data);
         }
+
+        /// <summary>
+        /// If true, whenever strength is greater than zero, gets set to 100 (max strength).
+        /// </summary>
+        public bool IsBoolSymptom = false;
     }
 
     public class NTLimbSymptom : NTLimbAffliction
@@ -352,6 +362,11 @@ namespace Neurotrauma
         {
             UpdateAction.Invoke(C, ID, Limb, (HumanUpdate.NTHumanLimbSymptomData)Data);
         }
+
+        /// <summary>
+        /// If true, whenever strength is greater than zero, gets set to 100 (max strength).
+        /// </summary>
+        public bool IsBoolSymptom = false;
     }
 
     public abstract class AfflictionsPackage 
@@ -771,6 +786,7 @@ namespace Neurotrauma
             // Harmless Causes: Sepsis, Blood Loss, Acidosis, Pneumothorax, Adrenaline, Alcohol Withdrawal.
             // Harmful Causes: Aortic Rupture, Acidosis, Hypotension, Hypoxemia, Traumatic Shock.
             AfflictionsToAdd["increasedheartrate"] = new("increasedheartrate", 0, 100, 0, AfflictionPriority.HIGH);
+            AfflictionsToAdd["increasedheartrate"].Delay = 2; // Delay the first update a little.
             AfflictionsToAdd["increasedheartrate"].Const = true;
             AfflictionsToAdd["increasedheartrate"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanNonLimbAffData AffData) =>
@@ -4021,11 +4037,10 @@ namespace Neurotrauma
             // Caused By: Seizure
             // Effects: Makes character twitch on the ground via XML.
             LimbSymptomsToAdd["spasm"] = new("spasm", 0, 100, 0, AfflictionPriority.HIGH);
+            LimbSymptomsToAdd["spasm"].IsBoolSymptom = true;
             LimbSymptomsToAdd["spasm"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanLimbSymptomData AffData) =>
                 {
-                    // Passive Decrease
-                    AffData.Strength[Limb] -= 100f;
                 };
 
             foreach (KeyValuePair<string, NTLimbSymptom> Pair in LimbSymptomsToAdd)

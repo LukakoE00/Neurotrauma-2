@@ -921,6 +921,7 @@ public static class HumanUpdate
             NTHumanSymptomData AffData = (NTHumanSymptomData)Data;
             NTSymptom Aff = AffData.SymTemplate;
             if ((!Aff.Const) && AffData.Strength == 0 && (AffData.HumanUpdateTime <= 0 || AffData.HumanUpdateStoptime > 0)) return true;
+            if (Aff.IsBoolSymptom && AffData.Strength > 0) { AffData.Strength = Aff.MaxStrength; return false; }
             return false;
         }
 
@@ -935,6 +936,8 @@ public static class HumanUpdate
 
         private static void PostSymptomCheck(NTHumanSymptomData SymData)
         {
+            NTSymptom Sym = SymData.SymTemplate;
+            if (Sym.IsBoolSymptom && SymData.Strength > 0) { SymData.Strength = Sym.MaxStrength; }
             if (SymData.HumanUpdateTime > 0)
             {
                 SymData.Strength = 100;
@@ -960,6 +963,8 @@ public static class HumanUpdate
 
         private static void PostSymptomCheck(NTHumanLimbSymptomData SymData, LimbType Limb)
         {
+            NTLimbSymptom Sym = SymData.SymTemplate;
+            if (Sym.IsBoolSymptom && SymData.Strength[Limb] > 0) { SymData.Strength[Limb] = Sym.MaxStrength; }
             if (SymData.HumanUpdateTime[Limb] > 0)
             {
                 SymData.Strength[Limb] = 100;
@@ -985,6 +990,7 @@ public static class HumanUpdate
 
         private void UpdateAffliction(NTAfflictionType AffType, List<AfflictionPriority> Priorities, string Key, NTHumanAffData Data)
         {
+            if (Data.AffTemplate.Delay > 0) { Data.AffTemplate.Delay--; return; }
             switch (AffType)
             {
                 case NTAfflictionType.NONLIMB:

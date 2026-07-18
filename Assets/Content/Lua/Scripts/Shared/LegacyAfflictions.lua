@@ -2290,3 +2290,7 @@ NT.LegacyCharStats = {
 	burndamage = {
 	},
 }
+
+NT.BoolSymptoms = {
+	"spasm"
+}
