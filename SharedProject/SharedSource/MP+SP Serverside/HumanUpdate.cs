@@ -36,6 +36,7 @@ public static class HumanUpdate
         public double Strength;
         public double PrevStrength;
         public string ID;
+        public int Delay;
     }
 
     /// <summary>
@@ -51,6 +52,7 @@ public static class HumanUpdate
             Strength = NewStrength;
             PrevStrength = 0;
             ID = NewID;
+            Delay = AffTemplate.Delay;
         }
     }
 
@@ -70,6 +72,7 @@ public static class HumanUpdate
             Strength = NewStrength;
             PrevStrength = NewStrength;
             ID = NewID;
+            Delay = AffTemplate.Delay;
         }
 
         public double GetLimbPrevStrength(LimbType Type) // Lua compat
@@ -98,6 +101,7 @@ public static class HumanUpdate
             Strength = NewStrength;
             PrevStrength = 0;
             ID = NewID;
+            Delay = AffTemplate.Delay;
         }
     }
 
@@ -116,6 +120,7 @@ public static class HumanUpdate
             SymTemplate = NewAff; // Stores our template. The reason we aren't just creating a new affliction for each character is performance. I'm pretty sure it's more peformance efficent to just reference our affliction.
             PrevStrength = 0;
             ID = NewID;
+            Delay = AffTemplate.Delay;
         }
     }
 
@@ -134,6 +139,7 @@ public static class HumanUpdate
             SymTemplate = NewAff; // Stores our template. The reason we aren't just creating a new affliction for each character is performance. I'm pretty sure it's more peformance efficent to just reference our affliction.
             HumanUpdateTime = NewUpdateTime;
             HumanUpdateStoptime = NewUpdateTime;
+            Delay = AffTemplate.Delay;
         }
     }
 
@@ -990,7 +996,7 @@ public static class HumanUpdate
 
         private void UpdateAffliction(NTAfflictionType AffType, List<AfflictionPriority> Priorities, string Key, NTHumanAffData Data)
         {
-            if (Data.AffTemplate.Delay > 0) { Data.AffTemplate.Delay--; return; }
+            if (Data.Delay > 0) { Data.Delay--; return; }
             switch (AffType)
             {
                 case NTAfflictionType.NONLIMB:
