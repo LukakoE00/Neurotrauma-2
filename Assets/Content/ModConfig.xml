@@ -12,6 +12,7 @@
 	<!-- Auto Run files -->
 	<!-- Shared -->
 	<Lua Folder="%ModDir%/Lua/Shared" Target="Any" IsAutorun="true" />
+    <Lua File="%ModDir%/Lua/ConsentRequiredExtended/init.lua" Target="Any" IsAutorun="true" />
 
 	<!-- Serverside -->
 	<Lua Folder="%ModDir%/Lua/Server" Target="Server" IsAutorun="true" />

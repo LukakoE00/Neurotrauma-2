@@ -496,12 +496,8 @@ namespace Neurotrauma
         {
 #if SERVER
             return false;
-#elif SHARED
-#if !CLIENT
-            return LuaGame.Paused;
-#endif
 #else
-            return false;
+            return GameMain.Instance.Paused;
 #endif
         }
 

@@ -33,6 +33,28 @@
       <icon texture="%ModDir%/Images/AfflictionIcons.png" sheetindex="3,3" sheetelementsize="128,128" origin="0,0"/>
     </Affliction>
 
+  <!-- Cavity infection
+  Scanned Symptom, leads to sepsis if severe enough -->
+	  <Affliction
+		name=""
+		identifier="infectedcavity"
+		description=""
+		healableinmedicalclinic="false"
+		type="gaze"
+		isbuff="false"
+		targets="human"
+		causeofdeathdescription=""
+		selfcauseofdeathdescription=""
+		limbspecific="false"
+		indicatorlimb="Torso"
+		maxstrength="100"
+		showiconthreshold="500"
+		showinhealthscannerthreshold="1"
+		damageoverlayalpha="0">
+
+		  <icon texture="Content/UI/MainIconsAtlas.png" sourcerect="128,384,128,128" color="195,136,60,255" origin="0,0"/>
+	  </Affliction>
+
     <!-- Internal Bleeding. Visible on Health Scanner. Causes: Blood Loss. -->
     <Affliction
       name=""

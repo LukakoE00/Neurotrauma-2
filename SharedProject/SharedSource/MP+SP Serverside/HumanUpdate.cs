@@ -1,5 +1,6 @@
 ﻿using Barotrauma;
 using MonoMod.Utils;
+using System.Security.AccessControl;
 using static Microsoft.Xna.Framework.Graphics.VertexDeclaration;
 using static Neurotrauma.HF;
 using static Neurotrauma.NTC;
@@ -69,8 +70,8 @@ public static class HumanUpdate
         {
             AffTemplate = NewAff; // Stores our template. The reason we aren't just creating a new affliction for each character is performance. I'm pretty sure it's more peformance efficent to just reference our affliction.
             base.AffTemplate = NewAff;
-            Strength = NewStrength;
-            PrevStrength = NewStrength;
+            Strength = new(NewStrength);
+            PrevStrength = new(NewStrength);
             ID = NewID;
             Delay = AffTemplate.Delay;
         }
@@ -137,8 +138,8 @@ public static class HumanUpdate
         {
             AffTemplate = NewAff; // Failsafe, don't reference this when using NTSymptom.
             SymTemplate = NewAff; // Stores our template. The reason we aren't just creating a new affliction for each character is performance. I'm pretty sure it's more peformance efficent to just reference our affliction.
-            HumanUpdateTime = NewUpdateTime;
-            HumanUpdateStoptime = NewUpdateTime;
+            HumanUpdateTime = new(NewUpdateTime);
+            HumanUpdateStoptime = new(NewUpdateTime);
             Delay = AffTemplate.Delay;
         }
     }
@@ -1017,7 +1018,7 @@ public static class HumanUpdate
                     double PrevStrength = AffClamp(AffData.Strength,Aff);
                     double CurrentStrength = Aff.Real ? GetAfflictionStrength(Human, ID) : PrevStrength; // If real, use the prefab strength, else use custom.
 
-                    AffData.PrevStrength = PrevStrength;
+                    AffData.PrevStrength = CurrentStrength;
                     AffData.Strength = CurrentStrength;
 
                     if (AffType == NTAfflictionType.SYMPTOM)
@@ -1052,12 +1053,12 @@ public static class HumanUpdate
                         double LimbPrevStrength = AffClamp(LimbAffData.Strength[Limb], LimbAff);
                         double LimbCurrentStrength = LimbAff.Real ?  GetAfflictionStrengthLimb(Human, Limb, LimbID) : LimbPrevStrength; // If real, use the prefab strength, else use custom.
 
-                        LimbAffData.PrevStrength[Limb] = LimbPrevStrength;
+                        LimbAffData.PrevStrength[Limb] = LimbCurrentStrength;
                         LimbAffData.Strength[Limb] = LimbCurrentStrength;
 
                         if (PreSymptomCheck(LimbAffData, Limb))
                         {
-                            return;
+                            continue;
                         }
 
                         LimbAff.Update(this, LimbID, Limb, LimbAffData);
@@ -1099,9 +1100,9 @@ public static class HumanUpdate
 
                     if (!Default)
                     {
-                        if (AffData.Strength == 0) return;
+                        if (AffData.Strength == AffData.PrevStrength) return;
 
-                        ApplyAfflictionChange(Human, ID, (float)AffData.Strength, (float)AffData.PrevStrength, (float)Template.MinStrength, (float)Template.MaxStrength);
+                        HF.SetAffliction(Human, ID, (float)Math.Clamp(AffData.Strength, Template.MinStrength, Template.MaxStrength));
                     }
                     else
                     {
@@ -1116,6 +1117,7 @@ public static class HumanUpdate
                     NTHumanLimbAffData LimbAffData = (NTHumanLimbAffData)Data;
                     NTLimbAffliction LimbTemplate = LimbAffData.AffTemplate;
 
+
                     foreach (LimbType Limb in LimbsToCheck)
                     {
 
@@ -1123,9 +1125,11 @@ public static class HumanUpdate
 
                         if (!Default)
                         {
-                            if (LimbAffData.Strength[Limb] == 0) return;
 
-                            ApplyAfflictionChangeLimb(Human, Limb, ID, (float)LimbAffData.Strength[Limb], (float)LimbAffData.PrevStrength[Limb], (float)LimbTemplate.MinStrength, (float)LimbTemplate.MaxStrength);
+                            if (LimbAffData.Strength[Limb] == LimbAffData.PrevStrength[Limb]) continue;
+
+                            HF.SetAfflictionLimb(Human, ID, Limb, (float)Math.Clamp(LimbAffData.Strength[Limb], LimbTemplate.MinStrength, LimbTemplate.MaxStrength));
+
                         }
                         else
                         {
@@ -1296,18 +1300,18 @@ public static class HumanUpdate
     private static void Update(List<AfflictionPriority> priorities)
     {
         // Our Single Player check for fetching humans.
-        if (GameIsSingleplayer() && (UpdatingHumans.Count + UpdatingMonsters.Count > Character.CharacterList.Count))
+        if (GameIsSingleplayer())
         {
             UpdatingHumans.Clear();
             UpdatingMonsters.Clear();
 
             foreach (Character character in Character.CharacterList)
             {
-                if (character.IsHuman)
+                if (character.IsHuman && character.Enabled)
                 {
                     AddHumanToUpdate(character);
                 }
-                else if (!character.IsHuman)
+                else
                 {
                     AddMonsterToUpdate(character);
                 }

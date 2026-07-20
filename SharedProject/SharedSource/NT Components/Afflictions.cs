@@ -339,6 +339,10 @@ namespace Neurotrauma
         /// If true, whenever strength is greater than zero, gets set to 100 (max strength).
         /// </summary>
         public bool IsBoolSymptom = false;
+        /// <summary>
+        /// If true, the symptom will retain strength, even if not set to true.
+        /// </summary>
+        public bool IsPartialSymptom = false;
     }
 
     public class NTLimbSymptom : NTLimbAffliction
@@ -370,6 +374,10 @@ namespace Neurotrauma
         /// If true, whenever strength is greater than zero, gets set to 100 (max strength).
         /// </summary>
         public bool IsBoolSymptom = false;
+        /// <summary>
+        /// If true, the symptom will retain strength, even if not set to true.
+        /// </summary>
+        public bool IsPartialSymptom = false;
     }
 
     public abstract class AfflictionsPackage 
@@ -561,7 +569,7 @@ namespace Neurotrauma
                     // Chest Pain
                     if (AffData.Strength > 0 && C.GetSymptomAffData("unconsciousness").Strength <= 0 && (!C.GetBoolStatStrength("sedated")))
                     {
-                        NTC.SetSymptomTrue(C, "chestpain", 2);
+                        NTC.SetSymptomTrue(C, "chestpain", 3);
                     }
                 };
 
@@ -594,7 +602,7 @@ namespace Neurotrauma
                     // Headache
                     if (AffData.Strength > 0 && C.GetAffData("unconsciousness").Strength <= 0)
                     {
-                        NTC.SetSymptomTrue(C, "headache", 2);
+                        NTC.SetSymptomTrue(C, "headache", 3);
                     }
 
                     // Neurotrauma Regeneration (in Neurotrauma itself)
@@ -766,19 +774,19 @@ namespace Neurotrauma
                     {
                         if (C.GetAffData("respiratoryarrest").Strength <= 0)
                         {
-                            NTC.SetSymptomTrue(C, "shortnessofbreath", 2);
+                            NTC.SetSymptomTrue(C, "shortnessofbreath", 3);
                         }
 
                         // Cough
                         if (AffData.Strength > 20 && C.GetAffData("unconsciousness").Strength <= 0 && C.GetAffData("lungremoved").Strength <= 0)
                         {
-                            NTC.SetSymptomTrue(C, "cough", 2);
+                            NTC.SetSymptomTrue(C, "cough", 3);
                         }
 
                         // Weakness
                         if (AffData.Strength > 30)
                         {
-                            NTC.SetSymptomTrue(C, "weakness", 2);
+                            NTC.SetSymptomTrue(C, "weakness", 3);
                         }
                     }
                 };
@@ -919,6 +927,34 @@ namespace Neurotrauma
 
                     // Hypotension (in BloodPressure constant itself)
                     // Hypoxemia (in Hypoxemia constant itself)
+                };
+
+            // Infected Cavity
+            // Type: Non-Limb Specific, Lethal Shit
+            // Not constant; gets applied by Shit.
+            // Caused By: Shit.
+            // Effects: Shit.
+            AfflictionsToAdd["infectedcavity"] = new("infectedcavity", 0, 100, 0, AfflictionPriority.MEDIUM);
+            AfflictionsToAdd["infectedcavity"].UpdateAction =
+                (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanNonLimbAffData AffData) =>
+                {
+                    if ((C.GetBoolStatStrength("stasis"))) return;
+
+                    if (AffData.Strength > 0)
+                    {
+                        C.GetAffData("immunity").Strength -= NT.DeltaTime * (Math.Min(1.4, Math.Max(1, .8 + AffData.Strength / 100))); // Lose Immunity
+
+                        if (C.GetAffData("afantibiotics").Strength < 0.1 || AffData.Strength > 20)
+                        {
+                            if (C.GetAffData("combatstimulant").Strength > 0) return;
+
+                            AffData.Strength += NT.DeltaTime * (.65 - .0125 * Math.Max(.44 * C.GetAffData("immunity").PrevStrength, 20)); // Gain infection
+                        }
+                        else
+                        {
+                            AffData.Strength -= NT.DeltaTime * .8; // Lose infection
+                        }
+                    }
                 };
 
             // Heart Attack
@@ -1424,25 +1460,6 @@ namespace Neurotrauma
                     // Passive Decrease
                     // Decreases itself by 1 per 2 seconds, removing itself after 4 seconds; originally done in XML
                     AffData.Strength -= 1;
-                };
-
-            // On Wheelchair
-            // Not constant; gets applied by other sources.
-            // Type: Functionality
-            // Effects: Changes the animations of a character to one in a wheelchair.
-            // Applied via Stats.
-            AfflictionsToAdd["onwheelchair"] = new("onwheelchair", 0, 2, 0, AfflictionPriority.HIGH);
-            AfflictionsToAdd["onwheelchair"].UpdateAction =
-                (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanNonLimbAffData AffData) =>
-                {
-                    // Removal Conditions
-                    AffData.Strength = HF.BoolToNum(
-                        !(NTC.HasSymptomFalse(C, "onwheelchair"))
-                        && C.GetSymptomAffData("unconsciousness").Strength <= 0
-                        && (NTC.HasSymptom(C, "onwheelchair") || HF.GetOuterWearIdentifier(C.Human) == "wheelchair"
-                        ),
-                        2
-                    );
                 };
 
             // Stasis Bag Overlay
@@ -2453,6 +2470,12 @@ namespace Neurotrauma
                         AffData.Strength = Math.Max(5,AffData.Strength);
                     }
                 };
+
+            // Stun 
+            // Constant; too complicated otherwise.
+            // Type: Functionality
+            // Effects: Used to stun the character.
+            AfflictionsToAdd["combatstimulant"] = new("combatstimulant", 0, 100, 0, AfflictionPriority.HIGH);
 
             // Now add these afflictions.
             foreach (KeyValuePair<string,NTNonLimbAffliction> Pair in AfflictionsToAdd)
@@ -3899,6 +3922,25 @@ namespace Neurotrauma
                 {
                 };
 
+            // On Wheelchair
+            // Not constant; gets applied by other sources.
+            // Type: Functionality
+            // Effects: Changes the animations of a character to one in a wheelchair.
+            // Applied via Stats.
+            SymptomsToAdd["onwheelchair"] = new("onwheelchair", 0, 2, 0, AfflictionPriority.HIGH);
+            SymptomsToAdd["onwheelchair"].UpdateAction =
+                (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanSymptomData AffData) =>
+                {
+                    // Removal Conditions
+                    AffData.Strength = HF.BoolToNum(
+                        !(NTC.HasSymptomFalse(C, "onwheelchair"))
+                        && C.GetSymptomAffData("unconsciousness").Strength <= 0
+                        && (NTC.HasSymptom(C, "onwheelchair") || HF.GetOuterWearIdentifier(C.Human) == "wheelchair"
+                        ),
+                        2
+                    );
+                };
+
             // Force Prone
             // Constant; too complicated otherwise.
             // Type: Functionality
@@ -3924,6 +3966,7 @@ namespace Neurotrauma
                         AffData.HumanUpdateTime = 2;
                     }
                 };
+
 
             // Hyperventilation
             // Not constant; gets applied by other sources, removes itself however.
@@ -3965,9 +4008,13 @@ namespace Neurotrauma
 
             // Ponder later
             SymptomsToAdd["lockleftarm"] = new("lockleftarm", 0, 100, 0, AfflictionPriority.HIGH);
+            SymptomsToAdd["lockleftarm"].Real = false;
             SymptomsToAdd["lockrightarm"] = new("lockrightarm", 0, 100, 0, AfflictionPriority.HIGH);
+            SymptomsToAdd["lockrightarm"].Real = false;
             SymptomsToAdd["lockleftleg"] = new("lockleftleg", 0, 100, 0, AfflictionPriority.HIGH);
+            SymptomsToAdd["lockleftleg"].Real = false;
             SymptomsToAdd["lockrightleg"] = new("lockrightleg", 0, 100, 0, AfflictionPriority.HIGH);
+            SymptomsToAdd["lockrightleg"].Real = false;
 
             SymptomsToAdd["triggersym_respiratoryarrest"] = new("triggersym_respiratoryarrest", 0, 100, 0, AfflictionPriority.HIGH);
             SymptomsToAdd["triggersym_respiratoryarrest"].Real = false;
@@ -4028,11 +4075,15 @@ namespace Neurotrauma
             // Caused by: Foreign Bodies, Infected Wounds
             // Effects: Fever
             LimbSymptomsToAdd["inflammation"] = new("inflammation", 0, 100, 0, AfflictionPriority.HIGH);
+            LimbSymptomsToAdd["inflammation"].IsPartialSymptom = true;
             LimbSymptomsToAdd["inflammation"].UpdateAction =
                 (HumanUpdate.NTHuman C, string ID, LimbType Limb, HumanUpdate.NTHumanLimbSymptomData AffData) =>
                 {
                     // Passive Decrease
-                    AffData.Strength[Limb] -= 0.1 * NT.DeltaTime;
+                    if (AffData.Strength[Limb] > 0)
+                    {
+                        AffData.Strength[Limb] -= 0.1 * NT.DeltaTime;
+                    }
                 };
 
             // Spasms
